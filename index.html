@@ -181,6 +181,29 @@ p { margin: 0; }
 .vs b { font-family: var(--f-display); font-weight: 400; font-size: 48px; line-height: 1; font-variant-numeric: tabular-nums; }
 .vs span { font-family: var(--f-cond); font-size: 14px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .vs em { font-family: var(--f-display); font-style: normal; color: var(--muted); }
+/* Ranks, points, leaderboard */
+.rk { display: inline-flex; align-items: center; padding: 1px 6px; border-radius: 3px; border: 1px solid var(--brass); color: var(--brass); font-family: var(--f-cond); font-weight: 700; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; vertical-align: middle; white-space: nowrap; }
+.rk.gold { background: linear-gradient(135deg, #f3d36b, #b8902a); color: #1a1406; border-color: #f3d36b; }
+.rankcard { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 12px; align-items: end; background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 12px 14px; }
+.rankcard .rname { font-family: var(--f-cond); font-weight: 800; font-size: 22px; line-height: 1.1; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.rankcard .pts { font-family: var(--f-display); font-size: 28px; color: var(--brass); font-variant-numeric: tabular-nums; text-align: right; line-height: 1; }
+.rankcard .pts small { display: block; font-family: var(--f-cond); font-size: 11px; letter-spacing: .12em; color: var(--muted); text-transform: uppercase; margin-top: 4px; }
+.xp { grid-column: 1 / -1; height: 8px; background: var(--panel-2); border-radius: 4px; overflow: hidden; }
+.xp i { display: block; height: 100%; background: var(--brass); }
+.rankcard .meta { grid-column: 1 / -1; color: var(--muted); font-size: 13px; }
+.ex.locked { opacity: .55; }
+.ex.locked .go { color: var(--muted); }
+.ex .go svg { width: 20px; height: 20px; }
+.lb { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.lb li { display: grid; grid-template-columns: 32px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 8px 10px; background: var(--panel); border: 1px solid var(--line); border-radius: 4px; }
+.lb li.podium .pos { color: var(--brass); }
+.lb li.me { border-color: var(--brass); }
+.lb .pos { font-family: var(--f-display); font-size: 18px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.lb .who { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: var(--f-cond); font-weight: 700; font-size: 17px; }
+.lb .pts { font-family: var(--f-cond); font-weight: 700; font-size: 18px; color: var(--brass); font-variant-numeric: tabular-nums; }
+.lb .lbmsg { display: block; color: var(--muted); font-size: 14px; }
+.elite .ex { border-style: dashed; }
+body.goldtheme { --brass: #e9c24a; }
 @media (prefers-reduced-motion: reduce) { .counter .n.bump, .loading .bar i { animation: none; } }
 </style>
 
@@ -280,6 +303,42 @@ const EX = {
       "Il tempo scorre solo quando la posizione è corretta."
     ],
     faults: ["Bacino che cede", "Bacino troppo alto"]
+  },
+  lunge: {
+    name: "Affondi", unit: "reps", lock: 1,
+    tag: "Gambe, equilibrio",
+    cam: "Telefono a terra, di lato, a circa 2–3 metri. Devi vedere testa e piedi.",
+    steps: [
+      "In piedi, busto dritto, mani sui fianchi.",
+      "Fai un passo lungo in avanti e scendi piegando entrambe le ginocchia.",
+      "Il ginocchio dietro arriva vicino a terra, quello davanti resta sopra la caviglia.",
+      "Spingi con la gamba davanti e torna su. Alterna le gambe."
+    ],
+    faults: ["Non scendi abbastanza (non conta)", "Busto inclinato in avanti"]
+  },
+  climber: {
+    name: "Mountain climber", unit: "reps", lock: 2,
+    tag: "Core e cardio",
+    cam: "Telefono a terra, di lato, a circa 2 metri.",
+    steps: [
+      "Posizione di piegamento a braccia tese, corpo dritto.",
+      "Porta un ginocchio verso il petto, poi riportalo indietro.",
+      "Alterna le gambe con ritmo, come se corressi.",
+      "Ogni ginocchio al petto vale una ripetizione."
+    ],
+    faults: ["Bacino troppo alto", "Ginocchio non abbastanza vicino al petto"]
+  },
+  burpee: {
+    name: "Burpee", unit: "reps", lock: 4, pts: 3,
+    tag: "Il re dell'addestramento",
+    cam: "Telefono in verticale, di lato, a circa 3 metri. Devi vederti in piedi e a terra.",
+    steps: [
+      "In piedi, scendi in accosciata e appoggia le mani a terra.",
+      "Porta i piedi indietro in posizione di piegamento.",
+      "Riporta i piedi verso le mani e rialzati.",
+      "Salta con le braccia sopra la testa: la ripetizione conta solo con il salto."
+    ],
+    faults: ["Salto senza braccia in alto (non conta)", "Bacino che cede a terra"]
   }
 };
 
@@ -465,6 +524,64 @@ function makeTracker(exId) {
         else { fault = "pike"; cue = "Abbassa il bacino, corpo dritto"; }
       } else st.holdMs += dt;
       return { metric: Math.max(0, Math.min(1, (line - 140) / 40)), fault, cue, hold: st.holdMs };
+    },
+    lunge(lm) {
+      const g = i => P(lm, i);
+      const lh = g(23), rh = g(24), lk = g(25), rk = g(26), la = g(27), ra = g(28);
+      const sh = g(side(lm, [11], [12]) === "l" ? 11 : 12);
+      const angs = [];
+      if (vis(lh, lk, la)) angs.push(ang(lh, lk, la));
+      if (vis(rh, rk, ra)) angs.push(ang(rh, rk, ra));
+      if (!angs.length || !vis(sh)) return { lost: "Inquadrati di lato, dalla testa ai piedi" };
+      const knee = Math.min(...angs);
+      const hip = lh.v >= rh.v ? lh : rh;
+      const torso = Math.atan2(Math.abs(sh.x - hip.x), Math.abs(hip.y - sh.y)) * 180 / Math.PI;
+      let fault = null, cue = null;
+      if (st.phase !== "top" && torso > 30) { fault = "torso"; cue = "Busto dritto, sguardo avanti"; }
+      const r = angleRep({ value: knee, top: 155, bottom: 100, partial: 135, fault });
+      return { ...r, fault, cue, noRepCue: "Scendi di più! Ginocchio verso terra. Non conta" };
+    },
+    climber(lm) {
+      const g = i => P(lm, i);
+      const sd = side(lm, [11, 23, 25], [12, 24, 26]);
+      const sh = g(sd === "l" ? 11 : 12), hip = g(sd === "l" ? 23 : 24);
+      if (!vis(sh, hip)) return { lost: "Inquadrati di lato, in posizione di piegamento" };
+      if (Math.abs(hip.x - sh.x) < Math.abs(hip.y - sh.y)) return { lost: "Mettiti in posizione di piegamento" };
+      st.legs = st.legs || { l: "out", r: "out" };
+      let event = null, minA = 180, fault = null, cue = null;
+      for (const [k, hi, ki] of [["l", 23, 25], ["r", 24, 26]]) {
+        const h = g(hi), kn = g(ki);
+        if (h.v < 0.2 || kn.v < 0.2) continue;
+        const a = ang(sh, h, kn); minA = Math.min(minA, a);
+        if (st.legs[k] === "out" && a < 100) { st.legs[k] = "in"; event = "rep"; }
+        else if (st.legs[k] === "in" && a > 140) st.legs[k] = "out";
+      }
+      if (hip.y < sh.y - 0.1) { fault = "pike"; cue = "Bacino giù, schiena piatta"; }
+      return { metric: Math.max(0, Math.min(1, (165 - minA) / 70)), event, fault, cue };
+    },
+    burpee(lm, t) {
+      const p = pick(lm, side(lm, [11, 23, 25, 27], [12, 24, 26, 28]));
+      const nose = P(lm, 0), lw = P(lm, 15), rw = P(lm, 16);
+      const foot = vis(p.an) ? p.an : p.kn;
+      if (!vis(p.sh, p.hip, foot)) return { lost: "Inquadrati tutto, dalla testa ai piedi" };
+      const horiz = Math.abs(foot.x - p.sh.x) > Math.abs(foot.y - p.sh.y);
+      const upright = Math.abs(p.sh.x - p.hip.x) < Math.abs(p.hip.y - p.sh.y) * 0.6 && p.sh.y < p.hip.y && p.hip.y < foot.y;
+      const standing = upright && ang(p.hip, p.kn, p.an) > 150;
+      const armsUp = Math.min(lw.y, rw.y) < nose.y;
+      let event = null, fault = null, cue = null, noRepCue = null, metric = 0;
+      if (st.phase === "top") { if (horiz) st.phase = "floor"; }
+      else if (st.phase === "floor") {
+        metric = 0.5;
+        const line = ang(p.sh, p.hip, foot);
+        if (horiz && line < 150 && hipOffset(p.sh, p.hip, foot) > 0) { fault = "sag"; cue = "Bacino su, corpo dritto"; }
+        if (upright) { st.phase = "up"; st.upT = t; }
+      } else if (st.phase === "up") {
+        metric = 0.8;
+        if (armsUp) { event = "rep"; st.phase = "top"; metric = 1; }
+        else if (horiz) st.phase = "floor";
+        else if (standing && t - st.upT > 1500) { event = "norep"; st.phase = "top"; noRepCue = "Salta con le braccia sopra la testa! Non conta"; }
+      }
+      return { metric, event, fault, cue, noRepCue };
     }
   };
   return { st, step: T[exId] };
@@ -513,6 +630,10 @@ const icon = {
   jacks: `<svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="color:var(--brass)"><circle cx="26" cy="12" r="4" fill="currentColor"/><path d="M26 17 L26 31 M26 31 L16 46 M26 31 L36 46 M26 20 L14 6 M26 20 L38 6"/></svg>`,
   plank: `<svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="color:var(--brass)"><circle cx="9" cy="26" r="4" fill="currentColor"/><path d="M14 29 L46 34 M14 30 L14 39 L22 39 M4 40 L48 40"/></svg>`
 };
+icon.lunge = `<svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="color:var(--brass)"><circle cx="26" cy="8" r="4" fill="currentColor"/><path d="M26 13 L26 28 M26 28 L36 34 L36 46 M26 28 L16 38 L8 44"/></svg>`;
+icon.climber = `<svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="color:var(--brass)"><circle cx="10" cy="20" r="4" fill="currentColor"/><path d="M15 23 L34 30 L46 40 M34 30 L26 34 L24 40 M14 24 L14 40 M4 40 L48 40"/></svg>`;
+icon.burpee = `<svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="color:var(--brass)"><circle cx="26" cy="10" r="4" fill="currentColor"/><path d="M26 15 L26 30 M26 30 L20 42 M26 30 L32 42 M26 18 L18 4 M26 18 L34 4 M12 48 L40 48" /></svg>`;
+const lockIco = `<svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="4" y="9" width="12" height="9" rx="1.5"/><path d="M7 9V6a3 3 0 0 1 6 0v3"/></svg>`;
 const sideCam = `<svg viewBox="0 0 64 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="color:var(--muted)"><rect x="2" y="26" width="8" height="14" rx="1.5" stroke="var(--brass)"/><path d="M12 33 L22 30 M12 33 L22 36" stroke-dasharray="2 3"/><circle cx="34" cy="20" r="3" fill="currentColor"/><path d="M36 23 L56 30 M2 42 L62 42"/></svg>`;
 
 /* ---------- Screens ---------- */
@@ -527,6 +648,7 @@ function render() {
   if (route.name === "duel-join") return renderDuelJoin();
   if (route.name === "lobby") return renderLobby();
   if (route.name === "duel-result") return renderDuelResult();
+  if (route.name === "ranking") return renderRanking();
 }
 
 function renderHome() {
@@ -540,6 +662,13 @@ function renderHome() {
       <div><h1>Istruttore Recluta</h1><div class="sub">Addestramento a corpo libero</div></div>
       <div class="callsign">Sessioni<b>${done}/12</b></div>
     </header>
+
+    ${(() => { const ri = rankIndex(), cur = RANKS[ri], nx = RANKS[ri + 1]; const pct = nx ? Math.round((stats.total - cur[1]) / (nx[1] - cur[1]) * 100) : 100; return `<button class="rankcard" id="openRank" type="button" style="text-align:left;color:inherit">
+      <div><div class="label">Il tuo grado</div><div class="rname">${esc(myName || "Recluta")} ${myBadge()} <span style="font-weight:600;color:var(--muted);font-size:17px">${cur[0]}</span></div></div>
+      <div class="pts">${stats.month.pts}<small>punti del mese</small></div>
+      <div class="xp"><i style="width:${pct}%"></i></div>
+      <div class="meta">${nx ? `${nx[1] - stats.total} punti al grado ${nx[0]}` : "Grado massimo raggiunto"} · Classifica ›</div>
+    </button>`; })()}
 
     <section class="section">
       <div class="label">Ordine del giorno · Settimana ${n.wk}, sessione ${n.d + 1}</div>
@@ -575,8 +704,20 @@ function renderHome() {
     <section class="section">
       <div class="label">Esercizi singoli</div>
       <div class="exlist">
-        ${Object.entries(EX).map(([id, e]) => `<button class="ex" data-ex="${id}" type="button">${icon[id]}<span><b>${e.name}</b><small>${e.tag}</small></span><span class="go">›</span></button>`).join("")}
+        ${Object.entries(EX).map(([id, e]) => isUnlocked(id)
+          ? `<button class="ex" data-ex="${id}" type="button">${icon[id]}<span><b>${e.name}</b><small>${e.tag}</small></span><span class="go">›</span></button>`
+          : `<div class="ex locked">${icon[id]}<span><b>${e.name}</b><small>Si sblocca al grado ${RANKS[e.lock][0]} (${RANKS[e.lock][1]} punti)</small></span><span class="go">${lockIco}</span></div>`).join("")}
       </div>
+    </section>
+
+    <section class="section elite">
+      <div class="label">Riservato ai primi 3 del mese</div>
+      <div class="exlist">
+        ${Object.entries(ELITE).map(([id, e]) => isElite()
+          ? `<button class="ex" data-elite="${id}" type="button">${icon[id === "gold" ? "jacks" : id === "hell" ? "burpee" : "climber"]}<span><b>${e.name}</b><small>${id === "gold" ? (stats.gold ? "Attiva · tocca per disattivare" : "Disattivata · tocca per attivare") : e.desc}</small></span><span class="go">›</span></button>`
+          : `<div class="ex locked">${icon[id === "gold" ? "jacks" : id === "hell" ? "burpee" : "climber"]}<span><b>${e.name}</b><small>${e.desc}</small></span><span class="go">${lockIco}</span></div>`).join("")}
+      </div>
+      ${isElite() ? `<p class="note">Sei tra i primi 3 di ${monthName(prevMonthKey())}: queste opzioni restano attive per tutto il mese.</p>` : `<p class="note">Chiudi il mese tra i primi 3 in classifica per sbloccarle per tutto il mese successivo.</p>`}
     </section>
 
     <label class="toggle"><input type="checkbox" id="voiceT" ${voiceOn ? "checked" : ""}> Istruttore vocale (italiano)</label>
@@ -592,6 +733,12 @@ function renderHome() {
     go({ name: "brief", queue: [{ ex: id, target: 0, set: 1, sets: 1, timeLimit: 120 }], title: EX[id].name + " in 2 minuti", test: id });
   });
   $("voiceT").onchange = e => { voiceOn = e.target.checked; store.set("voice", voiceOn); };
+  $("openRank").onclick = () => go({ name: "ranking" });
+  app.querySelectorAll("[data-elite]").forEach(b => b.onclick = () => {
+    const id = b.dataset.elite;
+    if (id === "gold") { stats.gold = !stats.gold; store.set("stats", stats); applyGold(); lbSchedule(); return renderHome(); }
+    go({ name: "brief", queue: eliteQueue(id), title: ELITE[id].name, elite: id });
+  });
   if (SITE) {
     $("duelNew").onclick = () => go({ name: "duel-new" });
     $("duelJoin").onclick = () => go({ name: "duel-join", code: "" });
@@ -646,8 +793,9 @@ function renderSummary() {
     <div class="stats">
       <div class="stat"><b>${totalReps}</b><span>Rip. valide</span></div>
       <div class="stat"><b>${noReps}</b><span>Non valide</span></div>
-      <div class="stat"><b>${r.log.length}</b><span>Serie</span></div>
+      <div class="stat"><b>+${r.points || 0}</b><span>Punti</span></div>
     </div>
+    ${r.promoted != null ? `<div class="order"><h2>Promosso a ${RANKS[r.promoted][0]} ${rankBadge(r.promoted)}</h2><p class="meta">${Object.values(EX).filter(e => e.lock === r.promoted).map(e => "Hai sbloccato " + e.name + ".").join(" ") || "Continua così."}</p></div>` : ""}
     ${r.newRecord ? `<div class="order"><h2>Nuovo record: ${r.newRecord}</h2><p class="meta">Salvato su questo telefono.</p></div>` : ""}
     <div class="section">
       <div class="label">Dettaglio serie</div>
@@ -670,7 +818,7 @@ async function startSession(mode, file) {
   say("", { urgent: true });
   Object.assign(S, {
     mode, queue: route.queue.slice(), idx: 0, log: [], faults: {}, startT: performance.now(),
-    running: false, stream: null, facing: "user", lastTs: 0, title: route.title, test: route.test, day: route.day, free: route.free, challenge: false
+    running: false, stream: null, facing: "user", lastTs: 0, title: route.title, test: route.test, day: route.day, free: route.free, elite: route.elite, challenge: false, points: 0, promoted: null
   });
   $("opp").hidden = true; $("stage").classList.remove("duel");
   $("session").hidden = false;
@@ -803,6 +951,7 @@ function process(res, ts) {
   }
   if (out.event === "rep") {
     c.count++; $("count").textContent = c.count; bump();
+    addPoints(EX[c.ex].pts || 1);
     setBanner(c.count + "!", "ok");
     const left = c.target ? c.target - c.count : null;
     say(left === 3 && c.target >= 8 ? `${c.count}. Ancora tre!` : String(c.count), { urgent: true });
@@ -837,6 +986,7 @@ function endSet() {
   if (S.challenge) return duelEnd();
   const unit = EX[c.ex].unit;
   S.log.push({ ex: c.ex, set: c.set, target: c.target, unit, done: unit === "secs" ? c.hold : c.count, noreps: c.noreps });
+  if (unit === "secs") addPoints(Math.floor(c.hold / 2));
   const last = S.idx >= S.queue.length - 1;
   if (S.mode === "file") {
     // a recorded video covers one set; further sets come from new recordings
@@ -876,19 +1026,20 @@ function finish(all) {
     if (!records[S.test] || n > records[S.test]) { records[S.test] = n; store.set("records", records); newRecord = `${n} ${EX[S.test].name.toLowerCase()}`; }
   }
   const remaining = S.queue.slice(S.idx);
-  if (S.day && all) { progress[S.day.wk + "-" + S.day.d] = true; store.set("progress", progress); }
+  if (S.day && all) { progress[S.day.wk + "-" + S.day.d] = true; store.set("progress", progress); addPoints(50); }
+  if ((S.test || S.elite) && all) addPoints(S.elite ? 50 : 20);
   closeSession(true);
   say(all ? "Sessione terminata. Ottimo lavoro, recluta." : "Serie registrata.", { urgent: true });
   if (!all && S.mode === "file" && remaining.length) {
     // offer the next recorded set
-    route = { name: "brief", queue: remaining, title: S.title, day: S.day, free: S.free, test: S.test, carry: (route.carry || []).concat(S.log) };
+    route = { name: "brief", queue: remaining, title: S.title, day: S.day, free: S.free, test: S.test, carry: (route.carry || []).concat(S.log), carryPts: (route.carryPts || 0) + (S.points || 0), elite: S.elite };
     render();
     const note = $("camNote");
     note.textContent = `Serie salvate: ${route.carry.map(l => `${EX[l.ex].name} ${l.unit === "secs" ? Math.round(l.done) + " s" : l.done + " rip."}`).join(", ")}. Registra la prossima.`;
     return;
   }
   const log = (route.carry || []).concat(S.log);
-  go({ name: "summary", result: { title: S.title, secs, log, faults: S.faults, newRecord } });
+  go({ name: "summary", result: { title: S.title, secs, log, faults: S.faults, newRecord, points: (route.carryPts || 0) + (S.points || 0), promoted: S.promoted } });
 }
 
 function closeSession() {
@@ -912,8 +1063,210 @@ $("plus").onclick = () => { if (S.cur) { S.cur.count++; $("count").textContent =
 $("minus").onclick = () => { if (S.cur && S.cur.count > 0) { S.cur.count--; $("count").textContent = S.cur.count; if (S.challenge) duelSend({ t: "reps", n: S.cur.count }); } };
 $("flip").onclick = async () => { S.facing = S.facing === "user" ? "environment" : "user"; try { await openCamera(); } catch {} };
 
+/* ---------- Punti, gradi, sblocchi ---------- */
+const RANKS = [
+  ["Recluta", 0], ["Soldato", 200], ["Caporale", 600], ["Caporal maggiore", 1200], ["Sergente", 2000],
+  ["Sergente maggiore", 3200], ["Maresciallo", 4800], ["Sottotenente", 7000], ["Tenente", 10000], ["Capitano", 14000], ["Maggiore", 20000]
+];
+const monthKey = (d = new Date()) => d.toISOString().slice(0, 7);
+const prevMonthKey = () => { const d = new Date(); d.setUTCDate(1); d.setUTCMonth(d.getUTCMonth() - 1); return monthKey(d); };
+const MONTHS_IT = ["gennaio", "febbraio", "marzo", "aprile", "maggio", "giugno", "luglio", "agosto", "settembre", "ottobre", "novembre", "dicembre"];
+const monthName = k => MONTHS_IT[+k.slice(5, 7) - 1] + " " + k.slice(0, 4);
+
+let stats = store.get("stats", { total: 0, month: { key: monthKey(), pts: 0 }, elite: null, gold: true });
+function rollMonth() { const k = monthKey(); if (stats.month.key !== k) { stats.prev = { ...stats.month }; stats.month = { key: k, pts: 0 }; store.set("stats", stats); } }
+rollMonth();
+
+function rankIndex(total = stats.total) { let i = 0; RANKS.forEach(([, min], j) => { if (total >= min) i = j; }); return i; }
+const levelOf = i => i + 1;
+const isElite = () => stats.elite === prevMonthKey();
+function rankBadge(i, gold) { return `<span class="rk${gold ? " gold" : ""}" title="${RANKS[i][0]}">Lv ${levelOf(i)}</span>`; }
+function myBadge() { return rankBadge(rankIndex(), isElite() && stats.gold); }
+
+function isUnlocked(exId) {
+  const need = EX[exId].lock;
+  return need == null || rankIndex() >= need || isElite();
+}
+
+function addPoints(n, why) {
+  if (!n || n < 0) return;
+  rollMonth();
+  const before = rankIndex();
+  stats.total += n; stats.month.pts += n;
+  store.set("stats", stats);
+  if (S) S.points = (S.points || 0) + n;
+  const after = rankIndex();
+  if (after > before) {
+    const unlocked = Object.entries(EX).filter(([, e]) => e.lock === after).map(([, e]) => e.name);
+    say(`Promosso a ${RANKS[after][0]}!${unlocked.length ? " Hai sbloccato " + unlocked.join(" e ") : ""}`, { urgent: true });
+    S.promoted = after;
+  }
+  lbSchedule();
+}
+
+/* Riservato ai primi 3 del mese precedente */
+const ELITE = {
+  forze: { name: "Programma Forze Speciali", desc: "Sessione avanzata con burpee, mountain climber e affondi." },
+  hell: { name: "Circuito Hell Week", desc: "5 giri senza sconti: burpee, piegamenti, squat, mountain climber." },
+  gold: { name: "Mimetica d'oro", desc: "Grado dorato accanto al nome in classifica e nelle sfide." }
+};
+const eliteQueue = id => id === "forze"
+  ? blocksToQueue([["jacks", 1, 40], ["burpee", 3, 10], ["lunge", 3, 16], ["climber", 3, 30], ["pushup", 3, 15], ["plank", 2, 60]])
+  : (() => { const q = []; for (let r = 1; r <= 5; r++) for (const [ex, n] of [["burpee", 10], ["pushup", 15], ["squat", 20], ["climber", 30]]) q.push({ ex, target: n, set: r, sets: 5 }); return q; })();
+
+/* ---------- Classifica mondiale (Firebase) ---------- */
+const FIREBASE_CONFIG = null; // impostato dopo la creazione del progetto Firebase
+const LB = { init: null, ready: false, uid: null, db: null, fs: null, sent: null, lastSync: 0, timer: null, error: false, top3prev: null };
+const FB_V = "10.12.2";
+
+function lbInit() {
+  if (!FIREBASE_CONFIG || !SITE) return Promise.resolve(false);
+  if (LB.init) return LB.init;
+  LB.init = (async () => {
+    const base = `https://www.gstatic.com/firebasejs/${FB_V}/`;
+    const [fbApp, fbAuth, fs] = await Promise.all([import(base + "firebase-app.js"), import(base + "firebase-auth.js"), import(base + "firebase-firestore.js")]);
+    const fApp = fbApp.initializeApp(FIREBASE_CONFIG);
+    const auth = fbAuth.getAuth(fApp);
+    await fbAuth.signInAnonymously(auth);
+    Object.assign(LB, { uid: auth.currentUser.uid, db: fs.getFirestore(fApp), fs, ready: true, error: false });
+    // what the server already has for this month, so updates only ever go up
+    try {
+      const snap = await fs.getDoc(fs.doc(LB.db, "lb", monthKey(), "players", LB.uid));
+      LB.sent = snap.exists() ? snap.data().pts : null;
+      if (snap.exists()) LB.lastSync = snap.data().updated?.toMillis?.() || 0;
+    } catch {}
+    await checkElite();
+    lbSchedule();
+    return true;
+  })().catch(() => { LB.init = null; LB.error = true; return false; });
+  return LB.init;
+}
+
+async function checkElite() {
+  const { fs, db } = LB;
+  try {
+    const q = fs.query(fs.collection(db, "lb", prevMonthKey(), "players"), fs.orderBy("pts", "desc"), fs.limit(3));
+    const rows = (await fs.getDocs(q)).docs.map(d => ({ id: d.id, ...d.data() }));
+    LB.top3prev = rows;
+    const was = isElite();
+    stats.elite = rows.some(r => r.id === LB.uid) ? prevMonthKey() : (stats.elite === prevMonthKey() ? null : stats.elite);
+    store.set("stats", stats);
+    if (!was && isElite() && route.name === "home") render();
+  } catch {}
+}
+
+function lbSchedule() {
+  if (!LB.ready) return;
+  clearTimeout(LB.timer);
+  // the database accepts one update every 20 s per player
+  const wait = Math.max(1500, LB.lastSync + 25000 - Date.now());
+  LB.timer = setTimeout(lbSync, wait);
+}
+
+async function lbSync() {
+  if (!LB.ready) return;
+  rollMonth();
+  const pts = stats.month.pts;
+  if (LB.sent != null && pts <= LB.sent) return;
+  const capped = Math.min(pts, (LB.sent ?? 0) + 1500);
+  const { fs, db } = LB;
+  try {
+    await fs.setDoc(fs.doc(db, "lb", monthKey(), "players", LB.uid), {
+      name: (myName || "Recluta").slice(0, 20), pts: capped, total: stats.total, rank: rankIndex(), gold: isElite() && !!stats.gold, updated: fs.serverTimestamp()
+    });
+    LB.sent = capped; LB.lastSync = Date.now();
+    if (capped < pts) lbSchedule();
+  } catch { LB.lastSync = Date.now(); lbSchedule(); }
+}
+
+async function lbTop() {
+  const { fs, db } = LB;
+  const q = fs.query(fs.collection(db, "lb", monthKey(), "players"), fs.orderBy("pts", "desc"), fs.limit(50));
+  return (await fs.getDocs(q)).docs.map(d => ({ id: d.id, ...d.data() }));
+}
+
+function lbRows(rows, isMe) {
+  return rows.map((r, i) => `<li class="${isMe(r) ? "me" : ""}${i < 3 ? " podium" : ""}"><span class="pos">${i + 1}</span><span class="who">${esc(r.name || "Recluta")} ${rankBadge(Math.min(RANKS.length - 1, Math.max(0, r.rank | 0)), !!r.gold)}</span><span class="pts">${r.pts}</span></li>`).join("");
+}
+function renderRanking() {
+  const ri = rankIndex(), next = RANKS[ri + 1];
+  const left = (() => { const n = new Date(), e = new Date(Date.UTC(n.getUTCFullYear(), n.getUTCMonth() + 1, 1)); return Math.max(0, Math.ceil((e - n) / 864e5)); })();
+  app.innerHTML = `
+  <div class="screen">
+    <button class="back" id="back" type="button">‹ Indietro</button>
+    <header class="mast"><div><h1>Classifica</h1><div class="sub">${monthName(monthKey())}</div></div><div class="callsign">Fine mese<b>${left} g</b></div></header>
+    <div class="order">
+      <div class="label">I tuoi punti questo mese</div>
+      <div class="code">${stats.month.pts}</div>
+      <p class="meta">${esc(myName || "Tu")} ${myBadge()} ${RANKS[ri][0]} · ${stats.total} punti totali${next ? ` · ${next[1] - stats.total} al grado ${next[0]}` : ""}</p>
+    </div>
+    <div class="section">
+      <div class="label">Premio del mese</div>
+      <p class="meta">I primi 3 a fine mese sbloccano per tutto il mese successivo: ${Object.values(ELITE).map(e => e.name).join(", ")}.</p>
+    </div>
+    ${!myName ? `<div class="field"><label class="label" for="nm">Il tuo nome in classifica</label><input id="nm" maxlength="20" autocomplete="nickname" placeholder="Es. Marco"></div><div class="row"><button class="btn ghost small" id="saveName" type="button">Salva nome</button></div>` : ""}
+    ${FIREBASE_CONFIG ? `<div class="section"><div class="label">Mondiale · primi 50</div><ol class="lb" id="lb"><li class="lbmsg">Carico la classifica…</li></ol></div>` : ""}
+    <div class="section"><div class="label">Tu e gli amici che hai sfidato</div><ol class="lb">${lbRows(friendsBoard(monthKey()), r => r.me)}</ol>
+      ${Object.keys(friends).length ? "" : `<p class="note">Sfida un amico: dopo la prima sfida compare qui con il suo grado e i suoi punti.</p>`}
+      ${FIREBASE_CONFIG ? "" : `<p class="note">Finché la classifica mondiale non è attiva, il premio va ai primi 3 tra te e gli amici sfidati (servono almeno 4 partecipanti).</p>`}</div>
+    <div class="section"><div class="label">Come si guadagnano i punti</div>
+      <ul class="log">
+        <li><span>Ogni ripetizione valida</span><span>1 pt (burpee 3)</span></li>
+        <li><span>Plank, ogni 2 secondi in posizione</span><span>1 pt</span></li>
+        <li><span>Sessione del programma completata</span><span>+50</span></li>
+        <li><span>Prova di efficienza completata</span><span>+20</span></li>
+        <li><span>Sfida: vittoria / pareggio / sconfitta</span><span>+30 / +15 / +10</span></li>
+      </ul>
+    </div>
+  </div>`;
+  $("back").onclick = () => go({ name: "home" });
+  if ($("saveName")) $("saveName").onclick = () => { const v = $("nm").value.trim(); if (!v) return; myName = v; store.set("name", myName); lbSchedule(); renderRanking(); };
+  if (!FIREBASE_CONFIG) return;
+  lbInit().then(async ok => {
+    const el = $("lb"); if (!el || route.name !== "ranking") return;
+    if (!ok) { el.innerHTML = `<li class="lbmsg">Non riesco a caricare la classifica. Controlla la connessione.</li>`; return; }
+    try {
+      const rows = await lbTop();
+      if (!rows.length) { el.innerHTML = `<li class="lbmsg">Nessuno in classifica questo mese: fai il primo allenamento e conquista il primo posto.</li>`; return; }
+      el.innerHTML = lbRows(rows, r => r.id === LB.uid);
+    } catch { el.innerHTML = `<li class="lbmsg">Non riesco a caricare la classifica. Riprova tra poco.</li>`; }
+  });
+}
+
+/* ---------- Classifica tra amici (senza server) ----------
+   Ogni sfida scambia nome, grado e punti: chi hai sfidato entra nella tua classifica. */
+const meId = (() => { let id = store.get("meId", null); if (!id) { id = Math.random().toString(36).slice(2, 10) + Date.now().toString(36); store.set("meId", id); } return id; })();
+let friends = store.get("friends", {}); // id -> {name, rank, total, gold, months: {"2026-10": pts}}
+function myCard() { rollMonth(); return { id: meId, name: (myName || "Recluta").slice(0, 20), rank: rankIndex(), total: stats.total, gold: isElite() && !!stats.gold, months: { [stats.month.key]: stats.month.pts, ...(stats.prev ? { [stats.prev.key]: stats.prev.pts } : {}) } }; }
+function saveFriend(c) {
+  if (!c || typeof c.id !== "string" || c.id === meId || c.id.length > 40) return;
+  const old = friends[c.id] || { months: {} };
+  const months = { ...old.months };
+  for (const [k, v] of Object.entries(c.months || {})) if (/^\d{4}-\d{2}$/.test(k)) months[k] = Math.max(months[k] || 0, Math.max(0, v | 0));
+  friends[c.id] = { name: String(c.name || "Amico").slice(0, 20), rank: Math.min(RANKS.length - 1, Math.max(0, c.rank | 0)), total: Math.max(0, c.total | 0), gold: !!c.gold, months };
+  store.set("friends", friends);
+}
+function friendsBoard(key) {
+  const rows = Object.entries(friends).map(([id, f]) => ({ id, name: f.name, rank: f.rank, gold: f.gold, pts: f.months[key] || 0 }));
+  const mine = key === stats.month.key ? stats.month.pts : (stats.prev?.key === key ? stats.prev.pts : 0);
+  rows.push({ id: meId, name: myName || "Tu", rank: rankIndex(), gold: isElite() && !!stats.gold, pts: mine, me: true });
+  return rows.sort((a, b) => b.pts - a.pts);
+}
+// without the world leaderboard, the monthly prize goes to the top 3 among friends (at least 4 players)
+function checkFriendsElite() {
+  if (FIREBASE_CONFIG) return;
+  const k = prevMonthKey();
+  const board = friendsBoard(k).filter(r => r.pts > 0);
+  const pos = board.findIndex(r => r.me);
+  stats.elite = board.length >= 4 && pos > -1 && pos < 3 ? k : (stats.elite === k ? null : stats.elite);
+  store.set("stats", stats);
+}
+
+function applyGold() { document.body.classList.toggle("goldtheme", isElite() && !!stats.gold); }
+
 /* ---------- Sfida un amico (WebRTC via PeerJS) ---------- */
-const DUEL_EX = ["pushup", "squat", "situp", "jacks"];
+const DUEL_EX_ALL = ["pushup", "squat", "situp", "jacks", "lunge", "climber", "burpee"];
+const duelExList = () => DUEL_EX_ALL.filter(id => isUnlocked(id) || id === CH.cfg.ex);
 const DUEL_FMT = {
   time: { label: "Più ripetizioni in 60 s", short: "60 secondi", n: 60 },
   first: { label: "Primo a 20", short: "primo a 20", n: 20 }
@@ -977,7 +1330,7 @@ function setupConn(conn) {
   CH.conn = conn;
   conn.on("open", () => {
     CH.connected = true;
-    duelSend({ t: "hello", name: myName || "Recluta" });
+    duelSend({ t: "hello", name: myName || "Recluta", card: myCard() });
     if (CH.role === "host") duelSend({ t: "cfg", cfg: CH.cfg });
     refreshLobby();
   });
@@ -993,9 +1346,14 @@ function setupCall(call) {
 
 function onDuelMsg(m) {
   if (!m || typeof m !== "object") return;
-  if (m.t === "hello") { CH.oppName = String(m.name || "Amico").slice(0, 20); refreshLobby(); }
+  if (m.t === "hello") {
+    CH.oppName = String(m.name || "Amico").slice(0, 20);
+    if (m.card && typeof m.card === "object") { CH.oppCard = m.card; saveFriend(m.card); }
+    refreshLobby();
+  }
   else if (m.t === "cfg" && CH.role === "guest" && m.cfg && EX[m.cfg.ex] && DUEL_FMT[m.cfg.fmt]) { CH.cfg = m.cfg; refreshLobby(); }
   else if (m.t === "start") startDuelSession();
+  else if (m.t === "card" && m.card && typeof m.card === "object") { CH.oppCard = m.card; saveFriend(m.card); }
   else if (m.t === "reps") { CH.oppReps = Math.max(0, m.n | 0); $("oppCount").textContent = CH.oppReps; }
   else if (m.t === "final") {
     CH.oppFinal = Math.max(0, m.n | 0); CH.oppReps = CH.oppFinal; $("oppCount").textContent = CH.oppFinal;
@@ -1054,7 +1412,7 @@ function renderDuelNew() {
     <div class="section"><div class="label">Sfida un amico</div><h2>Nuova sfida</h2></div>
     <div class="field"><label class="label" for="nm">Il tuo nome</label><input id="nm" maxlength="20" autocomplete="nickname" placeholder="Es. Marco" value="${esc(myName)}"></div>
     <div class="section"><div class="label">Esercizio</div>
-      <div class="choices">${DUEL_EX.map(id => `<button class="choice" type="button" data-ex="${id}" aria-pressed="${c.ex === id}">${EX[id].name}<small>${EX[id].tag}</small></button>`).join("")}</div>
+      <div class="choices">${duelExList().map(id => `<button class="choice" type="button" data-ex="${id}" aria-pressed="${c.ex === id}">${EX[id].name}<small>${EX[id].tag}</small></button>`).join("")}</div>
     </div>
     <div class="section"><div class="label">Formato</div>
       <div class="choices">${Object.entries(DUEL_FMT).map(([k, f]) => `<button class="choice" type="button" data-fmt="${k}" aria-pressed="${c.fmt === k}">${f.label}<small>${k === "time" ? "Vince chi ne fa di più" : "Vince chi arriva prima"}</small></button>`).join("")}</div>
@@ -1120,7 +1478,7 @@ function renderLobby() {
     </div>` : ""}
     <div class="status" id="lobStatus"><i></i><span></span></div>
     <div class="lobvids">
-      <div class="lobvid"><video id="lobMe" playsinline autoplay muted></video><span>${esc(myName || "Tu")}</span></div>
+      <div class="lobvid"><video id="lobMe" playsinline autoplay muted></video><span>${esc(myName || "Tu")} ${myBadge()}</span></div>
       <div class="lobvid"><video id="lobOpp" playsinline autoplay></video><div class="empty" id="lobOppEmpty">In attesa della videochiamata…</div><span id="lobOppName">Amico</span></div>
     </div>
     ${CH.wins.me + CH.wins.opp > 0 ? `<p class="meta">Punteggio: ${esc(myName)} ${CH.wins.me} – ${CH.wins.opp} ${esc(CH.oppName)}</p>` : ""}
@@ -1128,7 +1486,7 @@ function renderLobby() {
       ${host ? `<button class="btn primary" id="go" type="button" disabled>Via!</button>` : ""}
       <button class="btn ghost" id="leave" type="button">Esci dalla sfida</button>
     </div>
-    ${host ? `<details class="note"><summary>Cambia esercizio o formato</summary><div class="choices" style="margin-top:8px">${DUEL_EX.map(id => `<button class="choice" type="button" data-ex="${id}" aria-pressed="${CH.cfg.ex === id}">${EX[id].name}</button>`).join("")}${Object.entries(DUEL_FMT).map(([k, f]) => `<button class="choice" type="button" data-fmt="${k}" aria-pressed="${CH.cfg.fmt === k}">${f.label}</button>`).join("")}</div></details>` : ""}
+    ${host ? `<details class="note"><summary>Cambia esercizio o formato</summary><div class="choices" style="margin-top:8px">${duelExList().map(id => `<button class="choice" type="button" data-ex="${id}" aria-pressed="${CH.cfg.ex === id}">${EX[id].name}</button>`).join("")}${Object.entries(DUEL_FMT).map(([k, f]) => `<button class="choice" type="button" data-fmt="${k}" aria-pressed="${CH.cfg.fmt === k}">${f.label}</button>`).join("")}</div></details>` : ""}
   </div>`;
   attach($("lobMe"), CH.stream, true);
   if (host) {
@@ -1156,7 +1514,7 @@ function refreshLobby() {
   else { txt = host ? `${CH.oppName || "L'amico"} è pronto. Dai il via!` : `Connesso con ${CH.oppName || "l'amico"}. Aspetta il via.`; cls = "on"; }
   st.className = "status " + cls; st.querySelector("span").textContent = txt;
   if (!host && CH.connected) { const lab = document.querySelector(".brief .label"); if (lab) lab.textContent = "Sfida · " + fmtTxt(CH.cfg); }
-  $("lobOppName").textContent = CH.oppName || "Amico";
+  $("lobOppName").innerHTML = esc(CH.oppName || "Amico") + (CH.oppCard ? " " + rankBadge(Math.min(RANKS.length - 1, Math.max(0, CH.oppCard.rank | 0)), !!CH.oppCard.gold) : "");
   if (CH.remote) { $("lobOppEmpty").hidden = true; attach($("lobOpp"), CH.remote, false); }
   const g = $("go"); if (g) g.disabled = !CH.connected;
 }
@@ -1221,6 +1579,8 @@ function maybeDuelResult() {
   if (CH.cfg.fmt === "first") outcome = me >= DUEL_FMT.first.n && opp < DUEL_FMT.first.n ? "win" : opp >= DUEL_FMT.first.n && me < DUEL_FMT.first.n ? "lose" : me > opp ? "win" : me < opp ? "lose" : "tie";
   else outcome = me > opp ? "win" : me < opp ? "lose" : "tie";
   if (outcome === "win") CH.wins.me++; else if (outcome === "lose") CH.wins.opp++;
+  addPoints(outcome === "win" ? 30 : outcome === "tie" ? 15 : 10);
+  duelSend({ t: "card", card: myCard() });
   $("rest").hidden = true; $("restSkip").hidden = false; $("rest").querySelector(".label").textContent = "Recupero";
   $("opp").hidden = true; $("stage").classList.remove("duel");
   closeSession();
@@ -1238,11 +1598,11 @@ function renderDuelResult() {
     <header class="mast"><div><div class="sub">Sfida · ${esc(fmtTxt(CH.cfg))}</div></div><div class="callsign">Vittorie<b>${CH.wins.me}–${CH.wins.opp}</b></div></header>
     <div class="verdict">${verdict}</div>
     <div class="vs">
-      <div class="${r.outcome === "win" ? "win" : ""}"><b>${r.me}</b><span>${esc(myName || "Tu")}</span></div>
+      <div class="${r.outcome === "win" ? "win" : ""}"><b>${r.me}</b><span>${esc(myName || "Tu")} ${myBadge()}</span></div>
       <em>VS</em>
       <div class="${r.outcome === "lose" ? "win" : ""}"><b>${r.opp}</b><span>${esc(CH.oppName || "Amico")}</span></div>
     </div>
-    <p class="meta">Contano solo le ripetizioni complete e valide.</p>
+    <p class="meta">Contano solo le ripetizioni complete e valide. Punti sfida: ${r.outcome === "win" ? "+30" : r.outcome === "tie" ? "+15" : "+10"}, più 1 punto per ripetizione.</p>
     <div class="row">
       ${host ? `<button class="btn primary" id="again" type="button" ${CH.connected ? "" : "disabled"}>Rivincita</button>` : `<p class="note">${CH.connected ? `Per la rivincita aspetta ${esc(CH.oppName || "l'amico")}.` : "La connessione con l'amico si è chiusa."}</p>`}
       <button class="btn ghost" id="leave" type="button">Esci dalla sfida</button>
@@ -1253,7 +1613,10 @@ function renderDuelResult() {
 }
 
 try { const code = new URLSearchParams(location.search).get("sfida"); if (SITE && code) route = { name: "duel-join", code: code.toUpperCase().slice(0, 6) }; } catch {}
+checkFriendsElite();
+applyGold();
 render();
+lbInit();
 if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});
 loadEngine().catch(() => {}); // warm up in the background
 window.__test = { makeTracker, setAspect: a => (aspect = a) };
