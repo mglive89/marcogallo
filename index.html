@@ -149,6 +149,38 @@ p { margin: 0; }
 .toggle { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--muted); }
 .toggle input { width: 20px; height: 20px; accent-color: var(--brass); }
 
+/* Duel: friend's camera picture-in-picture + lobby */
+.stage .opp { position: absolute; right: 12px; top: calc(env(safe-area-inset-top, 0px) + 70px); width: 32%; max-width: 200px; aspect-ratio: 3 / 4; border: 2px solid var(--brass); border-radius: 4px; overflow: hidden; background: #000; }
+.stage .opp video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
+.oppTag { position: absolute; left: 0; right: 0; bottom: 0; display: flex; justify-content: space-between; align-items: baseline; gap: 6px; padding: 4px 8px; background: rgba(0,0,0,.7); font-family: var(--f-cond); font-weight: 700; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #f2efe0; }
+.oppTag span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.oppTag b { font-family: var(--f-display); font-weight: 400; font-size: 30px; line-height: 1; color: var(--brass); font-variant-numeric: tabular-nums; }
+.duel .banner { right: calc(min(32%, 200px) + 24px); font-size: 18px; }
+.duel .counter .of { color: var(--ok); }
+.code { font-family: var(--f-display); font-size: 44px; letter-spacing: .12em; color: var(--brass); line-height: 1; font-variant-numeric: tabular-nums; }
+.lobvids { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.lobvid { position: relative; aspect-ratio: 3 / 4; background: #000; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+.lobvid video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
+.lobvid span { position: absolute; left: 0; right: 0; bottom: 0; padding: 4px 8px; background: rgba(0,0,0,.65); font-family: var(--f-cond); font-weight: 700; font-size: 14px; letter-spacing: .06em; text-transform: uppercase; color: #f2efe0; }
+.lobvid .empty { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 12px; text-align: center; color: var(--muted); font-size: 13px; }
+.status { display: flex; align-items: center; gap: 10px; font-family: var(--f-cond); font-size: 18px; font-weight: 600; }
+.status i { width: 12px; height: 12px; border-radius: 50%; background: var(--warn); flex: 0 0 auto; }
+.status.on i { background: var(--ok); }
+.status.off i { background: var(--bad); }
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field input { font: inherit; font-size: 18px; padding: 12px; border-radius: 4px; border: 1.5px solid var(--line); background: var(--panel); color: var(--fg); min-width: 0; }
+.field input:focus-visible { outline: 2px solid var(--brass); outline-offset: 1px; }
+.choices { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.choice { background: var(--panel); border: 1.5px solid var(--line); border-radius: 6px; padding: 10px 12px; text-align: left; font-family: var(--f-cond); font-size: 17px; font-weight: 700; }
+.choice small { display: block; font-family: var(--f-body); font-weight: 400; font-size: 12px; color: var(--muted); }
+.choice[aria-pressed="true"] { border-color: var(--brass); background: var(--panel-2); }
+.verdict { font-family: var(--f-display); font-weight: 400; font-size: 40px; line-height: 1.05; color: var(--brass); }
+.vs { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 10px; text-align: center; }
+.vs div { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 14px 8px; display: flex; flex-direction: column; gap: 4px; }
+.vs div.win { border-color: var(--brass); }
+.vs b { font-family: var(--f-display); font-weight: 400; font-size: 48px; line-height: 1; font-variant-numeric: tabular-nums; }
+.vs span { font-family: var(--f-cond); font-size: 14px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.vs em { font-family: var(--f-display); font-style: normal; color: var(--muted); }
 @media (prefers-reduced-motion: reduce) { .counter .n.bump, .loading .bar i { animation: none; } }
 </style>
 
@@ -166,6 +198,7 @@ p { margin: 0; }
     </div>
     <div class="banner" id="banner">Mettiti in posizione</div>
     <div class="meter" id="meter"><i id="meterFill"></i><b id="meterMark"></b></div>
+    <div class="opp" id="opp" hidden><video id="oppVid" playsinline autoplay></video><div class="oppTag"><span id="oppName">Amico</span><b id="oppCount">0</b></div></div>
     <div class="counter"><div class="n" id="count">0</div><div class="of" id="countOf">ripetizioni</div></div>
     <div class="loading" id="loading"><div id="loadingMsg">Carico il sistema di visione…</div><div class="bar"><i></i></div></div>
     <div class="rest" id="rest" hidden>
@@ -490,6 +523,10 @@ function render() {
   if (route.name === "home") return renderHome();
   if (route.name === "brief") return renderBrief();
   if (route.name === "summary") return renderSummary();
+  if (route.name === "duel-new") return renderDuelNew();
+  if (route.name === "duel-join") return renderDuelJoin();
+  if (route.name === "lobby") return renderLobby();
+  if (route.name === "duel-result") return renderDuelResult();
 }
 
 function renderHome() {
@@ -523,6 +560,18 @@ function renderHome() {
       </div>
     </section>
 
+    ${SITE ? `<section class="section">
+      <div class="label">Sfida un amico</div>
+      <div class="order">
+        <h2>Uno contro uno, in videochiamata</h2>
+        <p class="meta">Vi vedete in diretta, la fotocamera conta le ripetizioni di entrambi e l'istruttore annuncia il vincitore.</p>
+        <div class="row">
+          <button class="btn primary" id="duelNew" type="button">Crea una sfida</button>
+          <button class="btn ghost" id="duelJoin" type="button">Ho un codice</button>
+        </div>
+      </div>
+    </section>` : ""}
+
     <section class="section">
       <div class="label">Esercizi singoli</div>
       <div class="exlist">
@@ -543,6 +592,10 @@ function renderHome() {
     go({ name: "brief", queue: [{ ex: id, target: 0, set: 1, sets: 1, timeLimit: 120 }], title: EX[id].name + " in 2 minuti", test: id });
   });
   $("voiceT").onchange = e => { voiceOn = e.target.checked; store.set("voice", voiceOn); };
+  if (SITE) {
+    $("duelNew").onclick = () => go({ name: "duel-new" });
+    $("duelJoin").onclick = () => go({ name: "duel-join", code: "" });
+  }
 }
 
 function renderBrief() {
@@ -617,8 +670,9 @@ async function startSession(mode, file) {
   say("", { urgent: true });
   Object.assign(S, {
     mode, queue: route.queue.slice(), idx: 0, log: [], faults: {}, startT: performance.now(),
-    running: false, stream: null, facing: "user", lastTs: 0, title: route.title, test: route.test, day: route.day, free: route.free
+    running: false, stream: null, facing: "user", lastTs: 0, title: route.title, test: route.test, day: route.day, free: route.free, challenge: false
   });
+  $("opp").hidden = true; $("stage").classList.remove("duel");
   $("session").hidden = false;
   $("rest").hidden = true;
   $("loading").hidden = false;
@@ -676,7 +730,7 @@ function beginSet() {
   $("minus").hidden = $("plus").hidden = EX[q.ex].unit === "secs";
   $("stop").textContent = S.idx < S.queue.length - 1 ? "Fine serie" : "Termina";
   setBanner("In posizione!", "warn");
-  say(`${EX[q.ex].name}. ${q.target ? (EX[q.ex].unit === "secs" ? `Tieni per ${q.target} secondi` : `${q.target} ripetizioni`) : "Massimo in due minuti"}. Via!`, { urgent: true });
+  say(`${EX[q.ex].name}. ${q.target ? (EX[q.ex].unit === "secs" ? `Tieni per ${q.target} secondi` : `${q.target} ripetizioni`) : q.timeLimit ? `Massimo in ${q.timeLimit} secondi` : "Massimo in due minuti"}. Via!`, { urgent: true });
   S.inRest = false;
 }
 
@@ -752,6 +806,7 @@ function process(res, ts) {
     setBanner(c.count + "!", "ok");
     const left = c.target ? c.target - c.count : null;
     say(left === 3 && c.target >= 8 ? `${c.count}. Ancora tre!` : String(c.count), { urgent: true });
+    if (S.challenge) duelSend({ t: "reps", n: c.count });
     if (c.target && c.count >= c.target) endSet(true);
   } else if (out.event === "norep") {
     c.noreps++;
@@ -779,6 +834,7 @@ function drawSkeleton(lm, kind) {
 
 function endSet() {
   const c = S.cur; if (!c || S.inRest) return;
+  if (S.challenge) return duelEnd();
   const unit = EX[c.ex].unit;
   S.log.push({ ex: c.ex, set: c.set, target: c.target, unit, done: unit === "secs" ? c.hold : c.count, noreps: c.noreps });
   const last = S.idx >= S.queue.length - 1;
@@ -838,7 +894,7 @@ function finish(all) {
 function closeSession() {
   S.running = false;
   clearInterval(S.restTimer);
-  try { S.stream?.getTracks().forEach(t => t.stop()); } catch {}
+  if (!S.challenge) try { S.stream?.getTracks().forEach(t => t.stop()); } catch {}
   S.stream = null;
   try { vid.pause(); } catch {}
   if (vid.src && vid.src.startsWith("blob:")) URL.revokeObjectURL(vid.src);
@@ -852,10 +908,351 @@ $("stop").onclick = () => {
   if (S.inRest) { clearInterval(S.restTimer); $("rest").hidden = true; return finish(false); }
   endSet(true);
 };
-$("plus").onclick = () => { if (S.cur) { S.cur.count++; $("count").textContent = S.cur.count; } };
-$("minus").onclick = () => { if (S.cur && S.cur.count > 0) { S.cur.count--; $("count").textContent = S.cur.count; } };
+$("plus").onclick = () => { if (S.cur) { S.cur.count++; $("count").textContent = S.cur.count; if (S.challenge) { duelSend({ t: "reps", n: S.cur.count }); if (S.cur.target && S.cur.count >= S.cur.target) endSet(); } } };
+$("minus").onclick = () => { if (S.cur && S.cur.count > 0) { S.cur.count--; $("count").textContent = S.cur.count; if (S.challenge) duelSend({ t: "reps", n: S.cur.count }); } };
 $("flip").onclick = async () => { S.facing = S.facing === "user" ? "environment" : "user"; try { await openCamera(); } catch {} };
 
+/* ---------- Sfida un amico (WebRTC via PeerJS) ---------- */
+const DUEL_EX = ["pushup", "squat", "situp", "jacks"];
+const DUEL_FMT = {
+  time: { label: "Più ripetizioni in 60 s", short: "60 secondi", n: 60 },
+  first: { label: "Primo a 20", short: "primo a 20", n: 20 }
+};
+const CH = { peer: null, conn: null, call: null, stream: null, remote: null, role: null, code: "", oppName: "", oppReps: 0, cfg: { ex: "pushup", fmt: "time" }, connected: false, myFinal: null, oppFinal: null, wins: { me: 0, opp: 0 } };
+let myName = store.get("name", "");
+
+function loadScript(src) {
+  return new Promise((res, rej) => { const s = document.createElement("script"); s.src = src; s.onload = res; s.onerror = rej; document.head.append(s); });
+}
+async function loadPeer() {
+  if (!window.Peer) await loadScript("peerjs.min.js");
+  return window.Peer;
+}
+function peerOpts() {
+  // a test can point to a local signalling server with ?peerhost=host:port
+  const o = { debug: 0 };
+  try {
+    const h = new URLSearchParams(location.search).get("peerhost");
+    if (h) { const [host, port] = h.split(":"); Object.assign(o, { host, port: +port, path: "/", secure: false }); }
+  } catch {}
+  return o;
+}
+const CODE_CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+const newCode = () => Array.from({ length: 6 }, () => CODE_CHARS[Math.floor(Math.random() * CODE_CHARS.length)]).join("");
+const peerId = code => "istruttore-recluta-" + code;
+const duelLink = () => location.origin + location.pathname + "?sfida=" + CH.code;
+const fmtTxt = cfg => `${EX[cfg.ex].name} · ${DUEL_FMT[cfg.fmt].short}`;
+
+function duelSend(msg) { try { if (CH.conn?.open) CH.conn.send(msg); } catch {} }
+
+async function getDuelStream() {
+  if (CH.stream && CH.stream.getVideoTracks().some(t => t.readyState === "live")) return CH.stream;
+  CH.stream = await navigator.mediaDevices.getUserMedia({
+    video: { facingMode: "user", width: { ideal: 640 }, height: { ideal: 480 } },
+    audio: { echoCancellation: true, noiseSuppression: true }
+  });
+  return CH.stream;
+}
+
+function attach(video, stream, muted) {
+  if (!video || !stream) return;
+  if (video.srcObject !== stream) video.srcObject = stream;
+  video.muted = muted;
+  video.play().catch(() => {
+    // iOS may refuse unmuted playback without a tap: play muted and unmute on the next touch
+    video.muted = true; video.play().catch(() => {});
+    if (!muted) document.addEventListener("pointerdown", () => { video.muted = false; video.play().catch(() => {}); }, { once: true });
+  });
+}
+
+function duelReset() {
+  try { CH.call?.close(); } catch {}
+  try { CH.conn?.close(); } catch {}
+  try { CH.peer?.destroy(); } catch {}
+  try { CH.stream?.getTracks().forEach(t => t.stop()); } catch {}
+  Object.assign(CH, { peer: null, conn: null, call: null, stream: null, remote: null, role: null, code: "", oppName: "", oppReps: 0, connected: false, myFinal: null, oppFinal: null, wins: { me: 0, opp: 0 } });
+}
+
+function setupConn(conn) {
+  CH.conn = conn;
+  conn.on("open", () => {
+    CH.connected = true;
+    duelSend({ t: "hello", name: myName || "Recluta" });
+    if (CH.role === "host") duelSend({ t: "cfg", cfg: CH.cfg });
+    refreshLobby();
+  });
+  conn.on("data", onDuelMsg);
+  conn.on("close", () => { CH.connected = false; onDuelDrop(); });
+  conn.on("error", () => {});
+}
+function setupCall(call) {
+  CH.call = call;
+  call.on("stream", remote => { CH.remote = remote; refreshLobby(); if (!$("session").hidden) attach($("oppVid"), remote, false); });
+  call.on("close", () => {});
+}
+
+function onDuelMsg(m) {
+  if (!m || typeof m !== "object") return;
+  if (m.t === "hello") { CH.oppName = String(m.name || "Amico").slice(0, 20); refreshLobby(); }
+  else if (m.t === "cfg" && CH.role === "guest" && m.cfg && EX[m.cfg.ex] && DUEL_FMT[m.cfg.fmt]) { CH.cfg = m.cfg; refreshLobby(); }
+  else if (m.t === "start") startDuelSession();
+  else if (m.t === "reps") { CH.oppReps = Math.max(0, m.n | 0); $("oppCount").textContent = CH.oppReps; }
+  else if (m.t === "final") {
+    CH.oppFinal = Math.max(0, m.n | 0); CH.oppReps = CH.oppFinal; $("oppCount").textContent = CH.oppFinal;
+    // in "first to N" the friend reaching the target ends the round for both
+    if (S.challenge && S.running && CH.cfg.fmt === "first" && CH.oppFinal >= DUEL_FMT.first.n) endSet();
+    maybeDuelResult();
+  }
+  else if (m.t === "lobby") { if (S.challenge && S.running) { S.challenge = true; closeSession(); } go({ name: "lobby" }); }
+}
+
+function onDuelDrop() {
+  if (S.challenge && S.running) { setBanner(`${CH.oppName || "L'amico"} si è disconnesso`, "bad"); say("Il tuo avversario si è disconnesso", { urgent: true }); }
+  if (CH.myFinal != null && CH.oppFinal == null) { CH.oppFinal = CH.oppReps; maybeDuelResult(); }
+  refreshLobby();
+}
+
+async function duelHost() {
+  const P = await loadPeer();
+  CH.role = "host";
+  for (let attempt = 0; attempt < 4; attempt++) {
+    CH.code = newCode();
+    try {
+      CH.peer = await new Promise((res, rej) => {
+        const p = new P(peerId(CH.code), peerOpts());
+        p.on("open", () => res(p));
+        p.on("error", e => rej(e));
+      });
+      break;
+    } catch (e) { if (e?.type !== "unavailable-id") throw e; }
+  }
+  if (!CH.peer) throw new Error("no-id");
+  CH.peer.on("connection", c => { if (CH.conn?.open) { c.on("open", () => c.close()); return; } setupConn(c); });
+  CH.peer.on("call", call => { call.answer(CH.stream); setupCall(call); });
+  CH.peer.on("disconnected", () => { try { CH.peer.reconnect(); } catch {} });
+}
+
+async function duelJoin(code) {
+  const P = await loadPeer();
+  CH.role = "guest"; CH.code = code;
+  CH.peer = await new Promise((res, rej) => {
+    const p = new P(peerOpts());
+    p.on("open", () => res(p));
+    p.on("error", e => rej(e));
+  });
+  CH.peer.on("error", e => { if (e?.type === "peer-unavailable") { CH.notFound = true; refreshLobby(); } });
+  setupConn(CH.peer.connect(peerId(code), { reliable: true }));
+  setupCall(CH.peer.call(peerId(code), CH.stream));
+}
+
+/* ----- screens ----- */
+function renderDuelNew() {
+  const c = CH.cfg;
+  app.innerHTML = `
+  <div class="screen brief">
+    <button class="back" id="back" type="button">‹ Indietro</button>
+    <div class="section"><div class="label">Sfida un amico</div><h2>Nuova sfida</h2></div>
+    <div class="field"><label class="label" for="nm">Il tuo nome</label><input id="nm" maxlength="20" autocomplete="nickname" placeholder="Es. Marco" value="${esc(myName)}"></div>
+    <div class="section"><div class="label">Esercizio</div>
+      <div class="choices">${DUEL_EX.map(id => `<button class="choice" type="button" data-ex="${id}" aria-pressed="${c.ex === id}">${EX[id].name}<small>${EX[id].tag}</small></button>`).join("")}</div>
+    </div>
+    <div class="section"><div class="label">Formato</div>
+      <div class="choices">${Object.entries(DUEL_FMT).map(([k, f]) => `<button class="choice" type="button" data-fmt="${k}" aria-pressed="${c.fmt === k}">${f.label}<small>${k === "time" ? "Vince chi ne fa di più" : "Vince chi arriva prima"}</small></button>`).join("")}</div>
+    </div>
+    <div class="camtip">${sideCam}<span>Mettete i telefoni nella stessa posizione: ${EX[c.ex].cam.charAt(0).toLowerCase() + EX[c.ex].cam.slice(1)}</span></div>
+    <div class="row"><button class="btn primary" id="create" type="button">Crea la sfida</button></div>
+    <p class="note" id="err" hidden></p>
+  </div>`;
+  $("back").onclick = () => go({ name: "home" });
+  app.querySelectorAll("[data-ex]").forEach(b => b.onclick = () => { CH.cfg.ex = b.dataset.ex; myName = $("nm").value.trim(); renderDuelNew(); });
+  app.querySelectorAll("[data-fmt]").forEach(b => b.onclick = () => { CH.cfg.fmt = b.dataset.fmt; myName = $("nm").value.trim(); renderDuelNew(); });
+  $("create").onclick = async () => {
+    myName = $("nm").value.trim() || "Recluta"; store.set("name", myName);
+    const btn = $("create"); btn.disabled = true; btn.textContent = "Preparo la sfida…";
+    try { await getDuelStream(); }
+    catch { return duelError("Non riesco ad aprire fotocamera e microfono. Dai il permesso nelle impostazioni del browser e riprova.", btn, "Crea la sfida"); }
+    try { await duelHost(); }
+    catch { return duelError("Non riesco a collegarmi al servizio delle sfide. Controlla la connessione e riprova.", btn, "Crea la sfida"); }
+    go({ name: "lobby" });
+  };
+}
+
+function duelError(msg, btn, label) {
+  const e = $("err"); if (e) { e.textContent = msg; e.hidden = false; }
+  if (btn) { btn.disabled = false; btn.textContent = label; }
+}
+
+function renderDuelJoin() {
+  app.innerHTML = `
+  <div class="screen brief">
+    <button class="back" id="back" type="button">‹ Indietro</button>
+    <div class="section"><div class="label">Sfida un amico</div><h2>Entra nella sfida</h2></div>
+    <div class="field"><label class="label" for="cd">Codice della sfida</label><input id="cd" maxlength="6" autocapitalize="characters" autocomplete="off" placeholder="Es. K7M2QX" value="${esc(route.code || "")}" style="letter-spacing:.2em;text-transform:uppercase"></div>
+    <div class="field"><label class="label" for="nm">Il tuo nome</label><input id="nm" maxlength="20" autocomplete="nickname" placeholder="Es. Luca" value="${esc(myName)}"></div>
+    <div class="row"><button class="btn primary" id="join" type="button">Entra</button></div>
+    <p class="note" id="err" hidden></p>
+  </div>`;
+  $("back").onclick = () => { try { history.replaceState(null, "", location.pathname); } catch {} go({ name: "home" }); };
+  $("join").onclick = async () => {
+    const code = $("cd").value.trim().toUpperCase().replace(/[^A-Z0-9]/g, "");
+    if (code.length !== 6) return duelError("Il codice ha 6 caratteri: controlla e riprova.");
+    myName = $("nm").value.trim() || "Recluta"; store.set("name", myName);
+    const btn = $("join"); btn.disabled = true; btn.textContent = "Mi collego…";
+    try { await getDuelStream(); }
+    catch { return duelError("Non riesco ad aprire fotocamera e microfono. Dai il permesso nelle impostazioni del browser e riprova.", btn, "Entra"); }
+    try { await duelJoin(code); }
+    catch { return duelError("Non riesco a collegarmi al servizio delle sfide. Controlla la connessione e riprova.", btn, "Entra"); }
+    go({ name: "lobby" });
+  };
+}
+
+function renderLobby() {
+  const host = CH.role === "host";
+  app.innerHTML = `
+  <div class="screen brief">
+    <div class="section"><div class="label">Sfida · ${esc(fmtTxt(CH.cfg))}</div><h2>${host ? "Invita il tuo amico" : "Sala d'attesa"}</h2></div>
+    ${host ? `<div class="order">
+      <div class="label">Codice sfida</div>
+      <div class="code">${CH.code}</div>
+      <p class="meta">Mandagli il link: lo apre dal telefono ed entra subito.</p>
+      <div class="row"><button class="btn ghost small" id="share" type="button">Invia il link</button></div>
+      <p class="note" id="shareNote" hidden></p>
+    </div>` : ""}
+    <div class="status" id="lobStatus"><i></i><span></span></div>
+    <div class="lobvids">
+      <div class="lobvid"><video id="lobMe" playsinline autoplay muted></video><span>${esc(myName || "Tu")}</span></div>
+      <div class="lobvid"><video id="lobOpp" playsinline autoplay></video><div class="empty" id="lobOppEmpty">In attesa della videochiamata…</div><span id="lobOppName">Amico</span></div>
+    </div>
+    ${CH.wins.me + CH.wins.opp > 0 ? `<p class="meta">Punteggio: ${esc(myName)} ${CH.wins.me} – ${CH.wins.opp} ${esc(CH.oppName)}</p>` : ""}
+    <div class="row">
+      ${host ? `<button class="btn primary" id="go" type="button" disabled>Via!</button>` : ""}
+      <button class="btn ghost" id="leave" type="button">Esci dalla sfida</button>
+    </div>
+    ${host ? `<details class="note"><summary>Cambia esercizio o formato</summary><div class="choices" style="margin-top:8px">${DUEL_EX.map(id => `<button class="choice" type="button" data-ex="${id}" aria-pressed="${CH.cfg.ex === id}">${EX[id].name}</button>`).join("")}${Object.entries(DUEL_FMT).map(([k, f]) => `<button class="choice" type="button" data-fmt="${k}" aria-pressed="${CH.cfg.fmt === k}">${f.label}</button>`).join("")}</div></details>` : ""}
+  </div>`;
+  attach($("lobMe"), CH.stream, true);
+  if (host) {
+    $("share").onclick = async () => {
+      const link = duelLink(), text = `Ti sfido a ${fmtTxt(CH.cfg)} su Istruttore Recluta! Codice ${CH.code}`;
+      try { if (navigator.share) { await navigator.share({ title: "Sfida", text, url: link }); return; } } catch (e) { if (e?.name === "AbortError") return; }
+      const n = $("shareNote"); n.hidden = false;
+      try { await navigator.clipboard.writeText(link); n.textContent = "Link copiato: incollalo in chat al tuo amico."; }
+      catch { n.textContent = link; }
+    };
+    $("go").onclick = () => { duelSend({ t: "start" }); startDuelSession(); };
+    app.querySelectorAll("[data-ex]").forEach(b => b.onclick = () => { CH.cfg.ex = b.dataset.ex; duelSend({ t: "cfg", cfg: CH.cfg }); renderLobby(); });
+    app.querySelectorAll("[data-fmt]").forEach(b => b.onclick = () => { CH.cfg.fmt = b.dataset.fmt; duelSend({ t: "cfg", cfg: CH.cfg }); renderLobby(); });
+  }
+  $("leave").onclick = () => { duelReset(); try { history.replaceState(null, "", location.pathname); } catch {} go({ name: "home" }); };
+  refreshLobby();
+}
+
+function refreshLobby() {
+  if (route.name !== "lobby" || !$("lobStatus")) return;
+  const st = $("lobStatus"), host = CH.role === "host";
+  let txt, cls;
+  if (CH.notFound) { txt = "Sfida non trovata: controlla il codice o chiedi un nuovo link."; cls = "off"; }
+  else if (!CH.connected) { txt = host ? "In attesa dell'amico…" : "Mi collego alla sfida…"; cls = ""; }
+  else { txt = host ? `${CH.oppName || "L'amico"} è pronto. Dai il via!` : `Connesso con ${CH.oppName || "l'amico"}. Aspetta il via.`; cls = "on"; }
+  st.className = "status " + cls; st.querySelector("span").textContent = txt;
+  if (!host && CH.connected) { const lab = document.querySelector(".brief .label"); if (lab) lab.textContent = "Sfida · " + fmtTxt(CH.cfg); }
+  $("lobOppName").textContent = CH.oppName || "Amico";
+  if (CH.remote) { $("lobOppEmpty").hidden = true; attach($("lobOpp"), CH.remote, false); }
+  const g = $("go"); if (g) g.disabled = !CH.connected;
+}
+
+async function startDuelSession() {
+  if (S.running) return;
+  say("", { urgent: true });
+  const f = DUEL_FMT[CH.cfg.fmt];
+  Object.assign(S, {
+    mode: "live", queue: [{ ex: CH.cfg.ex, target: CH.cfg.fmt === "first" ? f.n : 0, timeLimit: CH.cfg.fmt === "time" ? f.n : 0, set: 1, sets: 1 }],
+    idx: 0, log: [], faults: {}, startT: performance.now(), running: false, stream: CH.stream, facing: "user", lastTs: 0,
+    title: "Sfida contro " + (CH.oppName || "l'amico"), challenge: true, test: null, day: null, free: false
+  });
+  CH.myFinal = null; CH.oppFinal = null; CH.oppReps = 0;
+  $("session").hidden = false;
+  $("stage").classList.add("mirror", "duel");
+  $("opp").hidden = false; $("oppName").textContent = CH.oppName || "Amico"; $("oppCount").textContent = "0";
+  $("flip").hidden = true; $("rest").hidden = true;
+  $("loading").hidden = false; $("loadingMsg").textContent = "Carico il sistema di visione…";
+  try { S.wake = await navigator.wakeLock?.request("screen"); } catch {}
+  vid.srcObject = CH.stream; vid.removeAttribute("src"); vid.play().catch(() => {});
+  attach($("oppVid"), CH.remote, false);
+  try { await loadEngine(); } catch { $("loadingMsg").textContent = "Il sistema di visione non si è caricato. Controlla la connessione."; return; }
+  $("loading").hidden = true;
+  // 3-2-1 countdown on the rest panel, then the round starts
+  S.inRest = true; S.running = true; loop();
+  $("rest").hidden = false; $("restSkip").hidden = true;
+  $("rest").querySelector(".label").textContent = "Pronti";
+  $("restNext").textContent = `${EX[CH.cfg.ex].name} · ${f.label}`;
+  let n = 3; $("restN").textContent = n; say("Tre", { urgent: true });
+  const iv = setInterval(() => {
+    n--;
+    if (n > 0) { $("restN").textContent = n; say(n === 2 ? "Due" : "Uno", { urgent: true }); return; }
+    clearInterval(iv);
+    $("rest").hidden = true; $("restSkip").hidden = false; $("rest").querySelector(".label").textContent = "Recupero";
+    beginSet();
+    $("hudSet").textContent = "Sfida · " + (CH.cfg.fmt === "time" ? "60 s" : "primo a " + f.n);
+    $("stop").textContent = "Mi ritiro";
+  }, 1000);
+}
+
+function duelEnd() {
+  const c = S.cur; if (!c || CH.myFinal != null) return;
+  CH.myFinal = c.count;
+  duelSend({ t: "final", n: c.count });
+  S.inRest = true;
+  ctx.clearRect(0, 0, cv.width, cv.height);
+  $("rest").hidden = false; $("restSkip").hidden = true;
+  $("rest").querySelector(".label").textContent = "Fine";
+  $("restN").textContent = c.count;
+  $("restNext").textContent = CH.connected ? `Aspetto il risultato di ${CH.oppName || "l'amico"}…` : "";
+  if (!CH.connected) CH.oppFinal = CH.oppReps;
+  // if the friend's result never arrives, settle on the last count we saw
+  setTimeout(() => { if (CH.myFinal != null && CH.oppFinal == null) { CH.oppFinal = CH.oppReps; maybeDuelResult(); } }, 8000);
+  maybeDuelResult();
+}
+
+function maybeDuelResult() {
+  if (CH.myFinal == null || CH.oppFinal == null || route.name === "duel-result") return;
+  const me = CH.myFinal, opp = CH.oppFinal;
+  let outcome;
+  if (CH.cfg.fmt === "first") outcome = me >= DUEL_FMT.first.n && opp < DUEL_FMT.first.n ? "win" : opp >= DUEL_FMT.first.n && me < DUEL_FMT.first.n ? "lose" : me > opp ? "win" : me < opp ? "lose" : "tie";
+  else outcome = me > opp ? "win" : me < opp ? "lose" : "tie";
+  if (outcome === "win") CH.wins.me++; else if (outcome === "lose") CH.wins.opp++;
+  $("rest").hidden = true; $("restSkip").hidden = false; $("rest").querySelector(".label").textContent = "Recupero";
+  $("opp").hidden = true; $("stage").classList.remove("duel");
+  closeSession();
+  S.challenge = false;
+  const who = CH.oppName || "il tuo amico";
+  say(outcome === "win" ? "Hai vinto! Ottimo lavoro, recluta." : outcome === "lose" ? `Ha vinto ${who}. Alla prossima, recluta.` : "Pareggio!", { urgent: true });
+  go({ name: "duel-result", outcome, me, opp });
+}
+
+function renderDuelResult() {
+  const r = route, host = CH.role === "host";
+  const verdict = r.outcome === "win" ? "Hai vinto!" : r.outcome === "lose" ? `Ha vinto ${esc(CH.oppName || "l'amico")}` : "Pareggio";
+  app.innerHTML = `
+  <div class="screen">
+    <header class="mast"><div><div class="sub">Sfida · ${esc(fmtTxt(CH.cfg))}</div></div><div class="callsign">Vittorie<b>${CH.wins.me}–${CH.wins.opp}</b></div></header>
+    <div class="verdict">${verdict}</div>
+    <div class="vs">
+      <div class="${r.outcome === "win" ? "win" : ""}"><b>${r.me}</b><span>${esc(myName || "Tu")}</span></div>
+      <em>VS</em>
+      <div class="${r.outcome === "lose" ? "win" : ""}"><b>${r.opp}</b><span>${esc(CH.oppName || "Amico")}</span></div>
+    </div>
+    <p class="meta">Contano solo le ripetizioni complete e valide.</p>
+    <div class="row">
+      ${host ? `<button class="btn primary" id="again" type="button" ${CH.connected ? "" : "disabled"}>Rivincita</button>` : `<p class="note">${CH.connected ? `Per la rivincita aspetta ${esc(CH.oppName || "l'amico")}.` : "La connessione con l'amico si è chiusa."}</p>`}
+      <button class="btn ghost" id="leave" type="button">Esci dalla sfida</button>
+    </div>
+  </div>`;
+  if (host) $("again").onclick = () => { duelSend({ t: "lobby" }); go({ name: "lobby" }); };
+  $("leave").onclick = () => { duelReset(); try { history.replaceState(null, "", location.pathname); } catch {} go({ name: "home" }); };
+}
+
+try { const code = new URLSearchParams(location.search).get("sfida"); if (SITE && code) route = { name: "duel-join", code: code.toUpperCase().slice(0, 6) }; } catch {}
 render();
 if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});
 loadEngine().catch(() => {}); // warm up in the background
