@@ -169,6 +169,9 @@ p { margin: 0; }
 .status.off i { background: var(--bad); }
 .field { display: flex; flex-direction: column; gap: 6px; }
 .field input { font: inherit; font-size: 18px; padding: 12px; border-radius: 4px; border: 1.5px solid var(--line); background: var(--panel); color: var(--fg); min-width: 0; }
+.field select, .field textarea { font: inherit; font-size: 16px; padding: 10px 12px; border-radius: 4px; border: 1.5px solid var(--line); background: var(--panel); color: var(--fg); min-width: 0; width: 100%; }
+.field textarea { resize: vertical; line-height: 1.4; }
+.field input[type="range"] { padding: 0; border: 0; background: none; accent-color: var(--brass); height: 32px; }
 .field input:focus-visible { outline: 2px solid var(--brass); outline-offset: 1px; }
 .choices { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
 .choice { background: var(--panel); border: 1.5px solid var(--line); border-radius: 6px; padding: 10px 12px; text-align: left; font-family: var(--f-cond); font-size: 17px; font-weight: 700; }
@@ -242,72 +245,78 @@ body.goldtheme { --brass: #e9c24a; }
 <input type="file" id="fileIn" accept="video/*" capture="user" hidden>
 
 <script type="module">
-/* ---------- Exercise library ---------- */
 const EX = {
   squat: {
-    name: "Squat", unit: "reps",
+    name: "Squat",
+    unit: "reps",
     tag: "Gambe e glutei",
-    cam: "Telefono a terra, di lato, a circa 2–3 metri. Devi vedere testa e piedi.",
+    cam: "Telefono a terra, di lato, a circa 2\u20133 metri. Devi vedere testa e piedi.",
     steps: [
       "Piedi alla larghezza delle spalle, punte leggermente in fuori.",
       "Spingi il bacino indietro e scendi piegando le ginocchia, petto alto.",
-      "Scendi finché le cosce sono parallele al suolo.",
+      "Scendi finch\xE9 le cosce sono parallele al suolo.",
       "Risali spingendo sui talloni fino a gambe distese."
     ],
     faults: ["Non scendi abbastanza (la ripetizione non conta)", "Busto troppo inclinato in avanti", "Gambe non distese in cima"]
   },
   pushup: {
-    name: "Piegamenti", unit: "reps",
+    name: "Piegamenti",
+    unit: "reps",
     tag: "Petto, spalle, tricipiti",
     cam: "Telefono a terra, di lato, a circa 2 metri, all'altezza del pavimento.",
     steps: [
       "Mani sotto le spalle, corpo dritto dalla testa ai talloni.",
       "Contrai addome e glutei: il bacino non deve cedere.",
-      "Scendi finché i gomiti sono piegati a 90° o meno.",
+      "Scendi finch\xE9 i gomiti sono piegati a 90\xB0 o meno.",
       "Spingi fino a braccia distese."
     ],
-    faults: ["Bacino che cede verso il basso", "Bacino troppo alto", "Gomiti non piegati a 90° (non conta)"]
+    faults: ["Bacino che cede verso il basso", "Bacino troppo alto", "Gomiti non piegati a 90\xB0 (non conta)"]
   },
   situp: {
-    name: "Addominali", unit: "reps",
+    name: "Addominali",
+    unit: "reps",
     tag: "Sit-up da prova militare",
     cam: "Telefono a terra, di lato, a circa 2 metri. Devi vedere spalle, bacino e ginocchia.",
     steps: [
-      "Supino, ginocchia piegate a circa 90°, piedi a terra.",
+      "Supino, ginocchia piegate a circa 90\xB0, piedi a terra.",
       "Mani incrociate sul petto o dietro le orecchie.",
       "Sali con il busto fino a portare le spalle sopra il bacino.",
-      "Torna giù finché le scapole toccano terra."
+      "Torna gi\xF9 finch\xE9 le scapole toccano terra."
     ],
-    faults: ["Busto non abbastanza alto (non conta)", "Non torni giù fino in fondo"]
+    faults: ["Busto non abbastanza alto (non conta)", "Non torni gi\xF9 fino in fondo"]
   },
   jacks: {
-    name: "Jumping jack", unit: "reps",
+    name: "Jumping jack",
+    unit: "reps",
     tag: "Riscaldamento e cardio",
-    cam: "Telefono in verticale, di fronte a te, a 2–3 metri. Devi vedere mani sopra la testa e piedi.",
+    cam: "Telefono in verticale, di fronte a te, a 2\u20133 metri. Devi vedere mani sopra la testa e piedi.",
     steps: [
       "In piedi, piedi uniti, braccia lungo i fianchi.",
       "Salta aprendo le gambe e portando le mani sopra la testa.",
-      "Salta di nuovo tornando a piedi uniti e braccia giù.",
+      "Salta di nuovo tornando a piedi uniti e braccia gi\xF9.",
       "Mantieni un ritmo costante."
     ],
     faults: ["Braccia non sopra la testa", "Gambe non abbastanza aperte"]
   },
   plank: {
-    name: "Plank", unit: "secs",
+    name: "Plank",
+    unit: "secs",
     tag: "Tenuta del core",
     cam: "Telefono a terra, di lato, a circa 2 metri.",
     steps: [
       "Avambracci a terra, gomiti sotto le spalle.",
       "Corpo dritto dalla testa ai talloni.",
       "Contrai addome e glutei, respira regolarmente.",
-      "Il tempo scorre solo quando la posizione è corretta."
+      "Il tempo scorre solo quando la posizione \xE8 corretta."
     ],
     faults: ["Bacino che cede", "Bacino troppo alto"]
   },
   lunge: {
-    name: "Affondi", unit: "reps", lock: 1,
+    name: "Affondi",
+    unit: "reps",
+    lock: 1,
     tag: "Gambe, equilibrio",
-    cam: "Telefono a terra, di lato, a circa 2–3 metri. Devi vedere testa e piedi.",
+    cam: "Telefono a terra, di lato, a circa 2\u20133 metri. Devi vedere testa e piedi.",
     steps: [
       "In piedi, busto dritto, mani sui fianchi.",
       "Fai un passo lungo in avanti e scendi piegando entrambe le ginocchia.",
@@ -317,7 +326,9 @@ const EX = {
     faults: ["Non scendi abbastanza (non conta)", "Busto inclinato in avanti"]
   },
   climber: {
-    name: "Mountain climber", unit: "reps", lock: 2,
+    name: "Mountain climber",
+    unit: "reps",
+    lock: 2,
     tag: "Core e cardio",
     cam: "Telefono a terra, di lato, a circa 2 metri.",
     steps: [
@@ -329,7 +340,10 @@ const EX = {
     faults: ["Bacino troppo alto", "Ginocchio non abbastanza vicino al petto"]
   },
   burpee: {
-    name: "Burpee", unit: "reps", lock: 4, pts: 3,
+    name: "Burpee",
+    unit: "reps",
+    lock: 4,
+    pts: 3,
     tag: "Il re dell'addestramento",
     cam: "Telefono in verticale, di lato, a circa 3 metri. Devi vederti in piedi e a terra.",
     steps: [
@@ -341,17 +355,15 @@ const EX = {
     faults: ["Salto senza braccia in alto (non conta)", "Bacino che cede a terra"]
   }
 };
-
-/* ---------- 4-week program ---------- */
 function session(week, day) {
   const w = week - 1;
-  const r = n => n;
-  const P = { pushup: 8 + 2 * w, squat: 15 + 3 * w, situp: 12 + 3 * w, jacks: 25 + 5 * w, plank: 30 + 10 * w };
+  const r = (n) => n;
+  const P2 = { pushup: 8 + 2 * w, squat: 15 + 3 * w, situp: 12 + 3 * w, jacks: 25 + 5 * w, plank: 30 + 10 * w };
   const sets = week >= 3 ? 4 : 3;
   const plans = [
-    { title: "Forza di base", blocks: [["jacks", 1, P.jacks], ["pushup", sets, P.pushup], ["squat", sets, P.squat], ["plank", 2, P.plank]] },
-    { title: "Core e resistenza", blocks: [["jacks", 1, P.jacks], ["situp", sets, P.situp], ["pushup", sets - 1, r(P.pushup)], ["plank", 3, P.plank]] },
-    { title: "Circuito da campo", blocks: [["jacks", 2, P.jacks], ["squat", sets, P.squat + 5], ["situp", sets - 1, P.situp], ["pushup", sets, P.pushup + 2]] }
+    { title: "Forza di base", blocks: [["jacks", 1, P2.jacks], ["pushup", sets, P2.pushup], ["squat", sets, P2.squat], ["plank", 2, P2.plank]] },
+    { title: "Core e resistenza", blocks: [["jacks", 1, P2.jacks], ["situp", sets, P2.situp], ["pushup", sets - 1, r(P2.pushup)], ["plank", 3, P2.plank]] },
+    { title: "Circuito da campo", blocks: [["jacks", 2, P2.jacks], ["squat", sets, P2.squat + 5], ["situp", sets - 1, P2.situp], ["pushup", sets, P2.pushup + 2]] }
   ];
   return plans[day];
 }
@@ -360,149 +372,225 @@ function blocksToQueue(blocks) {
   for (const [ex, sets, target] of blocks) for (let s = 1; s <= sets; s++) q.push({ ex, target, set: s, sets });
   return q;
 }
-
-/* ---------- storage (per-viewer convenience) ---------- */
 const store = {
-  get(k, d) { try { const v = localStorage.getItem("recluta:" + k); return v ? JSON.parse(v) : d; } catch { return d; } },
-  set(k, v) { try { localStorage.setItem("recluta:" + k, JSON.stringify(v)); } catch {} }
+  get(k, d) {
+    try {
+      const v = localStorage.getItem("recluta:" + k);
+      return v ? JSON.parse(v) : d;
+    } catch (e) {
+      return d;
+    }
+  },
+  set(k, v) {
+    try {
+      localStorage.setItem("recluta:" + k, JSON.stringify(v));
+    } catch (e) {
+    }
+  }
 };
-let progress = store.get("progress", {}); // {"1-0": true}
-let records = store.get("records", {});   // {pushup2min: n}
+let progress = store.get("progress", {});
+let records = store.get("records", {});
 let voiceOn = store.get("voice", true);
-
 function nextSession() {
   for (let wk = 1; wk <= 4; wk++) for (let d = 0; d < 3; d++) if (!progress[wk + "-" + d]) return { wk, d };
   return { wk: 4, d: 2 };
 }
-
-/* ---------- Voice ---------- */
+const COMPAT_MSG = !(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) ? "Questo browser non pu\xF2 usare la fotocamera. Su iPhone apri il link con Safari, su Android con Chrome, e aggiorna il telefono se puoi." : typeof WebAssembly !== "object" ? "Questo browser \xE8 troppo vecchio per l'analisi dei movimenti. Aggiorna Chrome o Safari." : "";
+let liteMode = store.get("lite", false);
+const camSize = () => liteMode ? { width: { ideal: 480 }, height: { ideal: 360 }, frameRate: { ideal: 20, max: 24 } } : { width: { ideal: 640 }, height: { ideal: 480 }, frameRate: { ideal: 24, max: 30 } };
 let itVoice = null;
+let voiceCfg = store.get("voiceCfg", { voice: "", rate: null, pitch: null, own: "", ownStart: "", onlyOwn: false });
+const itVoices = () => {
+  try {
+    return speechSynthesis.getVoices().filter((v) => /^it/i.test(v.lang));
+  } catch (e) {
+    return [];
+  }
+};
 function pickVoice() {
-  try { const vs = speechSynthesis.getVoices(); itVoice = vs.find(v => /^it/i.test(v.lang)) || null; } catch {}
+  try {
+    const vs = itVoices();
+    itVoice = vs.find((v) => v.name === voiceCfg.voice) || vs.find((v) => v.default) || vs[0] || null;
+  } catch (e) {
+  }
 }
-try { pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; } catch {}
+function onVoices() {
+  pickVoice();
+  const sel = document.getElementById("vVoice");
+  if (sel && sel.options.length <= 1) for (const v of itVoices()) {
+    const o = document.createElement("option");
+    o.value = v.name;
+    o.textContent = v.name;
+    o.selected = v.name === voiceCfg.voice;
+    sel.append(o);
+  }
+}
+try {
+  pickVoice();
+  speechSynthesis.onvoiceschanged = onVoices;
+} catch (e) {
+}
 let lastSpoken = { text: "", t: 0 }, lastAny = 0;
-const IS_IOS = /iP(hone|ad|od)/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+const IS_IOS = /iP(hone|ad|od)/.test(navigator.userAgent) || navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1;
 function say(text, { urgent = false, minGap = 3200 } = {}) {
+  var _a, _b;
   if (!voiceOn) return;
   if (IS_IOS && S.challenge && CH.connected) return;
   try {
     const now = performance.now();
-    if (!urgent && (now - lastAny < minGap || (text === lastSpoken.text && now - lastSpoken.t < 7000))) return;
+    if (!urgent && (now - lastAny < minGap || text === lastSpoken.text && now - lastSpoken.t < 7e3)) return;
     if (urgent) speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(text);
-    u.lang = "it-IT"; if (itVoice) u.voice = itVoice; u.rate = gritOn ? 1.12 : 1.08; u.pitch = gritOn ? 0.8 : 0.9; u.volume = 1;
+    u.lang = "it-IT";
+    if (itVoice) u.voice = itVoice;
+    u.rate = (_a = voiceCfg.rate) != null ? _a : gritOn ? 1.12 : 1.08;
+    u.pitch = (_b = voiceCfg.pitch) != null ? _b : gritOn ? 0.8 : 0.9;
+    u.volume = 1;
     speechSynthesis.speak(u);
-    lastSpoken = { text, t: now }; lastAny = now;
-  } catch {}
+    lastSpoken = { text, t: now };
+    lastAny = now;
+  } catch (e) {
+  }
 }
-
-
-/* ---------- Sergente: incitamento a voce ---------- */
 let gritOn = store.get("grit", true);
 const GRIT = {
   start: ["Forza soldato, fammi vedere cosa sai fare!", "Testa alta, petto in fuori. Si comincia!", "Nessuna scusa oggi. Via!", "Concentrato. Ogni ripetizione conta!"],
-  every5: ["Così si fa!", "Bravo, continua!", "Non fermarti adesso!", "Questo è il ritmo giusto!", "Sei più forte di quanto pensi!", "Il dolore passa, l'orgoglio resta!", "Spingi, soldato!", "Ottima forma, avanti!"],
-  half: ["Metà fatta! Adesso viene il bello!", "Sei a metà strada. Non mollare!"],
+  every5: ["Cos\xEC si fa!", "Bravo, continua!", "Non fermarti adesso!", "Questo \xE8 il ritmo giusto!", "Sei pi\xF9 forte di quanto pensi!", "Il dolore passa, l'orgoglio resta!", "Spingi, soldato!", "Ottima forma, avanti!"],
+  half: ["Met\xE0 fatta! Adesso viene il bello!", "Sei a met\xE0 strada. Non mollare!"],
   last3: ["Ultime tre! Dai tutto!", "Tre alla fine! Stringi i denti!"],
-  last: ["Ultima! Tutto quello che hai!", "L'ultima è la più importante. Spingi!"],
-  slow: ["Non mollare! Su!", "Avanti, non ti ho detto di riposare!", "Rialzati e continua!", "Respira e spingi! Ancora una!", "Il traguardo è vicino, muoviti!", "Chi molla adesso? Non tu!"],
+  last: ["Ultima! Tutto quello che hai!", "L'ultima \xE8 la pi\xF9 importante. Spingi!"],
+  slow: ["Non mollare! Su!", "Avanti, non ti ho detto di riposare!", "Rialzati e continua!", "Respira e spingi! Ancora una!", "Il traguardo \xE8 vicino, muoviti!", "Chi molla adesso? Non tu!"],
   plank: ["Tieni duro!", "Addome di ferro, non cedere!", "Il corpo vuole fermarsi, la testa no!", "Respira. Resisti!"],
-  done: ["Serie completata! Ottimo lavoro, soldato!", "Questo è lo spirito! Serie chiusa!", "Bravo! Un passo più vicino al prossimo grado!"],
-  rest: ["Respira. Recupera. Tra poco si riparte.", "Bevi un sorso d'acqua. Il prossimo giro è tuo."],
-  t30: ["Trenta secondi! Accelera!"], t10: ["Dieci secondi! Tutto quello che hai!"],
+  done: ["Serie completata! Ottimo lavoro, soldato!", "Questo \xE8 lo spirito! Serie chiusa!", "Bravo! Un passo pi\xF9 vicino al prossimo grado!"],
+  rest: ["Respira. Recupera. Tra poco si riparte.", "Bevi un sorso d'acqua. Il prossimo giro \xE8 tuo."],
+  t30: ["Trenta secondi! Accelera!"],
+  t10: ["Dieci secondi! Tutto quello che hai!"],
   ahead: ["Sei in testa! Non rallentare!", "Stai vincendo, chiudi la partita!"],
-  behind: ["Ti sta superando! Reagisci!", "Sei indietro! Adesso o mai più!"]
+  behind: ["Ti sta superando! Reagisci!", "Sei indietro! Adesso o mai pi\xF9!"]
 };
-const pickLine = k => { const a = GRIT[k]; return a[Math.floor(Math.random() * a.length)]; };
+const ownLines = (txt) => String(txt || "").split("\n").map((x) => x.trim()).filter(Boolean).slice(0, 60);
+const pickLine = (k) => {
+  let a = GRIT[k];
+  const mine = k === "start" ? ownLines(voiceCfg.ownStart) : ["every5", "slow", "plank"].includes(k) ? ownLines(voiceCfg.own) : [];
+  if (mine.length) a = voiceCfg.onlyOwn ? mine : a.concat(mine, mine);
+  return a[Math.floor(Math.random() * a.length)];
+};
 const coach = {
-  reset(c) { this.lastRepT = performance.now(); this.lastSlowT = 0; this.t30 = this.t10 = false; this.lastDuelT = performance.now(); this.lastPlankT = 0; },
+  reset(c) {
+    this.lastRepT = performance.now();
+    this.lastSlowT = 0;
+    this.t30 = this.t10 = false;
+    this.lastDuelT = performance.now();
+    this.lastPlankT = 0;
+  },
   // text spoken after a valid rep: the number first, then (sometimes) a push
   onRep(c) {
     this.lastRepT = performance.now();
     const n = c.count, t = c.target;
-    if (!gritOn) return t && t - n === 3 && t >= 8 ? `${n}. Ancora tre!` : String(n);
+    if (!gritOn) return t && t - n === 3 && t >= 8 ? "".concat(n, ". Ancora tre!") : String(n);
     let extra = "";
     if (t && n === t - 1) extra = pickLine("last");
     else if (t && t - n === 3 && t >= 8) extra = pickLine("last3");
     else if (t && t >= 10 && n === Math.floor(t / 2)) extra = pickLine("half");
     else if (n % 5 === 0) extra = pickLine("every5");
-    return extra ? `${n}! ${extra}` : String(n);
+    return extra ? "".concat(n, "! ").concat(extra) : String(n);
   },
   tick(c) {
     if (!gritOn || !c || S.inRest) return;
     const now = performance.now();
     const unit = EX[c.ex].unit;
     if (unit === "secs") {
-      if (c.hold > 3 && now - this.lastPlankT > 14000) { this.lastPlankT = now; say(c.target && c.target - c.hold < 10 ? "Ultimi secondi! Tieni duro!" : pickLine("plank"), { minGap: 4000 }); }
+      if (c.hold > 3 && now - this.lastPlankT > 14e3) {
+        this.lastPlankT = now;
+        say(c.target && c.target - c.hold < 10 ? "Ultimi secondi! Tieni duro!" : pickLine("plank"), { minGap: 4e3 });
+      }
       return;
     }
     if (c.timeLimit) {
-      const left = c.timeLimit - (now - c.t0) / 1000;
-      if (!this.t30 && left <= 30 && c.timeLimit > 40) { this.t30 = true; return say(pickLine("t30"), { urgent: true }); }
-      if (!this.t10 && left <= 10) { this.t10 = true; return say(pickLine("t10"), { urgent: true }); }
+      const left = c.timeLimit - (now - c.t0) / 1e3;
+      if (!this.t30 && left <= 30 && c.timeLimit > 40) {
+        this.t30 = true;
+        return say(pickLine("t30"), { urgent: true });
+      }
+      if (!this.t10 && left <= 10) {
+        this.t10 = true;
+        return say(pickLine("t10"), { urgent: true });
+      }
     }
-    if (S.challenge && now - this.lastDuelT > 12000 && c.count > 0) {
+    if (S.challenge && now - this.lastDuelT > 12e3 && c.count > 0) {
       const diff = c.count - (CH.oppReps || 0);
-      if (Math.abs(diff) >= 3) { this.lastDuelT = now; return say(pickLine(diff > 0 ? "ahead" : "behind"), { minGap: 3000 }); }
+      if (Math.abs(diff) >= 3) {
+        this.lastDuelT = now;
+        return say(pickLine(diff > 0 ? "ahead" : "behind"), { minGap: 3e3 });
+      }
     }
-    // slowing down: no rep for a while once the set is under way
-    if (c.count > 0 && now - this.lastRepT > 5000 && now - this.lastSlowT > 7000) { this.lastSlowT = now; say(pickLine("slow"), { minGap: 3000 }); }
+    if (c.count > 0 && now - this.lastRepT > 5e3 && now - this.lastSlowT > 7e3) {
+      this.lastSlowT = now;
+      say(pickLine("slow"), { minGap: 3e3 });
+    }
   }
 };
-
-/* ---------- Geometry ---------- */
 const L = { nose: 0, lSh: 11, rSh: 12, lEl: 13, rEl: 14, lWr: 15, rWr: 16, lHip: 23, rHip: 24, lKn: 25, rKn: 26, lAn: 27, rAn: 28 };
 let aspect = 4 / 3;
-const P = (lm, i) => ({ x: lm[i].x * aspect, y: lm[i].y, v: lm[i].visibility ?? 1 });
+const P = (lm, i) => {
+  var _a;
+  return { x: lm[i].x * aspect, y: lm[i].y, v: (_a = lm[i].visibility) != null ? _a : 1 };
+};
 function ang(a, b, c) {
   const v1 = { x: a.x - b.x, y: a.y - b.y }, v2 = { x: c.x - b.x, y: c.y - b.y };
   const d = Math.hypot(v1.x, v1.y) * Math.hypot(v2.x, v2.y) || 1;
   return Math.acos(Math.max(-1, Math.min(1, (v1.x * v2.x + v1.y * v2.y) / d))) * 180 / Math.PI;
 }
 function side(lm, idsL, idsR) {
-  const s = ids => ids.reduce((a, i) => a + (lm[i].visibility ?? 1), 0);
+  const s = (ids) => ids.reduce((a, i) => {
+    var _a;
+    return a + ((_a = lm[i].visibility) != null ? _a : 1);
+  }, 0);
   return s(idsL) >= s(idsR) ? "l" : "r";
 }
 function pick(lm, sd) {
-  const k = n => L[sd + n];
+  const k = (n) => L[sd + n];
   return { sh: P(lm, k("Sh")), el: P(lm, k("El")), wr: P(lm, k("Wr")), hip: P(lm, k("Hip")), kn: P(lm, k("Kn")), an: P(lm, k("An")) };
 }
-const vis = (...pts) => pts.every(p => p.v > 0.45);
-// how far the hip sits from the shoulder→ankle line; positive = below the line (sagging)
+const vis = (...pts) => pts.every((p) => p.v > 0.45);
 function hipOffset(sh, hip, an) {
-  const t = Math.max(0, Math.min(1, (hip.x - sh.x) / ((an.x - sh.x) || 1e-6)));
+  const t = Math.max(0, Math.min(1, (hip.x - sh.x) / (an.x - sh.x || 1e-6)));
   const lineY = sh.y + (an.y - sh.y) * t;
   return hip.y - lineY;
 }
-
-/* ---------- Rep trackers ---------- */
-// Each tracker gets landmarks each frame and returns {metric 0..1, fault, cue, event}
 function makeTracker(exId) {
-  const st = { phase: "top", min: 999, max: -1, ema: null, faultsThisRep: new Set(), lastFaultT: 0, okSince: 0, holdMs: 0, lastT: 0 };
-  const smooth = v => (st.ema = st.ema == null ? v : st.ema * 0.6 + v * 0.4);
-
+  const st = { phase: "top", min: 999, max: -1, ema: null, faultsThisRep: /* @__PURE__ */ new Set(), lastFaultT: 0, okSince: 0, holdMs: 0, lastT: 0 };
+  const smooth = (v) => st.ema = st.ema == null ? v : st.ema * 0.6 + v * 0.4;
   const angleRep = ({ value, top, bottom, partial, invert = false, countAt = "top", fault, onBottomFault }) => {
-    // invert=false: value high at top (e.g. 170°), low at bottom (e.g. 90°)
     const v = smooth(value);
     const atBottom = invert ? v >= bottom : v <= bottom;
     const atTop = invert ? v <= top : v >= top;
     const past = invert ? v >= partial : v <= partial;
     let event = null;
     if (st.phase === "top") {
-      if (past) { st.phase = "going"; st.faultsThisRep = new Set(); }
+      if (past) {
+        st.phase = "going";
+        st.faultsThisRep = /* @__PURE__ */ new Set();
+      }
     } else if (st.phase === "going") {
-      if (atBottom) { st.phase = "bottom"; if (countAt === "bottom") event = "rep"; }
-      else if (atTop) { st.phase = "top"; event = "norep"; }
+      if (atBottom) {
+        st.phase = "bottom";
+        if (countAt === "bottom") event = "rep";
+      } else if (atTop) {
+        st.phase = "top";
+        event = "norep";
+      }
     } else if (st.phase === "bottom") {
-      if (atTop) { st.phase = "top"; if (countAt === "top") event = "rep"; }
+      if (atTop) {
+        st.phase = "top";
+        if (countAt === "top") event = "rep";
+      }
     }
     if (fault) st.faultsThisRep.add(fault);
     const span = Math.abs(top - bottom);
     const metric = Math.max(0, Math.min(1, (invert ? v - top : top - v) / span));
     return { metric, event, v };
   };
-
   const T = {
     squat(lm) {
       const p = pick(lm, side(lm, [23, 25, 27], [24, 26, 28]));
@@ -510,9 +598,12 @@ function makeTracker(exId) {
       const knee = ang(p.hip, p.kn, p.an);
       const torso = Math.atan2(Math.abs(p.sh.x - p.hip.x), Math.abs(p.hip.y - p.sh.y)) * 180 / Math.PI;
       let fault = null, cue = null;
-      if (st.phase !== "top" && torso > 52) { fault = "torso"; cue = "Petto in alto, schiena dritta"; }
+      if (st.phase !== "top" && torso > 52) {
+        fault = "torso";
+        cue = "Petto in alto, schiena dritta";
+      }
       const r = angleRep({ value: knee, top: 160, bottom: 100, partial: 140, fault });
-      return { ...r, fault, cue, noRepCue: "Più giù! Cosce parallele al suolo. Non conta" };
+      return { ...r, fault, cue, noRepCue: "Pi\xF9 gi\xF9! Cosce parallele al suolo. Non conta" };
     },
     pushup(lm) {
       const p = pick(lm, side(lm, [11, 13, 15, 23], [12, 14, 16, 24]));
@@ -525,22 +616,26 @@ function makeTracker(exId) {
       let fault = null, cue = null;
       if (line < 158) {
         const off = hipOffset(p.sh, p.hip, foot);
-        if (off > 0) { fault = "sag"; cue = "Bacino su! Stringi addome e glutei"; }
-        else { fault = "pike"; cue = "Abbassa il bacino, corpo dritto"; }
+        if (off > 0) {
+          fault = "sag";
+          cue = "Bacino su! Stringi addome e glutei";
+        } else {
+          fault = "pike";
+          cue = "Abbassa il bacino, corpo dritto";
+        }
       }
       const r = angleRep({ value: elbow, top: 150, bottom: 95, partial: 130, fault });
-      return { ...r, fault, cue, noRepCue: "Scendi di più! Gomiti a novanta gradi. Non conta" };
+      return { ...r, fault, cue, noRepCue: "Scendi di pi\xF9! Gomiti a novanta gradi. Non conta" };
     },
     situp(lm) {
       const p = pick(lm, side(lm, [11, 23, 25], [12, 24, 26]));
       if (!vis(p.sh, p.hip, p.kn)) return { lost: "Inquadrati di lato: spalle, bacino e ginocchia" };
       const hip = ang(p.sh, p.hip, p.kn);
-      // lying ≈ 120°+, up ≈ < 70°
       const r = angleRep({ value: hip, top: 115, bottom: 70, partial: 95, countAt: "bottom" });
-      return { ...r, fault: null, cue: null, noRepCue: "Sali di più! Spalle sopra il bacino. Non conta" };
+      return { ...r, fault: null, cue: null, noRepCue: "Sali di pi\xF9! Spalle sopra il bacino. Non conta" };
     },
     jacks(lm) {
-      const g = i => P(lm, i);
+      const g = (i) => P(lm, i);
       const lSh = g(11), rSh = g(12), lWr = g(15), rWr = g(16), lAn = g(27), rAn = g(28), nose = g(0);
       if (!vis(lSh, rSh, lWr, rWr, lAn, rAn)) return { lost: "Inquadrati di fronte, dalle mani ai piedi" };
       const shW = Math.abs(lSh.x - rSh.x) || 0.1;
@@ -550,8 +645,11 @@ function makeTracker(exId) {
       const armsDown = lWr.y > shY && rWr.y > shY;
       const armT = Math.max(0, Math.min(1, (shY + 0.15 - (lWr.y + rWr.y) / 2) / 0.35));
       let event = null, cue = null, fault = null;
-      if (st.phase === "top") { // closed
-        if (feet > 1.35 || armT > 0.6) { st.phase = "going"; st.flags = { arms: false, feet: false }; }
+      if (st.phase === "top") {
+        if (feet > 1.35 || armT > 0.6) {
+          st.phase = "going";
+          st.flags = { arms: false, feet: false };
+        }
       }
       if (st.phase === "going") {
         if (armsUp) st.flags.arms = true;
@@ -559,8 +657,10 @@ function makeTracker(exId) {
         if (armsDown && feet < 1.15) {
           st.phase = "top";
           if (st.flags.arms && st.flags.feet) event = "rep";
-          else { event = "norep"; }
-          st.noRepCue = !st.flags.arms ? "Braccia sopra la testa! Non conta" : "Apri di più le gambe! Non conta";
+          else {
+            event = "norep";
+          }
+          st.noRepCue = !st.flags.arms ? "Braccia sopra la testa! Non conta" : "Apri di pi\xF9 le gambe! Non conta";
         }
       }
       return { metric: (armT + Math.min(1, Math.max(0, (feet - 1) / 0.8))) / 2, event, cue, fault, noRepCue: st.noRepCue };
@@ -568,7 +668,8 @@ function makeTracker(exId) {
     plank(lm, t) {
       const p = pick(lm, side(lm, [11, 13, 23, 27], [12, 14, 24, 28]));
       const foot = vis(p.an) ? p.an : p.kn;
-      const dt = st.lastT ? Math.min(250, t - st.lastT) : 0; st.lastT = t;
+      const dt = st.lastT ? Math.min(250, t - st.lastT) : 0;
+      st.lastT = t;
       if (!vis(p.sh, p.hip, foot)) return { lost: "Inquadrati di lato, dalla testa ai piedi", metric: 0 };
       const horiz = Math.abs(foot.x - p.sh.x) > Math.abs(foot.y - p.sh.y) * 1.3;
       if (!horiz) return { lost: "Mettiti in posizione di plank", metric: 0 };
@@ -576,13 +677,18 @@ function makeTracker(exId) {
       let fault = null, cue = null;
       if (line < 162) {
         const off = hipOffset(p.sh, p.hip, foot);
-        if (off > 0) { fault = "sag"; cue = "Bacino su! Non cedere"; }
-        else { fault = "pike"; cue = "Abbassa il bacino, corpo dritto"; }
+        if (off > 0) {
+          fault = "sag";
+          cue = "Bacino su! Non cedere";
+        } else {
+          fault = "pike";
+          cue = "Abbassa il bacino, corpo dritto";
+        }
       } else st.holdMs += dt;
       return { metric: Math.max(0, Math.min(1, (line - 140) / 40)), fault, cue, hold: st.holdMs };
     },
     lunge(lm) {
-      const g = i => P(lm, i);
+      const g = (i) => P(lm, i);
       const lh = g(23), rh = g(24), lk = g(25), rk = g(26), la = g(27), ra = g(28);
       const sh = g(side(lm, [11], [12]) === "l" ? 11 : 12);
       const angs = [];
@@ -593,12 +699,15 @@ function makeTracker(exId) {
       const hip = lh.v >= rh.v ? lh : rh;
       const torso = Math.atan2(Math.abs(sh.x - hip.x), Math.abs(hip.y - sh.y)) * 180 / Math.PI;
       let fault = null, cue = null;
-      if (st.phase !== "top" && torso > 30) { fault = "torso"; cue = "Busto dritto, sguardo avanti"; }
+      if (st.phase !== "top" && torso > 30) {
+        fault = "torso";
+        cue = "Busto dritto, sguardo avanti";
+      }
       const r = angleRep({ value: knee, top: 155, bottom: 100, partial: 135, fault });
-      return { ...r, fault, cue, noRepCue: "Scendi di più! Ginocchio verso terra. Non conta" };
+      return { ...r, fault, cue, noRepCue: "Scendi di pi\xF9! Ginocchio verso terra. Non conta" };
     },
     climber(lm) {
-      const g = i => P(lm, i);
+      const g = (i) => P(lm, i);
       const sd = side(lm, [11, 23, 25], [12, 24, 26]);
       const sh = g(sd === "l" ? 11 : 12), hip = g(sd === "l" ? 23 : 24);
       if (!vis(sh, hip)) return { lost: "Inquadrati di lato, in posizione di piegamento" };
@@ -608,11 +717,17 @@ function makeTracker(exId) {
       for (const [k, hi, ki] of [["l", 23, 25], ["r", 24, 26]]) {
         const h = g(hi), kn = g(ki);
         if (h.v < 0.2 || kn.v < 0.2) continue;
-        const a = ang(sh, h, kn); minA = Math.min(minA, a);
-        if (st.legs[k] === "out" && a < 100) { st.legs[k] = "in"; event = "rep"; }
-        else if (st.legs[k] === "in" && a > 140) st.legs[k] = "out";
+        const a = ang(sh, h, kn);
+        minA = Math.min(minA, a);
+        if (st.legs[k] === "out" && a < 100) {
+          st.legs[k] = "in";
+          event = "rep";
+        } else if (st.legs[k] === "in" && a > 140) st.legs[k] = "out";
       }
-      if (hip.y < sh.y - 0.1) { fault = "pike"; cue = "Bacino giù, schiena piatta"; }
+      if (hip.y < sh.y - 0.1) {
+        fault = "pike";
+        cue = "Bacino gi\xF9, schiena piatta";
+      }
       return { metric: Math.max(0, Math.min(1, (165 - minA) / 70)), event, fault, cue };
     },
     burpee(lm, t) {
@@ -625,77 +740,98 @@ function makeTracker(exId) {
       const standing = upright && ang(p.hip, p.kn, p.an) > 150;
       const armsUp = Math.min(lw.y, rw.y) < nose.y;
       let event = null, fault = null, cue = null, noRepCue = null, metric = 0;
-      if (st.phase === "top") { if (horiz) st.phase = "floor"; }
-      else if (st.phase === "floor") {
+      if (st.phase === "top") {
+        if (horiz) st.phase = "floor";
+      } else if (st.phase === "floor") {
         metric = 0.5;
         const line = ang(p.sh, p.hip, foot);
-        if (horiz && line < 150 && hipOffset(p.sh, p.hip, foot) > 0) { fault = "sag"; cue = "Bacino su, corpo dritto"; }
-        if (upright) { st.phase = "up"; st.upT = t; }
+        if (horiz && line < 150 && hipOffset(p.sh, p.hip, foot) > 0) {
+          fault = "sag";
+          cue = "Bacino su, corpo dritto";
+        }
+        if (upright) {
+          st.phase = "up";
+          st.upT = t;
+        }
       } else if (st.phase === "up") {
         metric = 0.8;
-        if (armsUp) { event = "rep"; st.phase = "top"; metric = 1; }
-        else if (horiz) st.phase = "floor";
-        else if (standing && t - st.upT > 1500) { event = "norep"; st.phase = "top"; noRepCue = "Salta con le braccia sopra la testa! Non conta"; }
+        if (armsUp) {
+          event = "rep";
+          st.phase = "top";
+          metric = 1;
+        } else if (horiz) st.phase = "floor";
+        else if (standing && t - st.upT > 1500) {
+          event = "norep";
+          st.phase = "top";
+          noRepCue = "Salta con le braccia sopra la testa! Non conta";
+        }
       }
       return { metric, event, fault, cue, noRepCue };
     }
   };
   return { st, step: T[exId] };
 }
-
-/* ---------- Pose engine ---------- */
 const SITE = true;
 let landmarker = null, enginePromise = null;
 async function loadEngine() {
   if (landmarker) return landmarker;
   if (!enginePromise) enginePromise = (async () => {
-    const mp = await import(SITE ? "./vision_bundle.mjs" : "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/vision_bundle.mjs");
+    const mp = await (SITE ? import("./vision_bundle.mjs") : import("https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/vision_bundle.mjs"));
     const base = new URL(".", location.href).href;
     let simd = true;
-    try { simd = await mp.FilesetResolver.isSimdSupported(); } catch {}
+    try {
+      simd = await mp.FilesetResolver.isSimdSupported();
+    } catch (e) {
+    }
     const wasmName = simd ? "vision_wasm_internal" : "vision_wasm_nosimd_internal";
     const fileset = { wasmLoaderPath: base + "wasm/" + wasmName + ".js", wasmBinaryPath: base + "wasm/" + wasmName + ".wasm" };
     let model;
     if (SITE) model = new Uint8Array(await (await fetch(base + "pose_landmarker_lite.task")).arrayBuffer());
     else {
-      // the model ships as base64 text because artifacts only serve web file types
       const b64 = await (await fetch(base + "pose_model.b64.txt")).text();
-      const bin = atob(b64.trim()); model = new Uint8Array(bin.length);
+      const bin = atob(b64.trim());
+      model = new Uint8Array(bin.length);
       for (let i = 0; i < bin.length; i++) model[i] = bin.charCodeAt(i);
     }
-    const opts = d => ({ baseOptions: { modelAssetBuffer: model, delegate: d }, runningMode: "VIDEO", numPoses: 1, minPoseDetectionConfidence: 0.5, minTrackingConfidence: 0.5 });
-    try { landmarker = await mp.PoseLandmarker.createFromOptions(fileset, opts("GPU")); }
-    catch (e) { landmarker = await mp.PoseLandmarker.createFromOptions(fileset, opts("CPU")); }
+    const opts = (d) => ({ baseOptions: { modelAssetBuffer: model, delegate: d }, runningMode: "VIDEO", numPoses: 1, minPoseDetectionConfidence: 0.5, minTrackingConfidence: 0.5 });
+    try {
+      landmarker = await mp.PoseLandmarker.createFromOptions(fileset, opts("GPU"));
+    } catch (e) {
+      landmarker = await mp.PoseLandmarker.createFromOptions(fileset, opts("CPU"));
+    }
     window.__mp = mp;
     return landmarker;
   })();
-  try { return await enginePromise; } catch (e) { enginePromise = null; throw e; }
+  try {
+    return await enginePromise;
+  } catch (e) {
+    enginePromise = null;
+    throw e;
+  }
 }
-
-/* ---------- UI helpers ---------- */
-const $ = id => document.getElementById(id);
+const $ = (id) => document.getElementById(id);
 const app = $("app");
-const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-const fmt = s => String(Math.floor(s / 60)).padStart(2, "0") + ":" + String(Math.floor(s % 60)).padStart(2, "0");
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+const fmt = (s) => String(Math.floor(s / 60)).padStart(2, "0") + ":" + String(Math.floor(s % 60)).padStart(2, "0");
 const targetTxt = (ex, n) => EX[ex].unit === "secs" ? n + " s" : n + " rip.";
-
 const icon = {
-  squat: `<svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="color:var(--brass)"><circle cx="30" cy="9" r="4" fill="currentColor"/><path d="M29 14 L22 27 L34 31 L33 45 M22 27 L14 38 L20 45 M27 18 L40 20"/></svg>`,
-  pushup: `<svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="color:var(--brass)"><circle cx="10" cy="24" r="4" fill="currentColor"/><path d="M15 27 L46 34 M18 28 L18 40 M4 40 L48 40"/></svg>`,
-  situp: `<svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="color:var(--brass)"><circle cx="16" cy="14" r="4" fill="currentColor"/><path d="M18 19 L24 38 L36 26 L44 38 M4 40 L48 40"/></svg>`,
-  jacks: `<svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="color:var(--brass)"><circle cx="26" cy="12" r="4" fill="currentColor"/><path d="M26 17 L26 31 M26 31 L16 46 M26 31 L36 46 M26 20 L14 6 M26 20 L38 6"/></svg>`,
-  plank: `<svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="color:var(--brass)"><circle cx="9" cy="26" r="4" fill="currentColor"/><path d="M14 29 L46 34 M14 30 L14 39 L22 39 M4 40 L48 40"/></svg>`
+  squat: '<svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="color:var(--brass)"><circle cx="30" cy="9" r="4" fill="currentColor"/><path d="M29 14 L22 27 L34 31 L33 45 M22 27 L14 38 L20 45 M27 18 L40 20"/></svg>',
+  pushup: '<svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="color:var(--brass)"><circle cx="10" cy="24" r="4" fill="currentColor"/><path d="M15 27 L46 34 M18 28 L18 40 M4 40 L48 40"/></svg>',
+  situp: '<svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="color:var(--brass)"><circle cx="16" cy="14" r="4" fill="currentColor"/><path d="M18 19 L24 38 L36 26 L44 38 M4 40 L48 40"/></svg>',
+  jacks: '<svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="color:var(--brass)"><circle cx="26" cy="12" r="4" fill="currentColor"/><path d="M26 17 L26 31 M26 31 L16 46 M26 31 L36 46 M26 20 L14 6 M26 20 L38 6"/></svg>',
+  plank: '<svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="color:var(--brass)"><circle cx="9" cy="26" r="4" fill="currentColor"/><path d="M14 29 L46 34 M14 30 L14 39 L22 39 M4 40 L48 40"/></svg>'
 };
-icon.lunge = `<svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="color:var(--brass)"><circle cx="26" cy="8" r="4" fill="currentColor"/><path d="M26 13 L26 28 M26 28 L36 34 L36 46 M26 28 L16 38 L8 44"/></svg>`;
-icon.climber = `<svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="color:var(--brass)"><circle cx="10" cy="20" r="4" fill="currentColor"/><path d="M15 23 L34 30 L46 40 M34 30 L26 34 L24 40 M14 24 L14 40 M4 40 L48 40"/></svg>`;
-icon.burpee = `<svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="color:var(--brass)"><circle cx="26" cy="10" r="4" fill="currentColor"/><path d="M26 15 L26 30 M26 30 L20 42 M26 30 L32 42 M26 18 L18 4 M26 18 L34 4 M12 48 L40 48" /></svg>`;
-const lockIco = `<svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="4" y="9" width="12" height="9" rx="1.5"/><path d="M7 9V6a3 3 0 0 1 6 0v3"/></svg>`;
-const sideCam = `<svg viewBox="0 0 64 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="color:var(--muted)"><rect x="2" y="26" width="8" height="14" rx="1.5" stroke="var(--brass)"/><path d="M12 33 L22 30 M12 33 L22 36" stroke-dasharray="2 3"/><circle cx="34" cy="20" r="3" fill="currentColor"/><path d="M36 23 L56 30 M2 42 L62 42"/></svg>`;
-
-/* ---------- Screens ---------- */
+icon.lunge = '<svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="color:var(--brass)"><circle cx="26" cy="8" r="4" fill="currentColor"/><path d="M26 13 L26 28 M26 28 L36 34 L36 46 M26 28 L16 38 L8 44"/></svg>';
+icon.climber = '<svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="color:var(--brass)"><circle cx="10" cy="20" r="4" fill="currentColor"/><path d="M15 23 L34 30 L46 40 M34 30 L26 34 L24 40 M14 24 L14 40 M4 40 L48 40"/></svg>';
+icon.burpee = '<svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="color:var(--brass)"><circle cx="26" cy="10" r="4" fill="currentColor"/><path d="M26 15 L26 30 M26 30 L20 42 M26 30 L32 42 M26 18 L18 4 M26 18 L34 4 M12 48 L40 48" /></svg>';
+const lockIco = '<svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="4" y="9" width="12" height="9" rx="1.5"/><path d="M7 9V6a3 3 0 0 1 6 0v3"/></svg>';
+const sideCam = '<svg viewBox="0 0 64 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="color:var(--muted)"><rect x="2" y="26" width="8" height="14" rx="1.5" stroke="var(--brass)"/><path d="M12 33 L22 30 M12 33 L22 36" stroke-dasharray="2 3"/><circle cx="34" cy="20" r="3" fill="currentColor"/><path d="M36 23 L56 30 M2 42 L62 42"/></svg>';
 let route = { name: "home" };
-function go(r) { route = r; render(); window.scrollTo(0, 0); }
-
+function go(r) {
+  route = r;
+  render();
+  window.scrollTo(0, 0);
+}
 function render() {
   if (route.name === "home") return renderHome();
   if (route.name === "brief") return renderBrief();
@@ -705,96 +841,53 @@ function render() {
   if (route.name === "lobby") return renderLobby();
   if (route.name === "duel-result") return renderDuelResult();
   if (route.name === "ranking") return renderRanking();
+  if (route.name === "voice") return renderVoice();
 }
-
 function renderHome() {
+  var _a, _b;
   const n = nextSession();
   const s = session(n.wk, n.d);
   const done = Object.keys(progress).length;
-  const weeks = [1, 2, 3, 4].map(wk => `<div class="wk ${wk === n.wk ? "now" : ""}">Sett. ${wk}<div class="dots">${[0, 1, 2].map(d => `<i class="${progress[wk + "-" + d] ? "done" : ""}"></i>`).join("")}</div></div>`).join("");
-  app.innerHTML = `
-  <div class="screen">
-    <header class="mast">
-      <div><h1>Istruttore Recluta</h1><div class="sub">Addestramento a corpo libero</div></div>
-      <div class="callsign">Sessioni<b>${done}/12</b></div>
-    </header>
-
-    ${(() => { const ri = rankIndex(), cur = RANKS[ri], nx = RANKS[ri + 1]; const pct = nx ? Math.round((stats.total - cur[1]) / (nx[1] - cur[1]) * 100) : 100; return `<button class="rankcard" id="openRank" type="button" style="text-align:left;color:inherit">
-      <div><div class="label">Il tuo grado</div><div class="rname">${esc(myName || "Recluta")} ${myBadge()} <span style="font-weight:600;color:var(--muted);font-size:17px">${cur[0]}</span></div></div>
-      <div class="pts">${stats.month.pts}<small>punti del mese</small></div>
-      <div class="xp"><i style="width:${pct}%"></i></div>
-      <div class="meta">${nx ? `${nx[1] - stats.total} punti al grado ${nx[0]}` : "Grado massimo raggiunto"} · Classifica ›</div>
-    </button>`; })()}
-
-    <section class="section">
-      <div class="label">Ordine del giorno · Settimana ${n.wk}, sessione ${n.d + 1}</div>
-      <div class="order">
-        <h2>${esc(s.title)}</h2>
-        <ul class="blocks">${s.blocks.map(([ex, sets, t]) => `<li><span>${EX[ex].name}</span><span>${sets} × ${targetTxt(ex, t)}</span></li>`).join("")}</ul>
-        <p class="meta">Recupero 60 s tra le serie. La telecamera conta le ripetizioni e ti corregge a voce.</p>
-        <div class="row"><button class="btn primary" id="startDay" type="button">Inizia la sessione</button></div>
-        <div class="weeks">${weeks}</div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="label">Prova di efficienza fisica</div>
-      <div class="exlist">
-        <button class="ex" data-test="pushup" type="button">${icon.pushup}<span><b>Piegamenti in 2 minuti</b><small>Record: ${records.pushup ?? "—"}</small></span><span class="go">›</span></button>
-        <button class="ex" data-test="situp" type="button">${icon.situp}<span><b>Addominali in 2 minuti</b><small>Record: ${records.situp ?? "—"}</small></span><span class="go">›</span></button>
-      </div>
-    </section>
-
-    ${SITE ? `<section class="section">
-      <div class="label">Sfida un amico</div>
-      <div class="order">
-        <h2>Uno contro uno, in videochiamata</h2>
-        <p class="meta">Vi vedete in diretta, la fotocamera conta le ripetizioni di entrambi e l'istruttore annuncia il vincitore.</p>
-        <div class="row">
-          <button class="btn primary" id="duelNew" type="button">Crea una sfida</button>
-          <button class="btn ghost" id="duelJoin" type="button">Ho un codice</button>
-        </div>
-      </div>
-    </section>` : ""}
-
-    <section class="section">
-      <div class="label">Esercizi singoli</div>
-      <div class="exlist">
-        ${Object.entries(EX).map(([id, e]) => isUnlocked(id)
-          ? `<button class="ex" data-ex="${id}" type="button">${icon[id]}<span><b>${e.name}</b><small>${e.tag}</small></span><span class="go">›</span></button>`
-          : `<div class="ex locked">${icon[id]}<span><b>${e.name}</b><small>Si sblocca al grado ${RANKS[e.lock][0]} (${RANKS[e.lock][1]} punti)</small></span><span class="go">${lockIco}</span></div>`).join("")}
-      </div>
-    </section>
-
-    <section class="section elite">
-      <div class="label">Riservato ai primi 3 del mese</div>
-      <div class="exlist">
-        ${Object.entries(ELITE).map(([id, e]) => isElite()
-          ? `<button class="ex" data-elite="${id}" type="button">${icon[id === "gold" ? "jacks" : id === "hell" ? "burpee" : "climber"]}<span><b>${e.name}</b><small>${id === "gold" ? (stats.gold ? "Attiva · tocca per disattivare" : "Disattivata · tocca per attivare") : e.desc}</small></span><span class="go">›</span></button>`
-          : `<div class="ex locked">${icon[id === "gold" ? "jacks" : id === "hell" ? "burpee" : "climber"]}<span><b>${e.name}</b><small>${e.desc}</small></span><span class="go">${lockIco}</span></div>`).join("")}
-      </div>
-      ${isElite() ? `<p class="note">Sei tra i primi 3 di ${monthName(prevMonthKey())}: queste opzioni restano attive per tutto il mese.</p>` : `<p class="note">Chiudi il mese tra i primi 3 in classifica per sbloccarle per tutto il mese successivo.</p>`}
-    </section>
-
-    <label class="toggle"><input type="checkbox" id="voiceT" ${voiceOn ? "checked" : ""}> Istruttore vocale (italiano)</label>
-    <label class="toggle"><input type="checkbox" id="gritT" ${gritOn ? "checked" : ""}> Voce del sergente: incitamento durante l'esercizio</label>
-    <p class="note">Il video resta sul tuo telefono: l'analisi della postura avviene nel browser e nessuna immagine viene inviata.</p>
-  </div>`;
+  const weeks = [1, 2, 3, 4].map((wk) => '<div class="wk '.concat(wk === n.wk ? "now" : "", '">Sett. ').concat(wk, '<div class="dots">').concat([0, 1, 2].map((d) => '<i class="'.concat(progress[wk + "-" + d] ? "done" : "", '"></i>')).join(""), "</div></div>")).join("");
+  app.innerHTML = '\n  <div class="screen">\n    <header class="mast">\n      <div><h1>Istruttore Recluta</h1><div class="sub">Addestramento a corpo libero</div></div>\n      <div class="callsign">Sessioni<b>'.concat(done, "/12</b></div>\n    </header>\n\n    ").concat((() => {
+    const ri = rankIndex(), cur = RANKS[ri], nx = RANKS[ri + 1];
+    const pct = nx ? Math.round((stats.total - cur[1]) / (nx[1] - cur[1]) * 100) : 100;
+    return '<button class="rankcard" id="openRank" type="button" style="text-align:left;color:inherit">\n      <div><div class="label">Il tuo grado</div><div class="rname">'.concat(esc(myName || "Recluta"), " ").concat(myBadge(), ' <span style="font-weight:600;color:var(--muted);font-size:17px">').concat(cur[0], '</span></div></div>\n      <div class="pts">').concat(stats.month.pts, '<small>punti del mese</small></div>\n      <div class="xp"><i style="width:').concat(pct, '%"></i></div>\n      <div class="meta">').concat(nx ? "".concat(nx[1] - stats.total, " punti al grado ").concat(nx[0]) : "Grado massimo raggiunto", " \xB7 Classifica \u203A</div>\n    </button>");
+  })(), '\n\n    <section class="section">\n      <div class="label">Ordine del giorno \xB7 Settimana ').concat(n.wk, ", sessione ").concat(n.d + 1, '</div>\n      <div class="order">\n        <h2>').concat(esc(s.title), '</h2>\n        <ul class="blocks">').concat(s.blocks.map(([ex, sets, t]) => "<li><span>".concat(EX[ex].name, "</span><span>").concat(sets, " \xD7 ").concat(targetTxt(ex, t), "</span></li>")).join(""), '</ul>\n        <p class="meta">Recupero 60 s tra le serie. La telecamera conta le ripetizioni e ti corregge a voce.</p>\n        <div class="row"><button class="btn primary" id="startDay" type="button">Inizia la sessione</button></div>\n        <div class="weeks">').concat(weeks, '</div>\n      </div>\n    </section>\n\n    <section class="section">\n      <div class="label">Prova di efficienza fisica</div>\n      <div class="exlist">\n        <button class="ex" data-test="pushup" type="button">').concat(icon.pushup, "<span><b>Piegamenti in 2 minuti</b><small>Record: ").concat((_a = records.pushup) != null ? _a : "\u2014", '</small></span><span class="go">\u203A</span></button>\n        <button class="ex" data-test="situp" type="button">').concat(icon.situp, "<span><b>Addominali in 2 minuti</b><small>Record: ").concat((_b = records.situp) != null ? _b : "\u2014", '</small></span><span class="go">\u203A</span></button>\n      </div>\n    </section>\n\n    ').concat(SITE ? '<section class="section">\n      <div class="label">Sfida un amico</div>\n      <div class="order">\n        <h2>Uno contro uno, in videochiamata</h2>\n        <p class="meta">Vi vedete in diretta, la fotocamera conta le ripetizioni di entrambi e l\'istruttore annuncia il vincitore.</p>\n        <div class="row">\n          <button class="btn primary" id="duelNew" type="button">Crea una sfida</button>\n          <button class="btn ghost" id="duelJoin" type="button">Ho un codice</button>\n        </div>\n      </div>\n    </section>' : "", '\n\n    <section class="section">\n      <div class="label">Esercizi singoli</div>\n      <div class="exlist">\n        ').concat(Object.entries(EX).map(([id, e]) => isUnlocked(id) ? '<button class="ex" data-ex="'.concat(id, '" type="button">').concat(icon[id], "<span><b>").concat(e.name, "</b><small>").concat(e.tag, '</small></span><span class="go">\u203A</span></button>') : '<div class="ex locked">'.concat(icon[id], "<span><b>").concat(e.name, "</b><small>Si sblocca al grado ").concat(RANKS[e.lock][0], " (").concat(RANKS[e.lock][1], ' punti)</small></span><span class="go">').concat(lockIco, "</span></div>")).join(""), '\n      </div>\n    </section>\n\n    <section class="section elite">\n      <div class="label">Riservato ai primi 3 del mese</div>\n      <div class="exlist">\n        ').concat(Object.entries(ELITE).map(([id, e]) => isElite() ? '<button class="ex" data-elite="'.concat(id, '" type="button">').concat(icon[id === "gold" ? "jacks" : id === "hell" ? "burpee" : "climber"], "<span><b>").concat(e.name, "</b><small>").concat(id === "gold" ? stats.gold ? "Attiva \xB7 tocca per disattivare" : "Disattivata \xB7 tocca per attivare" : e.desc, '</small></span><span class="go">\u203A</span></button>') : '<div class="ex locked">'.concat(icon[id === "gold" ? "jacks" : id === "hell" ? "burpee" : "climber"], "<span><b>").concat(e.name, "</b><small>").concat(e.desc, '</small></span><span class="go">').concat(lockIco, "</span></div>")).join(""), "\n      </div>\n      ").concat(isElite() ? '<p class="note">Sei tra i primi 3 di '.concat(monthName(prevMonthKey()), ": queste opzioni restano attive per tutto il mese.</p>") : '<p class="note">Chiudi il mese tra i primi 3 in classifica per sbloccarle per tutto il mese successivo.</p>', '\n    </section>\n\n    <label class="toggle"><input type="checkbox" id="voiceT" ').concat(voiceOn ? "checked" : "", '> Istruttore vocale (italiano)</label>\n    <label class="toggle"><input type="checkbox" id="gritT" ').concat(gritOn ? "checked" : "", '> Voce del sergente: incitamento durante l\'esercizio</label>\n    <button class="btn ghost small" id="voiceSet" type="button">Personalizza la voce</button>\n    ').concat(COMPAT_MSG ? '<p class="note" style="border-color:var(--bad)">'.concat(COMPAT_MSG, "</p>") : "", '\n    <p class="note">Il video resta sul tuo telefono: l\'analisi della postura avviene nel browser e nessuna immagine viene inviata.</p>\n  </div>');
   $("startDay").onclick = () => go({ name: "brief", queue: blocksToQueue(s.blocks), day: n, title: s.title });
-  app.querySelectorAll("[data-ex]").forEach(b => b.onclick = () => {
+  app.querySelectorAll("[data-ex]").forEach((b) => b.onclick = () => {
     const id = b.dataset.ex;
     go({ name: "brief", queue: [{ ex: id, target: EX[id].unit === "secs" ? 45 : 15, set: 1, sets: 1 }], title: EX[id].name, free: true });
   });
-  app.querySelectorAll("[data-test]").forEach(b => b.onclick = () => {
+  app.querySelectorAll("[data-test]").forEach((b) => b.onclick = () => {
     const id = b.dataset.test;
     go({ name: "brief", queue: [{ ex: id, target: 0, set: 1, sets: 1, timeLimit: 120 }], title: EX[id].name + " in 2 minuti", test: id });
   });
-  $("voiceT").onchange = e => { voiceOn = e.target.checked; store.set("voice", voiceOn); };
-  $("gritT").onchange = e => { gritOn = e.target.checked; store.set("grit", gritOn); if (gritOn) { voiceOn = true; store.set("voice", true); $("voiceT").checked = true; say("Agli ordini! Da adesso ti tengo sotto pressione.", { urgent: true }); } };
+  $("voiceT").onchange = (e) => {
+    voiceOn = e.target.checked;
+    store.set("voice", voiceOn);
+  };
+  $("voiceSet").onclick = () => go({ name: "voice" });
+  $("gritT").onchange = (e) => {
+    gritOn = e.target.checked;
+    store.set("grit", gritOn);
+    if (gritOn) {
+      voiceOn = true;
+      store.set("voice", true);
+      $("voiceT").checked = true;
+      say("Agli ordini! Da adesso ti tengo sotto pressione.", { urgent: true });
+    }
+  };
   $("openRank").onclick = () => go({ name: "ranking" });
-  app.querySelectorAll("[data-elite]").forEach(b => b.onclick = () => {
+  app.querySelectorAll("[data-elite]").forEach((b) => b.onclick = () => {
     const id = b.dataset.elite;
-    if (id === "gold") { stats.gold = !stats.gold; store.set("stats", stats); applyGold(); lbSchedule(); return renderHome(); }
+    if (id === "gold") {
+      stats.gold = !stats.gold;
+      store.set("stats", stats);
+      applyGold();
+      lbSchedule();
+      return renderHome();
+    }
     go({ name: "brief", queue: eliteQueue(id), title: ELITE[id].name, elite: id });
   });
   if (SITE) {
@@ -802,94 +895,110 @@ function renderHome() {
     $("duelJoin").onclick = () => go({ name: "duel-join", code: "" });
   }
 }
-
 function renderBrief() {
   const first = route.queue[0];
   const e = EX[first.ex];
-  const uniq = [...new Set(route.queue.map(q => q.ex))];
-  const goal = route.test ? "Massimo numero di ripetizioni valide in 2:00." : route.free ? `Obiettivo: ${targetTxt(first.ex, first.target)}` : `${route.queue.length} serie in tutto · si parte con ${e.name}`;
-  app.innerHTML = `
-  <div class="screen brief">
-    <button class="back" id="back" type="button">‹ Indietro</button>
-    <div class="section">
-      <div class="label">${route.free || route.test ? "Esercizio" : "Sessione"}</div>
-      <h2>${esc(route.title)}</h2>
-      <p class="goal">${goal}</p>
-    </div>
-    ${route.free && e.unit === "reps" ? `<div class="row" role="group" aria-label="Obiettivo">${[10, 15, 20, 30].map(n => `<button class="btn ghost small tgt" data-n="${n}" type="button" ${n === first.target ? 'style="border-color:var(--brass)"' : ""}>${n}</button>`).join("")}</div>` : ""}
-    ${uniq.map(id => `
-      <div class="section">
-        <div class="label">${EX[id].name}: esecuzione</div>
-        <ol class="steps">${EX[id].steps.map(s => `<li>${s}</li>`).join("")}</ol>
-        <div class="label" style="margin-top:6px">Cosa ti correggo</div>
-        <ul class="faults">${EX[id].faults.map(s => `<li>${s}</li>`).join("")}</ul>
-        <div class="camtip">${sideCam}<span>${EX[id].cam}</span></div>
-      </div>`).join("")}
-    <div class="section">
-      <div class="row">
-        <button class="btn primary" id="live" type="button">Telecamera dal vivo</button>
-        <button class="btn ghost" id="rec" type="button">Registra un video</button>
-      </div>
-      <p class="note" id="camNote">Al primo avvio il telefono ti chiede il permesso di usare la fotocamera: tocca Consenti. In alternativa puoi registrare un video della serie e farlo analizzare.</p>
-    </div>
-  </div>`;
+  const uniq = [...new Set(route.queue.map((q) => q.ex))];
+  const goal = route.test ? "Massimo numero di ripetizioni valide in 2:00." : route.free ? "Obiettivo: ".concat(targetTxt(first.ex, first.target)) : "".concat(route.queue.length, " serie in tutto \xB7 si parte con ").concat(e.name);
+  app.innerHTML = '\n  <div class="screen brief">\n    <button class="back" id="back" type="button">\u2039 Indietro</button>\n    <div class="section">\n      <div class="label">'.concat(route.free || route.test ? "Esercizio" : "Sessione", "</div>\n      <h2>").concat(esc(route.title), '</h2>\n      <p class="goal">').concat(goal, "</p>\n    </div>\n    ").concat(route.free && e.unit === "reps" ? '<div class="row" role="group" aria-label="Obiettivo">'.concat([10, 15, 20, 30].map((n) => '<button class="btn ghost small tgt" data-n="'.concat(n, '" type="button" ').concat(n === first.target ? 'style="border-color:var(--brass)"' : "", ">").concat(n, "</button>")).join(""), "</div>") : "", "\n    ").concat(uniq.map((id) => '\n      <div class="section">\n        <div class="label">'.concat(EX[id].name, ': esecuzione</div>\n        <ol class="steps">').concat(EX[id].steps.map((s) => "<li>".concat(s, "</li>")).join(""), '</ol>\n        <div class="label" style="margin-top:6px">Cosa ti correggo</div>\n        <ul class="faults">').concat(EX[id].faults.map((s) => "<li>".concat(s, "</li>")).join(""), '</ul>\n        <div class="camtip">').concat(sideCam, "<span>").concat(EX[id].cam, "</span></div>\n      </div>")).join(""), '\n    <div class="section">\n      <div class="row">\n        <button class="btn primary" id="live" type="button">Telecamera dal vivo</button>\n        <button class="btn ghost" id="rec" type="button">Registra un video</button>\n      </div>\n      <p class="note" id="camNote">Al primo avvio il telefono ti chiede il permesso di usare la fotocamera: tocca Consenti. In alternativa puoi registrare un video della serie e farlo analizzare.</p>\n    </div>\n  </div>');
   $("back").onclick = () => go({ name: "home" });
-  app.querySelectorAll(".tgt").forEach(b => b.onclick = () => { route.queue[0].target = +b.dataset.n; renderBrief(); });
+  app.querySelectorAll(".tgt").forEach((b) => b.onclick = () => {
+    route.queue[0].target = +b.dataset.n;
+    renderBrief();
+  });
   $("live").onclick = () => startSession("live");
-  $("rec").onclick = () => { $("fileIn").value = ""; $("fileIn").click(); };
-  $("fileIn").onchange = e => { const f = e.target.files?.[0]; if (f) startSession("file", f); };
+  $("rec").onclick = () => {
+    $("fileIn").value = "";
+    $("fileIn").click();
+  };
+  $("fileIn").onchange = (e2) => {
+    var _a;
+    const f = (_a = e2.target.files) == null ? void 0 : _a[0];
+    if (f) startSession("file", f);
+  };
 }
-
 function renderSummary() {
   const r = route.result;
-  const totalReps = r.log.filter(l => l.unit === "reps").reduce((a, l) => a + l.done, 0);
+  const totalReps = r.log.filter((l) => l.unit === "reps").reduce((a, l) => a + l.done, 0);
   const noReps = r.log.reduce((a, l) => a + l.noreps, 0);
   const topFault = Object.entries(r.faults).sort((a, b) => b[1] - a[1])[0];
-  app.innerHTML = `
-  <div class="screen">
-    <header class="mast"><div><h1>Rapporto</h1><div class="sub">${esc(r.title)}</div></div><div class="callsign">Durata<b>${fmt(r.secs)}</b></div></header>
-    <div class="stats">
-      <div class="stat"><b>${totalReps}</b><span>Rip. valide</span></div>
-      <div class="stat"><b>${noReps}</b><span>Non valide</span></div>
-      <div class="stat"><b>+${r.points || 0}</b><span>Punti</span></div>
-    </div>
-    ${r.promoted != null ? `<div class="order"><h2>Promosso a ${RANKS[r.promoted][0]} ${rankBadge(r.promoted)}</h2><p class="meta">${Object.values(EX).filter(e => e.lock === r.promoted).map(e => "Hai sbloccato " + e.name + ".").join(" ") || "Continua così."}</p></div>` : ""}
-    ${r.newRecord ? `<div class="order"><h2>Nuovo record: ${r.newRecord}</h2><p class="meta">Salvato su questo telefono.</p></div>` : ""}
-    <div class="section">
-      <div class="label">Dettaglio serie</div>
-      <ul class="log">${r.log.map(l => `<li><span>${EX[l.ex].name} · serie ${l.set}</span><span>${l.unit === "secs" ? Math.round(l.done) + " s" : l.done + " rip."}${l.target ? " / " + targetTxt(l.ex, l.target) : ""}</span></li>`).join("")}</ul>
-    </div>
-    <div class="section">
-      <div class="label">Correzione principale</div>
-      <p>${topFault ? esc(topFault[0]) + ` (${topFault[1]} volte)` : "Nessun errore di postura rilevato. Ottimo lavoro."}</p>
-    </div>
-    <div class="row"><button class="btn primary" id="home" type="button">Torna al programma</button></div>
-  </div>`;
+  app.innerHTML = '\n  <div class="screen">\n    <header class="mast"><div><h1>Rapporto</h1><div class="sub">'.concat(esc(r.title), '</div></div><div class="callsign">Durata<b>').concat(fmt(r.secs), '</b></div></header>\n    <div class="stats">\n      <div class="stat"><b>').concat(totalReps, '</b><span>Rip. valide</span></div>\n      <div class="stat"><b>').concat(noReps, '</b><span>Non valide</span></div>\n      <div class="stat"><b>+').concat(r.points || 0, "</b><span>Punti</span></div>\n    </div>\n    ").concat(r.promoted != null ? '<div class="order"><h2>Promosso a '.concat(RANKS[r.promoted][0], " ").concat(rankBadge(r.promoted), '</h2><p class="meta">').concat(Object.values(EX).filter((e) => e.lock === r.promoted).map((e) => "Hai sbloccato " + e.name + ".").join(" ") || "Continua cos\xEC.", "</p></div>") : "", "\n    ").concat(r.newRecord ? '<div class="order"><h2>Nuovo record: '.concat(r.newRecord, '</h2><p class="meta">Salvato su questo telefono.</p></div>') : "", '\n    <div class="section">\n      <div class="label">Dettaglio serie</div>\n      <ul class="log">').concat(r.log.map((l) => "<li><span>".concat(EX[l.ex].name, " \xB7 serie ").concat(l.set, "</span><span>").concat(l.unit === "secs" ? Math.round(l.done) + " s" : l.done + " rip.").concat(l.target ? " / " + targetTxt(l.ex, l.target) : "", "</span></li>")).join(""), '</ul>\n    </div>\n    <div class="section">\n      <div class="label">Correzione principale</div>\n      <p>').concat(topFault ? esc(topFault[0]) + " (".concat(topFault[1], " volte)") : "Nessun errore di postura rilevato. Ottimo lavoro.", '</p>\n    </div>\n    <div class="row"><button class="btn primary" id="home" type="button">Torna al programma</button></div>\n  </div>');
   $("home").onclick = () => go({ name: "home" });
 }
-
-/* ---------- Session runtime ---------- */
+function renderVoice() {
+  var _a, _b;
+  const vs = itVoices();
+  const rate = (_a = voiceCfg.rate) != null ? _a : gritOn ? 1.12 : 1.08, pitch = (_b = voiceCfg.pitch) != null ? _b : gritOn ? 0.8 : 0.9;
+  app.innerHTML = '\n  <div class="screen brief">\n    <button class="back" id="back" type="button">\u2039 Indietro</button>\n    <div class="section"><div class="label">Impostazioni</div><h2>Voce dell\'istruttore</h2></div>\n    <div class="field"><label class="label" for="vVoice">Voce</label>\n      <select id="vVoice" class="sel">\n        <option value="">Automatica</option>\n        '.concat(vs.map((v) => '<option value="'.concat(esc(v.name), '" ').concat(v.name === voiceCfg.voice ? "selected" : "", ">").concat(esc(v.name), "</option>")).join(""), "\n      </select>\n      ").concat(vs.length ? "" : '<p class="note">Il telefono non ha ancora una voce italiana: vedi sotto come aggiungerla.</p>', '\n    </div>\n    <div class="field"><label class="label" for="vRate">Velocit\xE0 \xB7 <span id="vRateV">').concat(rate.toFixed(2), '</span></label><input id="vRate" type="range" min="0.6" max="1.6" step="0.02" value="').concat(rate, '"></div>\n    <div class="field"><label class="label" for="vPitch">Tono \xB7 <span id="vPitchV">').concat(pitch.toFixed(2), '</span> <small style="text-transform:none;letter-spacing:0">(pi\xF9 basso = pi\xF9 grave e deciso)</small></label><input id="vPitch" type="range" min="0.4" max="1.6" step="0.02" value="').concat(pitch, '"></div>\n    <div class="row"><button class="btn primary small" id="vTest" type="button">Prova la voce</button><button class="btn ghost small" id="vReset" type="button">Ripristina</button></div>\n    <div class="field"><label class="label" for="vOwn">Le tue frasi di incitamento (una per riga)</label>\n      <textarea id="vOwn" rows="5" maxlength="3000" placeholder="Forza Marco, non mollare!&#10;Ogni ripetizione ti rende pi\xF9 forte!">').concat(esc(voiceCfg.own || ""), '</textarea></div>\n    <div class="field"><label class="label" for="vOwnStart">Le tue frasi a inizio serie (una per riga)</label>\n      <textarea id="vOwnStart" rows="3" maxlength="1500" placeholder="Si comincia, soldato!">').concat(esc(voiceCfg.ownStart || ""), '</textarea></div>\n    <label class="toggle"><input type="checkbox" id="vOnly" ').concat(voiceCfg.onlyOwn ? "checked" : "", '> Usa solo le mie frasi</label>\n    <div class="row"><button class="btn primary" id="vSave" type="button">Salva</button></div>\n    <p class="note" id="vSaved" hidden>Salvato.</p>\n    <div class="section"><div class="label">Altre voci sul telefono</div>\n      <p class="meta"><b>iPhone:</b> Impostazioni \u203A Accessibilit\xE0 \u203A Contenuti letti \u203A Voci \u203A Italiano. Scarica una voce, per esempio una "Avanzata", poi riapri l\'app e sceglila qui.</p>\n      <p class="meta"><b>Android:</b> Impostazioni \u203A Sistema \u203A Lingue \u203A Output sintesi vocale. Con "Sintesi vocale di Google" scegli Italiano e scarica le voci, poi riapri l\'app.</p>\n    </div>\n  </div>');
+  const read = () => ({ voice: $("vVoice").value, rate: +$("vRate").value, pitch: +$("vPitch").value, own: $("vOwn").value, ownStart: $("vOwnStart").value, onlyOwn: $("vOnly").checked });
+  $("vRate").oninput = (e) => $("vRateV").textContent = (+e.target.value).toFixed(2);
+  $("vPitch").oninput = (e) => $("vPitchV").textContent = (+e.target.value).toFixed(2);
+  $("vTest").onclick = () => {
+    const keep = voiceCfg, wasOn = voiceOn;
+    voiceCfg = read();
+    voiceOn = true;
+    pickVoice();
+    const mine = ownLines(voiceCfg.own);
+    say(mine.length ? "Dieci! ".concat(mine[Math.floor(Math.random() * mine.length)]) : "Dieci! Non fermarti adesso, soldato!", { urgent: true });
+    voiceCfg = keep;
+    voiceOn = wasOn;
+    pickVoice();
+  };
+  $("vReset").onclick = () => {
+    voiceCfg = { voice: "", rate: null, pitch: null, own: voiceCfg.own, ownStart: voiceCfg.ownStart, onlyOwn: voiceCfg.onlyOwn };
+    store.set("voiceCfg", voiceCfg);
+    pickVoice();
+    renderVoice();
+  };
+  $("vSave").onclick = () => {
+    voiceCfg = read();
+    store.set("voiceCfg", voiceCfg);
+    pickVoice();
+    $("vSaved").hidden = false;
+  };
+  $("back").onclick = () => go({ name: "home" });
+}
 const S = {};
 const vid = $("vid"), cv = $("cv"), ctx = cv.getContext("2d");
-
 async function startSession(mode, file) {
+  var _a;
   say("", { urgent: true });
   Object.assign(S, {
-    mode, queue: route.queue.slice(), idx: 0, log: [], faults: {}, startT: performance.now(),
-    running: false, stream: null, facing: "user", lastTs: 0, title: route.title, test: route.test, day: route.day, free: route.free, elite: route.elite, challenge: false, points: 0, promoted: null
+    mode,
+    queue: route.queue.slice(),
+    idx: 0,
+    log: [],
+    faults: {},
+    startT: performance.now(),
+    running: false,
+    stream: null,
+    facing: "user",
+    lastTs: 0,
+    title: route.title,
+    test: route.test,
+    day: route.day,
+    free: route.free,
+    elite: route.elite,
+    challenge: false,
+    points: 0,
+    promoted: null
   });
-  $("opp").hidden = true; $("stage").classList.remove("duel");
+  $("opp").hidden = true;
+  $("stage").classList.remove("duel");
   $("session").hidden = false;
   $("rest").hidden = true;
   $("loading").hidden = false;
-  $("loadingMsg").textContent = "Carico il sistema di visione…";
+  $("loadingMsg").textContent = "Carico il sistema di visione\u2026";
   $("flip").hidden = mode !== "live";
   $("stage").classList.toggle("mirror", mode === "live");
-  try { S.wake = await navigator.wakeLock?.request("screen"); } catch {}
+  try {
+    S.wake = await ((_a = navigator.wakeLock) == null ? void 0 : _a.request("screen"));
+  } catch (e) {
+  }
   try {
     await loadEngine();
   } catch (e) {
-    $("loadingMsg").textContent = "Il sistema di visione non si è caricato. Controlla la connessione e riprova.";
+    $("loadingMsg").textContent = "Il sistema di visione non si \xE8 caricato. Controlla la connessione e riprova.";
     return;
   }
   try {
@@ -898,8 +1007,15 @@ async function startSession(mode, file) {
   } catch (e) {
     if (mode === "live") {
       $("loadingMsg").innerHTML = "Non riesco ad aprire la fotocamera.<br><br>Controlla di aver dato il permesso nelle impostazioni del browser, oppure registra un video della serie.";
-      const b = document.createElement("button"); b.className = "btn primary"; b.textContent = "Registra un video"; b.type = "button";
-      b.onclick = () => { closeSession(false); $("fileIn").value = ""; $("fileIn").click(); };
+      const b = document.createElement("button");
+      b.className = "btn primary";
+      b.textContent = "Registra un video";
+      b.type = "button";
+      b.onclick = () => {
+        closeSession(false);
+        $("fileIn").value = "";
+        $("fileIn").click();
+      };
       $("loadingMsg").append(document.createElement("br"), b);
     } else $("loadingMsg").textContent = "Non riesco a leggere questo video. Prova a registrarlo di nuovo.";
     return;
@@ -909,11 +1025,11 @@ async function startSession(mode, file) {
   S.running = true;
   loop();
 }
-
 async function openCamera() {
-  if (S.stream) S.stream.getTracks().forEach(t => t.stop());
-  S.stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: S.facing, width: { ideal: 640 }, height: { ideal: 480 } }, audio: false });
-  vid.srcObject = S.stream; vid.removeAttribute("src");
+  if (S.stream) S.stream.getTracks().forEach((t) => t.stop());
+  S.stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: S.facing, ...camSize() }, audio: false });
+  vid.srcObject = S.stream;
+  vid.removeAttribute("src");
   await vid.play();
   $("stage").classList.toggle("mirror", S.facing === "user");
 }
@@ -921,58 +1037,74 @@ async function openFile(file) {
   vid.srcObject = null;
   vid.src = URL.createObjectURL(file);
   vid.loop = false;
-  await new Promise((res, rej) => { vid.onloadeddata = res; vid.onerror = rej; });
-  vid.onended = () => { if (S.running) endSet(true); };
+  await new Promise((res, rej) => {
+    vid.onloadeddata = res;
+    vid.onerror = rej;
+  });
+  vid.onended = () => {
+    if (S.running) endSet(true);
+  };
   await vid.play();
 }
-
 function beginSet() {
   const q = S.queue[S.idx];
   S.cur = { ...q, tracker: makeTracker(q.ex), count: 0, noreps: 0, hold: 0, t0: performance.now(), lastFault: null };
   $("hudName").textContent = EX[q.ex].name;
-  $("hudSet").textContent = S.test ? "Prova · 2:00" : q.sets > 1 || S.queue.length > 1 ? `Serie ${q.set} di ${q.sets}` : "Serie libera";
+  $("hudSet").textContent = S.test ? "Prova \xB7 2:00" : q.sets > 1 || S.queue.length > 1 ? "Serie ".concat(q.set, " di ").concat(q.sets) : "Serie libera";
   $("count").textContent = EX[q.ex].unit === "secs" ? "0" : "0";
-  $("countOf").textContent = EX[q.ex].unit === "secs" ? (q.target ? `di ${q.target} s` : "secondi") : (q.target ? `di ${q.target}` : "ripetizioni");
+  $("countOf").textContent = EX[q.ex].unit === "secs" ? q.target ? "di ".concat(q.target, " s") : "secondi" : q.target ? "di ".concat(q.target) : "ripetizioni";
   $("minus").hidden = $("plus").hidden = EX[q.ex].unit === "secs";
   $("stop").textContent = S.idx < S.queue.length - 1 ? "Fine serie" : "Termina";
   setBanner("In posizione!", "warn");
-  say(`${EX[q.ex].name}. ${q.target ? (EX[q.ex].unit === "secs" ? `Tieni per ${q.target} secondi` : `${q.target} ripetizioni`) : q.timeLimit ? `Massimo in ${q.timeLimit} secondi` : "Massimo in due minuti"}. Via!`, { urgent: true });
+  say("".concat(EX[q.ex].name, ". ").concat(q.target ? EX[q.ex].unit === "secs" ? "Tieni per ".concat(q.target, " secondi") : "".concat(q.target, " ripetizioni") : q.timeLimit ? "Massimo in ".concat(q.timeLimit, " secondi") : "Massimo in due minuti", ". Via!"), { urgent: true });
   S.inRest = false;
   coach.reset(S.cur);
-  if (gritOn) setTimeout(() => { if (S.cur && S.cur.count === 0 && !S.inRest) say(pickLine("start")); }, 4000);
+  if (gritOn) setTimeout(() => {
+    if (S.cur && S.cur.count === 0 && !S.inRest) say(pickLine("start"));
+  }, 4e3);
 }
-
 function setBanner(text, kind) {
   const b = $("banner");
   if (b.textContent !== text) b.textContent = text;
   b.className = "banner " + (kind || "");
 }
-
-function bump() { const n = $("count"); n.classList.remove("bump"); void n.offsetWidth; n.classList.add("bump"); }
-
+function bump() {
+  const n = $("count");
+  n.classList.remove("bump");
+  void n.offsetWidth;
+  n.classList.add("bump");
+}
 function loop() {
   if (!S.running) return;
   const next = () => S.running && (vid.requestVideoFrameCallback ? vid.requestVideoFrameCallback(loop) : requestAnimationFrame(loop));
   const nowT = performance.now();
-  const throttled = S.challenge && nowT - (S.lastDetect || 0) < 70;
+  const minGap = Math.max(S.challenge ? 70 : 0, liteMode ? 110 : 0);
+  const throttled = nowT - (S.lastDetect || 0) < minGap;
   if (vid.readyState >= 2 && !S.inRest && !throttled) {
     S.lastDetect = nowT;
-    let ts = S.mode === "file" ? vid.currentTime * 1000 : performance.now();
+    let ts = S.mode === "file" ? vid.currentTime * 1e3 : performance.now();
     if (ts <= S.lastTs) ts = S.lastTs + 1;
     S.lastTs = ts;
     try {
+      const t0 = performance.now();
       const res = landmarker.detectForVideo(vid, ts);
+      const dt = performance.now() - t0;
+      S.detEma = S.detEma == null ? dt : S.detEma * 0.9 + dt * 0.1;
+      if (!liteMode && S.detEma > 55 && (S.detN = (S.detN || 0) + 1) > 30) {
+        liteMode = true;
+        store.set("lite", true);
+      }
       process(res, ts);
-    } catch (e) { /* skip frame */ }
+    } catch (e) {
+    }
   }
   tickTimer();
   if (S.cur) coach.tick(S.cur);
   next();
 }
-
 function tickTimer() {
   if (!S.cur || S.inRest) return;
-  const el = (performance.now() - S.cur.t0) / 1000;
+  const el = (performance.now() - S.cur.t0) / 1e3;
   const secs = S.mode === "file" ? vid.currentTime : el;
   if (S.cur.timeLimit) {
     const left = Math.max(0, S.cur.timeLimit - secs);
@@ -980,41 +1112,57 @@ function tickTimer() {
     if (left <= 0) endSet(true);
   } else $("hudTimer").textContent = fmt(secs);
 }
-
 function process(res, ts) {
+  var _a;
   const w = vid.videoWidth, h = vid.videoHeight;
-  if (cv.width !== w || cv.height !== h) { cv.width = w; cv.height = h; }
+  if (cv.width !== w || cv.height !== h) {
+    cv.width = w;
+    cv.height = h;
+  }
   aspect = w / h || aspect;
   ctx.clearRect(0, 0, w, h);
-  const lm = res?.landmarks?.[0];
-  if (!lm) { setBanner("Non ti vedo: entra nell'inquadratura", "warn"); $("meterFill").style.height = "0%"; return; }
+  const lm = (_a = res == null ? void 0 : res.landmarks) == null ? void 0 : _a[0];
+  if (!lm) {
+    setBanner("Non ti vedo: entra nell'inquadratura", "warn");
+    $("meterFill").style.height = "0%";
+    return;
+  }
   const c = S.cur;
   const out = c.tracker.step(lm, ts) || {};
   drawSkeleton(lm, out.fault ? "bad" : out.lost ? "warn" : "ok");
-  if (out.lost) { setBanner(out.lost, "warn"); return; }
+  if (out.lost) {
+    setBanner(out.lost, "warn");
+    return;
+  }
   $("meterFill").style.height = Math.round((out.metric || 0) * 100) + "%";
-
   if (out.fault && out.cue) {
     setBanner(out.cue, "bad");
     say(out.cue);
-    if (out.fault !== c.lastFault || ts - (c.lastFaultT || 0) > 4000) { S.faults[out.cue] = (S.faults[out.cue] || 0) + 1; c.lastFaultT = ts; }
+    if (out.fault !== c.lastFault || ts - (c.lastFaultT || 0) > 4e3) {
+      S.faults[out.cue] = (S.faults[out.cue] || 0) + 1;
+      c.lastFaultT = ts;
+    }
     c.lastFault = out.fault;
   } else if (!out.event) {
     if (EX[c.ex].unit === "secs") setBanner(c.hold > 0 ? "Tieni! Posizione corretta" : "In posizione di plank", "ok");
     else setBanner("Posizione corretta", "ok");
     c.lastFault = null;
   }
-
   if (EX[c.ex].unit === "secs") {
-    c.hold = (out.hold || 0) / 1000;
+    c.hold = (out.hold || 0) / 1e3;
     $("count").textContent = Math.floor(c.hold);
     const s = Math.floor(c.hold);
-    if (s > 0 && s % 10 === 0 && s !== c.lastAnnounce) { c.lastAnnounce = s; say(`${s} secondi`, { urgent: true }); }
+    if (s > 0 && s % 10 === 0 && s !== c.lastAnnounce) {
+      c.lastAnnounce = s;
+      say("".concat(s, " secondi"), { urgent: true });
+    }
     if (c.target && c.hold >= c.target) endSet(true);
     return;
   }
   if (out.event === "rep") {
-    c.count++; $("count").textContent = c.count; bump();
+    c.count++;
+    $("count").textContent = c.count;
+    bump();
     addPoints(EX[c.ex].pts || 1);
     setBanner(c.count + "!", "ok");
     const left = c.target ? c.target - c.count : null;
@@ -1028,281 +1176,363 @@ function process(res, ts) {
     say(out.noRepCue || "Non conta", { urgent: true });
   }
 }
-
 const BONES = [[11, 12], [11, 13], [13, 15], [12, 14], [14, 16], [11, 23], [12, 24], [23, 24], [23, 25], [25, 27], [24, 26], [26, 28], [27, 31], [28, 32]];
 function drawSkeleton(lm, kind) {
+  var _a, _b, _c;
   const w = cv.width, h = cv.height;
   const col = kind === "bad" ? "#e2603f" : kind === "warn" ? "#e8b23a" : "#7cbf62";
-  ctx.lineWidth = Math.max(3, w / 160); ctx.lineCap = "round"; ctx.strokeStyle = col;
+  ctx.lineWidth = Math.max(3, w / 160);
+  ctx.lineCap = "round";
+  ctx.strokeStyle = col;
   for (const [a, b] of BONES) {
-    if ((lm[a].visibility ?? 1) < 0.4 || (lm[b].visibility ?? 1) < 0.4) continue;
-    ctx.beginPath(); ctx.moveTo(lm[a].x * w, lm[a].y * h); ctx.lineTo(lm[b].x * w, lm[b].y * h); ctx.stroke();
+    if (((_a = lm[a].visibility) != null ? _a : 1) < 0.4 || ((_b = lm[b].visibility) != null ? _b : 1) < 0.4) continue;
+    ctx.beginPath();
+    ctx.moveTo(lm[a].x * w, lm[a].y * h);
+    ctx.lineTo(lm[b].x * w, lm[b].y * h);
+    ctx.stroke();
   }
   ctx.fillStyle = "#f2efe0";
   for (const i of [0, 11, 12, 13, 14, 15, 16, 23, 24, 25, 26, 27, 28]) {
-    if ((lm[i].visibility ?? 1) < 0.4) continue;
-    ctx.beginPath(); ctx.arc(lm[i].x * w, lm[i].y * h, Math.max(4, w / 110), 0, Math.PI * 2); ctx.fill();
+    if (((_c = lm[i].visibility) != null ? _c : 1) < 0.4) continue;
+    ctx.beginPath();
+    ctx.arc(lm[i].x * w, lm[i].y * h, Math.max(4, w / 110), 0, Math.PI * 2);
+    ctx.fill();
   }
 }
-
 function endSet() {
-  const c = S.cur; if (!c || S.inRest) return;
+  const c = S.cur;
+  if (!c || S.inRest) return;
   if (S.challenge) return duelEnd();
   const unit = EX[c.ex].unit;
   S.log.push({ ex: c.ex, set: c.set, target: c.target, unit, done: unit === "secs" ? c.hold : c.count, noreps: c.noreps });
   if (unit === "secs") addPoints(Math.floor(c.hold / 2));
   const last = S.idx >= S.queue.length - 1;
   if (S.mode === "file") {
-    // a recorded video covers one set; further sets come from new recordings
     if (last) return finish(true);
     S.idx++;
     return finish(false);
   }
   if (last) return finish(true);
   S.idx++;
-  say(gritOn ? `${pickLine("done")} ${pickLine("rest")}` : "Serie completata. Recupero.", { urgent: true });
+  say(gritOn ? "".concat(pickLine("done"), " ").concat(pickLine("rest")) : "Serie completata. Recupero.", { urgent: true });
   startRest(60);
 }
-
 function startRest(secs) {
   S.inRest = true;
   ctx.clearRect(0, 0, cv.width, cv.height);
   const nq = S.queue[S.idx];
   $("rest").hidden = false;
-  $("restNext").textContent = `Prossima: ${EX[nq.ex].name} · ${targetTxt(nq.ex, nq.target)}`;
+  $("restNext").textContent = "Prossima: ".concat(EX[nq.ex].name, " \xB7 ").concat(targetTxt(nq.ex, nq.target));
   let left = secs;
   $("restN").textContent = left;
   clearInterval(S.restTimer);
-  const end = () => { clearInterval(S.restTimer); $("rest").hidden = true; beginSet(); };
+  const end = () => {
+    clearInterval(S.restTimer);
+    $("rest").hidden = true;
+    beginSet();
+  };
   S.restTimer = setInterval(() => {
-    left--; $("restN").textContent = left;
+    left--;
+    $("restN").textContent = left;
     if (left === 10) say("Dieci secondi. Preparati.", { urgent: true });
     if (left <= 0) end();
-  }, 1000);
+  }, 1e3);
   $("restSkip").onclick = end;
 }
-
 function finish(all) {
-  const secs = (performance.now() - S.startT) / 1000;
+  const secs = (performance.now() - S.startT) / 1e3;
   let newRecord = null;
   if (S.test && S.log[0]) {
     const n = S.log[0].done;
-    if (!records[S.test] || n > records[S.test]) { records[S.test] = n; store.set("records", records); newRecord = `${n} ${EX[S.test].name.toLowerCase()}`; }
+    if (!records[S.test] || n > records[S.test]) {
+      records[S.test] = n;
+      store.set("records", records);
+      newRecord = "".concat(n, " ").concat(EX[S.test].name.toLowerCase());
+    }
   }
   const remaining = S.queue.slice(S.idx);
-  if (S.day && all) { progress[S.day.wk + "-" + S.day.d] = true; store.set("progress", progress); addPoints(50); }
+  if (S.day && all) {
+    progress[S.day.wk + "-" + S.day.d] = true;
+    store.set("progress", progress);
+    addPoints(50);
+  }
   if ((S.test || S.elite) && all) addPoints(S.elite ? 50 : 20);
   closeSession(true);
   say(all ? "Sessione terminata. Ottimo lavoro, recluta." : "Serie registrata.", { urgent: true });
   if (!all && S.mode === "file" && remaining.length) {
-    // offer the next recorded set
     route = { name: "brief", queue: remaining, title: S.title, day: S.day, free: S.free, test: S.test, carry: (route.carry || []).concat(S.log), carryPts: (route.carryPts || 0) + (S.points || 0), elite: S.elite };
     render();
     const note = $("camNote");
-    note.textContent = `Serie salvate: ${route.carry.map(l => `${EX[l.ex].name} ${l.unit === "secs" ? Math.round(l.done) + " s" : l.done + " rip."}`).join(", ")}. Registra la prossima.`;
+    note.textContent = "Serie salvate: ".concat(route.carry.map((l) => "".concat(EX[l.ex].name, " ").concat(l.unit === "secs" ? Math.round(l.done) + " s" : l.done + " rip.")).join(", "), ". Registra la prossima.");
     return;
   }
   const log = (route.carry || []).concat(S.log);
   go({ name: "summary", result: { title: S.title, secs, log, faults: S.faults, newRecord, points: (route.carryPts || 0) + (S.points || 0), promoted: S.promoted } });
 }
-
 function closeSession() {
+  var _a, _b;
   S.running = false;
   clearInterval(CH.wd);
   clearInterval(S.restTimer);
-  if (!S.challenge) try { S.stream?.getTracks().forEach(t => t.stop()); } catch {}
+  if (!S.challenge) try {
+    (_a = S.stream) == null ? void 0 : _a.getTracks().forEach((t) => t.stop());
+  } catch (e) {
+  }
   S.stream = null;
-  try { vid.pause(); } catch {}
+  try {
+    vid.pause();
+  } catch (e) {
+  }
   if (vid.src && vid.src.startsWith("blob:")) URL.revokeObjectURL(vid.src);
-  vid.removeAttribute("src"); vid.srcObject = null;
-  try { S.wake?.release(); } catch {}
+  vid.removeAttribute("src");
+  vid.srcObject = null;
+  try {
+    (_b = S.wake) == null ? void 0 : _b.release();
+  } catch (e) {
+  }
   $("session").hidden = true;
 }
-
 $("stop").onclick = () => {
   if (!S.cur) return closeSession();
-  if (S.inRest) { clearInterval(S.restTimer); $("rest").hidden = true; return finish(false); }
+  if (S.inRest) {
+    clearInterval(S.restTimer);
+    $("rest").hidden = true;
+    return finish(false);
+  }
   endSet(true);
 };
-$("plus").onclick = () => { if (S.cur) { S.cur.count++; $("count").textContent = S.cur.count; if (S.challenge) { duelSend({ t: "reps", n: S.cur.count }); if (S.cur.target && S.cur.count >= S.cur.target) endSet(); } } };
-$("minus").onclick = () => { if (S.cur && S.cur.count > 0) { S.cur.count--; $("count").textContent = S.cur.count; if (S.challenge) duelSend({ t: "reps", n: S.cur.count }); } };
-$("flip").onclick = async () => { S.facing = S.facing === "user" ? "environment" : "user"; try { await openCamera(); } catch {} };
-
-/* ---------- Punti, gradi, sblocchi ---------- */
+$("plus").onclick = () => {
+  if (S.cur) {
+    S.cur.count++;
+    $("count").textContent = S.cur.count;
+    if (S.challenge) {
+      duelSend({ t: "reps", n: S.cur.count });
+      if (S.cur.target && S.cur.count >= S.cur.target) endSet();
+    }
+  }
+};
+$("minus").onclick = () => {
+  if (S.cur && S.cur.count > 0) {
+    S.cur.count--;
+    $("count").textContent = S.cur.count;
+    if (S.challenge) duelSend({ t: "reps", n: S.cur.count });
+  }
+};
+$("flip").onclick = async () => {
+  S.facing = S.facing === "user" ? "environment" : "user";
+  try {
+    await openCamera();
+  } catch (e) {
+  }
+};
 const RANKS = [
-  ["Recluta", 0], ["Soldato", 200], ["Caporale", 600], ["Caporal maggiore", 1200], ["Sergente", 2000],
-  ["Sergente maggiore", 3200], ["Maresciallo", 4800], ["Sottotenente", 7000], ["Tenente", 10000], ["Capitano", 14000], ["Maggiore", 20000]
+  ["Recluta", 0],
+  ["Soldato", 200],
+  ["Caporale", 600],
+  ["Caporal maggiore", 1200],
+  ["Sergente", 2e3],
+  ["Sergente maggiore", 3200],
+  ["Maresciallo", 4800],
+  ["Sottotenente", 7e3],
+  ["Tenente", 1e4],
+  ["Capitano", 14e3],
+  ["Maggiore", 2e4]
 ];
-const monthKey = (d = new Date()) => d.toISOString().slice(0, 7);
-const prevMonthKey = () => { const d = new Date(); d.setUTCDate(1); d.setUTCMonth(d.getUTCMonth() - 1); return monthKey(d); };
+const monthKey = (d = /* @__PURE__ */ new Date()) => d.toISOString().slice(0, 7);
+const prevMonthKey = () => {
+  const d = /* @__PURE__ */ new Date();
+  d.setUTCDate(1);
+  d.setUTCMonth(d.getUTCMonth() - 1);
+  return monthKey(d);
+};
 const MONTHS_IT = ["gennaio", "febbraio", "marzo", "aprile", "maggio", "giugno", "luglio", "agosto", "settembre", "ottobre", "novembre", "dicembre"];
-const monthName = k => MONTHS_IT[+k.slice(5, 7) - 1] + " " + k.slice(0, 4);
-
+const monthName = (k) => MONTHS_IT[+k.slice(5, 7) - 1] + " " + k.slice(0, 4);
 let stats = store.get("stats", { total: 0, month: { key: monthKey(), pts: 0 }, elite: null, gold: true });
-function rollMonth() { const k = monthKey(); if (stats.month.key !== k) { stats.prev = { ...stats.month }; stats.month = { key: k, pts: 0 }; store.set("stats", stats); } }
+function rollMonth() {
+  const k = monthKey();
+  if (stats.month.key !== k) {
+    stats.prev = { ...stats.month };
+    stats.month = { key: k, pts: 0 };
+    store.set("stats", stats);
+  }
+}
 rollMonth();
-
-function rankIndex(total = stats.total) { let i = 0; RANKS.forEach(([, min], j) => { if (total >= min) i = j; }); return i; }
-const levelOf = i => i + 1;
+function rankIndex(total = stats.total) {
+  let i = 0;
+  RANKS.forEach(([, min], j) => {
+    if (total >= min) i = j;
+  });
+  return i;
+}
+const levelOf = (i) => i + 1;
 const isElite = () => stats.elite === prevMonthKey();
-function rankBadge(i, gold) { return `<span class="rk${gold ? " gold" : ""}" title="${RANKS[i][0]}">Lv ${levelOf(i)}</span>`; }
-function myBadge() { return rankBadge(rankIndex(), isElite() && stats.gold); }
-
+function rankBadge(i, gold) {
+  return '<span class="rk'.concat(gold ? " gold" : "", '" title="').concat(RANKS[i][0], '">Lv ').concat(levelOf(i), "</span>");
+}
+function myBadge() {
+  return rankBadge(rankIndex(), isElite() && stats.gold);
+}
 function isUnlocked(exId) {
   const need = EX[exId].lock;
   return need == null || rankIndex() >= need || isElite();
 }
-
 function addPoints(n, why) {
   if (!n || n < 0) return;
   rollMonth();
   const before = rankIndex();
-  stats.total += n; stats.month.pts += n;
+  stats.total += n;
+  stats.month.pts += n;
   store.set("stats", stats);
   if (S) S.points = (S.points || 0) + n;
   const after = rankIndex();
   if (after > before) {
     const unlocked = Object.entries(EX).filter(([, e]) => e.lock === after).map(([, e]) => e.name);
-    say(`Promosso a ${RANKS[after][0]}!${unlocked.length ? " Hai sbloccato " + unlocked.join(" e ") : ""}`, { urgent: true });
+    say("Promosso a ".concat(RANKS[after][0], "!").concat(unlocked.length ? " Hai sbloccato " + unlocked.join(" e ") : ""), { urgent: true });
     S.promoted = after;
   }
   lbSchedule();
 }
-
-/* Riservato ai primi 3 del mese precedente */
 const ELITE = {
   forze: { name: "Programma Forze Speciali", desc: "Sessione avanzata con burpee, mountain climber e affondi." },
   hell: { name: "Circuito Hell Week", desc: "5 giri senza sconti: burpee, piegamenti, squat, mountain climber." },
   gold: { name: "Mimetica d'oro", desc: "Grado dorato accanto al nome in classifica e nelle sfide." }
 };
-const eliteQueue = id => id === "forze"
-  ? blocksToQueue([["jacks", 1, 40], ["burpee", 3, 10], ["lunge", 3, 16], ["climber", 3, 30], ["pushup", 3, 15], ["plank", 2, 60]])
-  : (() => { const q = []; for (let r = 1; r <= 5; r++) for (const [ex, n] of [["burpee", 10], ["pushup", 15], ["squat", 20], ["climber", 30]]) q.push({ ex, target: n, set: r, sets: 5 }); return q; })();
-
-/* ---------- Classifica mondiale (Firebase) ---------- */
-const FIREBASE_CONFIG = null; // impostato dopo la creazione del progetto Firebase
+const eliteQueue = (id) => id === "forze" ? blocksToQueue([["jacks", 1, 40], ["burpee", 3, 10], ["lunge", 3, 16], ["climber", 3, 30], ["pushup", 3, 15], ["plank", 2, 60]]) : (() => {
+  const q = [];
+  for (let r = 1; r <= 5; r++) for (const [ex, n] of [["burpee", 10], ["pushup", 15], ["squat", 20], ["climber", 30]]) q.push({ ex, target: n, set: r, sets: 5 });
+  return q;
+})();
+const FIREBASE_CONFIG = null;
 const LB = { init: null, ready: false, uid: null, db: null, fs: null, sent: null, lastSync: 0, timer: null, error: false, top3prev: null };
 const FB_V = "10.12.2";
-
 function lbInit() {
   if (!FIREBASE_CONFIG || !SITE) return Promise.resolve(false);
   if (LB.init) return LB.init;
   LB.init = (async () => {
-    const base = `https://www.gstatic.com/firebasejs/${FB_V}/`;
+    var _a, _b;
+    const base = "https://www.gstatic.com/firebasejs/".concat(FB_V, "/");
     const [fbApp, fbAuth, fs] = await Promise.all([import(base + "firebase-app.js"), import(base + "firebase-auth.js"), import(base + "firebase-firestore.js")]);
     const fApp = fbApp.initializeApp(FIREBASE_CONFIG);
     const auth = fbAuth.getAuth(fApp);
     await fbAuth.signInAnonymously(auth);
     Object.assign(LB, { uid: auth.currentUser.uid, db: fs.getFirestore(fApp), fs, ready: true, error: false });
-    // what the server already has for this month, so updates only ever go up
     try {
       const snap = await fs.getDoc(fs.doc(LB.db, "lb", monthKey(), "players", LB.uid));
       LB.sent = snap.exists() ? snap.data().pts : null;
-      if (snap.exists()) LB.lastSync = snap.data().updated?.toMillis?.() || 0;
-    } catch {}
+      if (snap.exists()) LB.lastSync = ((_b = (_a = snap.data().updated) == null ? void 0 : _a.toMillis) == null ? void 0 : _b.call(_a)) || 0;
+    } catch (e) {
+    }
     await checkElite();
     lbSchedule();
     return true;
-  })().catch(() => { LB.init = null; LB.error = true; return false; });
+  })().catch(() => {
+    LB.init = null;
+    LB.error = true;
+    return false;
+  });
   return LB.init;
 }
-
 async function checkElite() {
   const { fs, db } = LB;
   try {
     const q = fs.query(fs.collection(db, "lb", prevMonthKey(), "players"), fs.orderBy("pts", "desc"), fs.limit(3));
-    const rows = (await fs.getDocs(q)).docs.map(d => ({ id: d.id, ...d.data() }));
+    const rows = (await fs.getDocs(q)).docs.map((d) => ({ id: d.id, ...d.data() }));
     LB.top3prev = rows;
     const was = isElite();
-    stats.elite = rows.some(r => r.id === LB.uid) ? prevMonthKey() : (stats.elite === prevMonthKey() ? null : stats.elite);
+    stats.elite = rows.some((r) => r.id === LB.uid) ? prevMonthKey() : stats.elite === prevMonthKey() ? null : stats.elite;
     store.set("stats", stats);
     if (!was && isElite() && route.name === "home") render();
-  } catch {}
+  } catch (e) {
+  }
 }
-
 function lbSchedule() {
   if (!LB.ready) return;
   clearTimeout(LB.timer);
-  // the database accepts one update every 20 s per player
-  const wait = Math.max(1500, LB.lastSync + 25000 - Date.now());
+  const wait = Math.max(1500, LB.lastSync + 25e3 - Date.now());
   LB.timer = setTimeout(lbSync, wait);
 }
-
 async function lbSync() {
+  var _a;
   if (!LB.ready) return;
   rollMonth();
   const pts = stats.month.pts;
   if (LB.sent != null && pts <= LB.sent) return;
-  const capped = Math.min(pts, (LB.sent ?? 0) + 1500);
+  const capped = Math.min(pts, ((_a = LB.sent) != null ? _a : 0) + 1500);
   const { fs, db } = LB;
   try {
     await fs.setDoc(fs.doc(db, "lb", monthKey(), "players", LB.uid), {
-      name: (myName || "Recluta").slice(0, 20), pts: capped, total: stats.total, rank: rankIndex(), gold: isElite() && !!stats.gold, updated: fs.serverTimestamp()
+      name: (myName || "Recluta").slice(0, 20),
+      pts: capped,
+      total: stats.total,
+      rank: rankIndex(),
+      gold: isElite() && !!stats.gold,
+      updated: fs.serverTimestamp()
     });
-    LB.sent = capped; LB.lastSync = Date.now();
+    LB.sent = capped;
+    LB.lastSync = Date.now();
     if (capped < pts) lbSchedule();
-  } catch { LB.lastSync = Date.now(); lbSchedule(); }
+  } catch (e) {
+    LB.lastSync = Date.now();
+    lbSchedule();
+  }
 }
-
 async function lbTop() {
   const { fs, db } = LB;
   const q = fs.query(fs.collection(db, "lb", monthKey(), "players"), fs.orderBy("pts", "desc"), fs.limit(50));
-  return (await fs.getDocs(q)).docs.map(d => ({ id: d.id, ...d.data() }));
+  return (await fs.getDocs(q)).docs.map((d) => ({ id: d.id, ...d.data() }));
 }
-
 function lbRows(rows, isMe) {
-  return rows.map((r, i) => `<li class="${isMe(r) ? "me" : ""}${i < 3 ? " podium" : ""}"><span class="pos">${i + 1}</span><span class="who">${esc(r.name || "Recluta")} ${rankBadge(Math.min(RANKS.length - 1, Math.max(0, r.rank | 0)), !!r.gold)}</span><span class="pts">${r.pts}</span></li>`).join("");
+  return rows.map((r, i) => '<li class="'.concat(isMe(r) ? "me" : "").concat(i < 3 ? " podium" : "", '"><span class="pos">').concat(i + 1, '</span><span class="who">').concat(esc(r.name || "Recluta"), " ").concat(rankBadge(Math.min(RANKS.length - 1, Math.max(0, r.rank | 0)), !!r.gold), '</span><span class="pts">').concat(r.pts, "</span></li>")).join("");
 }
 function renderRanking() {
   const ri = rankIndex(), next = RANKS[ri + 1];
-  const left = (() => { const n = new Date(), e = new Date(Date.UTC(n.getUTCFullYear(), n.getUTCMonth() + 1, 1)); return Math.max(0, Math.ceil((e - n) / 864e5)); })();
-  app.innerHTML = `
-  <div class="screen">
-    <button class="back" id="back" type="button">‹ Indietro</button>
-    <header class="mast"><div><h1>Classifica</h1><div class="sub">${monthName(monthKey())}</div></div><div class="callsign">Fine mese<b>${left} g</b></div></header>
-    <div class="order">
-      <div class="label">I tuoi punti questo mese</div>
-      <div class="code">${stats.month.pts}</div>
-      <p class="meta">${esc(myName || "Tu")} ${myBadge()} ${RANKS[ri][0]} · ${stats.total} punti totali${next ? ` · ${next[1] - stats.total} al grado ${next[0]}` : ""}</p>
-    </div>
-    <div class="section">
-      <div class="label">Premio del mese</div>
-      <p class="meta">I primi 3 a fine mese sbloccano per tutto il mese successivo: ${Object.values(ELITE).map(e => e.name).join(", ")}.</p>
-    </div>
-    ${!myName ? `<div class="field"><label class="label" for="nm">Il tuo nome in classifica</label><input id="nm" maxlength="20" autocomplete="nickname" placeholder="Es. Marco"></div><div class="row"><button class="btn ghost small" id="saveName" type="button">Salva nome</button></div>` : ""}
-    ${FIREBASE_CONFIG ? `<div class="section"><div class="label">Mondiale · primi 50</div><ol class="lb" id="lb"><li class="lbmsg">Carico la classifica…</li></ol></div>` : ""}
-    <div class="section"><div class="label">Tu e gli amici che hai sfidato</div><ol class="lb">${lbRows(friendsBoard(monthKey()), r => r.me)}</ol>
-      ${Object.keys(friends).length ? "" : `<p class="note">Sfida un amico: dopo la prima sfida compare qui con il suo grado e i suoi punti.</p>`}
-      ${FIREBASE_CONFIG ? "" : `<p class="note">Finché la classifica mondiale non è attiva, il premio va ai primi 3 tra te e gli amici sfidati (servono almeno 4 partecipanti).</p>`}</div>
-    <div class="section"><div class="label">Come si guadagnano i punti</div>
-      <ul class="log">
-        <li><span>Ogni ripetizione valida</span><span>1 pt (burpee 3)</span></li>
-        <li><span>Plank, ogni 2 secondi in posizione</span><span>1 pt</span></li>
-        <li><span>Sessione del programma completata</span><span>+50</span></li>
-        <li><span>Prova di efficienza completata</span><span>+20</span></li>
-        <li><span>Sfida: vittoria / pareggio / sconfitta</span><span>+30 / +15 / +10</span></li>
-      </ul>
-    </div>
-  </div>`;
+  const left = (() => {
+    const n = /* @__PURE__ */ new Date(), e = new Date(Date.UTC(n.getUTCFullYear(), n.getUTCMonth() + 1, 1));
+    return Math.max(0, Math.ceil((e - n) / 864e5));
+  })();
+  app.innerHTML = '\n  <div class="screen">\n    <button class="back" id="back" type="button">\u2039 Indietro</button>\n    <header class="mast"><div><h1>Classifica</h1><div class="sub">'.concat(monthName(monthKey()), '</div></div><div class="callsign">Fine mese<b>').concat(left, ' g</b></div></header>\n    <div class="order">\n      <div class="label">I tuoi punti questo mese</div>\n      <div class="code">').concat(stats.month.pts, '</div>\n      <p class="meta">').concat(esc(myName || "Tu"), " ").concat(myBadge(), " ").concat(RANKS[ri][0], " \xB7 ").concat(stats.total, " punti totali").concat(next ? " \xB7 ".concat(next[1] - stats.total, " al grado ").concat(next[0]) : "", '</p>\n    </div>\n    <div class="section">\n      <div class="label">Premio del mese</div>\n      <p class="meta">I primi 3 a fine mese sbloccano per tutto il mese successivo: ').concat(Object.values(ELITE).map((e) => e.name).join(", "), ".</p>\n    </div>\n    ").concat(!myName ? '<div class="field"><label class="label" for="nm">Il tuo nome in classifica</label><input id="nm" maxlength="20" autocomplete="nickname" placeholder="Es. Marco"></div><div class="row"><button class="btn ghost small" id="saveName" type="button">Salva nome</button></div>' : "", "\n    ").concat(FIREBASE_CONFIG ? '<div class="section"><div class="label">Mondiale \xB7 primi 50</div><ol class="lb" id="lb"><li class="lbmsg">Carico la classifica\u2026</li></ol></div>' : "", '\n    <div class="section"><div class="label">Tu e gli amici che hai sfidato</div><ol class="lb">').concat(lbRows(friendsBoard(monthKey()), (r) => r.me), "</ol>\n      ").concat(Object.keys(friends).length ? "" : '<p class="note">Sfida un amico: dopo la prima sfida compare qui con il suo grado e i suoi punti.</p>', "\n      ").concat(FIREBASE_CONFIG ? "" : '<p class="note">Finch\xE9 la classifica mondiale non \xE8 attiva, il premio va ai primi 3 tra te e gli amici sfidati (servono almeno 4 partecipanti).</p>', '</div>\n    <div class="section"><div class="label">Come si guadagnano i punti</div>\n      <ul class="log">\n        <li><span>Ogni ripetizione valida</span><span>1 pt (burpee 3)</span></li>\n        <li><span>Plank, ogni 2 secondi in posizione</span><span>1 pt</span></li>\n        <li><span>Sessione del programma completata</span><span>+50</span></li>\n        <li><span>Prova di efficienza completata</span><span>+20</span></li>\n        <li><span>Sfida: vittoria / pareggio / sconfitta</span><span>+30 / +15 / +10</span></li>\n      </ul>\n    </div>\n  </div>');
   $("back").onclick = () => go({ name: "home" });
-  if ($("saveName")) $("saveName").onclick = () => { const v = $("nm").value.trim(); if (!v) return; myName = v; store.set("name", myName); lbSchedule(); renderRanking(); };
+  if ($("saveName")) $("saveName").onclick = () => {
+    const v = $("nm").value.trim();
+    if (!v) return;
+    myName = v;
+    store.set("name", myName);
+    lbSchedule();
+    renderRanking();
+  };
   if (!FIREBASE_CONFIG) return;
-  lbInit().then(async ok => {
-    const el = $("lb"); if (!el || route.name !== "ranking") return;
-    if (!ok) { el.innerHTML = `<li class="lbmsg">Non riesco a caricare la classifica. Controlla la connessione.</li>`; return; }
+  lbInit().then(async (ok) => {
+    const el = $("lb");
+    if (!el || route.name !== "ranking") return;
+    if (!ok) {
+      el.innerHTML = '<li class="lbmsg">Non riesco a caricare la classifica. Controlla la connessione.</li>';
+      return;
+    }
     try {
       const rows = await lbTop();
-      if (!rows.length) { el.innerHTML = `<li class="lbmsg">Nessuno in classifica questo mese: fai il primo allenamento e conquista il primo posto.</li>`; return; }
-      el.innerHTML = lbRows(rows, r => r.id === LB.uid);
-    } catch { el.innerHTML = `<li class="lbmsg">Non riesco a caricare la classifica. Riprova tra poco.</li>`; }
+      if (!rows.length) {
+        el.innerHTML = '<li class="lbmsg">Nessuno in classifica questo mese: fai il primo allenamento e conquista il primo posto.</li>';
+        return;
+      }
+      el.innerHTML = lbRows(rows, (r) => r.id === LB.uid);
+    } catch (e) {
+      el.innerHTML = '<li class="lbmsg">Non riesco a caricare la classifica. Riprova tra poco.</li>';
+    }
   });
 }
-
-/* ---------- Classifica tra amici (senza server) ----------
-   Ogni sfida scambia nome, grado e punti: chi hai sfidato entra nella tua classifica. */
-const meId = (() => { let id = store.get("meId", null); if (!id) { id = Math.random().toString(36).slice(2, 10) + Date.now().toString(36); store.set("meId", id); } return id; })();
-let friends = store.get("friends", {}); // id -> {name, rank, total, gold, months: {"2026-10": pts}}
-function myCard() { rollMonth(); return { id: meId, name: (myName || "Recluta").slice(0, 20), rank: rankIndex(), total: stats.total, gold: isElite() && !!stats.gold, months: { [stats.month.key]: stats.month.pts, ...(stats.prev ? { [stats.prev.key]: stats.prev.pts } : {}) } }; }
+const meId = (() => {
+  let id = store.get("meId", null);
+  if (!id) {
+    id = Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
+    store.set("meId", id);
+  }
+  return id;
+})();
+let friends = store.get("friends", {});
+function myCard() {
+  rollMonth();
+  return { id: meId, name: (myName || "Recluta").slice(0, 20), rank: rankIndex(), total: stats.total, gold: isElite() && !!stats.gold, months: { [stats.month.key]: stats.month.pts, ...stats.prev ? { [stats.prev.key]: stats.prev.pts } : {} } };
+}
 function saveFriend(c) {
   if (!c || typeof c.id !== "string" || c.id === meId || c.id.length > 40) return;
   const old = friends[c.id] || { months: {} };
@@ -1312,123 +1542,165 @@ function saveFriend(c) {
   store.set("friends", friends);
 }
 function friendsBoard(key) {
+  var _a;
   const rows = Object.entries(friends).map(([id, f]) => ({ id, name: f.name, rank: f.rank, gold: f.gold, pts: f.months[key] || 0 }));
-  const mine = key === stats.month.key ? stats.month.pts : (stats.prev?.key === key ? stats.prev.pts : 0);
+  const mine = key === stats.month.key ? stats.month.pts : ((_a = stats.prev) == null ? void 0 : _a.key) === key ? stats.prev.pts : 0;
   rows.push({ id: meId, name: myName || "Tu", rank: rankIndex(), gold: isElite() && !!stats.gold, pts: mine, me: true });
   return rows.sort((a, b) => b.pts - a.pts);
 }
-// without the world leaderboard, the monthly prize goes to the top 3 among friends (at least 4 players)
 function checkFriendsElite() {
   if (FIREBASE_CONFIG) return;
   const k = prevMonthKey();
-  const board = friendsBoard(k).filter(r => r.pts > 0);
-  const pos = board.findIndex(r => r.me);
-  stats.elite = board.length >= 4 && pos > -1 && pos < 3 ? k : (stats.elite === k ? null : stats.elite);
+  const board = friendsBoard(k).filter((r) => r.pts > 0);
+  const pos = board.findIndex((r) => r.me);
+  stats.elite = board.length >= 4 && pos > -1 && pos < 3 ? k : stats.elite === k ? null : stats.elite;
   store.set("stats", stats);
 }
-
-function applyGold() { document.body.classList.toggle("goldtheme", isElite() && !!stats.gold); }
-
-/* ---------- Sfida un amico (WebRTC via PeerJS) ---------- */
+function applyGold() {
+  document.body.classList.toggle("goldtheme", isElite() && !!stats.gold);
+}
 const DUEL_EX_ALL = ["pushup", "squat", "situp", "jacks", "lunge", "climber", "burpee"];
-const duelExList = () => DUEL_EX_ALL.filter(id => isUnlocked(id) || id === CH.cfg.ex);
+const duelExList = () => DUEL_EX_ALL.filter((id) => isUnlocked(id) || id === CH.cfg.ex);
 const DUEL_FMT = {
-  time: { label: "Più ripetizioni in 60 s", short: "60 secondi", n: 60 },
+  time: { label: "Pi\xF9 ripetizioni in 60 s", short: "60 secondi", n: 60 },
   first: { label: "Primo a 20", short: "primo a 20", n: 20 }
 };
 const CH = { peer: null, conn: null, call: null, stream: null, remote: null, role: null, code: "", oppName: "", oppReps: 0, cfg: { ex: "pushup", fmt: "time" }, connected: false, myFinal: null, oppFinal: null, wins: { me: 0, opp: 0 } };
 let myName = store.get("name", "");
-
 function loadScript(src) {
-  return new Promise((res, rej) => { const s = document.createElement("script"); s.src = src; s.onload = res; s.onerror = rej; document.head.append(s); });
+  return new Promise((res, rej) => {
+    const s = document.createElement("script");
+    s.src = src;
+    s.onload = res;
+    s.onerror = rej;
+    document.head.append(s);
+  });
 }
 async function loadPeer() {
   if (!window.Peer) await loadScript("peerjs.min.js");
   return window.Peer;
 }
 function peerOpts() {
-  // a test can point to a local signalling server with ?peerhost=host:port
   const o = { debug: 0 };
   try {
     const h = new URLSearchParams(location.search).get("peerhost");
-    if (h) { const [host, port] = h.split(":"); Object.assign(o, { host, port: +port, path: "/", secure: false }); }
-  } catch {}
+    if (h) {
+      const [host, port] = h.split(":");
+      Object.assign(o, { host, port: +port, path: "/", secure: false });
+    }
+  } catch (e) {
+  }
   return o;
 }
 const CODE_CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 const newCode = () => Array.from({ length: 6 }, () => CODE_CHARS[Math.floor(Math.random() * CODE_CHARS.length)]).join("");
-const peerId = code => "istruttore-recluta-" + code;
+const peerId = (code) => "istruttore-recluta-" + code;
 const duelLink = () => location.origin + location.pathname + "?sfida=" + CH.code;
-const fmtTxt = cfg => `${EX[cfg.ex].name} · ${DUEL_FMT[cfg.fmt].short}`;
-
-function duelSend(msg) { try { if (CH.conn?.open) CH.conn.send(msg); } catch {} }
-
+const fmtTxt = (cfg) => "".concat(EX[cfg.ex].name, " \xB7 ").concat(DUEL_FMT[cfg.fmt].short);
+function duelSend(msg) {
+  var _a;
+  try {
+    if ((_a = CH.conn) == null ? void 0 : _a.open) CH.conn.send(msg);
+  } catch (e) {
+  }
+}
 async function getDuelStream() {
-  if (CH.stream && CH.stream.getVideoTracks().some(t => t.readyState === "live")) return CH.stream;
+  if (CH.stream && CH.stream.getVideoTracks().some((t) => t.readyState === "live")) return CH.stream;
   CH.stream = await navigator.mediaDevices.getUserMedia({
-    video: { facingMode: "user", width: { ideal: 640 }, height: { ideal: 480 }, frameRate: { ideal: 24, max: 30 } },
+    video: { facingMode: "user", ...camSize() },
     audio: { echoCancellation: true, noiseSuppression: true }
   });
   return CH.stream;
 }
-
 function attach(video, stream, muted) {
   if (!video || !stream) return;
   if (video.srcObject !== stream) video.srcObject = stream;
   video.muted = muted;
   video.play().catch(() => {
-    // iOS may refuse unmuted playback without a tap: play muted and unmute on the next touch
-    video.muted = true; video.play().catch(() => {});
-    if (!muted) document.addEventListener("pointerdown", () => { video.muted = false; video.play().catch(() => {}); }, { once: true });
+    video.muted = true;
+    video.play().catch(() => {
+    });
+    if (!muted) document.addEventListener("pointerdown", () => {
+      video.muted = false;
+      video.play().catch(() => {
+      });
+    }, { once: true });
   });
 }
-
-// local preview without the microphone track
 function localView() {
-  const vt = CH.stream?.getVideoTracks() || [];
+  var _a;
+  const vt = ((_a = CH.stream) == null ? void 0 : _a.getVideoTracks()) || [];
   if (!CH.view || CH.view.getVideoTracks()[0] !== vt[0]) CH.view = new MediaStream(vt);
   return CH.view;
 }
-
-// a camera can stop when the phone switches audio mode or gets busy: restart it and swap it into the call
 async function recoverCamera() {
-  if (CH.recovering) return; CH.recovering = true;
+  var _a, _b;
+  if (CH.recovering) return;
+  CH.recovering = true;
   try {
-    const fresh = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user", width: { ideal: 640 }, height: { ideal: 480 }, frameRate: { ideal: 24, max: 30 } }, audio: false });
+    const fresh = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user", ...camSize() }, audio: false });
     const nt = fresh.getVideoTracks()[0];
-    for (const old of CH.stream.getVideoTracks()) { CH.stream.removeTrack(old); try { old.stop(); } catch {} }
+    for (const old of CH.stream.getVideoTracks()) {
+      CH.stream.removeTrack(old);
+      try {
+        old.stop();
+      } catch (e) {
+      }
+    }
     CH.stream.addTrack(nt);
-    const sender = CH.call?.peerConnection?.getSenders().find(x => x.track?.kind === "video" || (!x.track && x.dtmf == null));
+    const sender = (_b = (_a = CH.call) == null ? void 0 : _a.peerConnection) == null ? void 0 : _b.getSenders().find((x) => {
+      var _a2;
+      return ((_a2 = x.track) == null ? void 0 : _a2.kind) === "video" || !x.track && x.dtmf == null;
+    });
     if (sender) await sender.replaceTrack(nt);
-    vid.srcObject = localView(); vid.play().catch(() => {});
-  } catch {}
-  CH.recovering = false; CH.lastRecover = performance.now();
+    vid.srcObject = localView();
+    vid.play().catch(() => {
+    });
+  } catch (e) {
+  }
+  CH.recovering = false;
+  CH.lastRecover = performance.now();
 }
 function startCamWatchdog() {
   clearInterval(CH.wd);
   let lastT = -1, stuckSince = 0;
   CH.wd = setInterval(() => {
+    var _a;
     if (!S.challenge || !S.running) return clearInterval(CH.wd);
-    const tr = CH.stream?.getVideoTracks()[0];
-    if (vid.paused) vid.play().catch(() => {});
-    const ov = $("oppVid"); if (ov.srcObject && ov.paused) ov.play().catch(() => {});
+    const tr = (_a = CH.stream) == null ? void 0 : _a.getVideoTracks()[0];
+    if (vid.paused) vid.play().catch(() => {
+    });
+    const ov = $("oppVid");
+    if (ov.srcObject && ov.paused) ov.play().catch(() => {
+    });
     const now = performance.now();
     const stalled = vid.currentTime === lastT;
     lastT = vid.currentTime;
-    stuckSince = stalled ? (stuckSince || now) : 0;
-    const dead = !tr || tr.readyState === "ended" || (tr.muted && stuckSince && now - stuckSince > 2000) || (stuckSince && now - stuckSince > 3000);
-    if (dead && now - (CH.lastRecover || 0) > 8000) recoverCamera();
-  }, 1000);
+    stuckSince = stalled ? stuckSince || now : 0;
+    const dead = !tr || tr.readyState === "ended" || tr.muted && stuckSince && now - stuckSince > 2e3 || stuckSince && now - stuckSince > 3e3;
+    if (dead && now - (CH.lastRecover || 0) > 8e3) recoverCamera();
+  }, 1e3);
 }
-
 function duelReset() {
-  try { CH.call?.close(); } catch {}
-  try { CH.conn?.close(); } catch {}
-  try { CH.peer?.destroy(); } catch {}
-  try { CH.stream?.getTracks().forEach(t => t.stop()); } catch {}
+  var _a, _b, _c, _d;
+  try {
+    (_a = CH.call) == null ? void 0 : _a.close();
+  } catch (e) {
+  }
+  try {
+    (_b = CH.conn) == null ? void 0 : _b.close();
+  } catch (e) {
+  }
+  try {
+    (_c = CH.peer) == null ? void 0 : _c.destroy();
+  } catch (e) {
+  }
+  try {
+    (_d = CH.stream) == null ? void 0 : _d.getTracks().forEach((t) => t.stop());
+  } catch (e) {
+  }
   Object.assign(CH, { peer: null, conn: null, call: null, stream: null, remote: null, role: null, code: "", oppName: "", oppReps: 0, connected: false, myFinal: null, oppFinal: null, wins: { me: 0, opp: 0 } });
 }
-
 function setupConn(conn) {
   CH.conn = conn;
   conn.on("open", () => {
@@ -1438,294 +1710,433 @@ function setupConn(conn) {
     refreshLobby();
   });
   conn.on("data", onDuelMsg);
-  conn.on("close", () => { CH.connected = false; onDuelDrop(); });
-  conn.on("error", () => {});
+  conn.on("close", () => {
+    CH.connected = false;
+    onDuelDrop();
+  });
+  conn.on("error", () => {
+  });
 }
 function setupCall(call) {
   CH.call = call;
-  call.on("stream", remote => { CH.remote = remote; refreshLobby(); if (!$("session").hidden) attach($("oppVid"), remote, false); });
-  call.on("close", () => {});
+  call.on("stream", (remote) => {
+    CH.remote = remote;
+    refreshLobby();
+    if (!$("session").hidden) attach($("oppVid"), remote, false);
+  });
+  call.on("close", () => {
+  });
 }
-
 function onDuelMsg(m) {
   if (!m || typeof m !== "object") return;
   if (m.t === "hello") {
     CH.oppName = String(m.name || "Amico").slice(0, 20);
-    if (m.card && typeof m.card === "object") { CH.oppCard = m.card; saveFriend(m.card); }
+    if (m.card && typeof m.card === "object") {
+      CH.oppCard = m.card;
+      saveFriend(m.card);
+    }
     refreshLobby();
-  }
-  else if (m.t === "cfg" && CH.role === "guest" && m.cfg && EX[m.cfg.ex] && DUEL_FMT[m.cfg.fmt]) { CH.cfg = m.cfg; refreshLobby(); }
-  else if (m.t === "start") startDuelSession();
-  else if (m.t === "card" && m.card && typeof m.card === "object") { CH.oppCard = m.card; saveFriend(m.card); }
-  else if (m.t === "reps") { CH.oppReps = Math.max(0, m.n | 0); $("oppCount").textContent = CH.oppReps; }
-  else if (m.t === "final") {
-    CH.oppFinal = Math.max(0, m.n | 0); CH.oppReps = CH.oppFinal; $("oppCount").textContent = CH.oppFinal;
-    // in "first to N" the friend reaching the target ends the round for both
+  } else if (m.t === "cfg" && CH.role === "guest" && m.cfg && EX[m.cfg.ex] && DUEL_FMT[m.cfg.fmt]) {
+    CH.cfg = m.cfg;
+    refreshLobby();
+  } else if (m.t === "start") startDuelSession();
+  else if (m.t === "card" && m.card && typeof m.card === "object") {
+    CH.oppCard = m.card;
+    saveFriend(m.card);
+  } else if (m.t === "reps") {
+    CH.oppReps = Math.max(0, m.n | 0);
+    $("oppCount").textContent = CH.oppReps;
+  } else if (m.t === "final") {
+    CH.oppFinal = Math.max(0, m.n | 0);
+    CH.oppReps = CH.oppFinal;
+    $("oppCount").textContent = CH.oppFinal;
     if (S.challenge && S.running && CH.cfg.fmt === "first" && CH.oppFinal >= DUEL_FMT.first.n) endSet();
     maybeDuelResult();
+  } else if (m.t === "lobby") {
+    if (S.challenge && S.running) {
+      S.challenge = true;
+      closeSession();
+    }
+    go({ name: "lobby" });
   }
-  else if (m.t === "lobby") { if (S.challenge && S.running) { S.challenge = true; closeSession(); } go({ name: "lobby" }); }
 }
-
 function onDuelDrop() {
-  if (S.challenge && S.running) { setBanner(`${CH.oppName || "L'amico"} si è disconnesso`, "bad"); say("Il tuo avversario si è disconnesso", { urgent: true }); }
-  if (CH.myFinal != null && CH.oppFinal == null) { CH.oppFinal = CH.oppReps; maybeDuelResult(); }
+  if (S.challenge && S.running) {
+    setBanner("".concat(CH.oppName || "L'amico", " si \xE8 disconnesso"), "bad");
+    say("Il tuo avversario si \xE8 disconnesso", { urgent: true });
+  }
+  if (CH.myFinal != null && CH.oppFinal == null) {
+    CH.oppFinal = CH.oppReps;
+    maybeDuelResult();
+  }
   refreshLobby();
 }
-
 async function duelHost() {
-  const P = await loadPeer();
+  const P2 = await loadPeer();
   CH.role = "host";
   for (let attempt = 0; attempt < 4; attempt++) {
     CH.code = newCode();
     try {
       CH.peer = await new Promise((res, rej) => {
-        const p = new P(peerId(CH.code), peerOpts());
+        const p = new P2(peerId(CH.code), peerOpts());
         p.on("open", () => res(p));
-        p.on("error", e => rej(e));
+        p.on("error", (e) => rej(e));
       });
       break;
-    } catch (e) { if (e?.type !== "unavailable-id") throw e; }
+    } catch (e) {
+      if ((e == null ? void 0 : e.type) !== "unavailable-id") throw e;
+    }
   }
   if (!CH.peer) throw new Error("no-id");
-  CH.peer.on("connection", c => { if (CH.conn?.open) { c.on("open", () => c.close()); return; } setupConn(c); });
-  CH.peer.on("call", call => { call.answer(CH.stream); setupCall(call); });
-  CH.peer.on("disconnected", () => { try { CH.peer.reconnect(); } catch {} });
-}
-
-async function duelJoin(code) {
-  const P = await loadPeer();
-  CH.role = "guest"; CH.code = code;
-  CH.peer = await new Promise((res, rej) => {
-    const p = new P(peerOpts());
-    p.on("open", () => res(p));
-    p.on("error", e => rej(e));
+  CH.peer.on("connection", (c) => {
+    var _a;
+    if ((_a = CH.conn) == null ? void 0 : _a.open) {
+      c.on("open", () => c.close());
+      return;
+    }
+    setupConn(c);
   });
-  CH.peer.on("error", e => { if (e?.type === "peer-unavailable") { CH.notFound = true; refreshLobby(); } });
+  CH.peer.on("call", (call) => {
+    call.answer(CH.stream);
+    setupCall(call);
+  });
+  CH.peer.on("disconnected", () => {
+    try {
+      CH.peer.reconnect();
+    } catch (e) {
+    }
+  });
+}
+async function duelJoin(code) {
+  const P2 = await loadPeer();
+  CH.role = "guest";
+  CH.code = code;
+  CH.peer = await new Promise((res, rej) => {
+    const p = new P2(peerOpts());
+    p.on("open", () => res(p));
+    p.on("error", (e) => rej(e));
+  });
+  CH.peer.on("error", (e) => {
+    if ((e == null ? void 0 : e.type) === "peer-unavailable") {
+      CH.notFound = true;
+      refreshLobby();
+    }
+  });
   setupConn(CH.peer.connect(peerId(code), { reliable: true }));
   setupCall(CH.peer.call(peerId(code), CH.stream));
 }
-
-/* ----- screens ----- */
 function renderDuelNew() {
   const c = CH.cfg;
-  app.innerHTML = `
-  <div class="screen brief">
-    <button class="back" id="back" type="button">‹ Indietro</button>
-    <div class="section"><div class="label">Sfida un amico</div><h2>Nuova sfida</h2></div>
-    <div class="field"><label class="label" for="nm">Il tuo nome</label><input id="nm" maxlength="20" autocomplete="nickname" placeholder="Es. Marco" value="${esc(myName)}"></div>
-    <div class="section"><div class="label">Esercizio</div>
-      <div class="choices">${duelExList().map(id => `<button class="choice" type="button" data-ex="${id}" aria-pressed="${c.ex === id}">${EX[id].name}<small>${EX[id].tag}</small></button>`).join("")}</div>
-    </div>
-    <div class="section"><div class="label">Formato</div>
-      <div class="choices">${Object.entries(DUEL_FMT).map(([k, f]) => `<button class="choice" type="button" data-fmt="${k}" aria-pressed="${c.fmt === k}">${f.label}<small>${k === "time" ? "Vince chi ne fa di più" : "Vince chi arriva prima"}</small></button>`).join("")}</div>
-    </div>
-    <div class="camtip">${sideCam}<span>Mettete i telefoni nella stessa posizione: ${EX[c.ex].cam.charAt(0).toLowerCase() + EX[c.ex].cam.slice(1)}</span></div>
-    <div class="row"><button class="btn primary" id="create" type="button">Crea la sfida</button></div>
-    <p class="note" id="err" hidden></p>
-  </div>`;
+  app.innerHTML = '\n  <div class="screen brief">\n    <button class="back" id="back" type="button">\u2039 Indietro</button>\n    <div class="section"><div class="label">Sfida un amico</div><h2>Nuova sfida</h2></div>\n    <div class="field"><label class="label" for="nm">Il tuo nome</label><input id="nm" maxlength="20" autocomplete="nickname" placeholder="Es. Marco" value="'.concat(esc(myName), '"></div>\n    <div class="section"><div class="label">Esercizio</div>\n      <div class="choices">').concat(duelExList().map((id) => '<button class="choice" type="button" data-ex="'.concat(id, '" aria-pressed="').concat(c.ex === id, '">').concat(EX[id].name, "<small>").concat(EX[id].tag, "</small></button>")).join(""), '</div>\n    </div>\n    <div class="section"><div class="label">Formato</div>\n      <div class="choices">').concat(Object.entries(DUEL_FMT).map(([k, f]) => '<button class="choice" type="button" data-fmt="'.concat(k, '" aria-pressed="').concat(c.fmt === k, '">').concat(f.label, "<small>").concat(k === "time" ? "Vince chi ne fa di pi\xF9" : "Vince chi arriva prima", "</small></button>")).join(""), '</div>\n    </div>\n    <div class="camtip">').concat(sideCam, "<span>Mettete i telefoni nella stessa posizione: ").concat(EX[c.ex].cam.charAt(0).toLowerCase() + EX[c.ex].cam.slice(1), '</span></div>\n    <div class="row"><button class="btn primary" id="create" type="button">Crea la sfida</button></div>\n    <p class="note" id="err" hidden></p>\n  </div>');
   $("back").onclick = () => go({ name: "home" });
-  app.querySelectorAll("[data-ex]").forEach(b => b.onclick = () => { CH.cfg.ex = b.dataset.ex; myName = $("nm").value.trim(); renderDuelNew(); });
-  app.querySelectorAll("[data-fmt]").forEach(b => b.onclick = () => { CH.cfg.fmt = b.dataset.fmt; myName = $("nm").value.trim(); renderDuelNew(); });
+  app.querySelectorAll("[data-ex]").forEach((b) => b.onclick = () => {
+    CH.cfg.ex = b.dataset.ex;
+    myName = $("nm").value.trim();
+    renderDuelNew();
+  });
+  app.querySelectorAll("[data-fmt]").forEach((b) => b.onclick = () => {
+    CH.cfg.fmt = b.dataset.fmt;
+    myName = $("nm").value.trim();
+    renderDuelNew();
+  });
   $("create").onclick = async () => {
-    myName = $("nm").value.trim() || "Recluta"; store.set("name", myName);
-    const btn = $("create"); btn.disabled = true; btn.textContent = "Preparo la sfida…";
-    try { await getDuelStream(); }
-    catch { return duelError("Non riesco ad aprire fotocamera e microfono. Dai il permesso nelle impostazioni del browser e riprova.", btn, "Crea la sfida"); }
-    try { await duelHost(); }
-    catch { return duelError("Non riesco a collegarmi al servizio delle sfide. Controlla la connessione e riprova.", btn, "Crea la sfida"); }
+    myName = $("nm").value.trim() || "Recluta";
+    store.set("name", myName);
+    const btn = $("create");
+    btn.disabled = true;
+    btn.textContent = "Preparo la sfida\u2026";
+    try {
+      await getDuelStream();
+    } catch (e) {
+      return duelError("Non riesco ad aprire fotocamera e microfono. Dai il permesso nelle impostazioni del browser e riprova.", btn, "Crea la sfida");
+    }
+    try {
+      await duelHost();
+    } catch (e) {
+      return duelError("Non riesco a collegarmi al servizio delle sfide. Controlla la connessione e riprova.", btn, "Crea la sfida");
+    }
     go({ name: "lobby" });
   };
 }
-
 function duelError(msg, btn, label) {
-  const e = $("err"); if (e) { e.textContent = msg; e.hidden = false; }
-  if (btn) { btn.disabled = false; btn.textContent = label; }
+  const e = $("err");
+  if (e) {
+    e.textContent = msg;
+    e.hidden = false;
+  }
+  if (btn) {
+    btn.disabled = false;
+    btn.textContent = label;
+  }
 }
-
 function renderDuelJoin() {
-  app.innerHTML = `
-  <div class="screen brief">
-    <button class="back" id="back" type="button">‹ Indietro</button>
-    <div class="section"><div class="label">Sfida un amico</div><h2>Entra nella sfida</h2></div>
-    <div class="field"><label class="label" for="cd">Codice della sfida</label><input id="cd" maxlength="6" autocapitalize="characters" autocomplete="off" placeholder="Es. K7M2QX" value="${esc(route.code || "")}" style="letter-spacing:.2em;text-transform:uppercase"></div>
-    <div class="field"><label class="label" for="nm">Il tuo nome</label><input id="nm" maxlength="20" autocomplete="nickname" placeholder="Es. Luca" value="${esc(myName)}"></div>
-    <div class="row"><button class="btn primary" id="join" type="button">Entra</button></div>
-    <p class="note" id="err" hidden></p>
-  </div>`;
-  $("back").onclick = () => { try { history.replaceState(null, "", location.pathname); } catch {} go({ name: "home" }); };
+  app.innerHTML = '\n  <div class="screen brief">\n    <button class="back" id="back" type="button">\u2039 Indietro</button>\n    <div class="section"><div class="label">Sfida un amico</div><h2>Entra nella sfida</h2></div>\n    <div class="field"><label class="label" for="cd">Codice della sfida</label><input id="cd" maxlength="6" autocapitalize="characters" autocomplete="off" placeholder="Es. K7M2QX" value="'.concat(esc(route.code || ""), '" style="letter-spacing:.2em;text-transform:uppercase"></div>\n    <div class="field"><label class="label" for="nm">Il tuo nome</label><input id="nm" maxlength="20" autocomplete="nickname" placeholder="Es. Luca" value="').concat(esc(myName), '"></div>\n    <div class="row"><button class="btn primary" id="join" type="button">Entra</button></div>\n    <p class="note" id="err" hidden></p>\n  </div>');
+  $("back").onclick = () => {
+    try {
+      history.replaceState(null, "", location.pathname);
+    } catch (e) {
+    }
+    go({ name: "home" });
+  };
   $("join").onclick = async () => {
     const code = $("cd").value.trim().toUpperCase().replace(/[^A-Z0-9]/g, "");
     if (code.length !== 6) return duelError("Il codice ha 6 caratteri: controlla e riprova.");
-    myName = $("nm").value.trim() || "Recluta"; store.set("name", myName);
-    const btn = $("join"); btn.disabled = true; btn.textContent = "Mi collego…";
-    try { await getDuelStream(); }
-    catch { return duelError("Non riesco ad aprire fotocamera e microfono. Dai il permesso nelle impostazioni del browser e riprova.", btn, "Entra"); }
-    try { await duelJoin(code); }
-    catch { return duelError("Non riesco a collegarmi al servizio delle sfide. Controlla la connessione e riprova.", btn, "Entra"); }
+    myName = $("nm").value.trim() || "Recluta";
+    store.set("name", myName);
+    const btn = $("join");
+    btn.disabled = true;
+    btn.textContent = "Mi collego\u2026";
+    try {
+      await getDuelStream();
+    } catch (e) {
+      return duelError("Non riesco ad aprire fotocamera e microfono. Dai il permesso nelle impostazioni del browser e riprova.", btn, "Entra");
+    }
+    try {
+      await duelJoin(code);
+    } catch (e) {
+      return duelError("Non riesco a collegarmi al servizio delle sfide. Controlla la connessione e riprova.", btn, "Entra");
+    }
     go({ name: "lobby" });
   };
 }
-
 function renderLobby() {
   const host = CH.role === "host";
-  app.innerHTML = `
-  <div class="screen brief">
-    <div class="section"><div class="label">Sfida · ${esc(fmtTxt(CH.cfg))}</div><h2>${host ? "Invita il tuo amico" : "Sala d'attesa"}</h2></div>
-    ${host ? `<div class="order">
-      <div class="label">Codice sfida</div>
-      <div class="code">${CH.code}</div>
-      <p class="meta">Mandagli il link: lo apre dal telefono ed entra subito.</p>
-      <div class="row"><button class="btn ghost small" id="share" type="button">Invia il link</button></div>
-      <p class="note" id="shareNote" hidden></p>
-    </div>` : ""}
-    <div class="status" id="lobStatus"><i></i><span></span></div>
-    <div class="lobvids">
-      <div class="lobvid"><video id="lobMe" playsinline autoplay muted></video><span>${esc(myName || "Tu")} ${myBadge()}</span></div>
-      <div class="lobvid"><video id="lobOpp" playsinline autoplay></video><div class="empty" id="lobOppEmpty">In attesa della videochiamata…</div><span id="lobOppName">Amico</span></div>
-    </div>
-    ${CH.wins.me + CH.wins.opp > 0 ? `<p class="meta">Punteggio: ${esc(myName)} ${CH.wins.me} – ${CH.wins.opp} ${esc(CH.oppName)}</p>` : ""}
-    <div class="row">
-      ${host ? `<button class="btn primary" id="go" type="button" disabled>Via!</button>` : ""}
-      <button class="btn ghost" id="leave" type="button">Esci dalla sfida</button>
-    </div>
-    ${host ? `<details class="note"><summary>Cambia esercizio o formato</summary><div class="choices" style="margin-top:8px">${duelExList().map(id => `<button class="choice" type="button" data-ex="${id}" aria-pressed="${CH.cfg.ex === id}">${EX[id].name}</button>`).join("")}${Object.entries(DUEL_FMT).map(([k, f]) => `<button class="choice" type="button" data-fmt="${k}" aria-pressed="${CH.cfg.fmt === k}">${f.label}</button>`).join("")}</div></details>` : ""}
-  </div>`;
+  app.innerHTML = '\n  <div class="screen brief">\n    <div class="section"><div class="label">Sfida \xB7 '.concat(esc(fmtTxt(CH.cfg)), "</div><h2>").concat(host ? "Invita il tuo amico" : "Sala d'attesa", "</h2></div>\n    ").concat(host ? '<div class="order">\n      <div class="label">Codice sfida</div>\n      <div class="code">'.concat(CH.code, '</div>\n      <p class="meta">Mandagli il link: lo apre dal telefono ed entra subito.</p>\n      <div class="row"><button class="btn ghost small" id="share" type="button">Invia il link</button></div>\n      <p class="note" id="shareNote" hidden></p>\n    </div>') : "", '\n    <div class="status" id="lobStatus"><i></i><span></span></div>\n    <div class="lobvids">\n      <div class="lobvid"><video id="lobMe" playsinline autoplay muted></video><span>').concat(esc(myName || "Tu"), " ").concat(myBadge(), '</span></div>\n      <div class="lobvid"><video id="lobOpp" playsinline autoplay></video><div class="empty" id="lobOppEmpty">In attesa della videochiamata\u2026</div><span id="lobOppName">Amico</span></div>\n    </div>\n    ').concat(CH.wins.me + CH.wins.opp > 0 ? '<p class="meta">Punteggio: '.concat(esc(myName), " ").concat(CH.wins.me, " \u2013 ").concat(CH.wins.opp, " ").concat(esc(CH.oppName), "</p>") : "", '\n    <div class="row">\n      ').concat(host ? '<button class="btn primary" id="go" type="button" disabled>Via!</button>' : "", '\n      <button class="btn ghost" id="leave" type="button">Esci dalla sfida</button>\n    </div>\n    ').concat(host ? '<details class="note"><summary>Cambia esercizio o formato</summary><div class="choices" style="margin-top:8px">'.concat(duelExList().map((id) => '<button class="choice" type="button" data-ex="'.concat(id, '" aria-pressed="').concat(CH.cfg.ex === id, '">').concat(EX[id].name, "</button>")).join("")).concat(Object.entries(DUEL_FMT).map(([k, f]) => '<button class="choice" type="button" data-fmt="'.concat(k, '" aria-pressed="').concat(CH.cfg.fmt === k, '">').concat(f.label, "</button>")).join(""), "</div></details>") : "", "\n  </div>");
   attach($("lobMe"), localView(), true);
   if (host) {
     $("share").onclick = async () => {
-      const link = duelLink(), text = `Ti sfido a ${fmtTxt(CH.cfg)} su Istruttore Recluta! Codice ${CH.code}`;
-      try { if (navigator.share) { await navigator.share({ title: "Sfida", text, url: link }); return; } } catch (e) { if (e?.name === "AbortError") return; }
-      const n = $("shareNote"); n.hidden = false;
-      try { await navigator.clipboard.writeText(link); n.textContent = "Link copiato: incollalo in chat al tuo amico."; }
-      catch { n.textContent = link; }
+      const link = duelLink(), text = "Ti sfido a ".concat(fmtTxt(CH.cfg), " su Istruttore Recluta! Codice ").concat(CH.code);
+      try {
+        if (navigator.share) {
+          await navigator.share({ title: "Sfida", text, url: link });
+          return;
+        }
+      } catch (e) {
+        if ((e == null ? void 0 : e.name) === "AbortError") return;
+      }
+      const n = $("shareNote");
+      n.hidden = false;
+      try {
+        await navigator.clipboard.writeText(link);
+        n.textContent = "Link copiato: incollalo in chat al tuo amico.";
+      } catch (e) {
+        n.textContent = link;
+      }
     };
-    $("go").onclick = () => { duelSend({ t: "start" }); startDuelSession(); };
-    app.querySelectorAll("[data-ex]").forEach(b => b.onclick = () => { CH.cfg.ex = b.dataset.ex; duelSend({ t: "cfg", cfg: CH.cfg }); renderLobby(); });
-    app.querySelectorAll("[data-fmt]").forEach(b => b.onclick = () => { CH.cfg.fmt = b.dataset.fmt; duelSend({ t: "cfg", cfg: CH.cfg }); renderLobby(); });
+    $("go").onclick = () => {
+      duelSend({ t: "start" });
+      startDuelSession();
+    };
+    app.querySelectorAll("[data-ex]").forEach((b) => b.onclick = () => {
+      CH.cfg.ex = b.dataset.ex;
+      duelSend({ t: "cfg", cfg: CH.cfg });
+      renderLobby();
+    });
+    app.querySelectorAll("[data-fmt]").forEach((b) => b.onclick = () => {
+      CH.cfg.fmt = b.dataset.fmt;
+      duelSend({ t: "cfg", cfg: CH.cfg });
+      renderLobby();
+    });
   }
-  $("leave").onclick = () => { duelReset(); try { history.replaceState(null, "", location.pathname); } catch {} go({ name: "home" }); };
+  $("leave").onclick = () => {
+    duelReset();
+    try {
+      history.replaceState(null, "", location.pathname);
+    } catch (e) {
+    }
+    go({ name: "home" });
+  };
   refreshLobby();
 }
-
 function refreshLobby() {
   if (route.name !== "lobby" || !$("lobStatus")) return;
   const st = $("lobStatus"), host = CH.role === "host";
   let txt, cls;
-  if (CH.notFound) { txt = "Sfida non trovata: controlla il codice o chiedi un nuovo link."; cls = "off"; }
-  else if (!CH.connected) { txt = host ? "In attesa dell'amico…" : "Mi collego alla sfida…"; cls = ""; }
-  else { txt = host ? `${CH.oppName || "L'amico"} è pronto. Dai il via!` : `Connesso con ${CH.oppName || "l'amico"}. Aspetta il via.`; cls = "on"; }
-  st.className = "status " + cls; st.querySelector("span").textContent = txt;
-  if (!host && CH.connected) { const lab = document.querySelector(".brief .label"); if (lab) lab.textContent = "Sfida · " + fmtTxt(CH.cfg); }
+  if (CH.notFound) {
+    txt = "Sfida non trovata: controlla il codice o chiedi un nuovo link.";
+    cls = "off";
+  } else if (!CH.connected) {
+    txt = host ? "In attesa dell'amico\u2026" : "Mi collego alla sfida\u2026";
+    cls = "";
+  } else {
+    txt = host ? "".concat(CH.oppName || "L'amico", " \xE8 pronto. Dai il via!") : "Connesso con ".concat(CH.oppName || "l'amico", ". Aspetta il via.");
+    cls = "on";
+  }
+  st.className = "status " + cls;
+  st.querySelector("span").textContent = txt;
+  if (!host && CH.connected) {
+    const lab = document.querySelector(".brief .label");
+    if (lab) lab.textContent = "Sfida \xB7 " + fmtTxt(CH.cfg);
+  }
   $("lobOppName").innerHTML = esc(CH.oppName || "Amico") + (CH.oppCard ? " " + rankBadge(Math.min(RANKS.length - 1, Math.max(0, CH.oppCard.rank | 0)), !!CH.oppCard.gold) : "");
-  if (CH.remote) { $("lobOppEmpty").hidden = true; attach($("lobOpp"), CH.remote, false); }
-  const g = $("go"); if (g) g.disabled = !CH.connected;
+  if (CH.remote) {
+    $("lobOppEmpty").hidden = true;
+    attach($("lobOpp"), CH.remote, false);
+  }
+  const g = $("go");
+  if (g) g.disabled = !CH.connected;
 }
-
 async function startDuelSession() {
+  var _a;
   if (S.running) return;
   say("", { urgent: true });
   const f = DUEL_FMT[CH.cfg.fmt];
   Object.assign(S, {
-    mode: "live", queue: [{ ex: CH.cfg.ex, target: CH.cfg.fmt === "first" ? f.n : 0, timeLimit: CH.cfg.fmt === "time" ? f.n : 0, set: 1, sets: 1 }],
-    idx: 0, log: [], faults: {}, startT: performance.now(), running: false, stream: CH.stream, facing: "user", lastTs: 0,
-    title: "Sfida contro " + (CH.oppName || "l'amico"), challenge: true, test: null, day: null, free: false
+    mode: "live",
+    queue: [{ ex: CH.cfg.ex, target: CH.cfg.fmt === "first" ? f.n : 0, timeLimit: CH.cfg.fmt === "time" ? f.n : 0, set: 1, sets: 1 }],
+    idx: 0,
+    log: [],
+    faults: {},
+    startT: performance.now(),
+    running: false,
+    stream: CH.stream,
+    facing: "user",
+    lastTs: 0,
+    title: "Sfida contro " + (CH.oppName || "l'amico"),
+    challenge: true,
+    test: null,
+    day: null,
+    free: false
   });
-  CH.myFinal = null; CH.oppFinal = null; CH.oppReps = 0;
+  CH.myFinal = null;
+  CH.oppFinal = null;
+  CH.oppReps = 0;
   $("session").hidden = false;
   $("stage").classList.add("mirror", "duel");
-  $("opp").hidden = false; $("oppName").textContent = CH.oppName || "Amico"; $("oppCount").textContent = "0";
-  $("flip").hidden = true; $("rest").hidden = true;
-  $("loading").hidden = false; $("loadingMsg").textContent = "Carico il sistema di visione…";
-  try { S.wake = await navigator.wakeLock?.request("screen"); } catch {}
-  // only the session's two videos stay attached; lobby previews are released
-  for (const id of ["lobMe", "lobOpp"]) { const el = $(id); if (el) { try { el.pause(); } catch {} el.srcObject = null; } }
-  vid.muted = true; vid.removeAttribute("src"); vid.srcObject = localView(); vid.play().catch(() => {});
+  $("opp").hidden = false;
+  $("oppName").textContent = CH.oppName || "Amico";
+  $("oppCount").textContent = "0";
+  $("flip").hidden = true;
+  $("rest").hidden = true;
+  $("loading").hidden = false;
+  $("loadingMsg").textContent = "Carico il sistema di visione\u2026";
+  try {
+    S.wake = await ((_a = navigator.wakeLock) == null ? void 0 : _a.request("screen"));
+  } catch (e) {
+  }
+  for (const id of ["lobMe", "lobOpp"]) {
+    const el = $(id);
+    if (el) {
+      try {
+        el.pause();
+      } catch (e) {
+      }
+      el.srcObject = null;
+    }
+  }
+  vid.muted = true;
+  vid.removeAttribute("src");
+  vid.srcObject = localView();
+  vid.play().catch(() => {
+  });
   attach($("oppVid"), CH.remote, false);
   startCamWatchdog();
-  try { await loadEngine(); } catch { $("loadingMsg").textContent = "Il sistema di visione non si è caricato. Controlla la connessione."; return; }
+  try {
+    await loadEngine();
+  } catch (e) {
+    $("loadingMsg").textContent = "Il sistema di visione non si \xE8 caricato. Controlla la connessione.";
+    return;
+  }
   $("loading").hidden = true;
-  // 3-2-1 countdown on the rest panel, then the round starts
-  S.inRest = true; S.running = true; loop();
-  $("rest").hidden = false; $("restSkip").hidden = true;
+  S.inRest = true;
+  S.running = true;
+  loop();
+  $("rest").hidden = false;
+  $("restSkip").hidden = true;
   $("rest").querySelector(".label").textContent = "Pronti";
-  $("restNext").textContent = `${EX[CH.cfg.ex].name} · ${f.label}`;
-  let n = 3; $("restN").textContent = n; say("Tre", { urgent: true });
+  $("restNext").textContent = "".concat(EX[CH.cfg.ex].name, " \xB7 ").concat(f.label);
+  let n = 3;
+  $("restN").textContent = n;
+  say("Tre", { urgent: true });
   const iv = setInterval(() => {
     n--;
-    if (n > 0) { $("restN").textContent = n; say(n === 2 ? "Due" : "Uno", { urgent: true }); return; }
+    if (n > 0) {
+      $("restN").textContent = n;
+      say(n === 2 ? "Due" : "Uno", { urgent: true });
+      return;
+    }
     clearInterval(iv);
-    $("rest").hidden = true; $("restSkip").hidden = false; $("rest").querySelector(".label").textContent = "Recupero";
+    $("rest").hidden = true;
+    $("restSkip").hidden = false;
+    $("rest").querySelector(".label").textContent = "Recupero";
     beginSet();
-    $("hudSet").textContent = "Sfida · " + (CH.cfg.fmt === "time" ? "60 s" : "primo a " + f.n);
+    $("hudSet").textContent = "Sfida \xB7 " + (CH.cfg.fmt === "time" ? "60 s" : "primo a " + f.n);
     $("stop").textContent = "Mi ritiro";
-  }, 1000);
+  }, 1e3);
 }
-
 function duelEnd() {
-  const c = S.cur; if (!c || CH.myFinal != null) return;
+  const c = S.cur;
+  if (!c || CH.myFinal != null) return;
   CH.myFinal = c.count;
   duelSend({ t: "final", n: c.count });
   S.inRest = true;
   ctx.clearRect(0, 0, cv.width, cv.height);
-  $("rest").hidden = false; $("restSkip").hidden = true;
+  $("rest").hidden = false;
+  $("restSkip").hidden = true;
   $("rest").querySelector(".label").textContent = "Fine";
   $("restN").textContent = c.count;
-  $("restNext").textContent = CH.connected ? `Aspetto il risultato di ${CH.oppName || "l'amico"}…` : "";
+  $("restNext").textContent = CH.connected ? "Aspetto il risultato di ".concat(CH.oppName || "l'amico", "\u2026") : "";
   if (!CH.connected) CH.oppFinal = CH.oppReps;
-  // if the friend's result never arrives, settle on the last count we saw
-  setTimeout(() => { if (CH.myFinal != null && CH.oppFinal == null) { CH.oppFinal = CH.oppReps; maybeDuelResult(); } }, 8000);
+  setTimeout(() => {
+    if (CH.myFinal != null && CH.oppFinal == null) {
+      CH.oppFinal = CH.oppReps;
+      maybeDuelResult();
+    }
+  }, 8e3);
   maybeDuelResult();
 }
-
 function maybeDuelResult() {
   if (CH.myFinal == null || CH.oppFinal == null || route.name === "duel-result") return;
   const me = CH.myFinal, opp = CH.oppFinal;
   let outcome;
   if (CH.cfg.fmt === "first") outcome = me >= DUEL_FMT.first.n && opp < DUEL_FMT.first.n ? "win" : opp >= DUEL_FMT.first.n && me < DUEL_FMT.first.n ? "lose" : me > opp ? "win" : me < opp ? "lose" : "tie";
   else outcome = me > opp ? "win" : me < opp ? "lose" : "tie";
-  if (outcome === "win") CH.wins.me++; else if (outcome === "lose") CH.wins.opp++;
+  if (outcome === "win") CH.wins.me++;
+  else if (outcome === "lose") CH.wins.opp++;
   addPoints(outcome === "win" ? 30 : outcome === "tie" ? 15 : 10);
   duelSend({ t: "card", card: myCard() });
-  $("rest").hidden = true; $("restSkip").hidden = false; $("rest").querySelector(".label").textContent = "Recupero";
-  $("opp").hidden = true; $("stage").classList.remove("duel");
+  $("rest").hidden = true;
+  $("restSkip").hidden = false;
+  $("rest").querySelector(".label").textContent = "Recupero";
+  $("opp").hidden = true;
+  $("stage").classList.remove("duel");
   closeSession();
   S.challenge = false;
   const who = CH.oppName || "il tuo amico";
-  say(outcome === "win" ? "Hai vinto! Ottimo lavoro, recluta." : outcome === "lose" ? `Ha vinto ${who}. Alla prossima, recluta.` : "Pareggio!", { urgent: true });
+  say(outcome === "win" ? "Hai vinto! Ottimo lavoro, recluta." : outcome === "lose" ? "Ha vinto ".concat(who, ". Alla prossima, recluta.") : "Pareggio!", { urgent: true });
   go({ name: "duel-result", outcome, me, opp });
 }
-
 function renderDuelResult() {
   const r = route, host = CH.role === "host";
-  const verdict = r.outcome === "win" ? "Hai vinto!" : r.outcome === "lose" ? `Ha vinto ${esc(CH.oppName || "l'amico")}` : "Pareggio";
-  app.innerHTML = `
-  <div class="screen">
-    <header class="mast"><div><div class="sub">Sfida · ${esc(fmtTxt(CH.cfg))}</div></div><div class="callsign">Vittorie<b>${CH.wins.me}–${CH.wins.opp}</b></div></header>
-    <div class="verdict">${verdict}</div>
-    <div class="vs">
-      <div class="${r.outcome === "win" ? "win" : ""}"><b>${r.me}</b><span>${esc(myName || "Tu")} ${myBadge()}</span></div>
-      <em>VS</em>
-      <div class="${r.outcome === "lose" ? "win" : ""}"><b>${r.opp}</b><span>${esc(CH.oppName || "Amico")}</span></div>
-    </div>
-    <p class="meta">Contano solo le ripetizioni complete e valide. Punti sfida: ${r.outcome === "win" ? "+30" : r.outcome === "tie" ? "+15" : "+10"}, più 1 punto per ripetizione.</p>
-    <div class="row">
-      ${host ? `<button class="btn primary" id="again" type="button" ${CH.connected ? "" : "disabled"}>Rivincita</button>` : `<p class="note">${CH.connected ? `Per la rivincita aspetta ${esc(CH.oppName || "l'amico")}.` : "La connessione con l'amico si è chiusa."}</p>`}
-      <button class="btn ghost" id="leave" type="button">Esci dalla sfida</button>
-    </div>
-  </div>`;
-  if (host) $("again").onclick = () => { duelSend({ t: "lobby" }); go({ name: "lobby" }); };
-  $("leave").onclick = () => { duelReset(); try { history.replaceState(null, "", location.pathname); } catch {} go({ name: "home" }); };
+  const verdict = r.outcome === "win" ? "Hai vinto!" : r.outcome === "lose" ? "Ha vinto ".concat(esc(CH.oppName || "l'amico")) : "Pareggio";
+  app.innerHTML = '\n  <div class="screen">\n    <header class="mast"><div><div class="sub">Sfida \xB7 '.concat(esc(fmtTxt(CH.cfg)), '</div></div><div class="callsign">Vittorie<b>').concat(CH.wins.me, "\u2013").concat(CH.wins.opp, '</b></div></header>\n    <div class="verdict">').concat(verdict, '</div>\n    <div class="vs">\n      <div class="').concat(r.outcome === "win" ? "win" : "", '"><b>').concat(r.me, "</b><span>").concat(esc(myName || "Tu"), " ").concat(myBadge(), '</span></div>\n      <em>VS</em>\n      <div class="').concat(r.outcome === "lose" ? "win" : "", '"><b>').concat(r.opp, "</b><span>").concat(esc(CH.oppName || "Amico"), '</span></div>\n    </div>\n    <p class="meta">Contano solo le ripetizioni complete e valide. Punti sfida: ').concat(r.outcome === "win" ? "+30" : r.outcome === "tie" ? "+15" : "+10", ', pi\xF9 1 punto per ripetizione.</p>\n    <div class="row">\n      ').concat(host ? '<button class="btn primary" id="again" type="button" '.concat(CH.connected ? "" : "disabled", ">Rivincita</button>") : '<p class="note">'.concat(CH.connected ? "Per la rivincita aspetta ".concat(esc(CH.oppName || "l'amico"), ".") : "La connessione con l'amico si \xE8 chiusa.", "</p>"), '\n      <button class="btn ghost" id="leave" type="button">Esci dalla sfida</button>\n    </div>\n  </div>');
+  if (host) $("again").onclick = () => {
+    duelSend({ t: "lobby" });
+    go({ name: "lobby" });
+  };
+  $("leave").onclick = () => {
+    duelReset();
+    try {
+      history.replaceState(null, "", location.pathname);
+    } catch (e) {
+    }
+    go({ name: "home" });
+  };
 }
-
-try { const code = new URLSearchParams(location.search).get("sfida"); if (SITE && code) route = { name: "duel-join", code: code.toUpperCase().slice(0, 6) }; } catch {}
+try {
+  const code = new URLSearchParams(location.search).get("sfida");
+  if (SITE && code) route = { name: "duel-join", code: code.toUpperCase().slice(0, 6) };
+} catch (e) {
+}
 checkFriendsElite();
 applyGold();
 render();
 lbInit();
-if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});
-loadEngine().catch(() => {}); // warm up in the background
-window.__test = { makeTracker, setAspect: a => (aspect = a) };
+if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {
+});
+loadEngine().catch(() => {
+});
+window.__test = { makeTracker, setAspect: (a) => aspect = a };
 </script>
 
 </body>
