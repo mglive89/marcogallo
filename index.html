@@ -452,6 +452,27 @@ body.dark .step .arrow, body.dark .dots i { color: #4b5a72; border-color: #4b5a7
 body.dark #splash { background: radial-gradient(120% 80% at 50% 30%, #1a2740, #0b1220 70%); }
 body.dark #splash .sp-logo { color: #eef2f8; text-shadow: 0 1px 0 #2a3a55, 0 2px 0 #22314a, 0 3px 0 #1b2840, 0 4px 0 #142035, 0 8px 14px rgba(0,0,0,.5); }
 body.dark .pick button.m b { color: #6cb8ff; } body.dark .pick button.f b { color: #ff8be0; }
+
+/* start screen: free beta + sign-in coming at launch */
+.beta-tag { display: inline-block; vertical-align: middle; margin-left: 6px; padding: 2px 8px; border-radius: 999px; background: linear-gradient(135deg, #ffd166, #ff8be0); color: #0a1424; font-size: 12px; letter-spacing: .1em; }
+.auth { display: flex; flex-direction: column; gap: 10px; }
+.btn.beta { width: 100%; color: #0a1424; background: linear-gradient(100deg, #7ee29b, #6cb8ff 55%, #ff8be0); box-shadow: 0 6px 0 rgba(0,0,0,.25), 0 14px 34px rgba(108,184,255,.45); font-size: 23px; }
+body:not(.fx-off) .btn.beta { background-size: 200% 100%; animation: fxBetaGrad 5s ease-in-out infinite alternate; }
+@keyframes fxBetaGrad { from { background-position: 0 0; } to { background-position: 100% 0; } }
+body.fx-full .btn.beta::after { content: ""; position: absolute; top: 0; bottom: 0; left: -60%; width: 40%; pointer-events: none; background: linear-gradient(100deg, transparent, rgba(255,255,255,.6), transparent); transform: skewX(-20deg); animation: fxShine 3.2s ease-in-out infinite; }
+.btn.beta.nudge { animation: fxNudge .5s ease-in-out 2, fxBetaGrad 5s ease-in-out infinite alternate; }
+@keyframes fxNudge { 0%, 100% { transform: none; } 30% { transform: scale(1.05); } 60% { transform: scale(.98); } }
+.beta-sub { text-align: center; font-size: 14px; color: rgba(255,255,255,.75); margin-top: -2px; }
+.or { display: flex; align-items: center; gap: 10px; color: rgba(255,255,255,.5); font-family: var(--f-cond); font-weight: 700; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; }
+.or::before, .or::after { content: ""; flex: 1; height: 1px; background: rgba(255,255,255,.18); }
+.sso { position: relative; display: flex; align-items: center; justify-content: center; gap: 10px; min-height: 54px; border-radius: 14px; border: 0; font-family: var(--f-body); font-weight: 600; font-size: 17px; }
+.sso svg { width: 22px; height: 22px; flex: 0 0 auto; }
+.sso.apple { background: #000; color: #fff; border: 1px solid rgba(255,255,255,.28); }
+.sso.google { background: #fff; color: #1f1f1f; }
+.sso em { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); font-style: normal; font-family: var(--f-cond); font-weight: 700; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; padding: 2px 7px; border-radius: 999px; background: rgba(127,127,127,.22); }
+.sso-note { font-size: 14px; text-align: center; color: #ffd166; background: rgba(255,209,102,.1); border: 1px solid rgba(255,209,102,.3); border-radius: 12px; padding: 10px 12px; }
+.landing .back { background: rgba(255,255,255,.1); color: #fff; box-shadow: none; }
+@media (max-width: 360px) { .sso { font-size: 15px; } .sso em { display: none; } }
 </style>
 
 </head>
@@ -570,6 +591,20 @@ const I18N_RX = [
   [/Aggiungimi su Istruttore Recluta: il mio codice amico è (\w+)/g, "Add me on Recruit Trainer: my friend code is $1", "Agr\xE9game en Instructor Recluta: mi c\xF3digo de amigo es $1", "Ajoute-moi sur Instructeur Recrue : mon code ami est $1", "F\xFCg mich bei Rekruten-Ausbilder hinzu: Mein Freundescode ist $1", "Me adicione no Instrutor Recruta: meu c\xF3digo de amigo \xE9 $1"]
 ];
 const I18N = [
+  // --- schermata iniziale
+  ["Prova la Beta gratis", "Try the free Beta", "Prueba la Beta gratis", "Essaie la b\xEAta gratuite", "Beta kostenlos testen", "Experimente a Beta gr\xE1tis"],
+  ["Nessuna registrazione: inizi subito ad allenarti.", "No sign-up: start training right away.", "Sin registro: empieza a entrenar ya.", "Sans inscription : commence \xE0 t'entra\xEEner tout de suite.", "Ohne Anmeldung: sofort mit dem Training starten.", "Sem cadastro: comece a treinar agora."],
+  ["oppure", "or", "o", "ou", "oder", "ou"],
+  ["Continua con Apple", "Continue with Apple", "Continuar con Apple", "Continuer avec Apple", "Mit Apple fortfahren", "Continuar com a Apple"],
+  ["Continua con Google", "Continue with Google", "Continuar con Google", "Continuer avec Google", "Mit Google fortfahren", "Continuar com o Google"],
+  ["Presto", "Soon", "Pronto", "Bient\xF4t", "Bald", "Em breve"],
+  ["L'accesso con Apple arriva al lancio. Intanto prova la Beta gratis: i tuoi progressi restano su questo telefono.", "Sign-in with Apple arrives at launch. Meanwhile try the free Beta: your progress stays on this phone.", "El acceso con Apple llega con el lanzamiento. Mientras tanto prueba la Beta gratis: tu progreso se queda en este tel\xE9fono.", "La connexion avec Apple arrive au lancement. En attendant, essaie la b\xEAta gratuite : ta progression reste sur ce t\xE9l\xE9phone.", "Die Anmeldung mit Apple kommt zum Start. Teste solange die kostenlose Beta: Dein Fortschritt bleibt auf diesem Handy.", "O acesso com a Apple chega no lan\xE7amento. Enquanto isso, experimente a Beta gr\xE1tis: seu progresso fica neste celular."],
+  ["L'accesso con Google arriva al lancio. Intanto prova la Beta gratis: i tuoi progressi restano su questo telefono.", "Sign-in with Google arrives at launch. Meanwhile try the free Beta: your progress stays on this phone.", "El acceso con Google llega con el lanzamiento. Mientras tanto prueba la Beta gratis: tu progreso se queda en este tel\xE9fono.", "La connexion avec Google arrive au lancement. En attendant, essaie la b\xEAta gratuite : ta progression reste sur ce t\xE9l\xE9phone.", "Die Anmeldung mit Google kommt zum Start. Teste solange die kostenlose Beta: Dein Fortschritt bleibt auf diesem Handy.", "O acesso com o Google chega no lan\xE7amento. Enquanto isso, experimente a Beta gr\xE1tis: seu progresso fica neste celular."],
+  ["Il video resta sul tuo telefono: niente viene inviato.", "The video stays on your phone: nothing is sent.", "El v\xEDdeo se queda en tu tel\xE9fono: no se env\xEDa nada.", "La vid\xE9o reste sur ton t\xE9l\xE9phone : rien n'est envoy\xE9.", "Das Video bleibt auf deinem Handy: Es wird nichts gesendet.", "O v\xEDdeo fica no seu celular: nada \xE9 enviado."],
+  ["Conta le ripetizioni, corregge la postura a voce e ti fa sfidare gli amici.", "It counts your reps, corrects your form out loud and lets you challenge friends.", "Cuenta tus repeticiones, corrige tu postura en voz alta y te deja retar a tus amigos.", "Il compte tes r\xE9p\xE9titions, corrige ta posture \xE0 voix haute et te permet de d\xE9fier tes amis.", "Z\xE4hlt deine Wiederholungen, korrigiert deine Haltung laut und l\xE4sst dich Freunde herausfordern.", "Conta as repeti\xE7\xF5es, corrige a postura em voz alta e deixa voc\xEA desafiar os amigos."],
+  ["Benvenuti nella Beta!", "Welcome to the Beta!", "\xA1Te damos la bienvenida a la Beta!", "Bienvenue dans la b\xEAta !", "Willkommen in der Beta!", "Boas-vindas \xE0 Beta!"],
+  ["Due cose veloci e si parte.", "Two quick things and you're off.", "Dos cosas r\xE1pidas y empezamos.", "Deux petites choses et c'est parti.", "Zwei kurze Fragen und los geht's.", "Duas coisas r\xE1pidas e vamos l\xE1."],
+  ["Puoi cambiare percorso quando vuoi dal Profilo.", "You can change path any time in Profile.", "Puedes cambiar de plan cuando quieras en Perfil.", "Tu peux changer de parcours \xE0 tout moment dans Profil.", "Du kannst den Plan jederzeit im Profil \xE4ndern.", "Voc\xEA pode mudar de plano quando quiser no Perfil."],
   // --- look professionale
   ["Allenamento di oggi", "Today's workout", "Entrenamiento de hoy", "Entra\xEEnement du jour", "Heutiges Training", "Treino de hoje"],
   ["Inizia ora", "Start now", "Empieza ya", "Commencer", "Jetzt starten", "Come\xE7ar agora"],
@@ -2614,10 +2649,26 @@ function renderOnboard() {
     form: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M17 9a4 4 0 0 1 0 6M19.5 6.5a8 8 0 0 1 0 11"/></svg>',
     duel: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="14" height="12" rx="2"/><path d="M16 10l6-3v10l-6-3"/></svg>'
   };
-  app.innerHTML = '\n  <div class="screen landing">\n    <div class="brand" data-notr>'.concat((() => {
+  const brand = '<div class="brand" data-notr>'.concat((() => {
     const w = tr("Istruttore Recluta").split(" ");
     return esc(w.slice(0, -1).join(" ")) + " <b>" + esc(w[w.length - 1]) + "</b>";
-  })(), '</div>\n    <div class="land-figs"><div class="figbox" data-fig="jacks" data-g="m" data-anim></div><div class="figbox" data-fig="squat" data-g="f" data-anim></div></div>\n    <h1 class="land-h">Il tuo personal trainer con la fotocamera</h1>\n    <p class="land-p">Conta le ripetizioni, corregge la postura a voce e ti fa sfidare gli amici. Gratis, senza registrazione.</p>\n    <ul class="feats"><li>').concat(ico.reps, "Conta le ripetizioni</li><li>").concat(ico.form, "Corregge la postura</li><li>").concat(ico.duel, 'Sfide in video</li></ul>\n    <div class="field"><label class="label" for="nm">Il tuo nome</label><input id="nm" maxlength="20" autocomplete="nickname" placeholder="Es. Marco" value="').concat(esc(myName), '"></div>\n    <div class="h2">Chi si allena?</div>\n    ').concat(genderPick(null), '\n    <p class="land-note">Il video resta sul tuo telefono. Puoi cambiare percorso quando vuoi dal Profilo.</p>\n  </div>');
+  })(), ' <span class="beta-tag">Beta</span></div>');
+  if (route.step !== "setup") {
+    app.innerHTML = '\n    <div class="screen landing">\n      '.concat(brand, '\n      <div class="land-figs"><div class="figbox" data-fig="jacks" data-g="m" data-anim></div><div class="figbox" data-fig="squat" data-g="f" data-anim></div></div>\n      <h1 class="land-h">Il tuo personal trainer con la fotocamera</h1>\n      <p class="land-p">Conta le ripetizioni, corregge la postura a voce e ti fa sfidare gli amici.</p>\n      <ul class="feats"><li>').concat(ico.reps, "Conta le ripetizioni</li><li>").concat(ico.form, "Corregge la postura</li><li>").concat(ico.duel, 'Sfide in video</li></ul>\n      <div class="auth">\n        <button class="btn big beta" id="beta" type="button">Prova la Beta gratis</button>\n        <p class="beta-sub">Nessuna registrazione: inizi subito ad allenarti.</p>\n        <div class="or"><span>oppure</span></div>\n        <button class="sso apple" type="button" data-sso="Apple"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16.4 12.6c0-2.4 2-3.6 2.1-3.7-1.1-1.7-2.9-1.9-3.5-1.9-1.5-.2-2.9.9-3.7.9-.8 0-1.9-.9-3.2-.8-1.6 0-3.1 1-4 2.4-1.7 3-.4 7.4 1.2 9.8.8 1.2 1.8 2.5 3 2.4 1.2 0 1.7-.8 3.1-.8s1.9.8 3.2.8c1.3 0 2.1-1.2 2.9-2.4.9-1.4 1.3-2.7 1.3-2.8 0 0-2.4-1-2.4-3.9zM14 5.5c.7-.8 1.1-1.9 1-3-1 0-2.1.7-2.8 1.5-.6.7-1.2 1.8-1 2.9 1.1.1 2.1-.6 2.8-1.4z"/></svg><span>Continua con Apple</span><em>Presto</em></button>\n        <button class="sso google" type="button" data-sso="Google"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M22.6 12.3c0-.8-.1-1.6-.2-2.3H12v4.4h5.9c-.3 1.4-1 2.5-2.2 3.3v2.7h3.6c2.1-1.9 3.3-4.8 3.3-8.1z"/><path fill="#34A853" d="M12 23c3 0 5.5-1 7.3-2.7l-3.6-2.7c-1 .7-2.2 1.1-3.7 1.1-2.9 0-5.3-1.9-6.2-4.5H2.1v2.8C3.9 20.6 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.8 14.2c-.2-.7-.4-1.4-.4-2.2s.1-1.5.4-2.2V7H2.1C1.4 8.5 1 10.2 1 12s.4 3.5 1.1 5l3.7-2.8z"/><path fill="#EA4335" d="M12 5.4c1.6 0 3.1.6 4.2 1.7l3.2-3.2C17.5 2.1 15 1 12 1 7.7 1 3.9 3.4 2.1 7l3.7 2.8C6.7 7.3 9.1 5.4 12 5.4z"/></svg><span>Continua con Google</span><em>Presto</em></button>\n        <p class="sso-note" id="ssoNote" role="status" hidden></p>\n      </div>\n      <p class="land-note">Il video resta sul tuo telefono: niente viene inviato.</p>\n    </div>');
+    $("beta").onclick = () => go({ name: "onboard", step: "setup" });
+    app.querySelectorAll("[data-sso]").forEach((b) => b.onclick = () => {
+      const n = $("ssoNote");
+      n.hidden = false;
+      n.textContent = b.dataset.sso === "Apple" ? "L'accesso con Apple arriva al lancio. Intanto prova la Beta gratis: i tuoi progressi restano su questo telefono." : "L'accesso con Google arriva al lancio. Intanto prova la Beta gratis: i tuoi progressi restano su questo telefono.";
+      const bt = $("beta");
+      bt.classList.remove("nudge");
+      void bt.offsetWidth;
+      bt.classList.add("nudge");
+    });
+    return;
+  }
+  app.innerHTML = '\n  <div class="screen landing">\n    <button class="back" id="back" type="button">\u2039 Indietro</button>\n    '.concat(brand, '\n    <h1 class="land-h" style="font-size:34px">Benvenuti nella Beta!</h1>\n    <p class="land-p">Due cose veloci e si parte.</p>\n    <div class="field"><label class="label" for="nm">Il tuo nome</label><input id="nm" maxlength="20" autocomplete="nickname" placeholder="Es. Marco" value="').concat(esc(myName), '"></div>\n    <div class="h2">Chi si allena?</div>\n    ').concat(genderPick(null), '\n    <p class="land-note">Puoi cambiare percorso quando vuoi dal Profilo.</p>\n  </div>');
+  $("back").onclick = () => go({ name: "onboard" });
   app.querySelectorAll(".pick > button").forEach((b) => b.insertAdjacentHTML("beforeend", '<span class="go-pill">Inizia \u203A</span>'));
   app.querySelectorAll(".pick > button").forEach((b) => b.onclick = () => {
     const v = $("nm").value.trim();
@@ -4356,7 +4407,7 @@ function fxEnter(force) {
     el.style.setProperty("--i", Math.min(i, 10));
   });
   app.querySelectorAll(FX_TILT).forEach((el) => el.classList.add("fxt"));
-  const prev = fxLastRoute, name = route.name;
+  const prev = fxLastRoute, name = route.name + (route.step ? ":" + route.step : "");
   if (name === prev && !force) return;
   fxLastRoute = name;
   if (fx.level === "off" || prev == null && !force) return;
