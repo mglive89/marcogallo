@@ -4614,8 +4614,17 @@ startI18n();
 render();
 splashStart();
 lbInit();
-if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {
-});
+if ("serviceWorker" in navigator) {
+  const hadSW = !!navigator.serviceWorker.controller;
+  let swReload = false;
+  navigator.serviceWorker.addEventListener("controllerchange", () => {
+    if (!hadSW || swReload || !document.getElementById("session").hidden) return;
+    swReload = true;
+    location.reload();
+  });
+  navigator.serviceWorker.register("sw.js").catch(() => {
+  });
+}
 loadEngine().catch(() => {
 });
 setTimeout(() => presenceStart().catch(() => {
