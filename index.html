@@ -245,6 +245,514 @@ body.goldtheme { --brass: #e9c24a; }
 <input type="file" id="fileIn" accept="video/*" capture="user" hidden>
 
 <script type="module">
+const LANGS = {
+  it: { name: "Italiano", tts: "it-IT" },
+  en: { name: "English", tts: "en-US" },
+  es: { name: "Espa\xF1ol", tts: "es-ES" },
+  fr: { name: "Fran\xE7ais", tts: "fr-FR" },
+  de: { name: "Deutsch", tts: "de-DE" },
+  pt: { name: "Portugu\xEAs", tts: "pt-BR" }
+};
+const LANG_ORDER = ["it", "en", "es", "fr", "de", "pt"];
+function detectLang() {
+  const list = navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || "en"];
+  for (const l of list) {
+    const k = String(l).slice(0, 2).toLowerCase();
+    if (LANGS[k]) return k;
+  }
+  return "en";
+}
+let lang = (() => {
+  try {
+    const v = JSON.parse(localStorage.getItem("recluta:lang"));
+    if (LANGS[v]) return v;
+  } catch (e) {
+  }
+  return detectLang();
+})();
+const ttsLang = () => {
+  const own = (navigator.languages || [navigator.language || ""]).find((l) => String(l).slice(0, 2).toLowerCase() === lang);
+  return own && own.length > 2 ? own : LANGS[lang].tts;
+};
+const I18N_RX = [
+  [/Ordine del giorno · Settimana (\d+), sessione (\d+)/g, "Orders of the day \xB7 Week $1, session $2", "Orden del d\xEDa \xB7 Semana $1, sesi\xF3n $2", "Ordre du jour \xB7 Semaine $1, s\xE9ance $2", "Tagesbefehl \xB7 Woche $1, Einheit $2", "Ordem do dia \xB7 Semana $1, sess\xE3o $2"],
+  [/Sett\. (\d+)/g, "Wk $1", "Sem. $1", "Sem. $1", "Wo. $1", "Sem. $1"],
+  [/(\d+) rip\./g, "$1 reps", "$1 rep.", "$1 r\xE9p.", "$1 Wdh.", "$1 rep."],
+  [/Si sblocca al grado (.+?) \((\d+) punti\)/g, "Unlocks at the rank of $1 ($2 points)", "Se desbloquea con el grado $1 ($2 puntos)", "Se d\xE9bloque au grade $1 ($2 points)", "Wird ab Rang $1 freigeschaltet ($2 Punkte)", "Desbloqueia na patente $1 ($2 pontos)"],
+  [/Serie (\d+) di (\d+)/g, "Set $1 of $2", "Serie $1 de $2", "S\xE9rie $1 sur $2", "Satz $1 von $2", "S\xE9rie $1 de $2"],
+  [/^di (\d+)( s)?$/g, "of $1$2", "de $1$2", "sur $1$2", "von $1$2", "de $1$2"],
+  [/(\d+) serie in tutto · si parte con /g, "$1 sets in total \xB7 starting with ", "$1 series en total \xB7 empezamos con ", "$1 s\xE9ries au total \xB7 on commence par ", "$1 S\xE4tze insgesamt \xB7 wir starten mit ", "$1 s\xE9ries no total \xB7 come\xE7amos com "],
+  [/Tieni per (\d+) secondi/g, "Hold for $1 seconds", "Aguanta $1 segundos", "Tiens $1 secondes", "Halte $1 Sekunden", "Segure por $1 segundos"],
+  [/Massimo in (\d+) secondi/g, "As many as you can in $1 seconds", "El m\xE1ximo en $1 segundos", "Le maximum en $1 secondes", "So viele wie m\xF6glich in $1 Sekunden", "O m\xE1ximo em $1 segundos"],
+  [/(\d+) ripetizioni/g, "$1 reps", "$1 repeticiones", "$1 r\xE9p\xE9titions", "$1 Wiederholungen", "$1 repeti\xE7\xF5es"],
+  [/(\d+) secondi/g, "$1 seconds", "$1 segundos", "$1 secondes", "$1 Sekunden", "$1 segundos"],
+  [/\((\d+) volte\)/g, "($1 times)", "($1 veces)", "($1 fois)", "($1-mal)", "($1 vezes)"],
+  [/ · serie (\d+)/g, " \xB7 set $1", " \xB7 serie $1", " \xB7 s\xE9rie $1", " \xB7 Satz $1", " \xB7 s\xE9rie $1"],
+  [/(\d+) punti totali/g, "$1 total points", "$1 puntos totales", "$1 points au total", "$1 Punkte insgesamt", "$1 pontos no total"],
+  [/(\d+) punti al grado /g, "$1 points to ", "$1 puntos para ", "$1 points avant ", "$1 Punkte bis ", "$1 pontos para "],
+  [/(\d+) al grado /g, "$1 to ", "$1 para ", "$1 avant ", "$1 bis ", "$1 para "],
+  [/Sei tra i primi 3 di (.+?): queste opzioni restano attive per tutto il mese\./g, "You finished in the top 3 of $1: these options stay active all month.", "Est\xE1s entre los 3 primeros de $1: estas opciones siguen activas todo el mes.", "Tu es dans le top 3 de $1 : ces options restent actives tout le mois.", "Du bist unter den Top 3 von $1: Diese Optionen bleiben den ganzen Monat aktiv.", "Voc\xEA ficou entre os 3 primeiros de $1: estas op\xE7\xF5es ficam ativas o m\xEAs inteiro."],
+  [/Nuovo record: (\d+) /g, "New record: $1 ", "Nuevo r\xE9cord: $1 ", "Nouveau record : $1 ", "Neuer Rekord: $1 ", "Novo recorde: $1 "],
+  [/^Ha vinto (.+)$/g, "$1 wins", "Gana $1", "$1 a gagn\xE9", "$1 hat gewonnen", "$1 venceu"],
+  [/Ha vinto (.+?)\. Alla prossima, recluta\./g, "$1 wins. Next time, recruit.", "Gana $1. La pr\xF3xima vez, recluta.", "$1 a gagn\xE9. \xC0 la prochaine, recrue.", "$1 hat gewonnen. Beim n\xE4chsten Mal, Rekrut.", "$1 venceu. Fica para a pr\xF3xima, recruta."],
+  [/Ti sfido a (.+?) su Istruttore Recluta! Codice (\w+)/g, "I challenge you to $1 on Recruit Trainer! Code $2", "\xA1Te reto a $1 en Instructor Recluta! C\xF3digo $2", "Je te d\xE9fie : $1 sur Instructeur Recrue ! Code $2", "Ich fordere dich heraus: $1 bei Rekruten-Ausbilder! Code $2", "Te desafio para $1 no Instrutor Recruta! C\xF3digo $2"],
+  [/Per la rivincita aspetta (.+?)\./g, "Wait for $1 to start the rematch.", "Para la revancha espera a $1.", "Pour la revanche, attends $1.", "F\xFCr die Revanche warte auf $1.", "Para a revanche, espere $1."],
+  [/Connesso con (.+?)\. Aspetta il via\./g, "Connected with $1. Wait for the start.", "Conectado con $1. Espera la salida.", "Connect\xE9 avec $1. Attends le d\xE9part.", "Verbunden mit $1. Warte auf den Start.", "Conectado com $1. Aguarde a largada."],
+  [/(.+?) è pronto\. Dai il via!/g, "$1 is ready. Start the round!", "$1 est\xE1 listo. \xA1Da la salida!", "$1 est pr\xEAt. Donne le d\xE9part !", "$1 ist bereit. Gib das Startsignal!", "$1 est\xE1 pronto. D\xEA a largada!"],
+  [/Aspetto il risultato di (.+?)…/g, "Waiting for $1's result\u2026", "Esperando el resultado de $1\u2026", "J'attends le r\xE9sultat de $1\u2026", "Warte auf das Ergebnis von $1\u2026", "Aguardando o resultado de $1\u2026"],
+  [/(.+?) si è disconnesso/g, "$1 disconnected", "$1 se ha desconectado", "$1 s'est d\xE9connect\xE9", "$1 hat die Verbindung getrennt", "$1 desconectou"],
+  [/Sfida contro (.+)/g, "Challenge against $1", "Reto contra $1", "D\xE9fi contre $1", "Duell gegen $1", "Desafio contra $1"],
+  [/Serie salvate: (.*)\. Registra la prossima\./g, "Sets saved: $1. Record the next one.", "Series guardadas: $1. Graba la siguiente.", "S\xE9ries enregistr\xE9es : $1. Filme la suivante.", "Gespeicherte S\xE4tze: $1. Nimm den n\xE4chsten auf.", "S\xE9ries salvas: $1. Grave a pr\xF3xima."],
+  [/Promosso a (.+?)!/g, "Promoted to $1!", "\xA1Ascendido a $1!", "Promu $1 !", "Bef\xF6rdert zum $1!", "Promovido a $1!"],
+  [/^Promosso a /g, "Promoted to ", "Ascendido a ", "Promu ", "Bef\xF6rdert zum ", "Promovido a "],
+  [/Hai sbloccato (.+?)\./g, "You unlocked $1.", "Has desbloqueado $1.", "Tu as d\xE9bloqu\xE9 $1.", "Du hast $1 freigeschaltet.", "Voc\xEA desbloqueou $1."],
+  [/Hai sbloccato /g, "You unlocked ", "Has desbloqueado ", "Tu as d\xE9bloqu\xE9 ", "Freigeschaltet: ", "Voc\xEA desbloqueou "],
+  [/^(\d+) g$/g, "$1 d", "$1 d", "$1 j", "$1 T", "$1 d"],
+  [/(\d+)\. Ancora tre!/g, "$1. Three more!", "$1. \xA1Tres m\xE1s!", "$1. Encore trois !", "$1. Noch drei!", "$1. Mais tr\xEAs!"]
+];
+const I18N = [
+  // --- generale / home
+  ["Istruttore Recluta", "Recruit Trainer", "Instructor Recluta", "Instructeur Recrue", "Rekruten-Ausbilder", "Instrutor Recruta"],
+  ["Addestramento a corpo libero", "Bodyweight training", "Entrenamiento con el propio peso", "Entra\xEEnement au poids du corps", "Training mit eigenem K\xF6rpergewicht", "Treino com o peso do corpo"],
+  ["Sessioni", "Sessions", "Sesiones", "S\xE9ances", "Einheiten", "Sess\xF5es"],
+  ["Il tuo grado", "Your rank", "Tu grado", "Ton grade", "Dein Rang", "Sua patente"],
+  ["punti del mese", "points this month", "puntos del mes", "points du mois", "Punkte im Monat", "pontos do m\xEAs"],
+  ["Grado massimo raggiunto", "Highest rank reached", "Grado m\xE1ximo alcanzado", "Grade maximum atteint", "H\xF6chster Rang erreicht", "Patente m\xE1xima alcan\xE7ada"],
+  ["Classifica \u203A", "Leaderboard \u203A", "Clasificaci\xF3n \u203A", "Classement \u203A", "Rangliste \u203A", "Ranking \u203A"],
+  ["Recupero 60 s tra le serie. La telecamera conta le ripetizioni e ti corregge a voce.", "60 s rest between sets. The camera counts your reps and corrects you out loud.", "60 s de descanso entre series. La c\xE1mara cuenta las repeticiones y te corrige en voz alta.", "60 s de r\xE9cup\xE9ration entre les s\xE9ries. La cam\xE9ra compte les r\xE9p\xE9titions et te corrige \xE0 voix haute.", "60 s Pause zwischen den S\xE4tzen. Die Kamera z\xE4hlt deine Wiederholungen und korrigiert dich laut.", "60 s de descanso entre as s\xE9ries. A c\xE2mera conta as repeti\xE7\xF5es e corrige voc\xEA em voz alta."],
+  ["Inizia la sessione", "Start the session", "Empezar la sesi\xF3n", "Commencer la s\xE9ance", "Einheit starten", "Come\xE7ar a sess\xE3o"],
+  ["Prova di efficienza fisica", "Fitness test", "Prueba de aptitud f\xEDsica", "Test d'aptitude physique", "Fitnesstest", "Teste de aptid\xE3o f\xEDsica"],
+  ["Piegamenti in 2 minuti", "Push-ups in 2 minutes", "Flexiones en 2 minutos", "Pompes en 2 minutes", "Liegest\xFCtze in 2 Minuten", "Flex\xF5es em 2 minutos"],
+  ["Addominali in 2 minuti", "Sit-ups in 2 minutes", "Abdominales en 2 minutos", "Abdos en 2 minutes", "Sit-ups in 2 Minuten", "Abdominais em 2 minutos"],
+  ["in 2 minuti", "in 2 minutes", "en 2 minutos", "en 2 minutes", "in 2 Minuten", "em 2 minutos"],
+  ["Record:", "Record:", "R\xE9cord:", "Record :", "Rekord:", "Recorde:"],
+  ["Sfida un amico", "Challenge a friend", "Reta a un amigo", "D\xE9fie un ami", "Fordere einen Freund heraus", "Desafie um amigo"],
+  ["Uno contro uno, in videochiamata", "One on one, on a video call", "Uno contra uno, en videollamada", "En duel, en appel vid\xE9o", "Eins gegen eins, im Videoanruf", "Um contra um, em videochamada"],
+  ["Vi vedete in diretta, la fotocamera conta le ripetizioni di entrambi e l'istruttore annuncia il vincitore.", "You see each other live, the camera counts both of your reps and the trainer announces the winner.", "Os veis en directo, la c\xE1mara cuenta las repeticiones de ambos y el instructor anuncia al ganador.", "Vous vous voyez en direct, la cam\xE9ra compte vos r\xE9p\xE9titions \xE0 tous les deux et l'instructeur annonce le gagnant.", "Ihr seht euch live, die Kamera z\xE4hlt eure Wiederholungen und der Ausbilder verk\xFCndet den Sieger.", "Voc\xEAs se veem ao vivo, a c\xE2mera conta as repeti\xE7\xF5es dos dois e o instrutor anuncia o vencedor."],
+  ["Crea una sfida", "Create a challenge", "Crear un reto", "Cr\xE9er un d\xE9fi", "Duell erstellen", "Criar um desafio"],
+  ["Ho un codice", "I have a code", "Tengo un c\xF3digo", "J'ai un code", "Ich habe einen Code", "Tenho um c\xF3digo"],
+  ["Esercizi singoli", "Single exercises", "Ejercicios sueltos", "Exercices individuels", "Einzel\xFCbungen", "Exerc\xEDcios avulsos"],
+  ["Riservato ai primi 3 del mese", "Reserved for the month's top 3", "Reservado a los 3 primeros del mes", "R\xE9serv\xE9 au top 3 du mois", "Nur f\xFCr die Top 3 des Monats", "Reservado aos 3 primeiros do m\xEAs"],
+  ["Chiudi il mese tra i primi 3 in classifica per sbloccarle per tutto il mese successivo.", "Finish the month in the top 3 to unlock them for the whole next month.", "Termina el mes entre los 3 primeros para desbloquearlas todo el mes siguiente.", "Termine le mois dans le top 3 pour les d\xE9bloquer tout le mois suivant.", "Beende den Monat unter den Top 3, um sie den ganzen n\xE4chsten Monat freizuschalten.", "Termine o m\xEAs entre os 3 primeiros para desbloque\xE1-las durante todo o m\xEAs seguinte."],
+  ["Attiva \xB7 tocca per disattivare", "On \xB7 tap to turn off", "Activada \xB7 toca para desactivar", "Activ\xE9e \xB7 touche pour d\xE9sactiver", "An \xB7 zum Ausschalten tippen", "Ativada \xB7 toque para desativar"],
+  ["Disattivata \xB7 tocca per attivare", "Off \xB7 tap to turn on", "Desactivada \xB7 toca para activar", "D\xE9sactiv\xE9e \xB7 touche pour activer", "Aus \xB7 zum Einschalten tippen", "Desativada \xB7 toque para ativar"],
+  ["Istruttore vocale (italiano)", "Voice coach", "Instructor por voz", "Coach vocal", "Sprachtrainer", "Instrutor por voz"],
+  ["Voce del sergente: incitamento durante l'esercizio", "Sergeant voice: pushes you during the exercise", "Voz del sargento: te anima durante el ejercicio", "Voix du sergent : te motive pendant l'exercice", "Feldwebel-Stimme: treibt dich w\xE4hrend der \xDCbung an", "Voz do sargento: motiva voc\xEA durante o exerc\xEDcio"],
+  ["Personalizza la voce", "Customize the voice", "Personalizar la voz", "Personnaliser la voix", "Stimme anpassen", "Personalizar a voz"],
+  ["Il video resta sul tuo telefono: l'analisi della postura avviene nel browser e nessuna immagine viene inviata.", "The video stays on your phone: posture analysis runs in the browser and no images are sent.", "El v\xEDdeo se queda en tu tel\xE9fono: el an\xE1lisis de la postura se hace en el navegador y no se env\xEDa ninguna imagen.", "La vid\xE9o reste sur ton t\xE9l\xE9phone : l'analyse de la posture se fait dans le navigateur et aucune image n'est envoy\xE9e.", "Das Video bleibt auf deinem Handy: Die Haltungsanalyse l\xE4uft im Browser und es werden keine Bilder gesendet.", "O v\xEDdeo fica no seu celular: a an\xE1lise da postura acontece no navegador e nenhuma imagem \xE9 enviada."],
+  ["Questo browser non pu\xF2 usare la fotocamera. Su iPhone apri il link con Safari, su Android con Chrome, e aggiorna il telefono se puoi.", "This browser can't use the camera. On iPhone open the link in Safari, on Android in Chrome, and update your phone if you can.", "Este navegador no puede usar la c\xE1mara. En iPhone abre el enlace con Safari, en Android con Chrome, y actualiza el tel\xE9fono si puedes.", "Ce navigateur ne peut pas utiliser la cam\xE9ra. Sur iPhone ouvre le lien avec Safari, sur Android avec Chrome, et mets ton t\xE9l\xE9phone \xE0 jour si possible.", "Dieser Browser kann die Kamera nicht nutzen. \xD6ffne den Link auf dem iPhone mit Safari, auf Android mit Chrome, und aktualisiere dein Handy, wenn m\xF6glich.", "Este navegador n\xE3o consegue usar a c\xE2mera. No iPhone abra o link no Safari, no Android no Chrome, e atualize o celular se puder."],
+  ["Questo browser \xE8 troppo vecchio per l'analisi dei movimenti. Aggiorna Chrome o Safari.", "This browser is too old for movement analysis. Update Chrome or Safari.", "Este navegador es demasiado antiguo para analizar los movimientos. Actualiza Chrome o Safari.", "Ce navigateur est trop ancien pour l'analyse des mouvements. Mets \xE0 jour Chrome ou Safari.", "Dieser Browser ist zu alt f\xFCr die Bewegungsanalyse. Aktualisiere Chrome oder Safari.", "Este navegador \xE9 antigo demais para a an\xE1lise dos movimentos. Atualize o Chrome ou o Safari."],
+  // --- programma
+  ["Forza di base", "Basic strength", "Fuerza b\xE1sica", "Force de base", "Grundkraft", "For\xE7a b\xE1sica"],
+  ["Core e resistenza", "Core and endurance", "Core y resistencia", "Gainage et endurance", "Rumpf und Ausdauer", "Core e resist\xEAncia"],
+  ["Circuito da campo", "Field circuit", "Circuito de campo", "Circuit de terrain", "Feldzirkel", "Circuito de campo"],
+  ["Programma Forze Speciali", "Special Forces program", "Programa Fuerzas Especiales", "Programme Forces sp\xE9ciales", "Spezialkr\xE4fte-Programm", "Programa For\xE7as Especiais"],
+  ["Sessione avanzata con burpee, mountain climber e affondi.", "Advanced session with burpees, mountain climbers and lunges.", "Sesi\xF3n avanzada con burpees, escaladores y zancadas.", "S\xE9ance avanc\xE9e avec burpees, mountain climbers et fentes.", "Fortgeschrittene Einheit mit Burpees, Mountain Climbers und Ausfallschritten.", "Sess\xE3o avan\xE7ada com burpees, escaladores e afundos."],
+  ["Circuito Hell Week", "Hell Week circuit", "Circuito Hell Week", "Circuit Hell Week", "Hell-Week-Zirkel", "Circuito Hell Week"],
+  ["5 giri senza sconti: burpee, piegamenti, squat, mountain climber.", "5 rounds, no mercy: burpees, push-ups, squats, mountain climbers.", "5 rondas sin piedad: burpees, flexiones, sentadillas, escaladores.", "5 tours sans piti\xE9 : burpees, pompes, squats, mountain climbers.", "5 Runden ohne Gnade: Burpees, Liegest\xFCtze, Kniebeugen, Mountain Climbers.", "5 rodadas sem piedade: burpees, flex\xF5es, agachamentos, escaladores."],
+  ["Mimetica d'oro", "Gold camo", "Camuflaje dorado", "Camouflage dor\xE9", "Gold-Tarnmuster", "Camuflagem dourada"],
+  ["Grado dorato accanto al nome in classifica e nelle sfide.", "Gold rank next to your name on the leaderboard and in challenges.", "Grado dorado junto a tu nombre en la clasificaci\xF3n y en los retos.", "Grade dor\xE9 \xE0 c\xF4t\xE9 de ton nom dans le classement et les d\xE9fis.", "Goldener Rang neben deinem Namen in der Rangliste und in Duellen.", "Patente dourada ao lado do seu nome no ranking e nos desafios."],
+  // --- esercizi
+  ["Squat", "Squats", "Sentadillas", "Squats", "Kniebeugen", "Agachamentos"],
+  ["Piegamenti", "Push-ups", "Flexiones", "Pompes", "Liegest\xFCtze", "Flex\xF5es"],
+  ["piegamenti", "push-ups", "flexiones", "pompes", "Liegest\xFCtze", "flex\xF5es"],
+  ["Addominali", "Sit-ups", "Abdominales", "Abdos", "Sit-ups", "Abdominais"],
+  ["addominali", "sit-ups", "abdominales", "abdos", "Sit-ups", "abdominais"],
+  ["Jumping jack", "Jumping jacks", "Saltos de tijera", "Jumping jacks", "Hampelm\xE4nner", "Polichinelos"],
+  ["Plank", "Plank", "Plancha", "Gainage", "Unterarmst\xFCtz", "Prancha"],
+  ["Affondi", "Lunges", "Zancadas", "Fentes", "Ausfallschritte", "Afundos"],
+  ["Mountain climber", "Mountain climbers", "Escaladores", "Mountain climbers", "Mountain Climbers", "Escaladores"],
+  ["Burpee", "Burpees", "Burpees", "Burpees", "Burpees", "Burpees"],
+  ["Gambe e glutei", "Legs and glutes", "Piernas y gl\xFAteos", "Jambes et fessiers", "Beine und Po", "Pernas e gl\xFAteos"],
+  ["Petto, spalle, tricipiti", "Chest, shoulders, triceps", "Pecho, hombros, tr\xEDceps", "Pectoraux, \xE9paules, triceps", "Brust, Schultern, Trizeps", "Peito, ombros, tr\xEDceps"],
+  ["Sit-up da prova militare", "Military-test sit-ups", "Abdominales de prueba militar", "Abdos d'\xE9preuve militaire", "Sit-ups wie im Milit\xE4rtest", "Abdominais de prova militar"],
+  ["Riscaldamento e cardio", "Warm-up and cardio", "Calentamiento y cardio", "\xC9chauffement et cardio", "Aufw\xE4rmen und Cardio", "Aquecimento e cardio"],
+  ["Tenuta del core", "Core hold", "Resistencia del core", "Gainage du tronc", "Rumpfspannung", "Resist\xEAncia do core"],
+  ["Gambe, equilibrio", "Legs, balance", "Piernas, equilibrio", "Jambes, \xE9quilibre", "Beine, Gleichgewicht", "Pernas, equil\xEDbrio"],
+  ["Core e cardio", "Core and cardio", "Core y cardio", "Gainage et cardio", "Rumpf und Cardio", "Core e cardio"],
+  ["Il re dell'addestramento", "The king of drills", "El rey del entrenamiento", "Le roi de l'entra\xEEnement", "Der K\xF6nig des Drills", "O rei do treinamento"],
+  ["Telefono a terra, di lato, a circa 2\u20133 metri. Devi vedere testa e piedi.", "Phone on the floor, to your side, about 2\u20133 metres away. Your head and feet must be in view.", "Tel\xE9fono en el suelo, de lado, a unos 2\u20133 metros. Se te deben ver la cabeza y los pies.", "T\xE9l\xE9phone au sol, de c\xF4t\xE9, \xE0 environ 2\u20133 m\xE8tres. On doit voir ta t\xEAte et tes pieds.", "Handy auf dem Boden, seitlich, etwa 2\u20133 Meter entfernt. Kopf und F\xFC\xDFe m\xFCssen zu sehen sein.", "Celular no ch\xE3o, de lado, a uns 2\u20133 metros. Sua cabe\xE7a e seus p\xE9s precisam aparecer."],
+  ["Telefono a terra, di lato, a circa 2 metri, all'altezza del pavimento.", "Phone on the floor, to your side, about 2 metres away, at floor level.", "Tel\xE9fono en el suelo, de lado, a unos 2 metros, a ras de suelo.", "T\xE9l\xE9phone au sol, de c\xF4t\xE9, \xE0 environ 2 m\xE8tres, au ras du sol.", "Handy auf dem Boden, seitlich, etwa 2 Meter entfernt, auf Bodenh\xF6he.", "Celular no ch\xE3o, de lado, a uns 2 metros, na altura do piso."],
+  ["Telefono a terra, di lato, a circa 2 metri. Devi vedere spalle, bacino e ginocchia.", "Phone on the floor, to your side, about 2 metres away. Shoulders, hips and knees must be in view.", "Tel\xE9fono en el suelo, de lado, a unos 2 metros. Se te deben ver hombros, cadera y rodillas.", "T\xE9l\xE9phone au sol, de c\xF4t\xE9, \xE0 environ 2 m\xE8tres. On doit voir \xE9paules, bassin et genoux.", "Handy auf dem Boden, seitlich, etwa 2 Meter entfernt. Schultern, H\xFCfte und Knie m\xFCssen zu sehen sein.", "Celular no ch\xE3o, de lado, a uns 2 metros. Ombros, quadril e joelhos precisam aparecer."],
+  ["Telefono in verticale, di fronte a te, a 2\u20133 metri. Devi vedere mani sopra la testa e piedi.", "Phone upright, facing you, 2\u20133 metres away. Your hands above your head and your feet must be in view.", "Tel\xE9fono en vertical, frente a ti, a 2\u20133 metros. Se te deben ver las manos sobre la cabeza y los pies.", "T\xE9l\xE9phone \xE0 la verticale, face \xE0 toi, \xE0 2\u20133 m\xE8tres. On doit voir tes mains au-dessus de la t\xEAte et tes pieds.", "Handy hochkant, vor dir, 2\u20133 Meter entfernt. H\xE4nde \xFCber dem Kopf und F\xFC\xDFe m\xFCssen zu sehen sein.", "Celular na vertical, de frente para voc\xEA, a 2\u20133 metros. M\xE3os acima da cabe\xE7a e p\xE9s precisam aparecer."],
+  ["Telefono a terra, di lato, a circa 2 metri.", "Phone on the floor, to your side, about 2 metres away.", "Tel\xE9fono en el suelo, de lado, a unos 2 metros.", "T\xE9l\xE9phone au sol, de c\xF4t\xE9, \xE0 environ 2 m\xE8tres.", "Handy auf dem Boden, seitlich, etwa 2 Meter entfernt.", "Celular no ch\xE3o, de lado, a uns 2 metros."],
+  ["Telefono in verticale, di lato, a circa 3 metri. Devi vederti in piedi e a terra.", "Phone upright, to your side, about 3 metres away. You must be in view standing and on the floor.", "Tel\xE9fono en vertical, de lado, a unos 3 metros. Te tiene que ver de pie y en el suelo.", "T\xE9l\xE9phone \xE0 la verticale, de c\xF4t\xE9, \xE0 environ 3 m\xE8tres. On doit te voir debout et au sol.", "Handy hochkant, seitlich, etwa 3 Meter entfernt. Du musst stehend und am Boden zu sehen sein.", "Celular na vertical, de lado, a uns 3 metros. Voc\xEA precisa aparecer de p\xE9 e no ch\xE3o."],
+  ["Piedi alla larghezza delle spalle, punte leggermente in fuori.", "Feet shoulder-width apart, toes slightly out.", "Pies a la anchura de los hombros, puntas un poco hacia fuera.", "Pieds \xE9cart\xE9s \xE0 largeur d'\xE9paules, pointes l\xE9g\xE8rement vers l'ext\xE9rieur.", "F\xFC\xDFe schulterbreit, Fu\xDFspitzen leicht nach au\xDFen.", "P\xE9s na largura dos ombros, pontas levemente para fora."],
+  ["Spingi il bacino indietro e scendi piegando le ginocchia, petto alto.", "Push your hips back and lower by bending your knees, chest up.", "Lleva la cadera atr\xE1s y baja doblando las rodillas, pecho arriba.", "Pousse le bassin en arri\xE8re et descends en pliant les genoux, poitrine haute.", "Schiebe die H\xFCfte nach hinten und beuge die Knie, Brust raus.", "Empurre o quadril para tr\xE1s e des\xE7a dobrando os joelhos, peito alto."],
+  ["Scendi finch\xE9 le cosce sono parallele al suolo.", "Go down until your thighs are parallel to the floor.", "Baja hasta que los muslos queden paralelos al suelo.", "Descends jusqu'\xE0 ce que les cuisses soient parall\xE8les au sol.", "Geh runter, bis die Oberschenkel parallel zum Boden sind.", "Des\xE7a at\xE9 as coxas ficarem paralelas ao ch\xE3o."],
+  ["Risali spingendo sui talloni fino a gambe distese.", "Drive up through your heels until your legs are straight.", "Sube empujando con los talones hasta estirar las piernas.", "Remonte en poussant sur les talons jusqu'\xE0 tendre les jambes.", "Dr\xFCck dich \xFCber die Fersen hoch, bis die Beine gestreckt sind.", "Suba empurrando com os calcanhares at\xE9 esticar as pernas."],
+  ["Non scendi abbastanza (la ripetizione non conta)", "Not going low enough (the rep doesn't count)", "No bajas lo suficiente (la repetici\xF3n no cuenta)", "Tu ne descends pas assez (la r\xE9p\xE9tition ne compte pas)", "Nicht tief genug (die Wiederholung z\xE4hlt nicht)", "N\xE3o desce o suficiente (a repeti\xE7\xE3o n\xE3o conta)"],
+  ["Busto troppo inclinato in avanti", "Torso leaning too far forward", "Tronco demasiado inclinado hacia delante", "Buste trop pench\xE9 en avant", "Oberk\xF6rper zu weit nach vorn geneigt", "Tronco inclinado demais para a frente"],
+  ["Gambe non distese in cima", "Legs not straight at the top", "Piernas no estiradas arriba", "Jambes pas tendues en haut", "Beine oben nicht gestreckt", "Pernas n\xE3o esticadas no alto"],
+  ["Mani sotto le spalle, corpo dritto dalla testa ai talloni.", "Hands under your shoulders, body straight from head to heels.", "Manos bajo los hombros, cuerpo recto de la cabeza a los talones.", "Mains sous les \xE9paules, corps droit de la t\xEAte aux talons.", "H\xE4nde unter den Schultern, K\xF6rper gerade von Kopf bis Ferse.", "M\xE3os abaixo dos ombros, corpo reto da cabe\xE7a aos calcanhares."],
+  ["Contrai addome e glutei: il bacino non deve cedere.", "Brace your abs and glutes: your hips must not sag.", "Contrae abdomen y gl\xFAteos: la cadera no debe caer.", "Contracte abdos et fessiers : le bassin ne doit pas s'affaisser.", "Spann Bauch und Po an: Die H\xFCfte darf nicht durchh\xE4ngen.", "Contraia abd\xF4men e gl\xFAteos: o quadril n\xE3o pode cair."],
+  ["Scendi finch\xE9 i gomiti sono piegati a 90\xB0 o meno.", "Go down until your elbows are bent to 90\xB0 or less.", "Baja hasta que los codos est\xE9n a 90\xB0 o menos.", "Descends jusqu'\xE0 ce que les coudes soient pli\xE9s \xE0 90\xB0 ou moins.", "Geh runter, bis die Ellbogen 90\xB0 oder weniger gebeugt sind.", "Des\xE7a at\xE9 os cotovelos ficarem a 90\xB0 ou menos."],
+  ["Spingi fino a braccia distese.", "Push up until your arms are straight.", "Empuja hasta estirar los brazos.", "Pousse jusqu'\xE0 tendre les bras.", "Dr\xFCck dich hoch, bis die Arme gestreckt sind.", "Empurre at\xE9 esticar os bra\xE7os."],
+  ["Bacino che cede verso il basso", "Hips sagging", "Cadera que cae", "Bassin qui s'affaisse", "H\xFCfte h\xE4ngt durch", "Quadril caindo"],
+  ["Bacino troppo alto", "Hips too high", "Cadera demasiado alta", "Bassin trop haut", "H\xFCfte zu hoch", "Quadril alto demais"],
+  ["Gomiti non piegati a 90\xB0 (non conta)", "Elbows not bent to 90\xB0 (doesn't count)", "Codos no doblados a 90\xB0 (no cuenta)", "Coudes pas pli\xE9s \xE0 90\xB0 (ne compte pas)", "Ellbogen nicht auf 90\xB0 gebeugt (z\xE4hlt nicht)", "Cotovelos n\xE3o dobrados a 90\xB0 (n\xE3o conta)"],
+  ["Supino, ginocchia piegate a circa 90\xB0, piedi a terra.", "Lie on your back, knees bent to about 90\xB0, feet on the floor.", "Boca arriba, rodillas dobladas a unos 90\xB0, pies en el suelo.", "Sur le dos, genoux pli\xE9s \xE0 environ 90\xB0, pieds au sol.", "Auf dem R\xFCcken, Knie etwa 90\xB0 gebeugt, F\xFC\xDFe am Boden.", "Deitado de costas, joelhos dobrados a uns 90\xB0, p\xE9s no ch\xE3o."],
+  ["Mani incrociate sul petto o dietro le orecchie.", "Hands crossed on your chest or behind your ears.", "Manos cruzadas sobre el pecho o detr\xE1s de las orejas.", "Mains crois\xE9es sur la poitrine ou derri\xE8re les oreilles.", "H\xE4nde vor der Brust gekreuzt oder hinter den Ohren.", "M\xE3os cruzadas no peito ou atr\xE1s das orelhas."],
+  ["Sali con il busto fino a portare le spalle sopra il bacino.", "Sit up until your shoulders are over your hips.", "Sube el tronco hasta llevar los hombros sobre la cadera.", "Remonte le buste jusqu'\xE0 amener les \xE9paules au-dessus du bassin.", "Richte den Oberk\xF6rper auf, bis die Schultern \xFCber der H\xFCfte sind.", "Suba o tronco at\xE9 os ombros ficarem sobre o quadril."],
+  ["Torna gi\xF9 finch\xE9 le scapole toccano terra.", "Lower back down until your shoulder blades touch the floor.", "Vuelve a bajar hasta que los om\xF3platos toquen el suelo.", "Redescends jusqu'\xE0 ce que les omoplates touchent le sol.", "Geh zur\xFCck, bis die Schulterbl\xE4tter den Boden ber\xFChren.", "Volte a descer at\xE9 as esc\xE1pulas tocarem o ch\xE3o."],
+  ["Busto non abbastanza alto (non conta)", "Torso not high enough (doesn't count)", "Tronco no suficientemente alto (no cuenta)", "Buste pas assez haut (ne compte pas)", "Oberk\xF6rper nicht hoch genug (z\xE4hlt nicht)", "Tronco n\xE3o alto o suficiente (n\xE3o conta)"],
+  ["Non torni gi\xF9 fino in fondo", "Not going all the way back down", "No bajas del todo", "Tu ne redescends pas jusqu'en bas", "Nicht ganz zur\xFCck nach unten", "N\xE3o volta at\xE9 o fim"],
+  ["In piedi, piedi uniti, braccia lungo i fianchi.", "Stand with feet together, arms by your sides.", "De pie, pies juntos, brazos a los lados.", "Debout, pieds joints, bras le long du corps.", "Stehen, F\xFC\xDFe zusammen, Arme seitlich am K\xF6rper.", "De p\xE9, p\xE9s juntos, bra\xE7os ao lado do corpo."],
+  ["Salta aprendo le gambe e portando le mani sopra la testa.", "Jump, spreading your legs and bringing your hands above your head.", "Salta abriendo las piernas y llevando las manos sobre la cabeza.", "Saute en \xE9cartant les jambes et en levant les mains au-dessus de la t\xEAte.", "Spring, spreize die Beine und f\xFChre die H\xE4nde \xFCber den Kopf.", "Salte abrindo as pernas e levando as m\xE3os acima da cabe\xE7a."],
+  ["Salta di nuovo tornando a piedi uniti e braccia gi\xF9.", "Jump again back to feet together and arms down.", "Salta otra vez volviendo a pies juntos y brazos abajo.", "Saute \xE0 nouveau pour revenir pieds joints et bras en bas.", "Spring zur\xFCck: F\xFC\xDFe zusammen, Arme unten.", "Salte de novo voltando aos p\xE9s juntos e bra\xE7os para baixo."],
+  ["Mantieni un ritmo costante.", "Keep a steady rhythm.", "Mant\xE9n un ritmo constante.", "Garde un rythme r\xE9gulier.", "Halte einen gleichm\xE4\xDFigen Rhythmus.", "Mantenha um ritmo constante."],
+  ["Braccia non sopra la testa", "Arms not above your head", "Brazos no por encima de la cabeza", "Bras pas au-dessus de la t\xEAte", "Arme nicht \xFCber dem Kopf", "Bra\xE7os n\xE3o acima da cabe\xE7a"],
+  ["Gambe non abbastanza aperte", "Legs not wide enough", "Piernas no suficientemente abiertas", "Jambes pas assez \xE9cart\xE9es", "Beine nicht weit genug gespreizt", "Pernas n\xE3o abertas o suficiente"],
+  ["Avambracci a terra, gomiti sotto le spalle.", "Forearms on the floor, elbows under your shoulders.", "Antebrazos en el suelo, codos bajo los hombros.", "Avant-bras au sol, coudes sous les \xE9paules.", "Unterarme am Boden, Ellbogen unter den Schultern.", "Antebra\xE7os no ch\xE3o, cotovelos abaixo dos ombros."],
+  ["Corpo dritto dalla testa ai talloni.", "Body straight from head to heels.", "Cuerpo recto de la cabeza a los talones.", "Corps droit de la t\xEAte aux talons.", "K\xF6rper gerade von Kopf bis Ferse.", "Corpo reto da cabe\xE7a aos calcanhares."],
+  ["Contrai addome e glutei, respira regolarmente.", "Brace your abs and glutes, breathe steadily.", "Contrae abdomen y gl\xFAteos, respira con regularidad.", "Contracte abdos et fessiers, respire r\xE9guli\xE8rement.", "Spann Bauch und Po an, atme gleichm\xE4\xDFig.", "Contraia abd\xF4men e gl\xFAteos, respire normalmente."],
+  ["Il tempo scorre solo quando la posizione \xE8 corretta.", "The clock only runs while your position is correct.", "El tiempo solo corre cuando la posici\xF3n es correcta.", "Le temps ne d\xE9file que si la position est correcte.", "Die Zeit l\xE4uft nur, solange die Haltung stimmt.", "O tempo s\xF3 corre quando a posi\xE7\xE3o est\xE1 correta."],
+  ["Bacino che cede a terra", "Hips sagging on the floor", "Cadera que cae en el suelo", "Bassin qui s'affaisse au sol", "H\xFCfte h\xE4ngt am Boden durch", "Quadril caindo no ch\xE3o"],
+  ["Bacino che cede", "Hips sagging", "Cadera que cae", "Bassin qui s'affaisse", "H\xFCfte h\xE4ngt durch", "Quadril caindo"],
+  ["In piedi, busto dritto, mani sui fianchi.", "Stand tall, torso upright, hands on your hips.", "De pie, tronco recto, manos en la cintura.", "Debout, buste droit, mains sur les hanches.", "Aufrecht stehen, Oberk\xF6rper gerade, H\xE4nde an den H\xFCften.", "De p\xE9, tronco reto, m\xE3os na cintura."],
+  ["Fai un passo lungo in avanti e scendi piegando entrambe le ginocchia.", "Take a long step forward and lower by bending both knees.", "Da un paso largo hacia delante y baja doblando ambas rodillas.", "Fais un grand pas en avant et descends en pliant les deux genoux.", "Mach einen gro\xDFen Schritt nach vorn und beuge beide Knie.", "D\xEA um passo longo \xE0 frente e des\xE7a dobrando os dois joelhos."],
+  ["Il ginocchio dietro arriva vicino a terra, quello davanti resta sopra la caviglia.", "The back knee comes close to the floor, the front one stays over the ankle.", "La rodilla de atr\xE1s llega cerca del suelo, la de delante queda sobre el tobillo.", "Le genou arri\xE8re approche du sol, celui de devant reste au-dessus de la cheville.", "Das hintere Knie kommt nah an den Boden, das vordere bleibt \xFCber dem Kn\xF6chel.", "O joelho de tr\xE1s chega perto do ch\xE3o, o da frente fica sobre o tornozelo."],
+  ["Spingi con la gamba davanti e torna su. Alterna le gambe.", "Push through the front leg and come back up. Alternate legs.", "Empuja con la pierna de delante y vuelve arriba. Alterna las piernas.", "Pousse sur la jambe avant et remonte. Alterne les jambes.", "Dr\xFCck dich mit dem vorderen Bein hoch. Beine abwechseln.", "Empurre com a perna da frente e volte. Alterne as pernas."],
+  ["Non scendi abbastanza (non conta)", "Not going low enough (doesn't count)", "No bajas lo suficiente (no cuenta)", "Tu ne descends pas assez (ne compte pas)", "Nicht tief genug (z\xE4hlt nicht)", "N\xE3o desce o suficiente (n\xE3o conta)"],
+  ["Busto inclinato in avanti", "Torso leaning forward", "Tronco inclinado hacia delante", "Buste pench\xE9 en avant", "Oberk\xF6rper nach vorn geneigt", "Tronco inclinado para a frente"],
+  ["Posizione di piegamento a braccia tese, corpo dritto.", "Push-up position with straight arms, body straight.", "Posici\xF3n de flexi\xF3n con brazos estirados, cuerpo recto.", "Position de pompe bras tendus, corps droit.", "Liegest\xFCtzposition mit gestreckten Armen, K\xF6rper gerade.", "Posi\xE7\xE3o de flex\xE3o com bra\xE7os esticados, corpo reto."],
+  ["Porta un ginocchio verso il petto, poi riportalo indietro.", "Drive one knee towards your chest, then take it back.", "Lleva una rodilla al pecho y luego devu\xE9lvela atr\xE1s.", "Am\xE8ne un genou vers la poitrine, puis ram\xE8ne-le en arri\xE8re.", "Zieh ein Knie zur Brust und dann wieder zur\xFCck.", "Leve um joelho ao peito e depois volte com ele."],
+  ["Alterna le gambe con ritmo, come se corressi.", "Alternate legs with rhythm, as if you were running.", "Alterna las piernas con ritmo, como si corrieras.", "Alterne les jambes en rythme, comme si tu courais.", "Wechsle die Beine im Rhythmus, als w\xFCrdest du laufen.", "Alterne as pernas com ritmo, como se estivesse correndo."],
+  ["Ogni ginocchio al petto vale una ripetizione.", "Each knee to the chest counts as one rep.", "Cada rodilla al pecho vale una repetici\xF3n.", "Chaque genou \xE0 la poitrine compte pour une r\xE9p\xE9tition.", "Jedes Knie zur Brust z\xE4hlt als eine Wiederholung.", "Cada joelho no peito vale uma repeti\xE7\xE3o."],
+  ["Ginocchio non abbastanza vicino al petto", "Knee not close enough to the chest", "Rodilla no suficientemente cerca del pecho", "Genou pas assez pr\xE8s de la poitrine", "Knie nicht nah genug an der Brust", "Joelho n\xE3o perto o suficiente do peito"],
+  ["In piedi, scendi in accosciata e appoggia le mani a terra.", "From standing, squat down and put your hands on the floor.", "De pie, baja en cuclillas y apoya las manos en el suelo.", "Debout, accroupis-toi et pose les mains au sol.", "Aus dem Stand in die Hocke gehen und die H\xE4nde auf den Boden setzen.", "De p\xE9, agache e apoie as m\xE3os no ch\xE3o."],
+  ["Porta i piedi indietro in posizione di piegamento.", "Kick your feet back into a push-up position.", "Lleva los pies atr\xE1s en posici\xF3n de flexi\xF3n.", "Envoie les pieds en arri\xE8re en position de pompe.", "Spring mit den F\xFC\xDFen nach hinten in die Liegest\xFCtzposition.", "Leve os p\xE9s para tr\xE1s em posi\xE7\xE3o de flex\xE3o."],
+  ["Riporta i piedi verso le mani e rialzati.", "Bring your feet back to your hands and stand up.", "Vuelve a llevar los pies hacia las manos y lev\xE1ntate.", "Ram\xE8ne les pieds vers les mains et rel\xE8ve-toi.", "Bring die F\xFC\xDFe zur\xFCck zu den H\xE4nden und steh auf.", "Traga os p\xE9s de volta \xE0s m\xE3os e levante-se."],
+  ["Salta con le braccia sopra la testa: la ripetizione conta solo con il salto.", "Jump with your arms above your head: the rep only counts with the jump.", "Salta con los brazos sobre la cabeza: la repetici\xF3n solo cuenta con el salto.", "Saute bras au-dessus de la t\xEAte : la r\xE9p\xE9tition ne compte qu'avec le saut.", "Spring mit den Armen \xFCber dem Kopf: Die Wiederholung z\xE4hlt nur mit Sprung.", "Salte com os bra\xE7os acima da cabe\xE7a: a repeti\xE7\xE3o s\xF3 conta com o salto."],
+  ["Salto senza braccia in alto (non conta)", "Jump without arms up (doesn't count)", "Salto sin brazos arriba (no cuenta)", "Saut sans bras lev\xE9s (ne compte pas)", "Sprung ohne Arme oben (z\xE4hlt nicht)", "Salto sem bra\xE7os para cima (n\xE3o conta)"],
+  // --- correzioni e banner
+  ["Petto in alto, schiena dritta", "Chest up, back straight", "Pecho arriba, espalda recta", "Poitrine haute, dos droit", "Brust raus, R\xFCcken gerade", "Peito alto, costas retas"],
+  ["Pi\xF9 gi\xF9! Cosce parallele al suolo. Non conta", "Lower! Thighs parallel to the floor. Doesn't count", "\xA1M\xE1s abajo! Muslos paralelos al suelo. No cuenta", "Plus bas ! Cuisses parall\xE8les au sol. \xC7a ne compte pas", "Tiefer! Oberschenkel parallel zum Boden. Z\xE4hlt nicht", "Mais baixo! Coxas paralelas ao ch\xE3o. N\xE3o conta"],
+  ["Bacino su! Stringi addome e glutei", "Hips up! Squeeze abs and glutes", "\xA1Cadera arriba! Aprieta abdomen y gl\xFAteos", "Bassin en haut ! Serre abdos et fessiers", "H\xFCfte hoch! Bauch und Po anspannen", "Quadril para cima! Aperte abd\xF4men e gl\xFAteos"],
+  ["Abbassa il bacino, corpo dritto", "Lower your hips, body straight", "Baja la cadera, cuerpo recto", "Baisse le bassin, corps droit", "H\xFCfte runter, K\xF6rper gerade", "Abaixe o quadril, corpo reto"],
+  ["Scendi di pi\xF9! Gomiti a novanta gradi. Non conta", "Go lower! Elbows at ninety degrees. Doesn't count", "\xA1Baja m\xE1s! Codos a noventa grados. No cuenta", "Descends plus ! Coudes \xE0 quatre-vingt-dix degr\xE9s. \xC7a ne compte pas", "Tiefer! Ellbogen auf neunzig Grad. Z\xE4hlt nicht", "Des\xE7a mais! Cotovelos a noventa graus. N\xE3o conta"],
+  ["Sali di pi\xF9! Spalle sopra il bacino. Non conta", "Come up higher! Shoulders over your hips. Doesn't count", "\xA1Sube m\xE1s! Hombros sobre la cadera. No cuenta", "Monte plus haut ! \xC9paules au-dessus du bassin. \xC7a ne compte pas", "H\xF6her! Schultern \xFCber die H\xFCfte. Z\xE4hlt nicht", "Suba mais! Ombros sobre o quadril. N\xE3o conta"],
+  ["Braccia sopra la testa! Non conta", "Arms above your head! Doesn't count", "\xA1Brazos sobre la cabeza! No cuenta", "Bras au-dessus de la t\xEAte ! \xC7a ne compte pas", "Arme \xFCber den Kopf! Z\xE4hlt nicht", "Bra\xE7os acima da cabe\xE7a! N\xE3o conta"],
+  ["Apri di pi\xF9 le gambe! Non conta", "Spread your legs wider! Doesn't count", "\xA1Abre m\xE1s las piernas! No cuenta", "\xC9carte plus les jambes ! \xC7a ne compte pas", "Beine weiter auseinander! Z\xE4hlt nicht", "Abra mais as pernas! N\xE3o conta"],
+  ["Bacino su! Non cedere", "Hips up! Don't sag", "\xA1Cadera arriba! No cedas", "Bassin en haut ! Ne l\xE2che pas", "H\xFCfte hoch! Nicht durchh\xE4ngen", "Quadril para cima! N\xE3o ceda"],
+  ["Busto dritto, sguardo avanti", "Torso upright, eyes forward", "Tronco recto, mirada al frente", "Buste droit, regard devant", "Oberk\xF6rper aufrecht, Blick nach vorn", "Tronco reto, olhar para a frente"],
+  ["Scendi di pi\xF9! Ginocchio verso terra. Non conta", "Go lower! Knee towards the floor. Doesn't count", "\xA1Baja m\xE1s! Rodilla hacia el suelo. No cuenta", "Descends plus ! Genou vers le sol. \xC7a ne compte pas", "Tiefer! Knie Richtung Boden. Z\xE4hlt nicht", "Des\xE7a mais! Joelho em dire\xE7\xE3o ao ch\xE3o. N\xE3o conta"],
+  ["Bacino gi\xF9, schiena piatta", "Hips down, flat back", "Cadera abajo, espalda plana", "Bassin bas, dos plat", "H\xFCfte runter, R\xFCcken flach", "Quadril para baixo, costas retas"],
+  ["Bacino su, corpo dritto", "Hips up, body straight", "Cadera arriba, cuerpo recto", "Bassin en haut, corps droit", "H\xFCfte hoch, K\xF6rper gerade", "Quadril para cima, corpo reto"],
+  ["Salta con le braccia sopra la testa! Non conta", "Jump with your arms above your head! Doesn't count", "\xA1Salta con los brazos sobre la cabeza! No cuenta", "Saute bras au-dessus de la t\xEAte ! \xC7a ne compte pas", "Spring mit den Armen \xFCber dem Kopf! Z\xE4hlt nicht", "Salte com os bra\xE7os acima da cabe\xE7a! N\xE3o conta"],
+  ["Inquadra tutto il corpo, di lato", "Get your whole body in frame, side on", "Encuadra todo el cuerpo, de lado", "Cadre tout ton corps, de c\xF4t\xE9", "Ganzen K\xF6rper ins Bild, seitlich", "Enquadre o corpo inteiro, de lado"],
+  ["Inquadrati di lato, dalla testa ai piedi", "Get in frame side on, head to feet", "Ponte de lado en el encuadre, de la cabeza a los pies", "Mets-toi de c\xF4t\xE9 dans le cadre, de la t\xEAte aux pieds", "Seitlich ins Bild, von Kopf bis Fu\xDF", "Fique de lado no enquadramento, da cabe\xE7a aos p\xE9s"],
+  ["Inquadrati di lato, in posizione di piegamento", "Get in frame side on, in push-up position", "Ponte de lado en el encuadre, en posici\xF3n de flexi\xF3n", "Mets-toi de c\xF4t\xE9 dans le cadre, en position de pompe", "Seitlich ins Bild, in Liegest\xFCtzposition", "Fique de lado no enquadramento, em posi\xE7\xE3o de flex\xE3o"],
+  ["Inquadrati di lato: spalle, bacino e ginocchia", "Get in frame side on: shoulders, hips and knees", "Ponte de lado: hombros, cadera y rodillas", "Mets-toi de c\xF4t\xE9 : \xE9paules, bassin et genoux", "Seitlich ins Bild: Schultern, H\xFCfte und Knie", "Fique de lado: ombros, quadril e joelhos"],
+  ["Inquadrati di fronte, dalle mani ai piedi", "Face the camera, hands to feet in frame", "Ponte de frente, de las manos a los pies", "Mets-toi de face, des mains aux pieds", "Frontal ins Bild, von den H\xE4nden bis zu den F\xFC\xDFen", "Fique de frente, das m\xE3os aos p\xE9s"],
+  ["Inquadrati tutto, dalla testa ai piedi", "Get fully in frame, head to feet", "Que se te vea entero, de la cabeza a los pies", "Mets-toi enti\xE8rement dans le cadre, de la t\xEAte aux pieds", "Ganz ins Bild, von Kopf bis Fu\xDF", "Apare\xE7a inteiro, da cabe\xE7a aos p\xE9s"],
+  ["Mettiti in posizione di piegamento", "Get into push-up position", "Ponte en posici\xF3n de flexi\xF3n", "Mets-toi en position de pompe", "Geh in die Liegest\xFCtzposition", "Fique em posi\xE7\xE3o de flex\xE3o"],
+  ["Mettiti in posizione di plank", "Get into plank position", "Ponte en posici\xF3n de plancha", "Mets-toi en position de gainage", "Geh in die St\xFCtzposition", "Fique em posi\xE7\xE3o de prancha"],
+  ["Mettiti in posizione", "Get into position", "Ponte en posici\xF3n", "Mets-toi en position", "Geh in Position", "Fique em posi\xE7\xE3o"],
+  ["Non ti vedo: entra nell'inquadratura", "I can't see you: step into the frame", "No te veo: entra en el encuadre", "Je ne te vois pas : entre dans le cadre", "Ich sehe dich nicht: Tritt ins Bild", "N\xE3o estou vendo voc\xEA: entre no enquadramento"],
+  ["Tieni! Posizione corretta", "Hold it! Correct position", "\xA1Aguanta! Posici\xF3n correcta", "Tiens ! Position correcte", "Halten! Haltung korrekt", "Segure! Posi\xE7\xE3o correta"],
+  ["In posizione di plank", "In plank position", "En posici\xF3n de plancha", "En position de gainage", "In St\xFCtzposition", "Em posi\xE7\xE3o de prancha"],
+  ["Posizione corretta", "Correct position", "Posici\xF3n correcta", "Position correcte", "Haltung korrekt", "Posi\xE7\xE3o correta"],
+  ["In posizione!", "Get in position!", "\xA1En posici\xF3n!", "En position !", "In Position!", "Em posi\xE7\xE3o!"],
+  ["Ripetizione incompleta", "Incomplete rep", "Repetici\xF3n incompleta", "R\xE9p\xE9tition incompl\xE8te", "Unvollst\xE4ndige Wiederholung", "Repeti\xE7\xE3o incompleta"],
+  ["Non conta", "Doesn't count", "No cuenta", "\xC7a ne compte pas", "Z\xE4hlt nicht", "N\xE3o conta"],
+  // --- brief e sessione
+  ["\u2039 Indietro", "\u2039 Back", "\u2039 Atr\xE1s", "\u2039 Retour", "\u2039 Zur\xFCck", "\u2039 Voltar"],
+  ["Esercizio", "Exercise", "Ejercicio", "Exercice", "\xDCbung", "Exerc\xEDcio"],
+  ["Sessione", "Session", "Sesi\xF3n", "S\xE9ance", "Einheit", "Sess\xE3o"],
+  ["Massimo numero di ripetizioni valide in 2:00.", "As many valid reps as you can in 2:00.", "El m\xE1ximo de repeticiones v\xE1lidas en 2:00.", "Le maximum de r\xE9p\xE9titions valides en 2:00.", "So viele g\xFCltige Wiederholungen wie m\xF6glich in 2:00.", "O m\xE1ximo de repeti\xE7\xF5es v\xE1lidas em 2:00."],
+  ["Obiettivo:", "Target:", "Objetivo:", "Objectif :", "Ziel:", "Meta:"],
+  ["esecuzione", "how to do it", "ejecuci\xF3n", "ex\xE9cution", "Ausf\xFChrung", "execu\xE7\xE3o"],
+  ["Cosa ti correggo", "What I'll correct", "Lo que te corrijo", "Ce que je corrige", "Was ich korrigiere", "O que eu corrijo"],
+  ["Telecamera dal vivo", "Live camera", "C\xE1mara en directo", "Cam\xE9ra en direct", "Live-Kamera", "C\xE2mera ao vivo"],
+  ["Registra un video", "Record a video", "Grabar un v\xEDdeo", "Filmer une vid\xE9o", "Video aufnehmen", "Gravar um v\xEDdeo"],
+  ["Al primo avvio il telefono ti chiede il permesso di usare la fotocamera: tocca Consenti. In alternativa puoi registrare un video della serie e farlo analizzare.", "The first time, your phone asks for permission to use the camera: tap Allow. You can also record a video of your set and have it analysed.", "La primera vez el tel\xE9fono te pide permiso para usar la c\xE1mara: toca Permitir. Tambi\xE9n puedes grabar un v\xEDdeo de la serie y que lo analice.", "La premi\xE8re fois, le t\xE9l\xE9phone demande l'autorisation d'utiliser la cam\xE9ra : touche Autoriser. Tu peux aussi filmer ta s\xE9rie et la faire analyser.", "Beim ersten Mal fragt dein Handy, ob die Kamera genutzt werden darf: Tippe auf Zulassen. Du kannst deinen Satz auch filmen und analysieren lassen.", "Na primeira vez, o celular pede permiss\xE3o para usar a c\xE2mera: toque em Permitir. Voc\xEA tamb\xE9m pode gravar um v\xEDdeo da s\xE9rie e mandar analisar."],
+  ["Al primo avvio il telefono ti chiede il permesso di usare la fotocamera: tocca Consenti. In alternativa puoi registrare un video della serie e farlo analizzare.", "If the live camera doesn't open, use \u201CRecord a video\u201D: film your set and the trainer analyses it and counts the reps.", "Si la c\xE1mara en directo no se abre, usa \xABGrabar un v\xEDdeo\xBB: graba la serie y el instructor la analiza y cuenta las repeticiones.", "Si la cam\xE9ra en direct ne s'ouvre pas, utilise \xAB Filmer une vid\xE9o \xBB : filme ta s\xE9rie et l'instructeur l'analyse en comptant les r\xE9p\xE9titions.", "Wenn sich die Live-Kamera nicht \xF6ffnet, nutze \u201EVideo aufnehmen\u201C: Filme deinen Satz, der Ausbilder analysiert ihn und z\xE4hlt mit.", "Se a c\xE2mera ao vivo n\xE3o abrir, use \u201CGravar um v\xEDdeo\u201D: filme a s\xE9rie e o instrutor analisa e conta as repeti\xE7\xF5es."],
+  ["Carico il sistema di visione\u2026", "Loading the vision system\u2026", "Cargando el sistema de visi\xF3n\u2026", "Chargement du syst\xE8me de vision\u2026", "Bildanalyse wird geladen\u2026", "Carregando o sistema de vis\xE3o\u2026"],
+  ["Il sistema di visione non si \xE8 caricato. Controlla la connessione e riprova.", "The vision system didn't load. Check your connection and try again.", "El sistema de visi\xF3n no se ha cargado. Revisa la conexi\xF3n e int\xE9ntalo de nuevo.", "Le syst\xE8me de vision n'a pas pu se charger. V\xE9rifie ta connexion et r\xE9essaie.", "Die Bildanalyse wurde nicht geladen. Pr\xFCfe die Verbindung und versuch es erneut.", "O sistema de vis\xE3o n\xE3o carregou. Verifique a conex\xE3o e tente de novo."],
+  ["Il sistema di visione non si \xE8 caricato. Controlla la connessione.", "The vision system didn't load. Check your connection.", "El sistema de visi\xF3n no se ha cargado. Revisa la conexi\xF3n.", "Le syst\xE8me de vision n'a pas pu se charger. V\xE9rifie ta connexion.", "Die Bildanalyse wurde nicht geladen. Pr\xFCfe die Verbindung.", "O sistema de vis\xE3o n\xE3o carregou. Verifique a conex\xE3o."],
+  ["Non riesco ad aprire la fotocamera.", "I can't open the camera.", "No puedo abrir la c\xE1mara.", "Je n'arrive pas \xE0 ouvrir la cam\xE9ra.", "Ich kann die Kamera nicht \xF6ffnen.", "N\xE3o consigo abrir a c\xE2mera."],
+  ["Controlla di aver dato il permesso nelle impostazioni del browser, oppure registra un video della serie.", "Check that you allowed it in the browser settings, or record a video of your set.", "Comprueba que diste permiso en los ajustes del navegador, o graba un v\xEDdeo de la serie.", "V\xE9rifie que tu as donn\xE9 l'autorisation dans les r\xE9glages du navigateur, ou filme ta s\xE9rie.", "Pr\xFCfe die Berechtigung in den Browser-Einstellungen oder nimm ein Video deines Satzes auf.", "Verifique se deu permiss\xE3o nas configura\xE7\xF5es do navegador, ou grave um v\xEDdeo da s\xE9rie."],
+  ["La telecamera dal vivo non \xE8 disponibile in questa pagina.", "The live camera isn't available on this page.", "La c\xE1mara en directo no est\xE1 disponible en esta p\xE1gina.", "La cam\xE9ra en direct n'est pas disponible sur cette page.", "Die Live-Kamera ist auf dieser Seite nicht verf\xFCgbar.", "A c\xE2mera ao vivo n\xE3o est\xE1 dispon\xEDvel nesta p\xE1gina."],
+  ["Usa \u201CRegistra un video\u201D: filma la serie e l'istruttore la analizza.", "Use \u201CRecord a video\u201D: film your set and the trainer analyses it.", "Usa \xABGrabar un v\xEDdeo\xBB: graba la serie y el instructor la analiza.", "Utilise \xAB Filmer une vid\xE9o \xBB : filme ta s\xE9rie et l'instructeur l'analyse.", "Nutze \u201EVideo aufnehmen\u201C: Filme deinen Satz und der Ausbilder analysiert ihn.", "Use \u201CGravar um v\xEDdeo\u201D: filme a s\xE9rie e o instrutor analisa."],
+  ["Non riesco a leggere questo video. Prova a registrarlo di nuovo.", "I can't read this video. Try recording it again.", "No puedo leer este v\xEDdeo. Prueba a grabarlo otra vez.", "Je n'arrive pas \xE0 lire cette vid\xE9o. Essaie de la filmer \xE0 nouveau.", "Ich kann dieses Video nicht lesen. Nimm es bitte neu auf.", "N\xE3o consigo ler este v\xEDdeo. Tente gravar de novo."],
+  ["Serie libera", "Free set", "Serie libre", "S\xE9rie libre", "Freier Satz", "S\xE9rie livre"],
+  ["Prova \xB7 2:00", "Test \xB7 2:00", "Prueba \xB7 2:00", "Test \xB7 2:00", "Test \xB7 2:00", "Teste \xB7 2:00"],
+  ["ripetizioni", "reps", "repeticiones", "r\xE9p\xE9titions", "Wiederholungen", "repeti\xE7\xF5es"],
+  ["secondi", "seconds", "segundos", "secondes", "Sekunden", "segundos"],
+  ["Fine serie", "End set", "Terminar serie", "Fin de s\xE9rie", "Satz beenden", "Encerrar s\xE9rie"],
+  ["Termina", "Finish", "Terminar", "Terminer", "Beenden", "Encerrar"],
+  ["Camera", "Camera", "C\xE1mara", "Cam\xE9ra", "Kamera", "C\xE2mera"],
+  ["Recupero", "Rest", "Descanso", "R\xE9cup\xE9ration", "Pause", "Descanso"],
+  ["Prossima:", "Next:", "Siguiente:", "Suivant :", "Als N\xE4chstes:", "Pr\xF3xima:"],
+  ["Salta recupero", "Skip rest", "Saltar descanso", "Passer la r\xE9cup\xE9ration", "Pause \xFCberspringen", "Pular descanso"],
+  ["Mettiti in posizione", "Get into position", "Ponte en posici\xF3n", "Mets-toi en position", "Geh in Position", "Fique em posi\xE7\xE3o"],
+  ["Togli una ripetizione", "Remove a rep", "Quitar una repetici\xF3n", "Retirer une r\xE9p\xE9tition", "Eine Wiederholung abziehen", "Tirar uma repeti\xE7\xE3o"],
+  ["Aggiungi una ripetizione", "Add a rep", "A\xF1adir una repetici\xF3n", "Ajouter une r\xE9p\xE9tition", "Eine Wiederholung hinzuf\xFCgen", "Adicionar uma repeti\xE7\xE3o"],
+  ["Rapporto", "Report", "Informe", "Bilan", "Bericht", "Relat\xF3rio"],
+  ["Durata", "Duration", "Duraci\xF3n", "Dur\xE9e", "Dauer", "Dura\xE7\xE3o"],
+  ["Rip. valide", "Valid reps", "Rep. v\xE1lidas", "R\xE9p. valides", "G\xFCltige Wdh.", "Rep. v\xE1lidas"],
+  ["Non valide", "Not valid", "No v\xE1lidas", "Non valides", "Ung\xFCltig", "Inv\xE1lidas"],
+  ["Serie", "Sets", "Series", "S\xE9ries", "S\xE4tze", "S\xE9ries"],
+  ["Punti", "Points", "Puntos", "Points", "Punkte", "Pontos"],
+  ["Salvato su questo telefono.", "Saved on this phone.", "Guardado en este tel\xE9fono.", "Enregistr\xE9 sur ce t\xE9l\xE9phone.", "Auf diesem Handy gespeichert.", "Salvo neste celular."],
+  ["Dettaglio serie", "Set details", "Detalle de series", "D\xE9tail des s\xE9ries", "Satzdetails", "Detalhe das s\xE9ries"],
+  ["Correzione principale", "Main correction", "Correcci\xF3n principal", "Correction principale", "H\xE4ufigste Korrektur", "Corre\xE7\xE3o principal"],
+  ["Nessun errore di postura rilevato. Ottimo lavoro.", "No posture errors detected. Great work.", "No se ha detectado ning\xFAn error de postura. Buen trabajo.", "Aucune erreur de posture d\xE9tect\xE9e. Excellent travail.", "Keine Haltungsfehler erkannt. Starke Arbeit.", "Nenhum erro de postura detectado. \xD3timo trabalho."],
+  ["Continua cos\xEC.", "Keep it up.", "Sigue as\xED.", "Continue comme \xE7a.", "Weiter so.", "Continue assim."],
+  ["Torna al programma", "Back to the program", "Volver al programa", "Retour au programme", "Zur\xFCck zum Programm", "Voltar ao programa"],
+  ["Serie completata. Recupero.", "Set complete. Rest.", "Serie completada. Descanso.", "S\xE9rie termin\xE9e. R\xE9cup\xE9ration.", "Satz geschafft. Pause.", "S\xE9rie conclu\xEDda. Descanso."],
+  ["Dieci secondi. Preparati.", "Ten seconds. Get ready.", "Diez segundos. Prep\xE1rate.", "Dix secondes. Pr\xE9pare-toi.", "Zehn Sekunden. Mach dich bereit.", "Dez segundos. Prepare-se."],
+  ["Sessione terminata. Ottimo lavoro, recluta.", "Session complete. Great work, recruit.", "Sesi\xF3n terminada. Buen trabajo, recluta.", "S\xE9ance termin\xE9e. Excellent travail, recrue.", "Einheit beendet. Starke Arbeit, Rekrut.", "Sess\xE3o conclu\xEDda. \xD3timo trabalho, recruta."],
+  ["Serie registrata.", "Set recorded.", "Serie registrada.", "S\xE9rie enregistr\xE9e.", "Satz gespeichert.", "S\xE9rie registrada."],
+  ["Massimo in due minuti", "As many as you can in two minutes", "El m\xE1ximo en dos minutos", "Le maximum en deux minutes", "So viele wie m\xF6glich in zwei Minuten", "O m\xE1ximo em dois minutos"],
+  ["Ancora tre!", "Three more!", "\xA1Tres m\xE1s!", "Encore trois !", "Noch drei!", "Mais tr\xEAs!"],
+  ["Via!", "Go!", "\xA1Ya!", "Partez !", "Los!", "J\xE1!"],
+  ["Tre", "Three", "Tres", "Trois", "Drei", "Tr\xEAs"],
+  ["Due", "Two", "Dos", "Deux", "Zwei", "Dois"],
+  ["Uno", "One", "Uno", "Un", "Eins", "Um"],
+  // --- sergente
+  ["Forza soldato, fammi vedere cosa sai fare!", "Come on soldier, show me what you've got!", "\xA1Vamos soldado, ens\xE9\xF1ame de qu\xE9 eres capaz!", "Allez soldat, montre-moi ce que tu vaux !", "Los, Soldat, zeig mir, was du kannst!", "Vamos, soldado, mostre do que \xE9 capaz!"],
+  ["Testa alta, petto in fuori. Si comincia!", "Head up, chest out. Here we go!", "Cabeza alta, pecho fuera. \xA1Empezamos!", "T\xEAte haute, poitrine en avant. C'est parti !", "Kopf hoch, Brust raus. Es geht los!", "Cabe\xE7a erguida, peito para fora. Vamos come\xE7ar!"],
+  ["Nessuna scusa oggi. Via!", "No excuses today. Go!", "Hoy no hay excusas. \xA1Ya!", "Pas d'excuses aujourd'hui. Go !", "Keine Ausreden heute. Los!", "Sem desculpas hoje. J\xE1!"],
+  ["Concentrato. Ogni ripetizione conta!", "Focus. Every rep counts!", "Concentrado. \xA1Cada repetici\xF3n cuenta!", "Concentr\xE9. Chaque r\xE9p\xE9tition compte !", "Konzentration. Jede Wiederholung z\xE4hlt!", "Concentrado. Cada repeti\xE7\xE3o conta!"],
+  ["Cos\xEC si fa!", "That's how it's done!", "\xA1As\xED se hace!", "C'est comme \xE7a qu'on fait !", "So wird's gemacht!", "\xC9 assim que se faz!"],
+  ["Bravo, continua!", "Good, keep going!", "\xA1Bien, sigue!", "Bien, continue !", "Gut, weiter!", "Boa, continue!"],
+  ["Non fermarti adesso!", "Don't stop now!", "\xA1No te pares ahora!", "Ne t'arr\xEAte pas maintenant !", "H\xF6r jetzt nicht auf!", "N\xE3o pare agora!"],
+  ["Questo \xE8 il ritmo giusto!", "That's the right pace!", "\xA1Ese es el ritmo!", "C'est le bon rythme !", "Genau das richtige Tempo!", "Esse \xE9 o ritmo certo!"],
+  ["Sei pi\xF9 forte di quanto pensi!", "You're stronger than you think!", "\xA1Eres m\xE1s fuerte de lo que crees!", "Tu es plus fort que tu ne le crois !", "Du bist st\xE4rker, als du denkst!", "Voc\xEA \xE9 mais forte do que pensa!"],
+  ["Il dolore passa, l'orgoglio resta!", "Pain fades, pride stays!", "\xA1El dolor pasa, el orgullo queda!", "La douleur passe, la fiert\xE9 reste !", "Der Schmerz vergeht, der Stolz bleibt!", "A dor passa, o orgulho fica!"],
+  ["Spingi, soldato!", "Push, soldier!", "\xA1Empuja, soldado!", "Pousse, soldat !", "Dr\xFCck, Soldat!", "For\xE7a, soldado!"],
+  ["Ottima forma, avanti!", "Great form, keep going!", "\xA1Muy buena t\xE9cnica, adelante!", "Excellente forme, continue !", "Saubere Technik, weiter!", "\xD3tima execu\xE7\xE3o, em frente!"],
+  ["Met\xE0 fatta! Adesso viene il bello!", "Halfway there! Now the fun starts!", "\xA1Mitad hecha! \xA1Ahora viene lo bueno!", "La moiti\xE9 ! Maintenant le meilleur arrive !", "Halbzeit! Jetzt wird's spannend!", "Metade feita! Agora vem a parte boa!"],
+  ["Sei a met\xE0 strada. Non mollare!", "You're halfway. Don't give up!", "Vas por la mitad. \xA1No te rindas!", "Tu es \xE0 mi-chemin. Ne l\xE2che rien !", "Du hast die H\xE4lfte. Nicht aufgeben!", "Voc\xEA est\xE1 na metade. N\xE3o desista!"],
+  ["Ultime tre! Dai tutto!", "Last three! Give it everything!", "\xA1\xDAltimas tres! \xA1Dalo todo!", "Les trois derni\xE8res ! Donne tout !", "Die letzten drei! Gib alles!", "\xDAltimas tr\xEAs! D\xEA tudo!"],
+  ["Tre alla fine! Stringi i denti!", "Three to go! Grit your teeth!", "\xA1Quedan tres! \xA1Aprieta los dientes!", "Plus que trois ! Serre les dents !", "Noch drei! Z\xE4hne zusammenbei\xDFen!", "Faltam tr\xEAs! Cerre os dentes!"],
+  ["Ultima! Tutto quello che hai!", "Last one! Everything you've got!", "\xA1La \xFAltima! \xA1Todo lo que tienes!", "La derni\xE8re ! Tout ce que tu as !", "Die letzte! Alles, was du hast!", "A \xFAltima! Tudo o que voc\xEA tem!"],
+  ["L'ultima \xE8 la pi\xF9 importante. Spingi!", "The last one matters most. Push!", "La \xFAltima es la m\xE1s importante. \xA1Empuja!", "La derni\xE8re est la plus importante. Pousse !", "Die letzte ist die wichtigste. Dr\xFCck!", "A \xFAltima \xE9 a mais importante. For\xE7a!"],
+  ["Non mollare! Su!", "Don't quit! Come on!", "\xA1No te rindas! \xA1Vamos!", "Ne l\xE2che pas ! Allez !", "Nicht aufgeben! Los!", "N\xE3o desista! Vamos!"],
+  ["Avanti, non ti ho detto di riposare!", "Move it, I didn't tell you to rest!", "\xA1Vamos, no te he dicho que descanses!", "Allez, je ne t'ai pas dit de te reposer !", "Weiter, ich habe nicht gesagt, dass du Pause machen sollst!", "Vamos, eu n\xE3o mandei descansar!"],
+  ["Rialzati e continua!", "Get up and keep going!", "\xA1Lev\xE1ntate y sigue!", "Rel\xE8ve-toi et continue !", "Steh auf und mach weiter!", "Levante e continue!"],
+  ["Respira e spingi! Ancora una!", "Breathe and push! One more!", "\xA1Respira y empuja! \xA1Una m\xE1s!", "Respire et pousse ! Encore une !", "Atme und dr\xFCck! Noch eine!", "Respire e empurre! Mais uma!"],
+  ["Il traguardo \xE8 vicino, muoviti!", "The finish is close, move it!", "\xA1La meta est\xE1 cerca, mu\xE9vete!", "L'arriv\xE9e est proche, bouge-toi !", "Das Ziel ist nah, beweg dich!", "A chegada est\xE1 perto, mexa-se!"],
+  ["Chi molla adesso? Non tu!", "Who quits now? Not you!", "\xBFQui\xE9n se rinde ahora? \xA1T\xFA no!", "Qui abandonne maintenant ? Pas toi !", "Wer gibt jetzt auf? Du nicht!", "Quem desiste agora? Voc\xEA n\xE3o!"],
+  ["Tieni duro!", "Hang in there!", "\xA1Aguanta!", "Tiens bon !", "Halte durch!", "Aguente firme!"],
+  ["Addome di ferro, non cedere!", "Iron core, don't give in!", "\xA1Abdomen de hierro, no cedas!", "Abdos d'acier, ne l\xE2che pas !", "Bauch aus Stahl, nicht nachgeben!", "Abd\xF4men de ferro, n\xE3o ceda!"],
+  ["Il corpo vuole fermarsi, la testa no!", "Your body wants to stop, your mind doesn't!", "\xA1El cuerpo quiere parar, la cabeza no!", "Le corps veut s'arr\xEAter, la t\xEAte non !", "Der K\xF6rper will aufh\xF6ren, der Kopf nicht!", "O corpo quer parar, a cabe\xE7a n\xE3o!"],
+  ["Respira. Resisti!", "Breathe. Hold on!", "Respira. \xA1Resiste!", "Respire. R\xE9siste !", "Atme. Halte durch!", "Respire. Resista!"],
+  ["Ultimi secondi! Tieni duro!", "Last seconds! Hang in there!", "\xA1\xDAltimos segundos! \xA1Aguanta!", "Derni\xE8res secondes ! Tiens bon !", "Letzte Sekunden! Halte durch!", "\xDAltimos segundos! Aguente firme!"],
+  ["Serie completata! Ottimo lavoro, soldato!", "Set complete! Great work, soldier!", "\xA1Serie completada! \xA1Buen trabajo, soldado!", "S\xE9rie termin\xE9e ! Excellent travail, soldat !", "Satz geschafft! Starke Arbeit, Soldat!", "S\xE9rie conclu\xEDda! \xD3timo trabalho, soldado!"],
+  ["Questo \xE8 lo spirito! Serie chiusa!", "That's the spirit! Set done!", "\xA1Ese es el esp\xEDritu! \xA1Serie cerrada!", "Voil\xE0 l'esprit ! S\xE9rie boucl\xE9e !", "So ist's richtig! Satz erledigt!", "Esse \xE9 o esp\xEDrito! S\xE9rie fechada!"],
+  ["Bravo! Un passo pi\xF9 vicino al prossimo grado!", "Well done! One step closer to the next rank!", "\xA1Bien! \xA1Un paso m\xE1s cerca del pr\xF3ximo grado!", "Bravo ! Un pas de plus vers le prochain grade !", "Gut gemacht! Ein Schritt n\xE4her am n\xE4chsten Rang!", "Muito bem! Um passo mais perto da pr\xF3xima patente!"],
+  ["Respira. Recupera. Tra poco si riparte.", "Breathe. Recover. We go again soon.", "Respira. Recupera. Enseguida seguimos.", "Respire. R\xE9cup\xE8re. On repart bient\xF4t.", "Atme. Erhol dich. Gleich geht's weiter.", "Respire. Recupere. Logo recome\xE7amos."],
+  ["Bevi un sorso d'acqua. Il prossimo giro \xE8 tuo.", "Have a sip of water. The next round is yours.", "Bebe un sorbo de agua. La pr\xF3xima ronda es tuya.", "Bois une gorg\xE9e d'eau. Le prochain tour est \xE0 toi.", "Trink einen Schluck Wasser. Die n\xE4chste Runde geh\xF6rt dir.", "Beba um gole de \xE1gua. A pr\xF3xima rodada \xE9 sua."],
+  ["Trenta secondi! Accelera!", "Thirty seconds! Speed up!", "\xA1Treinta segundos! \xA1Acelera!", "Trente secondes ! Acc\xE9l\xE8re !", "Drei\xDFig Sekunden! Gib Gas!", "Trinta segundos! Acelere!"],
+  ["Dieci secondi! Tutto quello che hai!", "Ten seconds! Everything you've got!", "\xA1Diez segundos! \xA1Todo lo que tienes!", "Dix secondes ! Tout ce que tu as !", "Zehn Sekunden! Alles, was du hast!", "Dez segundos! Tudo o que voc\xEA tem!"],
+  ["Sei in testa! Non rallentare!", "You're in the lead! Don't slow down!", "\xA1Vas en cabeza! \xA1No aflojes!", "Tu es en t\xEAte ! Ne ralentis pas !", "Du f\xFChrst! Nicht langsamer werden!", "Voc\xEA est\xE1 na frente! N\xE3o diminua!"],
+  ["Stai vincendo, chiudi la partita!", "You're winning, finish it off!", "\xA1Vas ganando, cierra el reto!", "Tu gagnes, termine le travail !", "Du gewinnst, bring es zu Ende!", "Voc\xEA est\xE1 vencendo, feche a partida!"],
+  ["Ti sta superando! Reagisci!", "They're overtaking you! Fight back!", "\xA1Te est\xE1 adelantando! \xA1Reacciona!", "Il te d\xE9passe ! R\xE9agis !", "Du wirst \xFCberholt! Wehr dich!", "Est\xE3o passando voc\xEA! Reaja!"],
+  ["Sei indietro! Adesso o mai pi\xF9!", "You're behind! Now or never!", "\xA1Vas por detr\xE1s! \xA1Ahora o nunca!", "Tu es derri\xE8re ! C'est maintenant ou jamais !", "Du liegst hinten! Jetzt oder nie!", "Voc\xEA est\xE1 atr\xE1s! Agora ou nunca!"],
+  ["Agli ordini! Da adesso ti tengo sotto pressione.", "Yes sir! From now on I'll keep the pressure on.", "\xA1A la orden! A partir de ahora te aprieto.", "\xC0 vos ordres ! D\xE9sormais je te mets la pression.", "Zu Befehl! Ab jetzt mache ich dir Druck.", "\xC0s ordens! A partir de agora vou pegar no seu p\xE9."],
+  ["Dieci! Non fermarti adesso, soldato!", "Ten! Don't stop now, soldier!", "\xA1Diez! \xA1No te pares ahora, soldado!", "Dix ! Ne t'arr\xEAte pas maintenant, soldat !", "Zehn! H\xF6r jetzt nicht auf, Soldat!", "Dez! N\xE3o pare agora, soldado!"],
+  ["Dieci!", "Ten!", "\xA1Diez!", "Dix !", "Zehn!", "Dez!"],
+  // --- gradi
+  ["Recluta", "Recruit", "Recluta", "Recrue", "Rekrut", "Recruta"],
+  ["Soldato", "Private", "Soldado", "Soldat", "Soldat", "Soldado"],
+  ["Caporal maggiore", "Senior Corporal", "Cabo primero", "Caporal-chef", "Obergefreiter", "Primeiro-cabo"],
+  ["Caporale", "Corporal", "Cabo", "Caporal", "Gefreiter", "Cabo"],
+  ["Sergente maggiore", "Staff Sergeant", "Sargento primero", "Sergent-chef", "Feldwebel", "Primeiro-sargento"],
+  ["Sergente", "Sergeant", "Sargento", "Sergent", "Unteroffizier", "Sargento"],
+  ["Maresciallo", "Warrant Officer", "Brigada", "Adjudant", "Hauptfeldwebel", "Subtenente"],
+  ["Sottotenente", "Second Lieutenant", "Alf\xE9rez", "Sous-lieutenant", "Leutnant", "Segundo-tenente"],
+  ["Tenente", "Lieutenant", "Teniente", "Lieutenant", "Oberleutnant", "Tenente"],
+  ["Capitano", "Captain", "Capit\xE1n", "Capitaine", "Hauptmann", "Capit\xE3o"],
+  ["Maggiore", "Major", "Comandante", "Commandant", "Major", "Major"],
+  // --- classifica
+  ["Classifica", "Leaderboard", "Clasificaci\xF3n", "Classement", "Rangliste", "Ranking"],
+  ["Fine mese", "Month ends", "Fin de mes", "Fin du mois", "Monatsende", "Fim do m\xEAs"],
+  ["I tuoi punti questo mese", "Your points this month", "Tus puntos este mes", "Tes points ce mois-ci", "Deine Punkte diesen Monat", "Seus pontos este m\xEAs"],
+  ["Premio del mese", "Monthly prize", "Premio del mes", "R\xE9compense du mois", "Monatspreis", "Pr\xEAmio do m\xEAs"],
+  ["I primi 3 a fine mese sbloccano per tutto il mese successivo:", "The top 3 at the end of the month unlock for the whole next month:", "Los 3 primeros a final de mes desbloquean durante todo el mes siguiente:", "Le top 3 en fin de mois d\xE9bloque pour tout le mois suivant :", "Die Top 3 am Monatsende schalten f\xFCr den ganzen n\xE4chsten Monat frei:", "Os 3 primeiros no fim do m\xEAs desbloqueiam durante todo o m\xEAs seguinte:"],
+  ["Il tuo nome in classifica", "Your name on the leaderboard", "Tu nombre en la clasificaci\xF3n", "Ton nom dans le classement", "Dein Name in der Rangliste", "Seu nome no ranking"],
+  ["Salva nome", "Save name", "Guardar nombre", "Enregistrer le nom", "Namen speichern", "Salvar nome"],
+  ["Mondiale \xB7 primi 50", "World \xB7 top 50", "Mundial \xB7 primeros 50", "Mondial \xB7 top 50", "Weltweit \xB7 Top 50", "Mundial \xB7 top 50"],
+  ["Carico la classifica\u2026", "Loading the leaderboard\u2026", "Cargando la clasificaci\xF3n\u2026", "Chargement du classement\u2026", "Rangliste wird geladen\u2026", "Carregando o ranking\u2026"],
+  ["Tu e gli amici che hai sfidato", "You and the friends you've challenged", "T\xFA y los amigos que has retado", "Toi et les amis que tu as d\xE9fi\xE9s", "Du und die Freunde, die du herausgefordert hast", "Voc\xEA e os amigos que desafiou"],
+  ["Sfida un amico: dopo la prima sfida compare qui con il suo grado e i suoi punti.", "Challenge a friend: after your first challenge they show up here with their rank and points.", "Reta a un amigo: tras el primer reto aparecer\xE1 aqu\xED con su grado y sus puntos.", "D\xE9fie un ami : apr\xE8s le premier d\xE9fi, il appara\xEEt ici avec son grade et ses points.", "Fordere einen Freund heraus: Nach dem ersten Duell erscheint er hier mit Rang und Punkten.", "Desafie um amigo: depois do primeiro desafio ele aparece aqui com patente e pontos."],
+  ["Finch\xE9 la classifica mondiale non \xE8 attiva, il premio va ai primi 3 tra te e gli amici sfidati (servono almeno 4 partecipanti).", "Until the world leaderboard is live, the prize goes to the top 3 among you and the friends you've challenged (at least 4 players needed).", "Mientras la clasificaci\xF3n mundial no est\xE9 activa, el premio es para los 3 primeros entre t\xFA y tus amigos retados (hacen falta al menos 4).", "Tant que le classement mondial n'est pas actif, la r\xE9compense va au top 3 entre toi et tes amis d\xE9fi\xE9s (au moins 4 participants).", "Solange die Weltrangliste nicht aktiv ist, geht der Preis an die Top 3 unter dir und deinen Freunden (mindestens 4 Teilnehmer).", "Enquanto o ranking mundial n\xE3o estiver ativo, o pr\xEAmio vai para os 3 primeiros entre voc\xEA e os amigos desafiados (m\xEDnimo de 4 participantes)."],
+  ["Nessuno in classifica questo mese: fai il primo allenamento e conquista il primo posto.", "Nobody on the leaderboard this month: do the first workout and take first place.", "Nadie en la clasificaci\xF3n este mes: haz el primer entrenamiento y ll\xE9vate el primer puesto.", "Personne au classement ce mois-ci : fais le premier entra\xEEnement et prends la premi\xE8re place.", "Diesen Monat steht noch niemand in der Rangliste: Trainiere als Erster und hol dir Platz eins.", "Ningu\xE9m no ranking este m\xEAs: fa\xE7a o primeiro treino e conquiste o primeiro lugar."],
+  ["Non riesco a caricare la classifica. Controlla la connessione.", "I can't load the leaderboard. Check your connection.", "No puedo cargar la clasificaci\xF3n. Revisa la conexi\xF3n.", "Je n'arrive pas \xE0 charger le classement. V\xE9rifie ta connexion.", "Die Rangliste l\xE4sst sich nicht laden. Pr\xFCfe die Verbindung.", "N\xE3o consigo carregar o ranking. Verifique a conex\xE3o."],
+  ["Non riesco a caricare la classifica. Riprova tra poco.", "I can't load the leaderboard. Try again shortly.", "No puedo cargar la clasificaci\xF3n. Int\xE9ntalo dentro de un rato.", "Je n'arrive pas \xE0 charger le classement. R\xE9essaie dans un instant.", "Die Rangliste l\xE4sst sich nicht laden. Versuch es gleich noch mal.", "N\xE3o consigo carregar o ranking. Tente daqui a pouco."],
+  ["Come si guadagnano i punti", "How to earn points", "C\xF3mo se ganan puntos", "Comment gagner des points", "So sammelst du Punkte", "Como ganhar pontos"],
+  ["Ogni ripetizione valida", "Each valid rep", "Cada repetici\xF3n v\xE1lida", "Chaque r\xE9p\xE9tition valide", "Jede g\xFCltige Wiederholung", "Cada repeti\xE7\xE3o v\xE1lida"],
+  ["1 pt (burpee 3)", "1 pt (burpees 3)", "1 pt (burpees 3)", "1 pt (burpees 3)", "1 Pkt (Burpees 3)", "1 pt (burpees 3)"],
+  ["Plank, ogni 2 secondi in posizione", "Plank, every 2 seconds in position", "Plancha, cada 2 segundos en posici\xF3n", "Gainage, toutes les 2 secondes en position", "St\xFCtz, alle 2 Sekunden in Position", "Prancha, a cada 2 segundos em posi\xE7\xE3o"],
+  ["Sessione del programma completata", "Program session completed", "Sesi\xF3n del programa completada", "S\xE9ance du programme termin\xE9e", "Programmeinheit abgeschlossen", "Sess\xE3o do programa conclu\xEDda"],
+  ["Prova di efficienza completata", "Fitness test completed", "Prueba de aptitud completada", "Test d'aptitude termin\xE9", "Fitnesstest abgeschlossen", "Teste de aptid\xE3o conclu\xEDdo"],
+  ["Sfida: vittoria / pareggio / sconfitta", "Challenge: win / draw / loss", "Reto: victoria / empate / derrota", "D\xE9fi : victoire / nul / d\xE9faite", "Duell: Sieg / Unentschieden / Niederlage", "Desafio: vit\xF3ria / empate / derrota"],
+  ["punti al grado", "points to", "puntos para", "points avant", "Punkte bis", "pontos para"],
+  // --- sfida
+  ["Nuova sfida", "New challenge", "Nuevo reto", "Nouveau d\xE9fi", "Neues Duell", "Novo desafio"],
+  ["Il tuo nome", "Your name", "Tu nombre", "Ton nom", "Dein Name", "Seu nome"],
+  ["Formato", "Format", "Formato", "Format", "Format", "Formato"],
+  ["Pi\xF9 ripetizioni in 60 s", "Most reps in 60 s", "M\xE1s repeticiones en 60 s", "Le plus de r\xE9p\xE9titions en 60 s", "Meiste Wiederholungen in 60 s", "Mais repeti\xE7\xF5es em 60 s"],
+  ["Primo a 20", "First to 20", "El primero a 20", "Premier \xE0 20", "Wer zuerst 20 hat", "Primeiro a 20"],
+  ["primo a 20", "first to 20", "el primero a 20", "premier \xE0 20", "wer zuerst 20 hat", "primeiro a 20"],
+  ["primo a", "first to", "el primero a", "premier \xE0", "zuerst", "primeiro a"],
+  ["60 secondi", "60 seconds", "60 segundos", "60 secondes", "60 Sekunden", "60 segundos"],
+  ["Vince chi ne fa di pi\xF9", "Most reps wins", "Gana quien haga m\xE1s", "Celui qui en fait le plus gagne", "Wer mehr schafft, gewinnt", "Vence quem fizer mais"],
+  ["Vince chi arriva prima", "First to finish wins", "Gana quien llegue primero", "Le premier arriv\xE9 gagne", "Wer zuerst fertig ist, gewinnt", "Vence quem chegar primeiro"],
+  ["Mettete i telefoni nella stessa posizione.", "Set both phones up the same way.", "Colocad los tel\xE9fonos en la misma posici\xF3n.", "Placez les t\xE9l\xE9phones dans la m\xEAme position.", "Stellt beide Handys gleich auf.", "Coloquem os celulares na mesma posi\xE7\xE3o."],
+  ["Crea la sfida", "Create the challenge", "Crear el reto", "Cr\xE9er le d\xE9fi", "Duell erstellen", "Criar o desafio"],
+  ["Preparo la sfida\u2026", "Setting up the challenge\u2026", "Preparando el reto\u2026", "Pr\xE9paration du d\xE9fi\u2026", "Duell wird vorbereitet\u2026", "Preparando o desafio\u2026"],
+  ["Non riesco ad aprire fotocamera e microfono. Dai il permesso nelle impostazioni del browser e riprova.", "I can't open the camera and microphone. Allow them in the browser settings and try again.", "No puedo abrir la c\xE1mara y el micr\xF3fono. Da permiso en los ajustes del navegador e int\xE9ntalo de nuevo.", "Je n'arrive pas \xE0 ouvrir la cam\xE9ra et le micro. Autorise-les dans les r\xE9glages du navigateur et r\xE9essaie.", "Kamera und Mikrofon lassen sich nicht \xF6ffnen. Erlaube sie in den Browser-Einstellungen und versuch es erneut.", "N\xE3o consigo abrir a c\xE2mera e o microfone. D\xEA permiss\xE3o nas configura\xE7\xF5es do navegador e tente de novo."],
+  ["Non riesco a collegarmi al servizio delle sfide. Controlla la connessione e riprova.", "I can't reach the challenge service. Check your connection and try again.", "No puedo conectar con el servicio de retos. Revisa la conexi\xF3n e int\xE9ntalo de nuevo.", "Je n'arrive pas \xE0 joindre le service des d\xE9fis. V\xE9rifie ta connexion et r\xE9essaie.", "Der Duell-Dienst ist nicht erreichbar. Pr\xFCfe die Verbindung und versuch es erneut.", "N\xE3o consigo me conectar ao servi\xE7o de desafios. Verifique a conex\xE3o e tente de novo."],
+  ["Entra nella sfida", "Join the challenge", "Entrar en el reto", "Rejoindre le d\xE9fi", "Duell beitreten", "Entrar no desafio"],
+  ["Codice della sfida", "Challenge code", "C\xF3digo del reto", "Code du d\xE9fi", "Duell-Code", "C\xF3digo do desafio"],
+  ["Codice sfida", "Challenge code", "C\xF3digo del reto", "Code du d\xE9fi", "Duell-Code", "C\xF3digo do desafio"],
+  ["Il codice ha 6 caratteri: controlla e riprova.", "The code has 6 characters: check it and try again.", "El c\xF3digo tiene 6 caracteres: rev\xEDsalo e int\xE9ntalo de nuevo.", "Le code fait 6 caract\xE8res : v\xE9rifie et r\xE9essaie.", "Der Code hat 6 Zeichen: Pr\xFCfe ihn und versuch es erneut.", "O c\xF3digo tem 6 caracteres: confira e tente de novo."],
+  ["Mi collego\u2026", "Connecting\u2026", "Conectando\u2026", "Connexion\u2026", "Verbinde\u2026", "Conectando\u2026"],
+  ["Entra", "Join", "Entrar", "Rejoindre", "Beitreten", "Entrar"],
+  ["Invita il tuo amico", "Invite your friend", "Invita a tu amigo", "Invite ton ami", "Lade deinen Freund ein", "Convide seu amigo"],
+  ["Sala d'attesa", "Waiting room", "Sala de espera", "Salle d'attente", "Warteraum", "Sala de espera"],
+  ["Mandagli il link: lo apre dal telefono ed entra subito.", "Send them the link: they open it on their phone and join right away.", "M\xE1ndale el enlace: lo abre en su tel\xE9fono y entra enseguida.", "Envoie-lui le lien : il l'ouvre sur son t\xE9l\xE9phone et rejoint tout de suite.", "Schick ihm den Link: Er \xF6ffnet ihn am Handy und ist sofort dabei.", "Mande o link: ele abre no celular e entra na hora."],
+  ["Invia il link", "Send the link", "Enviar el enlace", "Envoyer le lien", "Link senden", "Enviar o link"],
+  ["Link copiato: incollalo in chat al tuo amico.", "Link copied: paste it into a chat with your friend.", "Enlace copiado: p\xE9galo en el chat con tu amigo.", "Lien copi\xE9 : colle-le dans la discussion avec ton ami.", "Link kopiert: F\xFCge ihn im Chat mit deinem Freund ein.", "Link copiado: cole na conversa com seu amigo."],
+  ["In attesa della videochiamata\u2026", "Waiting for the video call\u2026", "Esperando la videollamada\u2026", "En attente de l'appel vid\xE9o\u2026", "Warte auf den Videoanruf\u2026", "Aguardando a videochamada\u2026"],
+  ["In attesa dell'amico\u2026", "Waiting for your friend\u2026", "Esperando a tu amigo\u2026", "En attente de ton ami\u2026", "Warte auf deinen Freund\u2026", "Aguardando seu amigo\u2026"],
+  ["Mi collego alla sfida\u2026", "Joining the challenge\u2026", "Conectando al reto\u2026", "Connexion au d\xE9fi\u2026", "Verbinde mit dem Duell\u2026", "Conectando ao desafio\u2026"],
+  ["Sfida non trovata: controlla il codice o chiedi un nuovo link.", "Challenge not found: check the code or ask for a new link.", "Reto no encontrado: revisa el c\xF3digo o pide un enlace nuevo.", "D\xE9fi introuvable : v\xE9rifie le code ou demande un nouveau lien.", "Duell nicht gefunden: Pr\xFCfe den Code oder bitte um einen neuen Link.", "Desafio n\xE3o encontrado: confira o c\xF3digo ou pe\xE7a um novo link."],
+  ["Punteggio:", "Score:", "Marcador:", "Score :", "Stand:", "Placar:"],
+  ["Esci dalla sfida", "Leave the challenge", "Salir del reto", "Quitter le d\xE9fi", "Duell verlassen", "Sair do desafio"],
+  ["Cambia esercizio o formato", "Change exercise or format", "Cambiar ejercicio o formato", "Changer d'exercice ou de format", "\xDCbung oder Format \xE4ndern", "Mudar exerc\xEDcio ou formato"],
+  ["Pronti", "Ready", "Listos", "Pr\xEAts", "Bereit", "Prontos"],
+  ["Fine", "Done", "Fin", "Fin", "Ende", "Fim"],
+  ["Mi ritiro", "I give up", "Me retiro", "J'abandonne", "Ich gebe auf", "Desisto"],
+  ["Il tuo avversario si \xE8 disconnesso", "Your opponent disconnected", "Tu rival se ha desconectado", "Ton adversaire s'est d\xE9connect\xE9", "Dein Gegner hat die Verbindung getrennt", "Seu advers\xE1rio desconectou"],
+  ["Hai vinto! Ottimo lavoro, recluta.", "You won! Great work, recruit.", "\xA1Has ganado! Buen trabajo, recluta.", "Tu as gagn\xE9 ! Excellent travail, recrue.", "Du hast gewonnen! Starke Arbeit, Rekrut.", "Voc\xEA venceu! \xD3timo trabalho, recruta."],
+  ["Hai vinto!", "You won!", "\xA1Has ganado!", "Tu as gagn\xE9 !", "Du hast gewonnen!", "Voc\xEA venceu!"],
+  ["Pareggio!", "It's a draw!", "\xA1Empate!", "Match nul !", "Unentschieden!", "Empate!"],
+  ["Pareggio", "Draw", "Empate", "Match nul", "Unentschieden", "Empate"],
+  ["Vittorie", "Wins", "Victorias", "Victoires", "Siege", "Vit\xF3rias"],
+  ["Contano solo le ripetizioni complete e valide. Punti sfida:", "Only complete, valid reps count. Challenge points:", "Solo cuentan las repeticiones completas y v\xE1lidas. Puntos del reto:", "Seules les r\xE9p\xE9titions compl\xE8tes et valides comptent. Points du d\xE9fi :", "Nur vollst\xE4ndige, g\xFCltige Wiederholungen z\xE4hlen. Duellpunkte:", "S\xF3 contam as repeti\xE7\xF5es completas e v\xE1lidas. Pontos do desafio:"],
+  ["pi\xF9 1 punto per ripetizione.", "plus 1 point per rep.", "m\xE1s 1 punto por repetici\xF3n.", "plus 1 point par r\xE9p\xE9tition.", "plus 1 Punkt pro Wiederholung.", "mais 1 ponto por repeti\xE7\xE3o."],
+  ["Rivincita", "Rematch", "Revancha", "Revanche", "Revanche", "Revanche"],
+  ["La connessione con l'amico si \xE8 chiusa.", "The connection with your friend has closed.", "La conexi\xF3n con tu amigo se ha cerrado.", "La connexion avec ton ami s'est ferm\xE9e.", "Die Verbindung zu deinem Freund wurde beendet.", "A conex\xE3o com seu amigo foi encerrada."],
+  ["Sfida", "Challenge", "Reto", "D\xE9fi", "Duell", "Desafio"],
+  ["Amico", "Friend", "Amigo", "Ami", "Freund", "Amigo"],
+  ["L'amico", "Your friend", "Tu amigo", "Ton ami", "Dein Freund", "Seu amigo"],
+  ["l'amico", "your friend", "tu amigo", "ton ami", "deinen Freund", "seu amigo"],
+  ["il tuo amico", "your friend", "tu amigo", "ton ami", "dein Freund", "seu amigo"],
+  ["Es. Marco", "e.g. Mark", "Ej. Marcos", "Ex. Marc", "z. B. Markus", "Ex. Marcos"],
+  ["Es. Luca", "e.g. Luke", "Ej. Lucas", "Ex. Luc", "z. B. Lukas", "Ex. Lucas"],
+  ["Es. K7M2QX", "e.g. K7M2QX", "Ej. K7M2QX", "Ex. K7M2QX", "z. B. K7M2QX", "Ex. K7M2QX"],
+  ["Tu", "You", "T\xFA", "Toi", "Du", "Voc\xEA"],
+  // --- voce
+  ["Impostazioni", "Settings", "Ajustes", "R\xE9glages", "Einstellungen", "Configura\xE7\xF5es"],
+  ["Voce dell'istruttore", "Trainer voice", "Voz del instructor", "Voix de l'instructeur", "Stimme des Ausbilders", "Voz do instrutor"],
+  ["Lingua", "Language", "Idioma", "Langue", "Sprache", "Idioma"],
+  ["Automatica", "Automatic", "Autom\xE1tica", "Automatique", "Automatisch", "Autom\xE1tica"],
+  ["Voce", "Voice", "Voz", "Voix", "Stimme", "Voz"],
+  ["Il telefono non ha ancora una voce per questa lingua: vedi sotto come aggiungerla.", "Your phone has no voice for this language yet: see below how to add one.", "Tu tel\xE9fono a\xFAn no tiene una voz en este idioma: mira abajo c\xF3mo a\xF1adirla.", "Ton t\xE9l\xE9phone n'a pas encore de voix dans cette langue : vois ci-dessous comment en ajouter une.", "Dein Handy hat noch keine Stimme f\xFCr diese Sprache: Unten steht, wie du eine hinzuf\xFCgst.", "Seu celular ainda n\xE3o tem uma voz neste idioma: veja abaixo como adicionar."],
+  ["Velocit\xE0 \xB7", "Speed \xB7", "Velocidad \xB7", "Vitesse \xB7", "Tempo \xB7", "Velocidade \xB7"],
+  ["Tono \xB7", "Pitch \xB7", "Tono \xB7", "Ton \xB7", "Tonh\xF6he \xB7", "Tom \xB7"],
+  ["(pi\xF9 basso = pi\xF9 grave e deciso)", "(lower = deeper and tougher)", "(m\xE1s bajo = m\xE1s grave y firme)", "(plus bas = plus grave et ferme)", "(tiefer = dunkler und strenger)", "(mais baixo = mais grave e firme)"],
+  ["Prova la voce", "Test the voice", "Probar la voz", "Tester la voix", "Stimme testen", "Testar a voz"],
+  ["Ripristina", "Reset", "Restablecer", "R\xE9initialiser", "Zur\xFCcksetzen", "Restaurar"],
+  ["Le tue frasi di incitamento (una per riga)", "Your own push phrases (one per line)", "Tus frases de \xE1nimo (una por l\xEDnea)", "Tes phrases de motivation (une par ligne)", "Deine Anfeuerungss\xE4tze (einer pro Zeile)", "Suas frases de incentivo (uma por linha)"],
+  ["Le tue frasi a inizio serie (una per riga)", "Your own start-of-set phrases (one per line)", "Tus frases al inicio de la serie (una por l\xEDnea)", "Tes phrases de d\xE9but de s\xE9rie (une par ligne)", "Deine S\xE4tze zum Satzbeginn (einer pro Zeile)", "Suas frases de in\xEDcio de s\xE9rie (uma por linha)"],
+  ["Usa solo le mie frasi", "Use only my phrases", "Usar solo mis frases", "Utiliser seulement mes phrases", "Nur meine S\xE4tze verwenden", "Usar s\xF3 minhas frases"],
+  ["Salva", "Save", "Guardar", "Enregistrer", "Speichern", "Salvar"],
+  ["Salvato.", "Saved.", "Guardado.", "Enregistr\xE9.", "Gespeichert.", "Salvo."],
+  ["Altre voci sul telefono", "More voices on your phone", "M\xE1s voces en el tel\xE9fono", "Plus de voix sur le t\xE9l\xE9phone", "Weitere Stimmen auf dem Handy", "Mais vozes no celular"],
+  ['Impostazioni \u203A Accessibilit\xE0 \u203A Contenuti letti \u203A Voci \u203A la tua lingua. Scarica una voce, per esempio una "Avanzata", poi riapri l\'app e sceglila qui.', 'Settings \u203A Accessibility \u203A Spoken Content \u203A Voices \u203A your language. Download a voice, for example an "Enhanced" one, then reopen the app and pick it here.', 'Ajustes \u203A Accesibilidad \u203A Contenido le\xEDdo \u203A Voces \u203A tu idioma. Descarga una voz, por ejemplo una "Mejorada", vuelve a abrir la app y el\xEDgela aqu\xED.', "R\xE9glages \u203A Accessibilit\xE9 \u203A Contenu \xE9nonc\xE9 \u203A Voix \u203A ta langue. T\xE9l\xE9charge une voix, par exemple \xAB Am\xE9lior\xE9e \xBB, puis rouvre l'app et choisis-la ici.", "Einstellungen \u203A Bedienungshilfen \u203A Gesprochene Inhalte \u203A Stimmen \u203A deine Sprache. Lade eine Stimme, z. B. \u201EErweitert\u201C, \xF6ffne die App neu und w\xE4hle sie hier.", 'Ajustes \u203A Acessibilidade \u203A Conte\xFAdo Falado \u203A Vozes \u203A seu idioma. Baixe uma voz, por exemplo uma "Aprimorada", reabra o app e escolha aqui.'],
+  ['Impostazioni \u203A Sistema \u203A Lingue \u203A Output sintesi vocale. Con "Sintesi vocale di Google" scegli la tua lingua e scarica le voci, poi riapri l\'app.', 'Settings \u203A System \u203A Languages \u203A Text-to-speech output. With "Speech Services by Google" pick your language and download the voices, then reopen the app.', 'Ajustes \u203A Sistema \u203A Idiomas \u203A Salida de texto a voz. Con "Servicios de voz de Google" elige tu idioma y descarga las voces, luego vuelve a abrir la app.', "Param\xE8tres \u203A Syst\xE8me \u203A Langues \u203A Synth\xE8se vocale. Avec \xAB Services vocaux Google \xBB, choisis ta langue et t\xE9l\xE9charge les voix, puis rouvre l'app.", "Einstellungen \u203A System \u203A Sprachen \u203A Sprachausgabe. W\xE4hle bei \u201ESprachdienste von Google\u201C deine Sprache, lade die Stimmen und \xF6ffne die App neu.", 'Configura\xE7\xF5es \u203A Sistema \u203A Idiomas \u203A Sa\xEDda de convers\xE3o de texto em voz. Em "Servi\xE7os de voz do Google" escolha seu idioma e baixe as vozes, depois reabra o app.'],
+  ["Forza Marco, non mollare!", "Come on, don't give up!", "\xA1Vamos, no te rindas!", "Allez, ne l\xE2che rien !", "Los, gib nicht auf!", "Vamos, n\xE3o desista!"],
+  ["Ogni ripetizione ti rende pi\xF9 forte!", "Every rep makes you stronger!", "\xA1Cada repetici\xF3n te hace m\xE1s fuerte!", "Chaque r\xE9p\xE9tition te rend plus fort !", "Jede Wiederholung macht dich st\xE4rker!", "Cada repeti\xE7\xE3o deixa voc\xEA mais forte!"],
+  ["Si comincia, soldato!", "Let's go, soldier!", "\xA1Empezamos, soldado!", "C'est parti, soldat !", "Los geht's, Soldat!", "Vamos come\xE7ar, soldado!"],
+  ["Sfida \xB7", "Challenge \xB7", "Reto \xB7", "D\xE9fi \xB7", "Duell \xB7", "Desafio \xB7"]
+];
+const LANG_IDX = { en: 1, es: 2, fr: 3, de: 4, pt: 5 };
+let trRx = null, trMap = null, trCache = /* @__PURE__ */ new Map(), trOut = /* @__PURE__ */ new Set();
+function buildTr() {
+  trCache = /* @__PURE__ */ new Map();
+  if (lang === "it") {
+    trRx = null;
+    return;
+  }
+  const i = LANG_IDX[lang];
+  trMap = new Map(I18N.map((r) => [r[0], r[i]]));
+  const keys = [...trMap.keys()].sort((a, b) => b.length - a.length).map((k) => k.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+  trRx = new RegExp(keys.join("|"), "g");
+}
+const isL = (ch) => !!ch && /[A-Za-zÀ-ÖØ-öø-ÿ]/.test(ch);
+const trWords = (s) => s.replace(trRx, (m, off, str) => {
+  if (isL(m[0]) && isL(str[off - 1])) return m;
+  if (isL(m[m.length - 1]) && isL(str[off + m.length])) return m;
+  return trMap.get(m);
+});
+function tr(s) {
+  if (lang === "it" || !s || typeof s !== "string" || !/[A-Za-zÀ-ÿ]/.test(s)) return s;
+  const hit = trCache.get(s);
+  if (hit !== void 0) return hit;
+  if (trOut.has(s)) return s;
+  const i = LANG_IDX[lang];
+  let out = trMap.get(s);
+  if (out !== void 0) {
+    trCache.set(s, out);
+    trOut.add(out);
+    return out;
+  }
+  const parked = [];
+  out = s;
+  for (const r of I18N_RX) {
+    r[0].lastIndex = 0;
+    out = out.replace(r[0], (...g) => {
+      parked.push(r[i].replace(/\$(\d)/g, (_, k) => trWords(g[+k] || "")));
+      return "" + (parked.length - 1) + "";
+    });
+  }
+  out = trWords(out).replace(/\u0001(\d+)\u0002/g, (_, k) => parked[+k]);
+  if (trCache.size > 3e3) {
+    trCache.clear();
+    trOut.clear();
+  }
+  trCache.set(s, out);
+  if (out !== s) trOut.add(out);
+  return out;
+}
+const SKIP_TAGS = { SCRIPT: 1, STYLE: 1, TEXTAREA: 1, INPUT: 1 };
+function trNode(n) {
+  if (lang === "it") return;
+  if (n.nodeType === 3) {
+    const p = n.parentNode;
+    if (!p || SKIP_TAGS[p.nodeName] || p.closest && p.closest("[data-notr]")) return;
+    const t = tr(n.nodeValue);
+    if (t !== n.nodeValue) n.nodeValue = t;
+    return;
+  }
+  if (n.nodeType !== 1 || SKIP_TAGS[n.nodeName] && n.nodeName !== "INPUT" && n.nodeName !== "TEXTAREA") return;
+  if (n.hasAttribute && n.hasAttribute("data-notr")) return;
+  for (const a of ["placeholder", "aria-label", "title"]) if (n.hasAttribute(a)) {
+    const v = n.getAttribute(a), t = tr(v);
+    if (t !== v) n.setAttribute(a, t);
+  }
+  if (SKIP_TAGS[n.nodeName]) return;
+  for (let c = n.firstChild; c; c = c.nextSibling) trNode(c);
+}
+function startI18n() {
+  document.documentElement.lang = lang;
+  buildTr();
+  if (lang === "it") return;
+  trNode(document.body);
+  new MutationObserver((muts) => {
+    for (const m of muts) {
+      if (m.type === "characterData") trNode(m.target);
+      else if (m.type === "attributes") trNode(m.target);
+      else m.addedNodes.forEach(trNode);
+    }
+  }).observe(document.body, { childList: true, characterData: true, subtree: true, attributes: true, attributeFilter: ["placeholder", "aria-label", "title"] });
+}
 const EX = {
   squat: {
     name: "Squat",
@@ -402,7 +910,7 @@ let itVoice = null;
 let voiceCfg = store.get("voiceCfg", { voice: "", rate: null, pitch: null, own: "", ownStart: "", onlyOwn: false });
 const itVoices = () => {
   try {
-    return speechSynthesis.getVoices().filter((v) => /^it/i.test(v.lang));
+    return speechSynthesis.getVoices().filter((v) => String(v.lang).slice(0, 2).toLowerCase() === lang);
   } catch (e) {
     return [];
   }
@@ -420,6 +928,7 @@ function onVoices() {
   if (sel && sel.options.length <= 1) for (const v of itVoices()) {
     const o = document.createElement("option");
     o.value = v.name;
+    o.dataset.notr = "";
     o.textContent = v.name;
     o.selected = v.name === voiceCfg.voice;
     sel.append(o);
@@ -440,8 +949,8 @@ function say(text, { urgent = false, minGap = 3200 } = {}) {
     const now = performance.now();
     if (!urgent && (now - lastAny < minGap || text === lastSpoken.text && now - lastSpoken.t < 7e3)) return;
     if (urgent) speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(text);
-    u.lang = "it-IT";
+    const u = new SpeechSynthesisUtterance(ownSet.has(text) ? text : tr(text));
+    u.lang = ttsLang();
     if (itVoice) u.voice = itVoice;
     u.rate = (_a = voiceCfg.rate) != null ? _a : gritOn ? 1.12 : 1.08;
     u.pitch = (_b = voiceCfg.pitch) != null ? _b : gritOn ? 0.8 : 0.9;
@@ -468,7 +977,12 @@ const GRIT = {
   ahead: ["Sei in testa! Non rallentare!", "Stai vincendo, chiudi la partita!"],
   behind: ["Ti sta superando! Reagisci!", "Sei indietro! Adesso o mai pi\xF9!"]
 };
-const ownLines = (txt) => String(txt || "").split("\n").map((x) => x.trim()).filter(Boolean).slice(0, 60);
+const ownSet = /* @__PURE__ */ new Set();
+const ownLines = (txt) => {
+  const a = String(txt || "").split("\n").map((x) => x.trim()).filter(Boolean).slice(0, 60);
+  a.forEach((x) => ownSet.add(x));
+  return a;
+};
 const pickLine = (k) => {
   let a = GRIT[k];
   const mine = k === "start" ? ownLines(voiceCfg.ownStart) : ["every5", "slow", "plank"].includes(k) ? ownLines(voiceCfg.own) : [];
@@ -929,7 +1443,7 @@ function renderVoice() {
   var _a, _b;
   const vs = itVoices();
   const rate = (_a = voiceCfg.rate) != null ? _a : gritOn ? 1.12 : 1.08, pitch = (_b = voiceCfg.pitch) != null ? _b : gritOn ? 0.8 : 0.9;
-  app.innerHTML = '\n  <div class="screen brief">\n    <button class="back" id="back" type="button">\u2039 Indietro</button>\n    <div class="section"><div class="label">Impostazioni</div><h2>Voce dell\'istruttore</h2></div>\n    <div class="field"><label class="label" for="vVoice">Voce</label>\n      <select id="vVoice" class="sel">\n        <option value="">Automatica</option>\n        '.concat(vs.map((v) => '<option value="'.concat(esc(v.name), '" ').concat(v.name === voiceCfg.voice ? "selected" : "", ">").concat(esc(v.name), "</option>")).join(""), "\n      </select>\n      ").concat(vs.length ? "" : '<p class="note">Il telefono non ha ancora una voce italiana: vedi sotto come aggiungerla.</p>', '\n    </div>\n    <div class="field"><label class="label" for="vRate">Velocit\xE0 \xB7 <span id="vRateV">').concat(rate.toFixed(2), '</span></label><input id="vRate" type="range" min="0.6" max="1.6" step="0.02" value="').concat(rate, '"></div>\n    <div class="field"><label class="label" for="vPitch">Tono \xB7 <span id="vPitchV">').concat(pitch.toFixed(2), '</span> <small style="text-transform:none;letter-spacing:0">(pi\xF9 basso = pi\xF9 grave e deciso)</small></label><input id="vPitch" type="range" min="0.4" max="1.6" step="0.02" value="').concat(pitch, '"></div>\n    <div class="row"><button class="btn primary small" id="vTest" type="button">Prova la voce</button><button class="btn ghost small" id="vReset" type="button">Ripristina</button></div>\n    <div class="field"><label class="label" for="vOwn">Le tue frasi di incitamento (una per riga)</label>\n      <textarea id="vOwn" rows="5" maxlength="3000" placeholder="Forza Marco, non mollare!&#10;Ogni ripetizione ti rende pi\xF9 forte!">').concat(esc(voiceCfg.own || ""), '</textarea></div>\n    <div class="field"><label class="label" for="vOwnStart">Le tue frasi a inizio serie (una per riga)</label>\n      <textarea id="vOwnStart" rows="3" maxlength="1500" placeholder="Si comincia, soldato!">').concat(esc(voiceCfg.ownStart || ""), '</textarea></div>\n    <label class="toggle"><input type="checkbox" id="vOnly" ').concat(voiceCfg.onlyOwn ? "checked" : "", '> Usa solo le mie frasi</label>\n    <div class="row"><button class="btn primary" id="vSave" type="button">Salva</button></div>\n    <p class="note" id="vSaved" hidden>Salvato.</p>\n    <div class="section"><div class="label">Altre voci sul telefono</div>\n      <p class="meta"><b>iPhone:</b> Impostazioni \u203A Accessibilit\xE0 \u203A Contenuti letti \u203A Voci \u203A Italiano. Scarica una voce, per esempio una "Avanzata", poi riapri l\'app e sceglila qui.</p>\n      <p class="meta"><b>Android:</b> Impostazioni \u203A Sistema \u203A Lingue \u203A Output sintesi vocale. Con "Sintesi vocale di Google" scegli Italiano e scarica le voci, poi riapri l\'app.</p>\n    </div>\n  </div>');
+  app.innerHTML = '\n  <div class="screen brief">\n    <button class="back" id="back" type="button">\u2039 Indietro</button>\n    <div class="section"><div class="label">Impostazioni</div><h2>Voce dell\'istruttore</h2></div>\n    <div class="field"><label class="label" for="vLang">Lingua</label>\n      <select id="vLang" class="sel">\n        <option value="">Automatica ('.concat(LANGS[detectLang()].name, ")</option>\n        ").concat(LANG_ORDER.map((k) => '<option value="'.concat(k, '" ').concat(store.get("lang", "") === k ? "selected" : "", ">").concat(LANGS[k].name, "</option>")).join(""), '\n      </select></div>\n    <div class="field"><label class="label" for="vVoice">Voce</label>\n      <select id="vVoice" class="sel">\n        <option value="">Automatica</option>\n        ').concat(vs.map((v) => '<option data-notr value="'.concat(esc(v.name), '" ').concat(v.name === voiceCfg.voice ? "selected" : "", ">").concat(esc(v.name), "</option>")).join(""), "\n      </select>\n      ").concat(vs.length ? "" : '<p class="note">Il telefono non ha ancora una voce per questa lingua: vedi sotto come aggiungerla.</p>', '\n    </div>\n    <div class="field"><label class="label" for="vRate">Velocit\xE0 \xB7 <span id="vRateV">').concat(rate.toFixed(2), '</span></label><input id="vRate" type="range" min="0.6" max="1.6" step="0.02" value="').concat(rate, '"></div>\n    <div class="field"><label class="label" for="vPitch">Tono \xB7 <span id="vPitchV">').concat(pitch.toFixed(2), '</span> <small style="text-transform:none;letter-spacing:0">(pi\xF9 basso = pi\xF9 grave e deciso)</small></label><input id="vPitch" type="range" min="0.4" max="1.6" step="0.02" value="').concat(pitch, '"></div>\n    <div class="row"><button class="btn primary small" id="vTest" type="button">Prova la voce</button><button class="btn ghost small" id="vReset" type="button">Ripristina</button></div>\n    <div class="field"><label class="label" for="vOwn">Le tue frasi di incitamento (una per riga)</label>\n      <textarea id="vOwn" rows="5" maxlength="3000" placeholder="Forza Marco, non mollare!&#10;Ogni ripetizione ti rende pi\xF9 forte!">').concat(esc(voiceCfg.own || ""), '</textarea></div>\n    <div class="field"><label class="label" for="vOwnStart">Le tue frasi a inizio serie (una per riga)</label>\n      <textarea id="vOwnStart" rows="3" maxlength="1500" placeholder="Si comincia, soldato!">').concat(esc(voiceCfg.ownStart || ""), '</textarea></div>\n    <label class="toggle"><input type="checkbox" id="vOnly" ').concat(voiceCfg.onlyOwn ? "checked" : "", '> Usa solo le mie frasi</label>\n    <div class="row"><button class="btn primary" id="vSave" type="button">Salva</button></div>\n    <p class="note" id="vSaved" hidden>Salvato.</p>\n    <div class="section"><div class="label">Altre voci sul telefono</div>\n      <p class="meta"><b>iPhone:</b> Impostazioni \u203A Accessibilit\xE0 \u203A Contenuti letti \u203A Voci \u203A la tua lingua. Scarica una voce, per esempio una "Avanzata", poi riapri l\'app e sceglila qui.</p>\n      <p class="meta"><b>Android:</b> Impostazioni \u203A Sistema \u203A Lingue \u203A Output sintesi vocale. Con "Sintesi vocale di Google" scegli la tua lingua e scarica le voci, poi riapri l\'app.</p>\n    </div>\n  </div>');
   const read = () => ({ voice: $("vVoice").value, rate: +$("vRate").value, pitch: +$("vPitch").value, own: $("vOwn").value, ownStart: $("vOwnStart").value, onlyOwn: $("vOnly").checked });
   $("vRate").oninput = (e) => $("vRateV").textContent = (+e.target.value).toFixed(2);
   $("vPitch").oninput = (e) => $("vPitchV").textContent = (+e.target.value).toFixed(2);
@@ -955,6 +1469,15 @@ function renderVoice() {
     store.set("voiceCfg", voiceCfg);
     pickVoice();
     $("vSaved").hidden = false;
+  };
+  $("vLang").onchange = (e) => {
+    const v = e.target.value;
+    if (v) store.set("lang", v);
+    else try {
+      localStorage.removeItem("recluta:lang");
+    } catch (e2) {
+    }
+    location.reload();
   };
   $("back").onclick = () => go({ name: "home" });
 }
@@ -1346,7 +1869,14 @@ const prevMonthKey = () => {
   return monthKey(d);
 };
 const MONTHS_IT = ["gennaio", "febbraio", "marzo", "aprile", "maggio", "giugno", "luglio", "agosto", "settembre", "ottobre", "novembre", "dicembre"];
-const monthName = (k) => MONTHS_IT[+k.slice(5, 7) - 1] + " " + k.slice(0, 4);
+const monthName = (k) => {
+  if (lang === "it") return MONTHS_IT[+k.slice(5, 7) - 1] + " " + k.slice(0, 4);
+  try {
+    return new Intl.DateTimeFormat(lang, { month: "long", year: "numeric", timeZone: "UTC" }).format(/* @__PURE__ */ new Date(k + "-15T12:00:00Z"));
+  } catch (e) {
+    return k;
+  }
+};
 let stats = store.get("stats", { total: 0, month: { key: monthKey(), pts: 0 }, elite: null, gold: true });
 function rollMonth() {
   const k = monthKey();
@@ -1667,7 +2197,7 @@ function startCamWatchdog() {
   CH.wd = setInterval(() => {
     var _a;
     if (!S.challenge || !S.running) return clearInterval(CH.wd);
-    const tr = (_a = CH.stream) == null ? void 0 : _a.getVideoTracks()[0];
+    const tr2 = (_a = CH.stream) == null ? void 0 : _a.getVideoTracks()[0];
     if (vid.paused) vid.play().catch(() => {
     });
     const ov = $("oppVid");
@@ -1677,7 +2207,7 @@ function startCamWatchdog() {
     const stalled = vid.currentTime === lastT;
     lastT = vid.currentTime;
     stuckSince = stalled ? stuckSince || now : 0;
-    const dead = !tr || tr.readyState === "ended" || tr.muted && stuckSince && now - stuckSince > 2e3 || stuckSince && now - stuckSince > 3e3;
+    const dead = !tr2 || tr2.readyState === "ended" || tr2.muted && stuckSince && now - stuckSince > 2e3 || stuckSince && now - stuckSince > 3e3;
     if (dead && now - (CH.lastRecover || 0) > 8e3) recoverCamera();
   }, 1e3);
 }
@@ -1827,7 +2357,7 @@ async function duelJoin(code) {
 }
 function renderDuelNew() {
   const c = CH.cfg;
-  app.innerHTML = '\n  <div class="screen brief">\n    <button class="back" id="back" type="button">\u2039 Indietro</button>\n    <div class="section"><div class="label">Sfida un amico</div><h2>Nuova sfida</h2></div>\n    <div class="field"><label class="label" for="nm">Il tuo nome</label><input id="nm" maxlength="20" autocomplete="nickname" placeholder="Es. Marco" value="'.concat(esc(myName), '"></div>\n    <div class="section"><div class="label">Esercizio</div>\n      <div class="choices">').concat(duelExList().map((id) => '<button class="choice" type="button" data-ex="'.concat(id, '" aria-pressed="').concat(c.ex === id, '">').concat(EX[id].name, "<small>").concat(EX[id].tag, "</small></button>")).join(""), '</div>\n    </div>\n    <div class="section"><div class="label">Formato</div>\n      <div class="choices">').concat(Object.entries(DUEL_FMT).map(([k, f]) => '<button class="choice" type="button" data-fmt="'.concat(k, '" aria-pressed="').concat(c.fmt === k, '">').concat(f.label, "<small>").concat(k === "time" ? "Vince chi ne fa di pi\xF9" : "Vince chi arriva prima", "</small></button>")).join(""), '</div>\n    </div>\n    <div class="camtip">').concat(sideCam, "<span>Mettete i telefoni nella stessa posizione: ").concat(EX[c.ex].cam.charAt(0).toLowerCase() + EX[c.ex].cam.slice(1), '</span></div>\n    <div class="row"><button class="btn primary" id="create" type="button">Crea la sfida</button></div>\n    <p class="note" id="err" hidden></p>\n  </div>');
+  app.innerHTML = '\n  <div class="screen brief">\n    <button class="back" id="back" type="button">\u2039 Indietro</button>\n    <div class="section"><div class="label">Sfida un amico</div><h2>Nuova sfida</h2></div>\n    <div class="field"><label class="label" for="nm">Il tuo nome</label><input id="nm" maxlength="20" autocomplete="nickname" placeholder="Es. Marco" value="'.concat(esc(myName), '"></div>\n    <div class="section"><div class="label">Esercizio</div>\n      <div class="choices">').concat(duelExList().map((id) => '<button class="choice" type="button" data-ex="'.concat(id, '" aria-pressed="').concat(c.ex === id, '">').concat(EX[id].name, "<small>").concat(EX[id].tag, "</small></button>")).join(""), '</div>\n    </div>\n    <div class="section"><div class="label">Formato</div>\n      <div class="choices">').concat(Object.entries(DUEL_FMT).map(([k, f]) => '<button class="choice" type="button" data-fmt="'.concat(k, '" aria-pressed="').concat(c.fmt === k, '">').concat(f.label, "<small>").concat(k === "time" ? "Vince chi ne fa di pi\xF9" : "Vince chi arriva prima", "</small></button>")).join(""), '</div>\n    </div>\n    <div class="camtip">').concat(sideCam, "<span>Mettete i telefoni nella stessa posizione. ").concat(EX[c.ex].cam, '</span></div>\n    <div class="row"><button class="btn primary" id="create" type="button">Crea la sfida</button></div>\n    <p class="note" id="err" hidden></p>\n  </div>');
   $("back").onclick = () => go({ name: "home" });
   app.querySelectorAll("[data-ex]").forEach((b) => b.onclick = () => {
     CH.cfg.ex = b.dataset.ex;
@@ -1905,7 +2435,7 @@ function renderLobby() {
   attach($("lobMe"), localView(), true);
   if (host) {
     $("share").onclick = async () => {
-      const link = duelLink(), text = "Ti sfido a ".concat(fmtTxt(CH.cfg), " su Istruttore Recluta! Codice ").concat(CH.code);
+      const link = duelLink(), text = tr("Ti sfido a ".concat(fmtTxt(CH.cfg), " su Istruttore Recluta! Codice ").concat(CH.code));
       try {
         if (navigator.share) {
           await navigator.share({ title: "Sfida", text, url: link });
@@ -2130,6 +2660,7 @@ try {
 }
 checkFriendsElite();
 applyGold();
+startI18n();
 render();
 lbInit();
 if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {
