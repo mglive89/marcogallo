@@ -382,8 +382,10 @@ function pickVoice() {
 }
 try { pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; } catch {}
 let lastSpoken = { text: "", t: 0 }, lastAny = 0;
+const IS_IOS = /iP(hone|ad|od)/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
 function say(text, { urgent = false, minGap = 3200 } = {}) {
   if (!voiceOn) return;
+  if (IS_IOS && S.challenge && CH.connected) return;
   try {
     const now = performance.now();
     if (!urgent && (now - lastAny < minGap || (text === lastSpoken.text && now - lastSpoken.t < 7000))) return;
@@ -951,7 +953,10 @@ function bump() { const n = $("count"); n.classList.remove("bump"); void n.offse
 function loop() {
   if (!S.running) return;
   const next = () => S.running && (vid.requestVideoFrameCallback ? vid.requestVideoFrameCallback(loop) : requestAnimationFrame(loop));
-  if (vid.readyState >= 2 && !S.inRest) {
+  const nowT = performance.now();
+  const throttled = S.challenge && nowT - (S.lastDetect || 0) < 70;
+  if (vid.readyState >= 2 && !S.inRest && !throttled) {
+    S.lastDetect = nowT;
     let ts = S.mode === "file" ? vid.currentTime * 1000 : performance.now();
     if (ts <= S.lastTs) ts = S.lastTs + 1;
     S.lastTs = ts;
@@ -1103,6 +1108,7 @@ function finish(all) {
 
 function closeSession() {
   S.running = false;
+  clearInterval(CH.wd);
   clearInterval(S.restTimer);
   if (!S.challenge) try { S.stream?.getTracks().forEach(t => t.stop()); } catch {}
   S.stream = null;
@@ -1360,7 +1366,7 @@ function duelSend(msg) { try { if (CH.conn?.open) CH.conn.send(msg); } catch {} 
 async function getDuelStream() {
   if (CH.stream && CH.stream.getVideoTracks().some(t => t.readyState === "live")) return CH.stream;
   CH.stream = await navigator.mediaDevices.getUserMedia({
-    video: { facingMode: "user", width: { ideal: 640 }, height: { ideal: 480 } },
+    video: { facingMode: "user", width: { ideal: 640 }, height: { ideal: 480 }, frameRate: { ideal: 24, max: 30 } },
     audio: { echoCancellation: true, noiseSuppression: true }
   });
   return CH.stream;
@@ -1375,6 +1381,44 @@ function attach(video, stream, muted) {
     video.muted = true; video.play().catch(() => {});
     if (!muted) document.addEventListener("pointerdown", () => { video.muted = false; video.play().catch(() => {}); }, { once: true });
   });
+}
+
+// local preview without the microphone track
+function localView() {
+  const vt = CH.stream?.getVideoTracks() || [];
+  if (!CH.view || CH.view.getVideoTracks()[0] !== vt[0]) CH.view = new MediaStream(vt);
+  return CH.view;
+}
+
+// a camera can stop when the phone switches audio mode or gets busy: restart it and swap it into the call
+async function recoverCamera() {
+  if (CH.recovering) return; CH.recovering = true;
+  try {
+    const fresh = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user", width: { ideal: 640 }, height: { ideal: 480 }, frameRate: { ideal: 24, max: 30 } }, audio: false });
+    const nt = fresh.getVideoTracks()[0];
+    for (const old of CH.stream.getVideoTracks()) { CH.stream.removeTrack(old); try { old.stop(); } catch {} }
+    CH.stream.addTrack(nt);
+    const sender = CH.call?.peerConnection?.getSenders().find(x => x.track?.kind === "video" || (!x.track && x.dtmf == null));
+    if (sender) await sender.replaceTrack(nt);
+    vid.srcObject = localView(); vid.play().catch(() => {});
+  } catch {}
+  CH.recovering = false; CH.lastRecover = performance.now();
+}
+function startCamWatchdog() {
+  clearInterval(CH.wd);
+  let lastT = -1, stuckSince = 0;
+  CH.wd = setInterval(() => {
+    if (!S.challenge || !S.running) return clearInterval(CH.wd);
+    const tr = CH.stream?.getVideoTracks()[0];
+    if (vid.paused) vid.play().catch(() => {});
+    const ov = $("oppVid"); if (ov.srcObject && ov.paused) ov.play().catch(() => {});
+    const now = performance.now();
+    const stalled = vid.currentTime === lastT;
+    lastT = vid.currentTime;
+    stuckSince = stalled ? (stuckSince || now) : 0;
+    const dead = !tr || tr.readyState === "ended" || (tr.muted && stuckSince && now - stuckSince > 2000) || (stuckSince && now - stuckSince > 3000);
+    if (dead && now - (CH.lastRecover || 0) > 8000) recoverCamera();
+  }, 1000);
 }
 
 function duelReset() {
@@ -1547,7 +1591,7 @@ function renderLobby() {
     </div>
     ${host ? `<details class="note"><summary>Cambia esercizio o formato</summary><div class="choices" style="margin-top:8px">${duelExList().map(id => `<button class="choice" type="button" data-ex="${id}" aria-pressed="${CH.cfg.ex === id}">${EX[id].name}</button>`).join("")}${Object.entries(DUEL_FMT).map(([k, f]) => `<button class="choice" type="button" data-fmt="${k}" aria-pressed="${CH.cfg.fmt === k}">${f.label}</button>`).join("")}</div></details>` : ""}
   </div>`;
-  attach($("lobMe"), CH.stream, true);
+  attach($("lobMe"), localView(), true);
   if (host) {
     $("share").onclick = async () => {
       const link = duelLink(), text = `Ti sfido a ${fmtTxt(CH.cfg)} su Istruttore Recluta! Codice ${CH.code}`;
@@ -1594,8 +1638,11 @@ async function startDuelSession() {
   $("flip").hidden = true; $("rest").hidden = true;
   $("loading").hidden = false; $("loadingMsg").textContent = "Carico il sistema di visione…";
   try { S.wake = await navigator.wakeLock?.request("screen"); } catch {}
-  vid.srcObject = CH.stream; vid.removeAttribute("src"); vid.play().catch(() => {});
+  // only the session's two videos stay attached; lobby previews are released
+  for (const id of ["lobMe", "lobOpp"]) { const el = $(id); if (el) { try { el.pause(); } catch {} el.srcObject = null; } }
+  vid.muted = true; vid.removeAttribute("src"); vid.srcObject = localView(); vid.play().catch(() => {});
   attach($("oppVid"), CH.remote, false);
+  startCamWatchdog();
   try { await loadEngine(); } catch { $("loadingMsg").textContent = "Il sistema di visione non si è caricato. Controlla la connessione."; return; }
   $("loading").hidden = true;
   // 3-2-1 countdown on the rest panel, then the round starts
