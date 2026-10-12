@@ -5,214 +5,289 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font-size:14px}img{max-width:100%}</style>
 <title>Istruttore Recluta</title>
-<meta name="theme-color" content="#12150e">
-<meta name="description" content="Allenamento a corpo libero in stile militare: la fotocamera conta le ripetizioni e corregge la postura.">
+<meta name="theme-color" content="#f3f5f9">
+<meta name="description" content="Personal trainer con la fotocamera: percorsi Uomo e Donna, conta le ripetizioni e corregge la postura.">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icons/icon-192.png">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Recluta">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Saira+Condensed:wght@500;600;700;800&family=Saira:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600&display=swap">
 <style>
-/* Layout: one-screen field manual. Home = program card + exercise list; Session = camera fills the screen with a big rep counter and an order banner. */
+/* Layout: bright training-sheet look. Home = today's circuit drawn as illustrated cards with arrows; tab bar at the bottom; session = camera full screen. */
 :root {
-  --bg: #12150e;
-  --panel: #1c2116;
-  --panel-2: #262d1d;
-  --line: #3a4230;
-  --fg: #e8e5d3;
-  --muted: #a3a38a;
-  --brass: #d2b85c;
-  --brass-ink: #1a1606;
-  --ok: #7cbf62;
-  --bad: #e2603f;
-  --warn: #e8b23a;
-  --f-display: "Black Ops One", "Impact", "Arial Black", sans-serif;
-  --f-cond: "Saira Condensed", "Arial Narrow", "Roboto Condensed", sans-serif;
-  --f-body: "Saira", system-ui, -apple-system, "Segoe UI", sans-serif;
-  color-scheme: dark;
+  --bg: #f3f5f9;
+  --panel: #ffffff;
+  --panel-2: #eef1f6;
+  --line: #e1e6ee;
+  --fg: #16202c;
+  --muted: #667283;
+  --brass: #2e86de;
+  --brass-ink: #ffffff;
+  --soft: #e6f1fc;
+  --ok: #24a148;
+  --bad: #e0473a;
+  --warn: #f0a020;
+  --shadow: 0 1px 2px rgba(22,32,44,.06), 0 6px 18px rgba(22,32,44,.07);
+  --f-display: "Barlow Condensed", "Arial Narrow", "Roboto Condensed", sans-serif;
+  --f-cond: "Barlow Condensed", "Arial Narrow", "Roboto Condensed", sans-serif;
+  --f-body: "Barlow", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color-scheme: light;
 }
+body.g-f { --brass: #b02a91; --soft: #f8e6f3; }
+body.goldtheme { --brass: #c9971c; --soft: #fbf1d6; }
 html, body { height: 100%; }
 [hidden] { display: none !important; }
-body { background: var(--bg); color: var(--fg); font-family: var(--f-body); font-size: 15px; line-height: 1.45; -webkit-tap-highlight-color: transparent; }
+body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--f-body); font-size: 16px; line-height: 1.45; -webkit-tap-highlight-color: transparent; -webkit-text-size-adjust: 100%; }
 * { box-sizing: border-box; }
 button { font: inherit; color: inherit; cursor: pointer; }
-button:focus-visible, a:focus-visible, select:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
+button:focus-visible, a:focus-visible, select:focus-visible { outline: 3px solid var(--brass); outline-offset: 2px; }
 h1, h2, h3 { margin: 0; text-wrap: balance; }
 p { margin: 0; }
 
-.screen { max-width: 640px; margin: 0 auto; padding-inline: 16px; padding-block: 18px 32px; display: flex; flex-direction: column; gap: 22px; }
+.screen { max-width: 640px; margin: 0 auto; padding-inline: 16px; padding-block: calc(env(safe-area-inset-top, 0px) + 16px) 32px; display: flex; flex-direction: column; gap: 20px; }
+body.tabs .screen { padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 96px); }
 
 /* Header */
-.mast { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; border-bottom: 2px solid var(--line); padding-bottom: 12px; }
-.mast h1 { font-family: var(--f-display); font-weight: 400; font-size: 30px; letter-spacing: .02em; line-height: 1; color: var(--brass); }
-.mast .sub { font-family: var(--f-cond); font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin-top: 6px; }
-.callsign { font-family: var(--f-cond); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); text-align: right; }
-.callsign b { display: block; font-size: 22px; color: var(--fg); letter-spacing: .02em; font-variant-numeric: tabular-nums; }
+.mast { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.mast h1 { font-family: var(--f-display); font-weight: 800; font-size: 30px; line-height: 1.05; text-transform: uppercase; letter-spacing: .01em; }
+.mast .sub { font-size: 14px; color: var(--muted); margin-top: 2px; }
+.callsign { font-family: var(--f-cond); font-size: 12px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); text-align: right; }
+.callsign b { display: block; font-size: 24px; color: var(--fg); letter-spacing: 0; font-variant-numeric: tabular-nums; }
+.hello { display: flex; align-items: center; gap: 12px; }
+.avatar { width: 48px; height: 48px; border-radius: 50%; background: var(--soft); display: grid; place-items: center; overflow: hidden; flex: 0 0 auto; border: 2px solid var(--brass); }
+.avatar svg { width: 64px; height: 54px; margin-top: 10px; }
+.gswitch { display: inline-flex; background: var(--panel-2); border-radius: 999px; padding: 3px; gap: 2px; }
+.gswitch button { border: 0; background: none; border-radius: 999px; padding: 6px 12px; font-family: var(--f-cond); font-weight: 700; font-size: 14px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); min-height: 34px; }
+.gswitch button[aria-pressed="true"] { background: var(--brass); color: var(--brass-ink); }
 
-.label { font-family: var(--f-cond); font-weight: 600; font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+.label { font-family: var(--f-cond); font-weight: 700; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
 .section { display: flex; flex-direction: column; gap: 10px; }
+.h2 { font-family: var(--f-display); font-weight: 800; font-size: 22px; text-transform: uppercase; letter-spacing: .01em; }
 
-/* Today's order card */
-.order { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 16px; display: flex; flex-direction: column; gap: 12px; position: relative; overflow: hidden; }
-.order::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 6px; background: repeating-linear-gradient(-45deg, var(--brass) 0 10px, var(--brass-ink) 10px 20px); }
-.order h2 { font-family: var(--f-cond); font-weight: 800; font-size: 24px; letter-spacing: .01em; margin-top: 4px; }
-.order .meta { color: var(--muted); font-size: 14px; }
+/* Cards */
+.order { background: var(--panel); border-radius: 18px; padding: 16px; display: flex; flex-direction: column; gap: 12px; box-shadow: var(--shadow); position: relative; }
+.order h2 { font-family: var(--f-display); font-weight: 800; font-size: 26px; line-height: 1.1; text-transform: uppercase; }
+.order .meta, .meta { color: var(--muted); font-size: 14px; }
 .blocks { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
-.blocks li { display: grid; grid-template-columns: 1fr auto; gap: 10px; padding: 8px 0; border-bottom: 1px dashed var(--line); font-family: var(--f-cond); font-size: 17px; font-weight: 600; }
+.blocks li { display: grid; grid-template-columns: 1fr auto; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--line); font-family: var(--f-cond); font-size: 18px; font-weight: 600; }
 .blocks li:last-child { border-bottom: 0; }
 .blocks li span:last-child { color: var(--brass); font-variant-numeric: tabular-nums; }
 
-.weeks { display: flex; gap: 6px; flex-wrap: wrap; }
-.wk { flex: 1 1 0; min-width: 64px; background: var(--panel-2); border: 1px solid var(--line); border-radius: 4px; padding: 6px 8px; font-family: var(--f-cond); font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); display: flex; flex-direction: column; gap: 4px; }
-.wk.now { border-color: var(--brass); color: var(--fg); }
+/* Today's circuit: illustrated sheet like a printed workout card */
+.circuit { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px 22px; padding: 4px 2px 6px; }
+.step { position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; background: none; border: 0; padding: 0; }
+.step .figbox { width: 100%; aspect-ratio: 6 / 5; }
+.step .figbox svg, .figbox svg { width: 100%; height: 100%; display: block; }
+.step b { font-family: var(--f-cond); font-weight: 700; font-size: 15px; letter-spacing: .04em; text-transform: uppercase; line-height: 1.1; margin-top: 4px; }
+.step span { font-family: var(--f-cond); font-weight: 800; font-size: 16px; color: var(--brass); letter-spacing: .04em; }
+.step .arrow { position: absolute; width: 34px; height: 34px; color: #b7bec8; pointer-events: none; }
+.step:nth-child(odd) .arrow { right: -30px; top: 30%; }
+.step:nth-child(even) .arrow { left: -30px; bottom: -22px; transform: rotate(130deg); }
+.step:last-child .arrow { display: none; }
+.restnote { text-align: center; font-size: 13px; color: var(--muted); }
+
+.weeks { display: flex; gap: 6px; }
+.wk { flex: 1 1 0; background: var(--panel-2); border-radius: 10px; padding: 6px 8px; font-family: var(--f-cond); font-weight: 600; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); display: flex; flex-direction: column; gap: 4px; align-items: center; }
+.wk.now { background: var(--soft); color: var(--fg); }
 .dots { display: flex; gap: 4px; }
-.dots i { width: 10px; height: 10px; border-radius: 50%; border: 1.5px solid var(--muted); }
+.dots i { width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid #b7bec8; }
 .dots i.done { background: var(--ok); border-color: var(--ok); }
 
-.btn { border: 0; border-radius: 4px; padding: 14px 18px; font-family: var(--f-cond); font-weight: 700; font-size: 18px; letter-spacing: .08em; text-transform: uppercase; display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 52px; }
-.btn.primary { background: var(--brass); color: var(--brass-ink); }
-.btn.ghost { background: transparent; border: 1.5px solid var(--line); color: var(--fg); }
-.btn.small { min-height: 40px; padding: 8px 12px; font-size: 15px; }
+.btn { border: 0; border-radius: 14px; padding: 14px 18px; font-family: var(--f-cond); font-weight: 700; font-size: 19px; letter-spacing: .06em; text-transform: uppercase; display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 54px; }
+.btn.primary { background: var(--brass); color: var(--brass-ink); box-shadow: 0 4px 14px color-mix(in srgb, var(--brass) 35%, transparent); }
+.btn.ghost { background: var(--panel); border: 1.5px solid var(--line); color: var(--fg); }
+.btn.small { min-height: 44px; padding: 8px 14px; font-size: 16px; border-radius: 12px; }
+.btn.big { min-height: 62px; font-size: 22px; }
 .btn[disabled] { opacity: .45; cursor: not-allowed; }
 .row { display: flex; gap: 10px; flex-wrap: wrap; }
-.row > .btn { flex: 1 1 160px; }
+.row > .btn { flex: 1 1 150px; }
 
-/* Exercise list */
-.exlist { display: grid; gap: 8px; }
-.ex { display: grid; grid-template-columns: 52px 1fr auto; align-items: center; gap: 12px; text-align: left; background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 10px 12px; }
-.ex:hover { border-color: var(--muted); }
-.ex canvas, .ex svg { width: 52px; height: 52px; }
-.ex b { font-family: var(--f-cond); font-size: 19px; font-weight: 700; display: block; line-height: 1.15; }
-.ex small { color: var(--muted); font-size: 13px; }
-.ex .go { font-family: var(--f-cond); color: var(--brass); font-size: 22px; }
+/* Exercise grid */
+.exlist { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.ex { display: flex; flex-direction: column; align-items: stretch; gap: 2px; text-align: left; background: var(--panel); border: 0; border-radius: 16px; padding: 10px 12px 12px; box-shadow: var(--shadow); position: relative; }
+.ex .figbox { aspect-ratio: 6 / 5; width: 100%; background: linear-gradient(180deg, var(--soft), transparent 80%); border-radius: 12px; }
+.ex b { font-family: var(--f-cond); font-size: 18px; font-weight: 700; display: block; line-height: 1.15; text-transform: uppercase; margin-top: 6px; }
+.ex small { color: var(--muted); font-size: 13px; line-height: 1.3; }
+.ex .go { position: absolute; top: 10px; right: 10px; width: 30px; height: 30px; border-radius: 50%; background: var(--panel); display: grid; place-items: center; color: var(--brass); font-family: var(--f-cond); font-size: 20px; font-weight: 700; box-shadow: 0 1px 4px rgba(0,0,0,.12); }
+.ex.wide { flex-direction: row; align-items: center; gap: 12px; grid-column: 1 / -1; }
+.ex.wide .figbox { width: 96px; flex: 0 0 96px; }
+.ex.wide .go { position: static; margin-left: auto; flex: 0 0 auto; }
+.ex.locked { opacity: .6; }
+.ex.locked .figbox { filter: grayscale(1); }
+.ex.locked .go { color: var(--muted); }
+.ex .go svg { width: 16px; height: 16px; }
 
-.note { font-size: 13px; color: var(--muted); border-left: 2px solid var(--line); padding-left: 10px; }
+.note { font-size: 13px; color: var(--muted); background: var(--panel-2); border-radius: 10px; padding: 10px 12px; }
 
 /* Briefing */
-.brief h2 { font-family: var(--f-display); font-weight: 400; font-size: 32px; color: var(--brass); line-height: 1.05; }
-.brief .goal { font-family: var(--f-cond); font-size: 18px; font-weight: 600; }
+.brief h2 { font-family: var(--f-display); font-weight: 800; font-size: 34px; line-height: 1.05; text-transform: uppercase; }
+.brief .goal { font-family: var(--f-cond); font-size: 19px; font-weight: 600; color: var(--brass); }
+.demo { background: var(--panel); border-radius: 18px; box-shadow: var(--shadow); padding: 8px 12px 14px; display: flex; flex-direction: column; gap: 10px; }
+.demo .figbox { width: 100%; max-width: 360px; margin: 0 auto; aspect-ratio: 6 / 5; }
+.demo h3 { font-family: var(--f-display); font-weight: 800; font-size: 22px; text-transform: uppercase; }
 .steps { margin: 0; padding-left: 22px; display: grid; gap: 8px; }
-.steps li::marker { font-family: var(--f-cond); font-weight: 700; color: var(--brass); }
+.steps li::marker { font-family: var(--f-cond); font-weight: 800; color: var(--brass); }
 .faults { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
 .faults li { display: grid; grid-template-columns: 14px 1fr; gap: 10px; align-items: baseline; font-size: 14px; }
-.faults li::before { content: ""; width: 10px; height: 10px; background: var(--bad); transform: rotate(45deg); }
-.camtip { display: grid; grid-template-columns: 64px 1fr; gap: 12px; align-items: center; background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 12px; font-size: 14px; }
-.camtip svg { width: 64px; height: 48px; }
-.back { align-self: flex-start; background: none; border: 0; color: var(--muted); font-family: var(--f-cond); font-size: 15px; letter-spacing: .1em; text-transform: uppercase; padding: 6px 0; }
+.faults li::before { content: ""; width: 9px; height: 9px; background: var(--bad); border-radius: 50%; }
+.camtip { display: grid; grid-template-columns: 56px 1fr; gap: 12px; align-items: center; background: var(--panel-2); border-radius: 12px; padding: 10px 12px; font-size: 14px; }
+.camtip svg { width: 56px; height: 42px; }
+.back { align-self: flex-start; background: var(--panel); border: 0; border-radius: 999px; box-shadow: var(--shadow); color: var(--fg); font-family: var(--f-cond); font-weight: 700; font-size: 15px; letter-spacing: .06em; text-transform: uppercase; padding: 8px 14px; min-height: 40px; }
+.stickybar { position: sticky; bottom: 0; padding: 10px 0 calc(env(safe-area-inset-bottom, 0px) + 10px); background: linear-gradient(transparent, var(--bg) 30%); display: flex; flex-direction: column; gap: 8px; }
 
-/* Session */
-#session { position: fixed; inset: 0; background: #000; display: flex; flex-direction: column; z-index: 10; }
+/* Bottom tab bar */
+.tabbar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 5; background: rgba(255,255,255,.96); border-top: 1px solid var(--line); display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); padding: 6px 4px calc(env(safe-area-inset-bottom, 0px) + 6px); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+.tabbar button { border: 0; background: none; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 4px 0; min-height: 52px; color: var(--muted); font-family: var(--f-cond); font-weight: 700; font-size: 12px; letter-spacing: .04em; text-transform: uppercase; }
+.tabbar button svg { width: 24px; height: 24px; }
+.tabbar button[aria-current="page"] { color: var(--brass); }
+
+/* Onboarding */
+.pick { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.pick button { background: var(--panel); border: 2px solid transparent; border-radius: 18px; box-shadow: var(--shadow); padding: 10px 10px 14px; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.pick button .figbox { width: 100%; aspect-ratio: 6 / 5; }
+.pick button b { font-family: var(--f-display); font-weight: 800; font-size: 24px; text-transform: uppercase; }
+.pick button.m b { color: #2e86de; } .pick button.f b { color: #b02a91; }
+.pick button small { color: var(--muted); font-size: 13px; text-align: center; }
+
+/* Session (camera) stays dark */
+#session { position: fixed; inset: 0; background: #000; display: flex; flex-direction: column; z-index: 10; color: #f4f6f9; }
 .stage { position: relative; flex: 1 1 auto; overflow: hidden; background: #000; }
 .stage video, .stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
 .stage.mirror video, .stage.mirror canvas { transform: scaleX(-1); }
 .hud-top { position: absolute; left: 0; right: 0; top: 0; padding: calc(env(safe-area-inset-top, 0px) + 10px) 12px 10px; display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; background: linear-gradient(rgba(0,0,0,.75), rgba(0,0,0,0)); }
-.hud-ex { font-family: var(--f-cond); font-size: 14px; letter-spacing: .14em; text-transform: uppercase; color: var(--brass); }
-.hud-ex b { display: block; font-size: 22px; letter-spacing: .02em; color: #f2efe0; }
-.hud-timer { font-family: var(--f-cond); font-size: 22px; font-weight: 700; color: #f2efe0; font-variant-numeric: tabular-nums; }
+.hud-ex { font-family: var(--f-cond); font-weight: 700; font-size: 14px; letter-spacing: .12em; text-transform: uppercase; color: #9ccaf5; }
+body.g-f .hud-ex { color: #f0a6dc; }
+.hud-ex b { display: block; font-size: 24px; letter-spacing: .02em; color: #fff; }
+.hud-timer { font-family: var(--f-cond); font-size: 24px; font-weight: 700; color: #fff; font-variant-numeric: tabular-nums; }
 .counter { position: absolute; right: 12px; bottom: 12px; display: flex; flex-direction: column; align-items: flex-end; text-shadow: 0 2px 12px rgba(0,0,0,.8); }
-.counter .n { font-family: var(--f-display); font-size: 112px; line-height: .9; color: #f2efe0; font-variant-numeric: tabular-nums; }
-.counter .of { font-family: var(--f-cond); font-size: 18px; font-weight: 700; letter-spacing: .1em; color: var(--brass); text-transform: uppercase; }
+.counter .n { font-family: var(--f-display); font-weight: 800; font-size: 120px; line-height: .9; color: #fff; font-variant-numeric: tabular-nums; }
+.counter .of { font-family: var(--f-cond); font-size: 20px; font-weight: 800; letter-spacing: .1em; color: #9ccaf5; text-transform: uppercase; }
+body.g-f .counter .of { color: #f0a6dc; }
 .counter .n.bump { animation: bump .35s ease-out; }
-@keyframes bump { 0% { transform: scale(1.25); color: var(--brass); } 100% { transform: scale(1); } }
-.meter { position: absolute; left: 12px; bottom: 16px; width: 14px; height: 40%; border: 2px solid rgba(242,239,224,.6); border-radius: 3px; overflow: hidden; }
+@keyframes bump { 0% { transform: scale(1.25); color: #7ee29b; } 100% { transform: scale(1); } }
+.meter { position: absolute; left: 12px; bottom: 16px; width: 14px; height: 40%; border: 2px solid rgba(255,255,255,.6); border-radius: 8px; overflow: hidden; }
 .meter i { position: absolute; left: 0; right: 0; bottom: 0; background: var(--brass); height: 0%; transition: height .08s linear; }
 .meter b { position: absolute; left: -2px; right: -2px; height: 2px; background: var(--ok); }
-.banner { position: absolute; left: 12px; right: 12px; top: calc(env(safe-area-inset-top, 0px) + 74px); padding: 10px 14px; border-radius: 4px; font-family: var(--f-cond); font-weight: 700; font-size: 22px; line-height: 1.15; text-align: center; background: rgba(18,21,14,.86); border: 2px solid var(--line); color: #f2efe0; }
+.banner { position: absolute; left: 12px; right: 12px; top: calc(env(safe-area-inset-top, 0px) + 76px); padding: 10px 14px; border-radius: 14px; font-family: var(--f-cond); font-weight: 700; font-size: 23px; line-height: 1.15; text-align: center; background: rgba(15,20,28,.82); border: 2px solid rgba(255,255,255,.2); color: #fff; }
 .banner.ok { border-color: var(--ok); }
-.banner.bad { border-color: var(--bad); background: rgba(80,22,10,.88); }
+.banner.bad { border-color: var(--bad); background: rgba(120,24,16,.88); }
 .banner.warn { border-color: var(--warn); }
-.loading { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 24px; text-align: center; color: #f2efe0; background: rgba(0,0,0,.7); font-family: var(--f-cond); font-size: 18px; }
+.loading { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 24px; text-align: center; color: #fff; background: rgba(0,0,0,.72); font-family: var(--f-cond); font-size: 19px; }
 .loading .bar { width: min(260px, 70vw); height: 6px; background: #333; border-radius: 3px; overflow: hidden; }
 .loading .bar i { display: block; height: 100%; width: 30%; background: var(--brass); animation: slide 1.1s ease-in-out infinite alternate; }
 @keyframes slide { from { transform: translateX(-30%); } to { transform: translateX(260%); } }
-.dock { flex: 0 0 auto; background: var(--bg); padding: 10px 12px calc(env(safe-area-inset-bottom, 0px) + 10px); display: flex; gap: 8px; align-items: center; }
+.dock { flex: 0 0 auto; background: #0d1117; padding: 10px 12px calc(env(safe-area-inset-bottom, 0px) + 10px); display: flex; gap: 8px; align-items: center; }
 .dock .btn { flex: 1 1 auto; }
-.dock .adj { flex: 0 0 52px; padding: 0; font-size: 24px; }
+.dock .btn.ghost { background: #1b222c; border-color: #2b3440; color: #fff; }
+.dock .adj { flex: 0 0 54px; padding: 0; font-size: 26px; }
 
-.rest { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; background: rgba(18,21,14,.94); padding: 24px; text-align: center; }
-.rest .big { font-family: var(--f-display); font-size: 96px; color: var(--brass); font-variant-numeric: tabular-nums; line-height: 1; }
-.rest .next { font-family: var(--f-cond); font-size: 20px; font-weight: 600; color: var(--fg); }
+.rest { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; background: #f3f5f9; color: var(--fg); padding: 24px; text-align: center; }
+.rest .label { color: var(--muted); }
+.rest .big { font-family: var(--f-display); font-weight: 800; font-size: 96px; color: var(--brass); font-variant-numeric: tabular-nums; line-height: 1; }
+.rest .next { font-family: var(--f-cond); font-size: 22px; font-weight: 700; text-transform: uppercase; }
+.rest .figbox { width: min(300px, 70vw); aspect-ratio: 6 / 5; }
 
 /* Summary */
 .stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
-.stat { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 12px; display: flex; flex-direction: column; gap: 2px; }
-.stat b { font-family: var(--f-display); font-weight: 400; font-size: 34px; font-variant-numeric: tabular-nums; line-height: 1; }
-.stat span { font-family: var(--f-cond); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
-.log { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: 14px; }
-.log li { display: grid; grid-template-columns: 1fr auto; gap: 8px; padding: 6px 0; border-bottom: 1px dashed var(--line); }
+.stat { background: var(--panel); border-radius: 16px; box-shadow: var(--shadow); padding: 12px; display: flex; flex-direction: column; gap: 2px; }
+.stat b { font-family: var(--f-display); font-weight: 800; font-size: 36px; font-variant-numeric: tabular-nums; line-height: 1; color: var(--brass); }
+.stat span { font-family: var(--f-cond); font-weight: 600; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.log { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; font-size: 15px; background: var(--panel); border-radius: 16px; box-shadow: var(--shadow); padding: 4px 14px; }
+.log li { display: grid; grid-template-columns: 1fr auto; gap: 8px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.log li:last-child { border-bottom: 0; }
 .log li span:last-child { font-variant-numeric: tabular-nums; color: var(--muted); }
 
-.toggle { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--muted); }
-.toggle input { width: 20px; height: 20px; accent-color: var(--brass); }
+.toggle { display: flex; align-items: center; gap: 12px; font-size: 15px; background: var(--panel); border-radius: 14px; box-shadow: var(--shadow); padding: 12px 14px; min-height: 52px; }
+.toggle input { width: 22px; height: 22px; accent-color: var(--brass); flex: 0 0 auto; }
 
-/* Duel: friend's camera picture-in-picture + lobby */
-.stage .opp { position: absolute; right: 12px; top: calc(env(safe-area-inset-top, 0px) + 70px); width: 32%; max-width: 200px; aspect-ratio: 3 / 4; border: 2px solid var(--brass); border-radius: 4px; overflow: hidden; background: #000; }
+/* Duel */
+.stage .opp { position: absolute; right: 12px; top: calc(env(safe-area-inset-top, 0px) + 72px); width: 32%; max-width: 200px; aspect-ratio: 3 / 4; border: 2px solid var(--brass); border-radius: 12px; overflow: hidden; background: #000; }
 .stage .opp video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
-.oppTag { position: absolute; left: 0; right: 0; bottom: 0; display: flex; justify-content: space-between; align-items: baseline; gap: 6px; padding: 4px 8px; background: rgba(0,0,0,.7); font-family: var(--f-cond); font-weight: 700; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #f2efe0; }
+.oppTag { position: absolute; left: 0; right: 0; bottom: 0; display: flex; justify-content: space-between; align-items: baseline; gap: 6px; padding: 4px 8px; background: rgba(0,0,0,.7); font-family: var(--f-cond); font-weight: 700; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #fff; }
 .oppTag span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.oppTag b { font-family: var(--f-display); font-weight: 400; font-size: 30px; line-height: 1; color: var(--brass); font-variant-numeric: tabular-nums; }
+.oppTag b { font-family: var(--f-display); font-weight: 800; font-size: 30px; line-height: 1; color: #fff; font-variant-numeric: tabular-nums; }
 .duel .banner { right: calc(min(32%, 200px) + 24px); font-size: 18px; }
-.duel .counter .of { color: var(--ok); }
-.code { font-family: var(--f-display); font-size: 44px; letter-spacing: .12em; color: var(--brass); line-height: 1; font-variant-numeric: tabular-nums; }
+.duel .counter .of { color: #7ee29b; }
+.code { font-family: var(--f-display); font-weight: 800; font-size: 46px; letter-spacing: .12em; color: var(--brass); line-height: 1; font-variant-numeric: tabular-nums; }
 .lobvids { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
-.lobvid { position: relative; aspect-ratio: 3 / 4; background: #000; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+.lobvid { position: relative; aspect-ratio: 3 / 4; background: #10151c; border-radius: 16px; overflow: hidden; }
 .lobvid video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
-.lobvid span { position: absolute; left: 0; right: 0; bottom: 0; padding: 4px 8px; background: rgba(0,0,0,.65); font-family: var(--f-cond); font-weight: 700; font-size: 14px; letter-spacing: .06em; text-transform: uppercase; color: #f2efe0; }
-.lobvid .empty { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 12px; text-align: center; color: var(--muted); font-size: 13px; }
-.status { display: flex; align-items: center; gap: 10px; font-family: var(--f-cond); font-size: 18px; font-weight: 600; }
+.lobvid span { position: absolute; left: 0; right: 0; bottom: 0; padding: 6px 10px; background: rgba(0,0,0,.6); font-family: var(--f-cond); font-weight: 700; font-size: 14px; letter-spacing: .06em; text-transform: uppercase; color: #fff; }
+.lobvid .empty { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 12px; text-align: center; color: #aab3bf; font-size: 13px; }
+.status { display: flex; align-items: center; gap: 10px; font-family: var(--f-cond); font-size: 19px; font-weight: 600; }
 .status i { width: 12px; height: 12px; border-radius: 50%; background: var(--warn); flex: 0 0 auto; }
 .status.on i { background: var(--ok); }
 .status.off i { background: var(--bad); }
 .field { display: flex; flex-direction: column; gap: 6px; }
-.field input { font: inherit; font-size: 18px; padding: 12px; border-radius: 4px; border: 1.5px solid var(--line); background: var(--panel); color: var(--fg); min-width: 0; }
-.field select, .field textarea { font: inherit; font-size: 16px; padding: 10px 12px; border-radius: 4px; border: 1.5px solid var(--line); background: var(--panel); color: var(--fg); min-width: 0; width: 100%; }
+.field input { font: inherit; font-size: 18px; padding: 12px 14px; border-radius: 12px; border: 1.5px solid var(--line); background: var(--panel); color: var(--fg); min-width: 0; }
+.field select, .field textarea { font: inherit; font-size: 16px; padding: 12px 14px; border-radius: 12px; border: 1.5px solid var(--line); background: var(--panel); color: var(--fg); min-width: 0; width: 100%; }
 .field textarea { resize: vertical; line-height: 1.4; }
 .field input[type="range"] { padding: 0; border: 0; background: none; accent-color: var(--brass); height: 32px; }
-.field input:focus-visible { outline: 2px solid var(--brass); outline-offset: 1px; }
+.field input:focus-visible { outline: 3px solid var(--brass); outline-offset: 1px; }
 .choices { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
-.choice { background: var(--panel); border: 1.5px solid var(--line); border-radius: 6px; padding: 10px 12px; text-align: left; font-family: var(--f-cond); font-size: 17px; font-weight: 700; }
-.choice small { display: block; font-family: var(--f-body); font-weight: 400; font-size: 12px; color: var(--muted); }
-.choice[aria-pressed="true"] { border-color: var(--brass); background: var(--panel-2); }
-.verdict { font-family: var(--f-display); font-weight: 400; font-size: 40px; line-height: 1.05; color: var(--brass); }
+.choice { background: var(--panel); border: 2px solid var(--line); border-radius: 14px; padding: 10px 12px; text-align: left; font-family: var(--f-cond); font-size: 17px; font-weight: 700; text-transform: uppercase; }
+.choice small { display: block; font-family: var(--f-body); font-weight: 400; font-size: 12px; color: var(--muted); text-transform: none; }
+.choice[aria-pressed="true"] { border-color: var(--brass); background: var(--soft); }
+.choice .figbox { width: 100%; aspect-ratio: 6 / 5; }
+.verdict { font-family: var(--f-display); font-weight: 800; font-size: 42px; line-height: 1.05; color: var(--brass); text-transform: uppercase; }
 .vs { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 10px; text-align: center; }
-.vs div { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 14px 8px; display: flex; flex-direction: column; gap: 4px; }
+.vs div { background: var(--panel); border-radius: 16px; box-shadow: var(--shadow); padding: 14px 8px; display: flex; flex-direction: column; gap: 4px; border: 2px solid transparent; }
 .vs div.win { border-color: var(--brass); }
-.vs b { font-family: var(--f-display); font-weight: 400; font-size: 48px; line-height: 1; font-variant-numeric: tabular-nums; }
-.vs span { font-family: var(--f-cond); font-size: 14px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.vs em { font-family: var(--f-display); font-style: normal; color: var(--muted); }
+.vs b { font-family: var(--f-display); font-weight: 800; font-size: 50px; line-height: 1; font-variant-numeric: tabular-nums; }
+.vs span { font-family: var(--f-cond); font-weight: 700; font-size: 14px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.vs em { font-family: var(--f-display); font-weight: 800; font-style: normal; color: var(--muted); }
+.modes { display: grid; gap: 10px; }
+.mode { display: grid; grid-template-columns: 52px 1fr auto; align-items: center; gap: 12px; background: var(--panel); border: 0; border-radius: 16px; box-shadow: var(--shadow); padding: 14px; text-align: left; min-height: 76px; }
+.mode .ico { width: 52px; height: 52px; border-radius: 14px; background: var(--soft); color: var(--brass); display: grid; place-items: center; }
+.mode .ico svg { width: 28px; height: 28px; }
+.mode b { display: block; font-family: var(--f-cond); font-weight: 800; font-size: 20px; text-transform: uppercase; line-height: 1.1; }
+.mode small { color: var(--muted); font-size: 13px; }
+.mode .go { color: var(--brass); font-family: var(--f-cond); font-size: 24px; font-weight: 700; }
+.invite { position: fixed; left: 12px; right: 12px; bottom: calc(env(safe-area-inset-bottom, 0px) + 80px); z-index: 20; max-width: 520px; margin: 0 auto; background: var(--panel); border-radius: 18px; box-shadow: 0 10px 40px rgba(0,0,0,.25); padding: 16px; display: flex; flex-direction: column; gap: 10px; border: 2px solid var(--brass); }
+.invite b { font-family: var(--f-cond); font-weight: 800; font-size: 22px; text-transform: uppercase; }
+.searching { display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center; padding: 20px 0; }
+.radar { width: 120px; height: 120px; border-radius: 50%; border: 3px solid var(--soft); position: relative; }
+.radar::before, .radar::after { content: ""; position: absolute; inset: 0; border-radius: 50%; border: 3px solid var(--brass); animation: ping 1.6s ease-out infinite; }
+.radar::after { animation-delay: .8s; }
+@keyframes ping { from { transform: scale(.3); opacity: 1; } to { transform: scale(1.2); opacity: 0; } }
+
 /* Ranks, points, leaderboard */
-.rk { display: inline-flex; align-items: center; padding: 1px 6px; border-radius: 3px; border: 1px solid var(--brass); color: var(--brass); font-family: var(--f-cond); font-weight: 700; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; vertical-align: middle; white-space: nowrap; }
-.rk.gold { background: linear-gradient(135deg, #f3d36b, #b8902a); color: #1a1406; border-color: #f3d36b; }
-.rankcard { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 12px; align-items: end; background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 12px 14px; }
+.rk { display: inline-flex; align-items: center; padding: 1px 7px; border-radius: 999px; background: var(--soft); color: var(--brass); font-family: var(--f-cond); font-weight: 800; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; vertical-align: middle; white-space: nowrap; }
+.rk.gold { background: linear-gradient(135deg, #f3d36b, #b8902a); color: #1a1406; }
+.rankcard { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 12px; align-items: end; background: var(--panel); border: 0; border-radius: 18px; box-shadow: var(--shadow); padding: 14px 16px; }
 .rankcard .rname { font-family: var(--f-cond); font-weight: 800; font-size: 22px; line-height: 1.1; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-.rankcard .pts { font-family: var(--f-display); font-size: 28px; color: var(--brass); font-variant-numeric: tabular-nums; text-align: right; line-height: 1; }
-.rankcard .pts small { display: block; font-family: var(--f-cond); font-size: 11px; letter-spacing: .12em; color: var(--muted); text-transform: uppercase; margin-top: 4px; }
+.rankcard .pts { font-family: var(--f-display); font-weight: 800; font-size: 32px; color: var(--brass); font-variant-numeric: tabular-nums; text-align: right; line-height: 1; }
+.rankcard .pts small { display: block; font-family: var(--f-cond); font-weight: 600; font-size: 11px; letter-spacing: .1em; color: var(--muted); text-transform: uppercase; margin-top: 4px; }
 .xp { grid-column: 1 / -1; height: 8px; background: var(--panel-2); border-radius: 4px; overflow: hidden; }
-.xp i { display: block; height: 100%; background: var(--brass); }
+.xp i { display: block; height: 100%; background: var(--brass); border-radius: 4px; }
 .rankcard .meta { grid-column: 1 / -1; color: var(--muted); font-size: 13px; }
-.ex.locked { opacity: .55; }
-.ex.locked .go { color: var(--muted); }
-.ex .go svg { width: 20px; height: 20px; }
-.lb { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
-.lb li { display: grid; grid-template-columns: 32px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 8px 10px; background: var(--panel); border: 1px solid var(--line); border-radius: 4px; }
+.lb { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.lb li { display: grid; grid-template-columns: 32px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 10px 12px; background: var(--panel); border-radius: 14px; box-shadow: var(--shadow); border: 2px solid transparent; }
 .lb li.podium .pos { color: var(--brass); }
 .lb li.me { border-color: var(--brass); }
-.lb .pos { font-family: var(--f-display); font-size: 18px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.lb .pos { font-family: var(--f-display); font-weight: 800; font-size: 20px; color: var(--muted); font-variant-numeric: tabular-nums; }
 .lb .who { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: var(--f-cond); font-weight: 700; font-size: 17px; }
-.lb .pts { font-family: var(--f-cond); font-weight: 700; font-size: 18px; color: var(--brass); font-variant-numeric: tabular-nums; }
+.lb .pts { font-family: var(--f-cond); font-weight: 800; font-size: 18px; color: var(--brass); font-variant-numeric: tabular-nums; }
 .lb .lbmsg { display: block; color: var(--muted); font-size: 14px; }
-.elite .ex { border-style: dashed; }
-body.goldtheme { --brass: #e9c24a; }
-@media (prefers-reduced-motion: reduce) { .counter .n.bump, .loading .bar i { animation: none; } }
+.lb .inv { min-height: 36px; padding: 4px 12px; font-size: 14px; }
+.elite .ex { outline: 2px dashed #e2c26a; outline-offset: -2px; }
+@media (prefers-reduced-motion: reduce) { .counter .n.bump, .loading .bar i, .radar::before, .radar::after { animation: none; } }
 </style>
 
 </head>
 <body>
 <main id="app"></main>
+<nav class="tabbar" id="tabbar" hidden aria-label="Sezioni">
+  <button type="button" data-tab="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 12 4l9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg>Oggi</button>
+  <button type="button" data-tab="exercises"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7v10M18 7v10M3 9v6M21 9v6M6 12h12"/></svg>Esercizi</button>
+  <button type="button" data-tab="duels"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4l9 9M20 4l-9 9"/><path d="M6 18l-2 2M18 18l2 2"/><path d="M8 16l-2-2M16 16l2-2"/></svg>Sfide</button>
+  <button type="button" data-tab="ranking"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4"/><path d="M7 4h10v5a5 5 0 0 1-10 0V4z"/><path d="M7 6H4a3 3 0 0 0 3 4M17 6h3a3 3 0 0 1-3 4"/></svg>Classifica</button>
+  <button type="button" data-tab="profile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg>Profilo</button>
+</nav>
 
 <section id="session" hidden>
   <div class="stage mirror" id="stage">
@@ -230,6 +305,7 @@ body.goldtheme { --brass: #e9c24a; }
     <div class="rest" id="rest" hidden>
       <div class="label">Recupero</div>
       <div class="big" id="restN">60</div>
+      <div class="figbox" id="restFig"></div>
       <div class="next" id="restNext"></div>
       <button class="btn primary" id="restSkip" type="button">Salta recupero</button>
     </div>
@@ -308,7 +384,12 @@ const I18N_RX = [
   [/Hai sbloccato (.+?)\./g, "You unlocked $1.", "Has desbloqueado $1.", "Tu as d\xE9bloqu\xE9 $1.", "Du hast $1 freigeschaltet.", "Voc\xEA desbloqueou $1."],
   [/Hai sbloccato /g, "You unlocked ", "Has desbloqueado ", "Tu as d\xE9bloqu\xE9 ", "Freigeschaltet: ", "Voc\xEA desbloqueou "],
   [/^(\d+) g$/g, "$1 d", "$1 d", "$1 j", "$1 T", "$1 d"],
-  [/(\d+)\. Ancora tre!/g, "$1. Three more!", "$1. \xA1Tres m\xE1s!", "$1. Encore trois !", "$1. Noch drei!", "$1. Mais tr\xEAs!"]
+  [/(\d+)\. Ancora tre!/g, "$1. Three more!", "$1. \xA1Tres m\xE1s!", "$1. Encore trois !", "$1. Noch drei!", "$1. Mais tr\xEAs!"],
+  [/(.+?) ti sfida!/g, "$1 challenges you!", "\xA1$1 te reta!", "$1 te d\xE9fie !", "$1 fordert dich heraus!", "$1 te desafia!"],
+  [/Invito inviato a (.+?): deve solo toccare Accetta\./g, "Invite sent to $1: they just need to tap Accept.", "Invitaci\xF3n enviada a $1: solo tiene que tocar Aceptar.", "Invitation envoy\xE9e \xE0 $1 : il n'a qu'\xE0 toucher Accepter.", "Einladung an $1 gesendet: Er muss nur auf Annehmen tippen.", "Convite enviado para $1: \xE9 s\xF3 tocar em Aceitar."],
+  [/(.+?) non ha l'app aperta in questo momento: mandagli il link\./g, "$1 doesn't have the app open right now: send them the link.", "$1 no tiene la app abierta ahora: m\xE1ndale el enlace.", "$1 n'a pas l'app ouverte en ce moment : envoie-lui le lien.", "$1 hat die App gerade nicht offen: Schick ihm den Link.", "$1 n\xE3o est\xE1 com o app aberto agora: mande o link."],
+  [/(.+?) aggiunto ai tuoi amici\./g, "$1 added to your friends.", "$1 a\xF1adido a tus amigos.", "$1 ajout\xE9 \xE0 tes amis.", "$1 zu deinen Freunden hinzugef\xFCgt.", "$1 adicionado aos seus amigos."],
+  [/Aggiungimi su Istruttore Recluta: il mio codice amico è (\w+)/g, "Add me on Recruit Trainer: my friend code is $1", "Agr\xE9game en Instructor Recluta: mi c\xF3digo de amigo es $1", "Ajoute-moi sur Instructeur Recrue : mon code ami est $1", "F\xFCg mich bei Rekruten-Ausbilder hinzu: Mein Freundescode ist $1", "Me adicione no Instrutor Recruta: meu c\xF3digo de amigo \xE9 $1"]
 ];
 const I18N = [
   // --- generale / home
@@ -670,7 +751,159 @@ const I18N = [
   ["Forza Marco, non mollare!", "Come on, don't give up!", "\xA1Vamos, no te rindas!", "Allez, ne l\xE2che rien !", "Los, gib nicht auf!", "Vamos, n\xE3o desista!"],
   ["Ogni ripetizione ti rende pi\xF9 forte!", "Every rep makes you stronger!", "\xA1Cada repetici\xF3n te hace m\xE1s fuerte!", "Chaque r\xE9p\xE9tition te rend plus fort !", "Jede Wiederholung macht dich st\xE4rker!", "Cada repeti\xE7\xE3o deixa voc\xEA mais forte!"],
   ["Si comincia, soldato!", "Let's go, soldier!", "\xA1Empezamos, soldado!", "C'est parti, soldat !", "Los geht's, Soldat!", "Vamos come\xE7ar, soldado!"],
-  ["Sfida \xB7", "Challenge \xB7", "Reto \xB7", "D\xE9fi \xB7", "Duell \xB7", "Desafio \xB7"]
+  ["Sfida \xB7", "Challenge \xB7", "Reto \xB7", "D\xE9fi \xB7", "Duell \xB7", "Desafio \xB7"],
+  ["Oggi", "Today", "Hoy", "Aujourd'hui", "Heute", "Hoje"],
+  ["Esercizi", "Exercises", "Ejercicios", "Exercices", "\xDCbungen", "Exerc\xEDcios"],
+  ["Sfide", "Challenges", "Retos", "D\xE9fis", "Duelle", "Desafios"],
+  ["Profilo", "Profile", "Perfil", "Profil", "Profil", "Perfil"],
+  ["Ciao,", "Hi,", "Hola,", "Salut,", "Hallo,", "Ol\xE1,"],
+  ["Indietro", "Back", "Atr\xE1s", "Retour", "Zur\xFCck", "Voltar"],
+  ["Sfida", "Challenge", "Reto", "D\xE9fi", "Duell", "Desafio"],
+  ["Sfida qualcuno in videochiamata", "Challenge someone on a video call", "Reta a alguien en videollamada", "D\xE9fie quelqu'un en appel vid\xE9o", "Fordere jemanden per Videoanruf heraus", "Desafie algu\xE9m por videochamada"],
+  ["Avversario casuale, un amico invitato o un codice", "A random opponent, an invited friend or a code", "Un rival al azar, un amigo invitado o un c\xF3digo", "Un adversaire au hasard, un ami invit\xE9 ou un code", "Zuf\xE4lliger Gegner, eingeladener Freund oder ein Code", "Um advers\xE1rio aleat\xF3rio, um amigo convidado ou um c\xF3digo"],
+  ["1 minuto di riposo tra ogni serie \xB7 la telecamera conta le ripetizioni e ti corregge a voce", "1 minute of rest between sets \xB7 the camera counts your reps and corrects you out loud", "1 minuto de descanso entre series \xB7 la c\xE1mara cuenta las repeticiones y te corrige en voz alta", "1 minute de repos entre les s\xE9ries \xB7 la cam\xE9ra compte les r\xE9p\xE9titions et te corrige \xE0 voix haute", "1 Minute Pause zwischen den S\xE4tzen \xB7 die Kamera z\xE4hlt die Wiederholungen und korrigiert dich laut", "1 minuto de descanso entre as s\xE9ries \xB7 a c\xE2mera conta as repeti\xE7\xF5es e te corrige em voz alta"],
+  ["1 minuto di riposo tra ogni serie", "1 minute of rest between sets", "1 minuto de descanso entre series", "1 minute de repos entre les s\xE9ries", "1 Minute Pause zwischen den S\xE4tzen", "1 minuto de descanso entre as s\xE9ries"],
+  ["Percorso Uomo", "Men's path", "Plan Hombre", "Parcours Homme", "Programm M\xE4nner", "Plano Homem"],
+  ["Percorso Donna", "Women's path", "Plan Mujer", "Parcours Femme", "Programm Frauen", "Plano Mulher"],
+  ["tocca per allenarti", "tap to train", "toca para entrenar", "touche pour t'entra\xEEner", "tippe zum Trainieren", "toque para treinar"],
+  ["Uomo", "Man", "Hombre", "Homme", "Mann", "Homem"],
+  ["Donna", "Woman", "Mujer", "Femme", "Frau", "Mulher"],
+  ["Forza, gambe esplosive, circuito da campo", "Strength, explosive legs, field circuit", "Fuerza, piernas explosivas, circuito de campo", "Force, jambes explosives, circuit de terrain", "Kraft, explosive Beine, Feldzirkel", "For\xE7a, pernas explosivas, circuito de campo"],
+  ["Gambe, glutei, addome e tonificazione", "Legs, glutes, abs and toning", "Piernas, gl\xFAteos, abdomen y tonificaci\xF3n", "Jambes, fessiers, abdos et tonification", "Beine, Po, Bauch und Straffung", "Pernas, gl\xFAteos, abd\xF4men e tonifica\xE7\xE3o"],
+  ["Il tuo personal trainer con la fotocamera", "Your personal trainer with the camera", "Tu entrenador personal con la c\xE1mara", "Ton coach personnel avec la cam\xE9ra", "Dein Personal Trainer mit der Kamera", "Seu personal trainer com a c\xE2mera"],
+  ["Chi si allena?", "Who's training?", "\xBFQui\xE9n entrena?", "Qui s'entra\xEEne ?", "Wer trainiert?", "Quem vai treinar?"],
+  ["Scegli il percorso: esercizi e programma cambiano. Puoi cambiarlo quando vuoi dal Profilo.", "Choose your path: exercises and program change. You can switch any time from Profile.", "Elige tu plan: cambian los ejercicios y el programa. Puedes cambiarlo cuando quieras desde Perfil.", "Choisis ton parcours : les exercices et le programme changent. Tu peux le changer quand tu veux dans Profil.", "W\xE4hle dein Programm: \xDCbungen und Plan \xE4ndern sich. Du kannst es jederzeit im Profil wechseln.", "Escolha seu plano: os exerc\xEDcios e o programa mudam. Voc\xEA pode trocar quando quiser no Perfil."],
+  ["Percorso", "Path", "Plan", "Parcours", "Programm", "Plano"],
+  ["Istruttore vocale", "Voice coach", "Instructor por voz", "Coach vocal", "Sprachtrainer", "Instrutor por voz"],
+  ["Massimo in 2:00", "Max in 2:00", "M\xE1ximo en 2:00", "Maximum en 2:00", "Maximum in 2:00", "M\xE1ximo em 2:00"],
+  ["Esercizi a tempo, ogni 2 secondi in posizione", "Timed exercises, every 2 seconds in position", "Ejercicios por tiempo, cada 2 segundos en posici\xF3n", "Exercices chronom\xE9tr\xE9s, toutes les 2 secondes en position", "Zeit\xFCbungen, alle 2 Sekunden in Position", "Exerc\xEDcios por tempo, a cada 2 segundos na posi\xE7\xE3o"],
+  ["Mettiti in posizione", "Get into position", "Ponte en posici\xF3n", "Mets-toi en position", "Geh in Position", "Fique em posi\xE7\xE3o"],
+  ["Pi\xF9 ripetizioni che puoi", "As many reps as you can", "Todas las repeticiones que puedas", "Autant de r\xE9p\xE9titions que possible", "So viele Wiederholungen wie m\xF6glich", "Quantas repeti\xE7\xF5es conseguir"],
+  ["Stop! Hai dato tutto.", "Stop! You gave it everything.", "\xA1Para! Lo has dado todo.", "Stop ! Tu as tout donn\xE9.", "Stopp! Du hast alles gegeben.", "Pare! Voc\xEA deu tudo."],
+  ["Alla prossima, recluta.", "Next time, recruit.", "A la pr\xF3xima, recluta.", "\xC0 la prochaine, recrue.", "Bis zum n\xE4chsten Mal, Rekrut.", "At\xE9 a pr\xF3xima, recruta."],
+  ["Non fermarti adesso, soldato!", "Don't stop now, soldier!", "\xA1No te pares ahora, soldado!", "Ne t'arr\xEAte pas maintenant, soldat !", "H\xF6r jetzt nicht auf, Soldat!", "N\xE3o pare agora, soldado!"],
+  ["Gambe esplosive", "Explosive legs", "Piernas explosivas", "Jambes explosives", "Explosive Beine", "Pernas explosivas"],
+  ["Gambe, glutei e addome", "Legs, glutes and abs", "Piernas, gl\xFAteos y abdomen", "Jambes, fessiers et abdos", "Beine, Po und Bauch", "Pernas, gl\xFAteos e abd\xF4men"],
+  ["Tonificazione", "Toning", "Tonificaci\xF3n", "Tonification", "Straffung", "Tonifica\xE7\xE3o"],
+  ["Cardio e core", "Cardio and core", "Cardio y core", "Cardio et gainage", "Cardio und Core", "Cardio e core"],
+  ["Squat saltati in & out", "Jump squats in & out", "Sentadillas con salto in & out", "Squats saut\xE9s in & out", "Sprung-Squats in & out", "Agachamento com salto in & out"],
+  ["Box squat", "Box squat", "Sentadilla al caj\xF3n", "Box squat", "Box-Squat", "Agachamento no banco"],
+  ["Affondi posteriori", "Reverse lunges", "Zancadas hacia atr\xE1s", "Fentes arri\xE8re", "R\xFCckw\xE4rts-Ausfallschritte", "Afundos para tr\xE1s"],
+  ["Affondi laterali", "Side lunges", "Zancadas laterales", "Fentes lat\xE9rales", "Seitliche Ausfallschritte", "Afundos laterais"],
+  ["Step-up su rialzo", "Step-ups", "Subidas al escal\xF3n", "Mont\xE9es sur marche", "Step-ups", "Subida no step"],
+  ["Squat statico al muro", "Wall sit", "Sentadilla isom\xE9trica en la pared", "Chaise contre le mur", "Wandsitzen", "Agachamento isom\xE9trico na parede"],
+  ["Piegamenti a presa larga", "Wide push-ups", "Flexiones con agarre ancho", "Pompes mains \xE9cart\xE9es", "Breite Liegest\xFCtze", "Flex\xF5es com pegada aberta"],
+  ["Plank bridge", "Table bridge", "Puente en mesa", "Pont en table", "Tischbr\xFCcke", "Ponte em mesa"],
+  ["Crunch a gambe piegate", "Bent-knee crunches", "Crunch con piernas dobladas", "Crunchs jambes pli\xE9es", "Crunches mit angewinkelten Beinen", "Abdominal com pernas dobradas"],
+  ["Incrocio gambe alternato", "Scissor kicks", "Tijeras de piernas", "Ciseaux de jambes", "Beinscheren", "Tesoura de pernas"],
+  ["Gambe e glutei, con rialzo", "Legs and glutes, with a box", "Piernas y gl\xFAteos, con caj\xF3n", "Jambes et fessiers, avec support", "Beine und Po, mit Erh\xF6hung", "Pernas e gl\xFAteos, com apoio"],
+  ["Interno coscia e glutei", "Inner thighs and glutes", "Aductores y gl\xFAteos", "Int\xE9rieur des cuisses et fessiers", "Innenschenkel und Po", "Parte interna da coxa e gl\xFAteos"],
+  ["Gambe, equilibrio", "Legs, balance", "Piernas, equilibrio", "Jambes, \xE9quilibre", "Beine, Gleichgewicht", "Pernas, equil\xEDbrio"],
+  ["Tenuta per le gambe", "Leg endurance hold", "Aguante de piernas", "Gainage des jambes", "Halte\xFCbung f\xFCr die Beine", "Resist\xEAncia das pernas"],
+  ["Petto e braccia", "Chest and arms", "Pecho y brazos", "Poitrine et bras", "Brust und Arme", "Peito e bra\xE7os"],
+  ["Glutei e schiena", "Glutes and back", "Gl\xFAteos y espalda", "Fessiers et dos", "Po und R\xFCcken", "Gl\xFAteos e costas"],
+  ["Addominali", "Abs", "Abdominales", "Abdos", "Bauch", "Abdominais"],
+  ["Addome basso", "Lower abs", "Abdomen bajo", "Bas des abdos", "Unterer Bauch", "Abd\xF4men inferior"],
+  ["Telefono in verticale, di fronte a te, a 2\u20133 metri. Devi vedere dalla testa ai piedi.", "Phone upright, facing you, 2\u20133 metres away. You must be visible from head to feet.", "Tel\xE9fono en vertical, frente a ti, a 2\u20133 metros. Se te debe ver de la cabeza a los pies.", "T\xE9l\xE9phone \xE0 la verticale, face \xE0 toi, \xE0 2\u20133 m\xE8tres. On doit te voir de la t\xEAte aux pieds.", "Handy hochkant, vor dir, 2\u20133 Meter entfernt. Du musst von Kopf bis Fu\xDF zu sehen sein.", "Celular na vertical, de frente para voc\xEA, a 2\u20133 metros. Voc\xEA deve aparecer da cabe\xE7a aos p\xE9s."],
+  ["In piedi, piedi uniti, mani giunte al petto.", "Stand with feet together, hands clasped at your chest.", "De pie, pies juntos, manos juntas al pecho.", "Debout, pieds joints, mains jointes devant la poitrine.", "Steh mit geschlossenen F\xFC\xDFen, H\xE4nde vor der Brust gefaltet.", "Em p\xE9, p\xE9s juntos, m\xE3os unidas no peito."],
+  ["Salta aprendo i piedi e atterra in squat largo.", "Jump your feet apart and land in a wide squat.", "Salta abriendo los pies y cae en sentadilla abierta.", "Saute en \xE9cartant les pieds et atterris en squat large.", "Spring mit gegr\xE4tschten F\xFC\xDFen in eine breite Kniebeuge.", "Salte abrindo os p\xE9s e aterrisse em agachamento aberto."],
+  ["Salta di nuovo richiudendo i piedi e risali.", "Jump again bringing your feet together and stand up.", "Salta otra vez juntando los pies y sube.", "Saute \xE0 nouveau en refermant les pieds et remonte.", "Spring wieder mit geschlossenen F\xFC\xDFen zur\xFCck und richte dich auf.", "Salte de novo fechando os p\xE9s e suba."],
+  ["Atterra morbido, sulle punte e poi sui talloni.", "Land softly, toes first and then heels.", "Aterriza suave, primero puntas y luego talones.", "Atterris en douceur, sur la pointe puis sur les talons.", "Lande weich, erst auf den Zehen, dann auf den Fersen.", "Aterrisse suave, nas pontas e depois nos calcanhares."],
+  ["Telefono a terra, di lato, a circa 2\u20133 metri. Devi vedere testa, piedi e il rialzo.", "Phone on the floor, side-on, about 2\u20133 metres away. Your head, feet and the box must be visible.", "Tel\xE9fono en el suelo, de lado, a unos 2\u20133 metros. Se deben ver la cabeza, los pies y el caj\xF3n.", "T\xE9l\xE9phone au sol, de c\xF4t\xE9, \xE0 environ 2\u20133 m\xE8tres. On doit voir la t\xEAte, les pieds et le support.", "Handy auf dem Boden, seitlich, etwa 2\u20133 Meter entfernt. Kopf, F\xFC\xDFe und Erh\xF6hung m\xFCssen zu sehen sein.", "Celular no ch\xE3o, de lado, a cerca de 2\u20133 metros. Devem aparecer a cabe\xE7a, os p\xE9s e o apoio."],
+  ["Mettiti davanti a una sedia o a un rialzo stabile.", "Stand in front of a chair or a sturdy box.", "Ponte delante de una silla o un caj\xF3n estable.", "Place-toi devant une chaise ou un support stable.", "Stell dich vor einen Stuhl oder eine stabile Erh\xF6hung.", "Fique na frente de uma cadeira ou de um apoio firme."],
+  ["Scendi con il bacino indietro finch\xE9 sfiori il rialzo, braccia avanti.", "Sit your hips back until you brush the box, arms forward.", "Baja llevando la cadera atr\xE1s hasta rozar el caj\xF3n, brazos al frente.", "Descends en reculant le bassin jusqu'\xE0 effleurer le support, bras devant.", "Schieb die H\xFCfte nach hinten, bis du die Erh\xF6hung ber\xFChrst, Arme nach vorn.", "Des\xE7a levando o quadril para tr\xE1s at\xE9 encostar no apoio, bra\xE7os \xE0 frente."],
+  ["Non sederti del tutto: tocca e risali subito.", "Don't sit all the way: touch and come straight back up.", "No te sientes del todo: toca y sube enseguida.", "Ne t'assieds pas compl\xE8tement : touche et remonte aussit\xF4t.", "Setz dich nicht ganz hin: kurz antippen und sofort hoch.", "N\xE3o sente totalmente: encoste e suba logo."],
+  ["Non arrivi al rialzo (non conta)", "You don't reach the box (doesn't count)", "No llegas al caj\xF3n (no cuenta)", "Tu n'atteins pas le support (ne compte pas)", "Du erreichst die Erh\xF6hung nicht (z\xE4hlt nicht)", "Voc\xEA n\xE3o chega ao apoio (n\xE3o conta)"],
+  ["In piedi, mani giunte al petto, busto dritto.", "Stand tall, hands clasped at your chest.", "De pie, manos juntas al pecho, tronco recto.", "Debout, mains jointes devant la poitrine, buste droit.", "Steh aufrecht, H\xE4nde vor der Brust gefaltet.", "Em p\xE9, m\xE3os unidas no peito, tronco reto."],
+  ["Fai un passo lungo all'indietro e scendi piegando entrambe le ginocchia.", "Take a long step back and lower by bending both knees.", "Da un paso largo hacia atr\xE1s y baja doblando ambas rodillas.", "Fais un grand pas en arri\xE8re et descends en pliant les deux genoux.", "Mach einen gro\xDFen Schritt zur\xFCck und geh mit beiden Knien in die Beuge.", "D\xEA um passo longo para tr\xE1s e des\xE7a dobrando os dois joelhos."],
+  ["Il ginocchio dietro arriva vicino a terra.", "Your back knee comes close to the floor.", "La rodilla de atr\xE1s llega cerca del suelo.", "Le genou arri\xE8re arrive pr\xE8s du sol.", "Das hintere Knie kommt nah an den Boden.", "O joelho de tr\xE1s chega perto do ch\xE3o."],
+  ["Torna su riportando la gamba avanti. Alterna i lati.", "Come back up bringing the leg forward. Alternate sides.", "Vuelve arriba llevando la pierna adelante. Alterna los lados.", "Remonte en ramenant la jambe devant. Alterne les c\xF4t\xE9s.", "Komm hoch und bring das Bein wieder nach vorn. Seiten wechseln.", "Volte trazendo a perna para frente. Alterne os lados."],
+  ["Telefono in verticale, di fronte a te, a circa 3 metri. Devi vedere dalla testa ai piedi.", "Phone upright, facing you, about 3 metres away. You must be visible from head to feet.", "Tel\xE9fono en vertical, frente a ti, a unos 3 metros. Se te debe ver de la cabeza a los pies.", "T\xE9l\xE9phone \xE0 la verticale, face \xE0 toi, \xE0 environ 3 m\xE8tres. On doit te voir de la t\xEAte aux pieds.", "Handy hochkant, vor dir, etwa 3 Meter entfernt. Du musst von Kopf bis Fu\xDF zu sehen sein.", "Celular na vertical, de frente para voc\xEA, a cerca de 3 metros. Voc\xEA deve aparecer da cabe\xE7a aos p\xE9s."],
+  ["Piedi larghi, mani giunte al petto.", "Feet wide, hands clasped at your chest.", "Pies separados, manos juntas al pecho.", "Pieds \xE9cart\xE9s, mains jointes devant la poitrine.", "F\xFC\xDFe weit auseinander, H\xE4nde vor der Brust gefaltet.", "P\xE9s afastados, m\xE3os unidas no peito."],
+  ["Piega un ginocchio e sposta il peso su quel lato, l'altra gamba resta tesa.", "Bend one knee and shift your weight to that side, keeping the other leg straight.", "Dobla una rodilla y lleva el peso a ese lado, la otra pierna queda estirada.", "Plie un genou et porte le poids de ce c\xF4t\xE9, l'autre jambe reste tendue.", "Beuge ein Knie und verlagere das Gewicht auf diese Seite, das andere Bein bleibt gestreckt.", "Dobre um joelho e leve o peso para esse lado, a outra perna fica esticada."],
+  ["Scendi finch\xE9 la coscia \xE8 quasi parallela al suolo.", "Lower until the thigh is almost parallel to the floor.", "Baja hasta que el muslo est\xE9 casi paralelo al suelo.", "Descends jusqu'\xE0 ce que la cuisse soit presque parall\xE8le au sol.", "Geh runter, bis der Oberschenkel fast parallel zum Boden ist.", "Des\xE7a at\xE9 a coxa ficar quase paralela ao ch\xE3o."],
+  ["Torna al centro e alterna i lati.", "Return to the centre and alternate sides.", "Vuelve al centro y alterna los lados.", "Reviens au centre et alterne les c\xF4t\xE9s.", "Zur\xFCck zur Mitte und Seiten wechseln.", "Volte ao centro e alterne os lados."],
+  ["Piedi troppo stretti", "Feet too close together", "Pies demasiado juntos", "Pieds trop serr\xE9s", "F\xFC\xDFe zu eng", "P\xE9s muito juntos"],
+  ["Telefono a terra, di lato, a circa 3 metri. Devi vedere te e il rialzo.", "Phone on the floor, side-on, about 3 metres away. You and the step must be visible.", "Tel\xE9fono en el suelo, de lado, a unos 3 metros. Se te debe ver a ti y al escal\xF3n.", "T\xE9l\xE9phone au sol, de c\xF4t\xE9, \xE0 environ 3 m\xE8tres. On doit te voir avec la marche.", "Handy auf dem Boden, seitlich, etwa 3 Meter entfernt. Du und die Stufe m\xFCssen zu sehen sein.", "Celular no ch\xE3o, de lado, a cerca de 3 metros. Voc\xEA e o step devem aparecer."],
+  ["Mettiti davanti a un gradino o a un rialzo stabile.", "Stand in front of a step or a sturdy box.", "Ponte delante de un escal\xF3n o un caj\xF3n estable.", "Place-toi devant une marche ou un support stable.", "Stell dich vor eine Stufe oder eine stabile Erh\xF6hung.", "Fique na frente de um degrau ou de um apoio firme."],
+  ["Appoggia tutto il piede sul rialzo.", "Place your whole foot on the step.", "Apoya todo el pie en el escal\xF3n.", "Pose tout le pied sur la marche.", "Setz den ganzen Fu\xDF auf die Stufe.", "Apoie o p\xE9 inteiro no step."],
+  ["Sali spingendo con quella gamba fino a stare dritto sopra.", "Push through that leg until you stand tall on top.", "Sube empujando con esa pierna hasta quedar recto arriba.", "Monte en poussant sur cette jambe jusqu'\xE0 \xEAtre droit dessus.", "Dr\xFCck dich mit diesem Bein hoch, bis du aufrecht oben stehst.", "Suba empurrando com essa perna at\xE9 ficar reto em cima."],
+  ["Scendi controllando e alterna i lati.", "Step down with control and alternate sides.", "Baja con control y alterna los lados.", "Redescends en contr\xF4lant et alterne les c\xF4t\xE9s.", "Kontrolliert heruntersteigen und Seiten wechseln.", "Des\xE7a com controle e alterne os lados."],
+  ["Non arrivi dritto in cima (non conta)", "You don't stand tall on top (doesn't count)", "No llegas recto arriba (no cuenta)", "Tu n'arrives pas droit en haut (ne compte pas)", "Du stehst oben nicht aufrecht (z\xE4hlt nicht)", "Voc\xEA n\xE3o fica reto em cima (n\xE3o conta)"],
+  ["Telefono a terra, di lato, a circa 2 metri. Devi vedere te e il muro.", "Phone on the floor, side-on, about 2 metres away. You and the wall must be visible.", "Tel\xE9fono en el suelo, de lado, a unos 2 metros. Se te debe ver a ti y la pared.", "T\xE9l\xE9phone au sol, de c\xF4t\xE9, \xE0 environ 2 m\xE8tres. On doit te voir avec le mur.", "Handy auf dem Boden, seitlich, etwa 2 Meter entfernt. Du und die Wand m\xFCssen zu sehen sein.", "Celular no ch\xE3o, de lado, a cerca de 2 metros. Voc\xEA e a parede devem aparecer."],
+  ["Schiena appoggiata al muro, piedi avanti alla larghezza delle anche.", "Back against the wall, feet forward at hip width.", "Espalda apoyada en la pared, pies adelante a la anchura de la cadera.", "Dos contre le mur, pieds devant \xE0 largeur de hanches.", "R\xFCcken an der Wand, F\xFC\xDFe h\xFCftbreit nach vorn.", "Costas apoiadas na parede, p\xE9s \xE0 frente na largura do quadril."],
+  ["Scivola gi\xF9 finch\xE9 le ginocchia sono a 90\xB0.", "Slide down until your knees are at 90\xB0.", "Desliza hacia abajo hasta que las rodillas est\xE9n a 90\xB0.", "Glisse vers le bas jusqu'\xE0 ce que les genoux soient \xE0 90\xB0.", "Rutsch nach unten, bis die Knie bei 90\xB0 sind.", "Deslize para baixo at\xE9 os joelhos ficarem a 90\xB0."],
+  ["Mani sulle cosce, schiena tutta appoggiata.", "Hands on your thighs, whole back against the wall.", "Manos sobre los muslos, toda la espalda apoyada.", "Mains sur les cuisses, tout le dos appuy\xE9.", "H\xE4nde auf den Oberschenkeln, ganzer R\xFCcken an der Wand.", "M\xE3os nas coxas, costas inteiras apoiadas."],
+  ["Non scendi abbastanza", "Not low enough", "No bajas lo suficiente", "Tu ne descends pas assez", "Nicht tief genug", "Voc\xEA n\xE3o desce o suficiente"],
+  ["Scendi troppo", "Too low", "Bajas demasiado", "Tu descends trop", "Zu tief", "Voc\xEA desce demais"],
+  ["Mani pi\xF9 larghe delle spalle, corpo dritto. Puoi appoggiare le ginocchia.", "Hands wider than your shoulders, body straight. You can rest on your knees.", "Manos m\xE1s abiertas que los hombros, cuerpo recto. Puedes apoyar las rodillas.", "Mains plus \xE9cart\xE9es que les \xE9paules, corps droit. Tu peux poser les genoux.", "H\xE4nde weiter als schulterbreit, K\xF6rper gerade. Du kannst die Knie aufsetzen.", "M\xE3os mais abertas que os ombros, corpo reto. Pode apoiar os joelhos."],
+  ["Contrai addome e glutei.", "Brace your abs and glutes.", "Contrae abdomen y gl\xFAteos.", "Contracte abdos et fessiers.", "Spann Bauch und Po an.", "Contraia abd\xF4men e gl\xFAteos."],
+  ["Scendi con il petto verso terra, gomiti verso l'esterno.", "Lower your chest to the floor, elbows out.", "Baja el pecho hacia el suelo, codos hacia fuera.", "Descends la poitrine vers le sol, coudes vers l'ext\xE9rieur.", "Senk die Brust zum Boden, Ellbogen nach au\xDFen.", "Des\xE7a o peito em dire\xE7\xE3o ao ch\xE3o, cotovelos para fora."],
+  ["Seduta a terra, mani dietro di te, ginocchia piegate, piedi a terra.", "Sit on the floor, hands behind you, knees bent, feet flat.", "Sentada en el suelo, manos detr\xE1s, rodillas dobladas, pies en el suelo.", "Assise au sol, mains derri\xE8re toi, genoux pli\xE9s, pieds au sol.", "Setz dich auf den Boden, H\xE4nde hinter dir, Knie gebeugt, F\xFC\xDFe am Boden.", "Sentada no ch\xE3o, m\xE3os atr\xE1s de voc\xEA, joelhos dobrados, p\xE9s no ch\xE3o."],
+  ["Spingi il bacino in alto finch\xE9 il corpo forma un tavolo.", "Push your hips up until your body forms a table.", "Empuja la cadera hacia arriba hasta que el cuerpo forme una mesa.", "Pousse le bassin vers le haut jusqu'\xE0 former une table.", "Dr\xFCck die H\xFCfte hoch, bis dein K\xF6rper einen Tisch bildet.", "Empurre o quadril para cima at\xE9 o corpo formar uma mesa."],
+  ["Stringi i glutei per un istante.", "Squeeze your glutes for a moment.", "Aprieta los gl\xFAteos un instante.", "Serre les fessiers un instant.", "Spann den Po kurz an.", "Aperte os gl\xFAteos por um instante."],
+  ["Torna gi\xF9 controllando, senza sederti del tutto.", "Lower with control, without sitting all the way down.", "Baja con control, sin sentarte del todo.", "Redescends en contr\xF4lant, sans t'asseoir compl\xE8tement.", "Kontrolliert absenken, ohne dich ganz hinzusetzen.", "Des\xE7a com controle, sem sentar totalmente."],
+  ["Bacino non abbastanza alto (non conta)", "Hips not high enough (doesn't count)", "Cadera no suficientemente alta (no cuenta)", "Bassin pas assez haut (ne compte pas)", "H\xFCfte nicht hoch genug (z\xE4hlt nicht)", "Quadril n\xE3o alto o suficiente (n\xE3o conta)"],
+  ["Supina, ginocchia piegate, piedi sollevati o a terra.", "Lie on your back, knees bent, feet raised or on the floor.", "Boca arriba, rodillas dobladas, pies elevados o en el suelo.", "Sur le dos, genoux pli\xE9s, pieds lev\xE9s ou au sol.", "R\xFCckenlage, Knie gebeugt, F\xFC\xDFe angehoben oder am Boden.", "Deitada de costas, joelhos dobrados, p\xE9s elevados ou no ch\xE3o."],
+  ["Mani dietro la testa, gomiti larghi.", "Hands behind your head, elbows wide.", "Manos detr\xE1s de la cabeza, codos abiertos.", "Mains derri\xE8re la t\xEAte, coudes \xE9cart\xE9s.", "H\xE4nde hinter dem Kopf, Ellbogen weit.", "M\xE3os atr\xE1s da cabe\xE7a, cotovelos abertos."],
+  ["Solleva le spalle da terra contraendo l'addome.", "Lift your shoulders off the floor by tightening your abs.", "Levanta los hombros del suelo contrayendo el abdomen.", "D\xE9colle les \xE9paules du sol en contractant les abdos.", "Heb die Schultern vom Boden, indem du den Bauch anspannst.", "Levante os ombros do ch\xE3o contraindo o abd\xF4men."],
+  ["Torna gi\xF9 lentamente.", "Lower back down slowly.", "Vuelve abajo despacio.", "Redescends lentement.", "Langsam wieder absenken.", "Des\xE7a devagar."],
+  ["Spalle non abbastanza sollevate (non conta)", "Shoulders not lifted enough (doesn't count)", "Hombros no suficientemente levantados (no cuenta)", "\xC9paules pas assez d\xE9coll\xE9es (ne compte pas)", "Schultern nicht genug angehoben (z\xE4hlt nicht)", "Ombros n\xE3o levantados o suficiente (n\xE3o conta)"],
+  ["Supina, appoggiata sugli avambracci.", "Lie on your back, propped on your forearms.", "Boca arriba, apoyada en los antebrazos.", "Sur le dos, appuy\xE9e sur les avant-bras.", "R\xFCckenlage, auf die Unterarme gest\xFCtzt.", "Deitada de costas, apoiada nos antebra\xE7os."],
+  ["Solleva le gambe tese da terra.", "Lift your straight legs off the floor.", "Levanta las piernas estiradas del suelo.", "D\xE9colle les jambes tendues du sol.", "Heb die gestreckten Beine vom Boden.", "Levante as pernas esticadas do ch\xE3o."],
+  ["Incrocia le gambe alternandole, su e gi\xF9, senza toccare terra.", "Cross your legs alternately, up and down, without touching the floor.", "Cruza las piernas altern\xE1ndolas, arriba y abajo, sin tocar el suelo.", "Croise les jambes en alternance, haut et bas, sans toucher le sol.", "Kreuze die Beine abwechselnd auf und ab, ohne den Boden zu ber\xFChren.", "Cruze as pernas alternando, para cima e para baixo, sem tocar o ch\xE3o."],
+  ["Il tempo scorre solo con le gambe sollevate.", "The timer only runs while your legs are up.", "El tiempo solo corre con las piernas levantadas.", "Le temps ne d\xE9file que jambes lev\xE9es.", "Die Zeit l\xE4uft nur mit angehobenen Beinen.", "O tempo s\xF3 corre com as pernas levantadas."],
+  ["Gambe a terra", "Legs on the floor", "Piernas en el suelo", "Jambes au sol", "Beine am Boden", "Pernas no ch\xE3o"],
+  ["Inquadrati di fronte, dalla testa ai piedi", "Face the camera, head to feet in frame", "Ponte de frente, de la cabeza a los pies", "Mets-toi de face, de la t\xEAte aux pieds", "Stell dich frontal ins Bild, von Kopf bis Fu\xDF", "Fique de frente, da cabe\xE7a aos p\xE9s"],
+  ["Allarga di pi\xF9 i piedi", "Spread your feet wider", "Separa m\xE1s los pies", "\xC9carte davantage les pieds", "Stell die F\xFC\xDFe weiter auseinander", "Afaste mais os p\xE9s"],
+  ["Inquadrati di lato, con il rialzo", "Stand side-on, with the step in frame", "Ponte de lado, con el escal\xF3n", "Mets-toi de c\xF4t\xE9, avec la marche", "Stell dich seitlich ins Bild, mit der Stufe", "Fique de lado, com o step"],
+  ["Scendi di pi\xF9, ginocchia a novanta gradi", "Go lower, knees at ninety degrees", "Baja m\xE1s, rodillas a noventa grados", "Descends plus, genoux \xE0 quatre-vingt-dix degr\xE9s", "Geh tiefer, Knie auf neunzig Grad", "Des\xE7a mais, joelhos a noventa graus"],
+  ["Risali un po', ginocchia a novanta gradi", "Come up a little, knees at ninety degrees", "Sube un poco, rodillas a noventa grados", "Remonte un peu, genoux \xE0 quatre-vingt-dix degr\xE9s", "Komm etwas hoch, Knie auf neunzig Grad", "Suba um pouco, joelhos a noventa graus"],
+  ["Sdraiati sulla schiena", "Lie on your back", "T\xFAmbate boca arriba", "Allonge-toi sur le dos", "Leg dich auf den R\xFCcken", "Deite de costas"],
+  ["Gambe su! Non toccare terra", "Legs up! Don't touch the floor", "\xA1Piernas arriba! No toques el suelo", "Jambes en l'air ! Ne touche pas le sol", "Beine hoch! Nicht den Boden ber\xFChren", "Pernas para cima! N\xE3o toque o ch\xE3o"],
+  ["Scendi di pi\xF9 nello squat! Non conta", "Go lower in the squat! Doesn't count", "\xA1Baja m\xE1s en la sentadilla! No cuenta", "Descends plus dans le squat ! \xC7a ne compte pas", "Tiefer in die Kniebeuge! Z\xE4hlt nicht", "Des\xE7a mais no agachamento! N\xE3o conta"],
+  ["Scendi fino al rialzo! Non conta", "Go down to the box! Doesn't count", "\xA1Baja hasta el caj\xF3n! No cuenta", "Descends jusqu'au support ! \xC7a ne compte pas", "Runter bis zur Erh\xF6hung! Z\xE4hlt nicht", "Des\xE7a at\xE9 o apoio! N\xE3o conta"],
+  ["Scendi di pi\xF9 sul lato! Non conta", "Go lower to the side! Doesn't count", "\xA1Baja m\xE1s hacia el lado! No cuenta", "Descends plus sur le c\xF4t\xE9 ! \xC7a ne compte pas", "Tiefer zur Seite! Z\xE4hlt nicht", "Des\xE7a mais para o lado! N\xE3o conta"],
+  ["Sali fino in cima, gamba distesa! Non conta", "Step all the way up, leg straight! Doesn't count", "\xA1Sube hasta arriba, pierna estirada! No cuenta", "Monte jusqu'en haut, jambe tendue ! \xC7a ne compte pas", "Ganz nach oben, Bein gestreckt! Z\xE4hlt nicht", "Suba at\xE9 o topo, perna esticada! N\xE3o conta"],
+  ["Bacino pi\xF9 in alto, corpo a tavolo! Non conta", "Hips higher, body like a table! Doesn't count", "\xA1Cadera m\xE1s arriba, cuerpo en mesa! No cuenta", "Bassin plus haut, corps en table ! \xC7a ne compte pas", "H\xFCfte h\xF6her, K\xF6rper wie ein Tisch! Z\xE4hlt nicht", "Quadril mais alto, corpo em mesa! N\xE3o conta"],
+  ["Solleva di pi\xF9 le spalle! Non conta", "Lift your shoulders higher! Doesn't count", "\xA1Levanta m\xE1s los hombros! No cuenta", "D\xE9colle plus les \xE9paules ! \xC7a ne compte pas", "Heb die Schultern h\xF6her! Z\xE4hlt nicht", "Levante mais os ombros! N\xE3o conta"],
+  ["Sfida casuale", "Random challenge", "Reto aleatorio", "D\xE9fi au hasard", "Zufallsduell", "Desafio aleat\xF3rio"],
+  ["Ti abbino a chi sta cercando una sfida in questo momento", "I'll match you with someone looking for a challenge right now", "Te emparejo con quien est\xE9 buscando un reto ahora mismo", "Je t'associe \xE0 quelqu'un qui cherche un d\xE9fi en ce moment", "Ich verbinde dich mit jemandem, der gerade ein Duell sucht", "Eu te junto com quem est\xE1 procurando um desafio agora"],
+  ["Invita un amico", "Invite a friend", "Invita a un amigo", "Invite un ami", "Lade einen Freund ein", "Convide um amigo"],
+  ["Crea la sfida e mandagli il link o l'invito", "Create the challenge and send the link or an invite", "Crea el reto y m\xE1ndale el enlace o la invitaci\xF3n", "Cr\xE9e le d\xE9fi et envoie-lui le lien ou l'invitation", "Erstelle das Duell und schick den Link oder eine Einladung", "Crie o desafio e mande o link ou o convite"],
+  ["Ho un codice", "I have a code", "Tengo un c\xF3digo", "J'ai un code", "Ich habe einen Code", "Tenho um c\xF3digo"],
+  ["Entra nella sfida di un amico", "Join a friend's challenge", "Entra en el reto de un amigo", "Rejoins le d\xE9fi d'un ami", "Tritt dem Duell eines Freundes bei", "Entre no desafio de um amigo"],
+  ["I tuoi amici", "Your friends", "Tus amigos", "Tes amis", "Deine Freunde", "Seus amigos"],
+  ["Aggiungi un amico con il suo codice, oppure sfidalo con un link: comparir\xE0 qui e potrai invitarlo con un tocco.", "Add a friend with their code, or challenge them with a link: they'll show up here and you can invite them with one tap.", "A\xF1ade a un amigo con su c\xF3digo o r\xE9talo con un enlace: aparecer\xE1 aqu\xED y podr\xE1s invitarlo con un toque.", "Ajoute un ami avec son code ou d\xE9fie-le avec un lien : il appara\xEEtra ici et tu pourras l'inviter d'un geste.", "F\xFCge einen Freund mit seinem Code hinzu oder fordere ihn per Link heraus: Er erscheint dann hier und du l\xE4dst ihn mit einem Tipp ein.", "Adicione um amigo com o c\xF3digo dele ou desafie com um link: ele aparece aqui e voc\xEA convida com um toque."],
+  ["Il tuo codice amico", "Your friend code", "Tu c\xF3digo de amigo", "Ton code ami", "Dein Freundescode", "Seu c\xF3digo de amigo"],
+  ["Dallo ai tuoi amici: con questo codice ti aggiungono e ti invitano alle sfide quando hai l'app aperta.", "Give it to your friends: with this code they can add you and invite you to challenges while your app is open.", "D\xE1selo a tus amigos: con este c\xF3digo te a\xF1aden y te invitan a retos cuando tienes la app abierta.", "Donne-le \xE0 tes amis : avec ce code, ils t'ajoutent et t'invitent aux d\xE9fis quand ton app est ouverte.", "Gib ihn deinen Freunden: Mit diesem Code f\xFCgen sie dich hinzu und laden dich zu Duellen ein, wenn deine App offen ist.", "Passe para seus amigos: com esse c\xF3digo eles te adicionam e te convidam para desafios quando o app est\xE1 aberto."],
+  ["Aggiungi un amico", "Add a friend", "A\xF1adir un amigo", "Ajouter un ami", "Freund hinzuf\xFCgen", "Adicionar amigo"],
+  ["Codice amico", "Friend code", "C\xF3digo de amigo", "Code ami", "Freundescode", "C\xF3digo de amigo"],
+  ["Aggiungi", "Add", "A\xF1adir", "Ajouter", "Hinzuf\xFCgen", "Adicionar"],
+  ["Invia il mio codice", "Send my code", "Enviar mi c\xF3digo", "Envoyer mon code", "Meinen Code senden", "Enviar meu c\xF3digo"],
+  ["Cerco un avversario", "Looking for an opponent", "Buscando un rival", "Je cherche un adversaire", "Suche einen Gegner", "Procurando um advers\xE1rio"],
+  ["Cerco un avversario\u2026", "Looking for an opponent\u2026", "Buscando un rival\u2026", "Je cherche un adversaire\u2026", "Suche einen Gegner\u2026", "Procurando um advers\xE1rio\u2026"],
+  ["Trovato qualcuno, mi collego\u2026", "Found someone, connecting\u2026", "He encontrado a alguien, conectando\u2026", "Quelqu'un trouv\xE9, connexion\u2026", "Jemand gefunden, verbinde\u2026", "Encontrei algu\xE9m, conectando\u2026"],
+  ["Resta su questa schermata. Se nessuno \xE8 libero entro 2 minuti, riprova pi\xF9 tardi o invita un amico.", "Stay on this screen. If nobody is free within 2 minutes, try again later or invite a friend.", "Qu\xE9date en esta pantalla. Si nadie est\xE1 libre en 2 minutos, int\xE9ntalo m\xE1s tarde o invita a un amigo.", "Reste sur cet \xE9cran. Si personne n'est libre d'ici 2 minutes, r\xE9essaie plus tard ou invite un ami.", "Bleib auf diesem Bildschirm. Wenn in 2 Minuten niemand frei ist, versuch es sp\xE4ter oder lade einen Freund ein.", "Fique nesta tela. Se ningu\xE9m estiver livre em 2 minutos, tente mais tarde ou convide um amigo."],
+  ["Nessun avversario libero in questo momento. Riprova tra poco o invita un amico.", "No opponent is free right now. Try again shortly or invite a friend.", "Ning\xFAn rival libre en este momento. Int\xE9ntalo en un rato o invita a un amigo.", "Aucun adversaire libre pour le moment. R\xE9essaie bient\xF4t ou invite un ami.", "Gerade ist kein Gegner frei. Versuch es gleich nochmal oder lade einen Freund ein.", "Nenhum advers\xE1rio livre agora. Tente daqui a pouco ou convide um amigo."],
+  ["Annulla", "Cancel", "Cancelar", "Annuler", "Abbrechen", "Cancelar"],
+  ["Cerca un avversario", "Find an opponent", "Buscar un rival", "Trouver un adversaire", "Gegner suchen", "Procurar advers\xE1rio"],
+  ["Scegli la sfida", "Choose the challenge", "Elige el reto", "Choisis le d\xE9fi", "W\xE4hle das Duell", "Escolha o desafio"],
+  ["Se l'avversario aveva gi\xE0 scelto un'altra sfida, si fa la sua.", "If your opponent already picked a different challenge, you'll play theirs.", "Si el rival ya hab\xEDa elegido otro reto, se hace el suyo.", "Si l'adversaire avait d\xE9j\xE0 choisi un autre d\xE9fi, on fait le sien.", "Hat der Gegner schon ein anderes Duell gew\xE4hlt, gilt seins.", "Se o advers\xE1rio j\xE1 escolheu outro desafio, vale o dele."],
+  ["Oppure invitalo direttamente", "Or invite them directly", "O inv\xEDtalo directamente", "Ou invite-le directement", "Oder lade ihn direkt ein", "Ou convide diretamente"],
+  ["Invita", "Invite", "Invitar", "Inviter", "Einladen", "Convidar"],
+  ["Inviato", "Sent", "Enviado", "Envoy\xE9", "Gesendet", "Enviado"],
+  ["Invio\u2026", "Sending\u2026", "Enviando\u2026", "Envoi\u2026", "Sende\u2026", "Enviando\u2026"],
+  ["Avversario trovato", "Opponent found", "Rival encontrado", "Adversaire trouv\xE9", "Gegner gefunden", "Advers\xE1rio encontrado"],
+  ["Accetta", "Accept", "Aceptar", "Accepter", "Annehmen", "Aceitar"],
+  ["Rifiuta", "Decline", "Rechazar", "Refuser", "Ablehnen", "Recusar"],
+  ["Un amico", "A friend", "Un amigo", "Un ami", "Ein Freund", "Um amigo"],
+  ["Questo \xE8 il tuo codice.", "That's your own code.", "Ese es tu c\xF3digo.", "C'est ton code.", "Das ist dein eigener Code.", "Esse \xE9 o seu c\xF3digo."],
+  ["Cerco il tuo amico\u2026", "Looking for your friend\u2026", "Buscando a tu amigo\u2026", "Je cherche ton ami\u2026", "Suche deinen Freund\u2026", "Procurando seu amigo\u2026"],
+  ["Amico aggiunto. Il suo nome comparir\xE0 dopo la prima sfida.", "Friend added. Their name will show after your first challenge.", "Amigo a\xF1adido. Su nombre aparecer\xE1 tras el primer reto.", "Ami ajout\xE9. Son nom appara\xEEtra apr\xE8s le premier d\xE9fi.", "Freund hinzugef\xFCgt. Sein Name erscheint nach dem ersten Duell.", "Amigo adicionado. O nome aparece depois do primeiro desafio."],
+  ["Copiato: incollalo in chat ai tuoi amici.", "Copied: paste it in a chat with your friends.", "Copiado: p\xE9galo en el chat con tus amigos.", "Copi\xE9 : colle-le dans une discussion avec tes amis.", "Kopiert: F\xFCge es im Chat mit deinen Freunden ein.", "Copiado: cole no chat com seus amigos."],
+  ["Uno contro uno in videochiamata: la fotocamera conta le ripetizioni di entrambi", "One on one on a video call: the camera counts both players' reps", "Uno contra uno en videollamada: la c\xE1mara cuenta las repeticiones de ambos", "Un contre un en appel vid\xE9o : la cam\xE9ra compte les r\xE9p\xE9titions des deux", "Eins gegen eins per Videoanruf: Die Kamera z\xE4hlt die Wiederholungen von beiden", "Um contra um por videochamada: a c\xE2mera conta as repeti\xE7\xF5es dos dois"],
+  ["Usa la voce registrata", "Use the recorded voice", "Usar la voz grabada", "Utiliser la voix enregistr\xE9e", "Aufgenommene Stimme verwenden", "Usar a voz gravada"]
 ];
 const LANG_IDX = { en: 1, es: 2, fr: 3, de: 4, pt: 5 };
 let trRx = null, trMap = null, trCache = /* @__PURE__ */ new Map(), trOut = /* @__PURE__ */ new Set();
@@ -752,6 +985,281 @@ function startI18n() {
       else m.addedNodes.forEach(trNode);
     }
   }).observe(document.body, { childList: true, characterData: true, subtree: true, attributes: true, attributeFilter: ["placeholder", "aria-label", "title"] });
+}
+const SEG = { torso: 27, neck: 8.5, ua: 13.5, fa: 13, th: 17.5, sh: 17, foot: 6 };
+const GROUND = 92;
+const rad = (d) => d * Math.PI / 180;
+const fwd = (p, a, l) => [p[0] + Math.cos(rad(a)) * l, p[1] + Math.sin(rad(a)) * l];
+const POSES = {
+  // standing references
+  squat: { A: { t: -90, a: [95, 92], a2: [85, 88], l: [90, 90], l2: [92, 92] }, B: { t: -55, a: [-5, -2], a2: [2, 4], l: [12, 108], l2: [16, 110] } },
+  pushup: { floor: 1, A: { t: -12, a: [92, 90], a2: [88, 92], l: [170, 171], l2: [172, 173] }, B: { t: -3, a: [150, 40], a2: [146, 44], l: [177, 177], l2: [178, 178] } },
+  widepush: { floor: 1, A: { t: -12, a: [102, 80], a2: [78, 100], l: [170, 171], l2: [172, 173] }, B: { t: -3, a: [165, 60], a2: [12, 120], l: [177, 177], l2: [178, 178] } },
+  situp: { floor: 1, A: { t: 180, a: [-150, 20], a2: [-145, 25], l: [-40, 50], l2: [-38, 52] }, B: { t: -120, a: [-160, 20], a2: [-150, 30], l: [-30, 60], l2: [-28, 62] } },
+  crunch: { floor: 1, A: { t: 180, a: [-150, 20], a2: [-145, 25], l: [-40, 50], l2: [-38, 52] }, B: { t: -150, a: [-170, 25], a2: [-160, 30], l: [-40, 50], l2: [-38, 52] } },
+  jacks: { front: 1, A: { a: [95, 92], a2: [85, 88], l: [92, 90], l2: [88, 90] }, B: { a: [-55, -80], a2: [-125, -100], l: [70, 70], l2: [110, 110] } },
+  plank: { floor: 1, hold: 1, A: { t: -10, a: [90, 0], a2: [92, 2], l: [172, 172], l2: [173, 173] }, B: { t: -8, a: [90, 0], a2: [92, 2], l: [173, 173], l2: [174, 174] } },
+  lunge: { A: { t: -90, a: [100, 80], a2: [80, 100], l: [90, 90], l2: [92, 92] }, B: { t: -88, a: [100, 80], a2: [80, 100], l: [8, 95], l2: [112, 176] } },
+  revlunge: { A: { t: -90, a: [75, -60], a2: [80, -55], l: [90, 90], l2: [92, 92] }, B: { t: -86, a: [75, -60], a2: [80, -55], l: [8, 95], l2: [112, 176] } },
+  sidelunge: { front: 1, A: { a: [-30, -150], a2: [-150, -30], l: [95, 90], l2: [85, 90] }, B: { t: -76, a: [-20, -160], a2: [-150, -20], l: [12, 100], l2: [158, 158] } },
+  climber: { floor: 1, A: { t: -20, a: [90, 90], a2: [90, 90], l: [168, 170], l2: [165, 165] }, B: { t: -18, a: [90, 90], a2: [90, 90], l: [60, 150], l2: [168, 168] } },
+  burpee: { A: { t: -55, a: [80, 90], a2: [85, 92], l: [20, 110], l2: [22, 112] }, B: { t: -90, a: [-80, -82], a2: [-100, -98], l: [95, 95], l2: [92, 92], air: 6 } },
+  jumpsquat: { front: 1, A: { a: [-35, -150], a2: [-145, -30], l: [92, 90], l2: [88, 90], air: 8 }, B: { a: [-35, -150], a2: [-145, -30], l: [25, 120], l2: [155, 60] } },
+  boxsquat: { box: "seat", A: { t: -90, a: [92, 90], a2: [88, 90], l: [90, 90], l2: [92, 92] }, B: { t: -62, a: [-5, -3], a2: [2, 4], l: [8, 102], l2: [12, 104] } },
+  stepup: { box: "step", A: { t: -86, a: [75, -60], a2: [80, -55], l: [12, 100], l2: [100, 92] }, B: { t: -90, a: [75, -60], a2: [80, -55], l: [-5, 90], l2: [90, 90] } },
+  wallsit: { wall: 1, hold: 1, A: { t: -90, a: [80, 5], a2: [82, 8], l: [0, 90], l2: [2, 92] }, B: { t: -90, a: [80, 5], a2: [82, 8], l: [0, 90], l2: [2, 92] } },
+  bridge: { floor: 1, A: { t: -150, a: [120, 95], a2: [118, 93], l: [-30, 70], l2: [-28, 72] }, B: { t: 182, a: [92, 92], a2: [94, 94], l: [-15, 88], l2: [-13, 90], up: 1 } },
+  scissor: { floor: 1, hold: 1, A: { t: -165, a: [130, 170], a2: [128, 168], l: [-18, -18], l2: [-4, -4] }, B: { t: -165, a: [130, 170], a2: [128, 168], l: [-6, -6], l2: [-20, -20] } }
+};
+const PALETTE = {
+  m: { skin: "#eab48e", skin2: "#c88a64", hi: "#fff2e6", out: "#2e86de", out2: "#1d5fa8", stripe: "#e8f2ff", shoe: "#262a33", hair: "#4a3020" },
+  f: { skin: "#f0bf9b", skin2: "#cf9672", hi: "#fff2e6", out: "#b02a91", out2: "#7d1b67", stripe: "#f6d6ee", shoe: "#8f2bd8", hair: "#2a1a12" }
+};
+function solve(def, pose) {
+  var _a, _b;
+  const j = {};
+  if (def.front) {
+    const pel2 = [60, 50], neck = fwd(pel2, (_a = pose.t) != null ? _a : -90, SEG.torso);
+    const off = 7.5, hoff = 5;
+    j.front = true;
+    j.p = pel2;
+    j.n = neck;
+    j.h = fwd(neck, (_b = pose.t) != null ? _b : -90, SEG.neck);
+    j.shR = [neck[0] - off, neck[1] + 1];
+    j.shL = [neck[0] + off, neck[1] + 1];
+    j.hipR = [pel2[0] - hoff, pel2[1]];
+    j.hipL = [pel2[0] + hoff, pel2[1]];
+    j.eL = fwd(j.shL, pose.a2[0], SEG.ua);
+    j.wL = fwd(j.eL, pose.a2[1], SEG.fa);
+    j.eR = fwd(j.shR, pose.a[0], SEG.ua);
+    j.wR = fwd(j.eR, pose.a[1], SEG.fa);
+    j.kR = fwd(j.hipR, pose.l2[0], SEG.th);
+    j.aR = fwd(j.kR, pose.l2[1], SEG.sh);
+    j.kL = fwd(j.hipL, pose.l[0], SEG.th);
+    j.aL = fwd(j.kL, pose.l[1], SEG.sh);
+    const low = Math.max(j.aR[1], j.aL[1]) + 3;
+    const dy = GROUND - low - (pose.air || 0);
+    for (const k in j) if (Array.isArray(j[k])) j[k] = [j[k][0], j[k][1] + dy];
+    return j;
+  }
+  const pel = [60, 50];
+  j.p = pel;
+  j.n = fwd(pel, pose.t, SEG.torso);
+  j.h = fwd(j.n, pose.t, SEG.neck);
+  j.e = fwd(j.n, pose.a[0], SEG.ua);
+  j.w = fwd(j.e, pose.a[1], SEG.fa);
+  j.e2 = fwd(j.n, pose.a2[0], SEG.ua);
+  j.w2 = fwd(j.e2, pose.a2[1], SEG.fa);
+  j.k = fwd(pel, pose.l[0], SEG.th);
+  j.an = fwd(j.k, pose.l[1], SEG.sh);
+  j.k2 = fwd(pel, pose.l2[0], SEG.th);
+  j.an2 = fwd(j.k2, pose.l2[1], SEG.sh);
+  return j;
+}
+function placeDef(def) {
+  if (!def.id) {
+    for (const k in POSES) if (POSES[k] === def) def.id = k;
+  }
+  if (def._placed) return def._placed;
+  const A = solve(def, def.A), B = solve(def, def.B);
+  if (def.front) {
+    const all2 = [];
+    for (const j of [A, B]) for (const k in j) if (Array.isArray(j[k])) all2.push(j[k]);
+    const y02 = Math.min(...all2.map((q) => q[1])) - 9, h2 = GROUND + 5 - y02, w2 = h2 * 1.2;
+    return def._placed = { A, B, box: null, dx: 0, vb: [60 - w2 / 2, y02, w2, h2] };
+  }
+  const lowest = (j, keys) => Math.max(...keys.map((k) => j[k][1]));
+  const supportKeys = def.floor ? ["an", "an2", "w", "w2", "p", "h", "e", "e2", "k", "k2"] : ["an", "an2"];
+  const pad = def.floor ? 3.5 : 3;
+  const shift = (j, dy) => {
+    for (const k in j) if (Array.isArray(j[k])) j[k] = [j[k][0], j[k][1] + dy];
+  };
+  let box = null;
+  if (def.box === "seat") {
+    shift(A, GROUND - lowest(A, ["an", "an2"]) - pad);
+    shift(B, GROUND - lowest(B, ["an", "an2"]) - pad);
+    const top = B.p[1] + 5;
+    box = { x: B.p[0] - 13, y: top, w: 22, h: GROUND - top };
+  } else if (def.box === "step") {
+    shift(A, GROUND - A.an2[1] - pad);
+    const top = A.an[1] + pad;
+    box = { x: A.an[0] - 11, y: top, w: 24, h: GROUND - top };
+    shift(B, top - Math.max(B.an[1], B.an2[1]) - pad);
+    const dx2 = A.an[0] - B.an2[0];
+    for (const k in B) if (Array.isArray(B[k])) B[k] = [B[k][0] + dx2, B[k][1]];
+  } else {
+    for (const j of [A, B]) shift(j, GROUND - lowest(j, supportKeys) - pad - ((j === B ? def.B.air : def.A.air) || 0));
+  }
+  const anc = def.anchor || (def.box === "step" ? null : def.floor && !["situp", "crunch", "bridge", "scissor"].includes(def.id) ? "w" : "an");
+  if (anc) {
+    const d = A[anc][0] - B[anc][0];
+    for (const k in B) if (Array.isArray(B[k])) B[k] = [B[k][0] + d, B[k][1]];
+    if (box && def.box === "seat") box.x += d;
+  }
+  const xs = [];
+  for (const j of [A, B]) for (const k in j) if (Array.isArray(j[k])) xs.push(j[k][0]);
+  if (box) xs.push(box.x, box.x + box.w);
+  const dx = 60 - (Math.min(...xs) + Math.max(...xs)) / 2;
+  for (const j of [A, B]) for (const k in j) if (Array.isArray(j[k])) j[k] = [j[k][0] + dx, j[k][1]];
+  if (box) box.x += dx;
+  const all = [];
+  for (const j of [A, B]) for (const k in j) if (Array.isArray(j[k])) all.push(j[k]);
+  let x0 = Math.min(...all.map((q) => q[0])) - 9, x1 = Math.max(...all.map((q) => q[0])) + 9;
+  let y0 = Math.min(...all.map((q) => q[1])) - 9, y1 = GROUND + 5;
+  if (box) {
+    x0 = Math.min(x0, box.x - 4);
+    x1 = Math.max(x1, box.x + box.w + 4);
+  }
+  let w = x1 - x0, h = y1 - y0;
+  if (w < 100) {
+    x0 -= (100 - w) / 2;
+    w = 100;
+  }
+  if (h < 70) {
+    y0 -= 70 - h;
+    h = 70;
+  }
+  if (w / h < 1.2) {
+    const nw = h * 1.2;
+    x0 -= (nw - w) / 2;
+    w = nw;
+  } else {
+    const nh = w / 1.2;
+    y0 -= nh - h;
+    h = nh;
+  }
+  return def._placed = { A, B, box, dx, vb: [x0, y0, w, h] };
+}
+const mix = (a, b, t) => [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t];
+const f1 = (n) => Math.round(n * 10) / 10;
+const seg = (p, q, w, col) => '<line x1="'.concat(f1(p[0]), '" y1="').concat(f1(p[1]), '" x2="').concat(f1(q[0]), '" y2="').concat(f1(q[1]), '" stroke="').concat(col, '" stroke-width="').concat(w, '" stroke-linecap="round"/>');
+const limb = (p, q, w, col, hi) => seg(p, q, w, col) + (hi ? '<line x1="'.concat(f1(p[0] - 0.6), '" y1="').concat(f1(p[1] - 0.8), '" x2="').concat(f1(q[0] - 0.6), '" y2="').concat(f1(q[1] - 0.8), '" stroke="').concat(hi, '" stroke-opacity=".28" stroke-width="').concat(f1(w * 0.38), '" stroke-linecap="round"/>') : "");
+function footSeg(k, an, dir, C) {
+  const sx = an[0] - k[0], sy = an[1] - k[1], L2 = Math.hypot(sx, sy) || 1;
+  let fx = -sy / L2, fy = sx / L2;
+  if (fx * dir < 0) {
+    fx = -fx;
+    fy = -fy;
+  }
+  return seg(an, [an[0] + fx * SEG.foot, an[1] + fy * SEG.foot], 6, C.shoe);
+}
+function drawSide(j, g, C) {
+  const far = g === "f" ? C.out2 : C.out2, legFar = g === "f" ? C.out2 : C.skin2, legNear = g === "f" ? C.out : C.skin;
+  let s = "";
+  s += limb(j.n, j.e2, 7.4, C.skin2) + limb(j.e2, j.w2, 6.2, C.skin2);
+  s += limb(j.p, j.k2, 10.4, g === "m" ? C.out2 : far) + limb(j.k2, j.an2, 7.8, legFar) + footSeg(j.k2, j.an2, j.an2[0] >= j.k2[0] ? 1 : 1, C);
+  if (g === "m") s += limb(j.p, mix(j.p, j.k2, 0.55), 11, C.out2);
+  const tor = (w, col) => seg(mix(j.p, j.n, 0.02), mix(j.n, j.p, 0.08), w, col);
+  if (g === "m") {
+    s += tor(16, C.out) + seg(mix(j.p, j.n, 0.15), mix(j.n, j.p, 0.2), 2.2, C.stripe);
+  } else {
+    s += tor(14, C.skin) + seg(mix(j.p, j.n, 0.5), mix(j.n, j.p, 0.1), 14.6, C.out) + seg(j.p, mix(j.p, j.n, 0.14), 14.6, C.out);
+  }
+  s += '<line x1="'.concat(f1(j.p[0] - 0.7), '" y1="').concat(f1(j.p[1] - 0.9), '" x2="').concat(f1(j.n[0] - 0.7), '" y2="').concat(f1(j.n[1] - 0.9), '" stroke="#fff" stroke-opacity=".18" stroke-width="4" stroke-linecap="round"/>');
+  if (g === "m") {
+    s += limb(j.p, j.k, 10.6, C.skin, C.hi) + limb(j.k, j.an, 8, C.skin, C.hi) + limb(j.p, mix(j.p, j.k, 0.55), 11.4, C.out, "#fff");
+  } else s += limb(j.p, j.k, 10.6, C.out, "#fff") + limb(j.k, j.an, 8, C.out, "#fff");
+  s += footSeg(j.k, j.an, 1, C);
+  s += seg(j.n, mix(j.n, j.h, 0.55), 6, C.skin2);
+  s += head(j.h, j.h[0] - j.n[0], j.h[1] - j.n[1], g, C);
+  s += limb(j.n, j.e, 7.8, C.skin, C.hi) + limb(j.e, j.w, 6.6, C.skin, C.hi) + '<circle cx="'.concat(f1(j.w[0]), '" cy="').concat(f1(j.w[1]), '" r="3.3" fill="').concat(C.skin, '"/>');
+  return s;
+}
+function head(h, ux, uy, g, C) {
+  const L2 = Math.hypot(ux, uy) || 1;
+  ux /= L2;
+  uy /= L2;
+  let fx = -uy, fy = ux;
+  if (fx < 0 && Math.abs(fx) > 0.2) {
+    fx = -fx;
+    fy = -fy;
+  }
+  let s = '<circle cx="'.concat(f1(h[0]), '" cy="').concat(f1(h[1]), '" r="6.2" fill="').concat(C.skin, '"/>');
+  const bx = h[0] - fx * 1.6 + ux * 1.2, by = h[1] - fy * 1.6 + uy * 1.2;
+  s += '<circle cx="'.concat(f1(bx), '" cy="').concat(f1(by), '" r="5.5" fill="').concat(C.hair, '"/>');
+  if (g === "f") {
+    const tx = h[0] - fx * 6.5 + ux * 1.5, ty = h[1] - fy * 6.5 + uy * 1.5;
+    s += '<ellipse cx="'.concat(f1(tx), '" cy="').concat(f1(ty), '" rx="2.6" ry="4.4" transform="rotate(').concat(f1(Math.atan2(uy, ux) * 180 / Math.PI), " ").concat(f1(tx), " ").concat(f1(ty), ')" fill="').concat(C.hair, '"/>');
+  }
+  s += '<circle cx="'.concat(f1(h[0] + fx * 1.4), '" cy="').concat(f1(h[1] + fy * 1.4), '" r="4.8" fill="').concat(C.skin, '"/>');
+  return s;
+}
+function drawFront(j, g, C) {
+  let s = "";
+  const legCol = g === "f" ? C.out : C.skin, legHi = g === "f" ? "#fff" : C.hi;
+  for (const [hip, k, a, dir] of [[j.hipR, j.kR, j.aR, -1], [j.hipL, j.kL, j.aL, 1]]) {
+    s += limb(hip, k, 10.4, legCol, legHi) + limb(k, a, 8, legCol, legHi);
+    s += seg(a, [a[0] + dir * 3.5, a[1] + 1.5], 5, C.shoe);
+    if (g === "m") s += limb(hip, mix(hip, k, 0.5), 11.2, C.out, "#fff");
+  }
+  const n = j.n, p = j.p;
+  if (g === "m") {
+    s += '<path d="M'.concat(f1(j.shR[0] - 2), " ").concat(f1(j.shR[1]), " L").concat(f1(j.shL[0] + 2), " ").concat(f1(j.shL[1]), " L").concat(f1(j.hipL[0] + 2.5), " ").concat(f1(p[1] + 2), " L").concat(f1(j.hipR[0] - 2.5), " ").concat(f1(p[1] + 2), ' Z" fill="').concat(C.out, '" stroke="').concat(C.out, '" stroke-width="3" stroke-linejoin="round"/>');
+    s += seg([j.shR[0] + 2, j.shR[1] + 3], [j.hipR[0] + 1, p[1]], 1.6, C.stripe) + seg([j.shL[0] - 2, j.shL[1] + 3], [j.hipL[0] - 1, p[1]], 1.6, C.stripe);
+  } else {
+    s += '<path d="M'.concat(f1(j.shR[0] - 1), " ").concat(f1(j.shR[1]), " L").concat(f1(j.shL[0] + 1), " ").concat(f1(j.shL[1]), " L").concat(f1(j.hipL[0] + 2.5), " ").concat(f1(p[1] + 2), " L").concat(f1(j.hipR[0] - 2.5), " ").concat(f1(p[1] + 2), ' Z" fill="').concat(C.skin, '" stroke="').concat(C.skin, '" stroke-width="3" stroke-linejoin="round"/>');
+    s += '<path d="M'.concat(f1(j.shR[0] - 1), " ").concat(f1(j.shR[1]), " L").concat(f1(j.shL[0] + 1), " ").concat(f1(j.shL[1]), " L").concat(f1(j.shL[0]), " ").concat(f1(mix(n, p, 0.45)[1]), " L").concat(f1(j.shR[0]), " ").concat(f1(mix(n, p, 0.45)[1]), ' Z" fill="').concat(C.out, '" stroke="').concat(C.out, '" stroke-width="3" stroke-linejoin="round"/>');
+    s += '<path d="M'.concat(f1(j.hipR[0] - 2.5), " ").concat(f1(p[1] - 3), " L").concat(f1(j.hipL[0] + 2.5), " ").concat(f1(p[1] - 3), " L").concat(f1(j.hipL[0] + 2.5), " ").concat(f1(p[1] + 3), " L").concat(f1(j.hipR[0] - 2.5), " ").concat(f1(p[1] + 3), ' Z" fill="').concat(C.out, '" stroke="').concat(C.out, '" stroke-width="2" stroke-linejoin="round"/>');
+  }
+  s += '<line x1="'.concat(f1(n[0] - 2), '" y1="').concat(f1(n[1] + 2), '" x2="').concat(f1(p[0] - 2), '" y2="').concat(f1(p[1] - 2), '" stroke="#fff" stroke-opacity=".16" stroke-width="4" stroke-linecap="round"/>');
+  for (const [sh, e, w] of [[j.shR, j.eR, j.wR], [j.shL, j.eL, j.wL]]) s += limb(sh, e, 7.6, C.skin, C.hi) + limb(e, w, 6.4, C.skin, C.hi) + '<circle cx="'.concat(f1(w[0]), '" cy="').concat(f1(w[1]), '" r="3.2" fill="').concat(C.skin, '"/>');
+  s += seg(n, mix(n, j.h, 0.5), 5, C.skin2);
+  const h = j.h;
+  if (g === "f") s += '<ellipse cx="'.concat(f1(h[0] + 5), '" cy="').concat(f1(h[1] + 1), '" rx="2.4" ry="4.6" fill="').concat(C.hair, '"/>');
+  s += '<circle cx="'.concat(f1(h[0]), '" cy="').concat(f1(h[1]), '" r="5.6" fill="').concat(C.hair, '"/><ellipse cx="').concat(f1(h[0]), '" cy="').concat(f1(h[1] + 1.2), '" rx="4.6" ry="4.8" fill="').concat(C.skin, '"/>');
+  return s;
+}
+function figureSVG(ex, t = 1, g = "m", opts = {}) {
+  const def = POSES[ex] || POSES.squat;
+  const C = PALETTE[g] || PALETTE.m;
+  const { A, B, box, vb } = placeDef(def);
+  const j = {};
+  for (const k in A) j[k] = Array.isArray(A[k]) ? mix(A[k], B[k], t) : A[k];
+  const xs = [], ys = [];
+  for (const k in j) if (Array.isArray(j[k])) {
+    xs.push(j[k][0]);
+    ys.push(j[k][1]);
+  }
+  const minX = Math.min(...xs), maxX = Math.max(...xs);
+  let s = '<svg viewBox="'.concat(vb.map(f1).join(" "), '" class="fig" ').concat(opts.label ? 'role="img" aria-label="'.concat(opts.label, '"') : 'aria-hidden="true"', ">");
+  s += '<ellipse cx="'.concat(f1((minX + maxX) / 2), '" cy="').concat(GROUND + 1, '" rx="').concat(f1(Math.max(10, (maxX - minX) / 2 + 4)), '" ry="3" fill="#000" fill-opacity=".10"/>');
+  if (def.floor && !opts.noMat) {
+    const a = vb[0] + 3, b = vb[0] + vb[2] - 3;
+    s += '<path d="M'.concat(f1(a), " 93.5 L").concat(f1(b - 8), " 93.5 L").concat(f1(b), " 87 L").concat(f1(a + 8), ' 87 Z" fill="#8bd13f"/><path d="M').concat(f1(a), " 93.5 L").concat(f1(b - 8), " 93.5 L").concat(f1(b - 8), " 95.5 L").concat(f1(a), ' 95.5 Z" fill="#6aa82c"/>');
+  }
+  if (def.wall) {
+    const wx = Math.min(j.p[0], j.n[0]) - 9;
+    s += '<path d="M'.concat(f1(wx - 8), " 6 L").concat(f1(wx), " 10 L").concat(f1(wx), " 95 L").concat(f1(wx - 8), ' 91 Z" fill="#e3e6ea"/><path d="M').concat(f1(wx), " 10 L").concat(f1(wx + 1.5), " 10 L").concat(f1(wx + 1.5), " 95 L").concat(f1(wx), ' 95 Z" fill="#c9ced6"/>');
+  }
+  if (box) s += '<rect x="'.concat(f1(box.x), '" y="').concat(f1(box.y), '" width="').concat(f1(box.w), '" height="').concat(f1(box.h), '" rx="1" fill="#c8a24a"/><rect x="').concat(f1(box.x), '" y="').concat(f1(box.y), '" width="').concat(f1(box.w), '" height="2.4" fill="#e2c26a"/><rect x="').concat(f1(box.x + box.w - 4), '" y="').concat(f1(box.y), '" width="4" height="').concat(f1(box.h), '" fill="#a8842f"/>');
+  s += j.front ? drawFront(j, g, C) : drawSide(j, g, C);
+  return s + "</svg>";
+}
+const figAnim = { els: /* @__PURE__ */ new Set(), raf: 0, last: 0 };
+function animateFigs(root = document) {
+  root.querySelectorAll("[data-fig]").forEach((el) => {
+    el.innerHTML = figureSVG(el.dataset.fig, el.dataset.t != null ? +el.dataset.t : 1, el.dataset.g || "m");
+    if (el.hasAttribute("data-anim")) figAnim.els.add(el);
+  });
+  if (!figAnim.raf && figAnim.els.size) figAnim.raf = requestAnimationFrame(figTick);
+}
+function figTick(now) {
+  figAnim.raf = 0;
+  for (const el of figAnim.els) if (!el.isConnected) figAnim.els.delete(el);
+  if (!figAnim.els.size) return;
+  if (!document.hidden && now - figAnim.last > 50) {
+    figAnim.last = now;
+    for (const el of figAnim.els) {
+      const ex = el.dataset.fig, def = POSES[ex] || POSES.squat;
+      const period = def.hold ? 3200 : 2e3;
+      const ph = now % period / period;
+      let t = ph < 0.5 ? ph * 2 : 2 - ph * 2;
+      t = Math.max(0, Math.min(1, (t - 0.12) / 0.76));
+      t = t * t * (3 - 2 * t);
+      el.innerHTML = figureSVG(ex, t, el.dataset.g || "m");
+    }
+  }
+  figAnim.raf = requestAnimationFrame(figTick);
 }
 const EX = {
   squat: {
@@ -861,23 +1369,189 @@ const EX = {
       "Salta con le braccia sopra la testa: la ripetizione conta solo con il salto."
     ],
     faults: ["Salto senza braccia in alto (non conta)", "Bacino che cede a terra"]
+  },
+  jumpsquat: {
+    name: "Squat saltati in & out",
+    unit: "reps",
+    for: "mf",
+    tag: "Gambe esplosive",
+    front: 1,
+    cam: "Telefono in verticale, di fronte a te, a 2\u20133 metri. Devi vedere dalla testa ai piedi.",
+    steps: [
+      "In piedi, piedi uniti, mani giunte al petto.",
+      "Salta aprendo i piedi e atterra in squat largo.",
+      "Salta di nuovo richiudendo i piedi e risali.",
+      "Atterra morbido, sulle punte e poi sui talloni."
+    ],
+    faults: ["Non scendi abbastanza (non conta)"]
+  },
+  boxsquat: {
+    name: "Box squat",
+    unit: "reps",
+    for: "m",
+    tag: "Gambe e glutei, con rialzo",
+    cam: "Telefono a terra, di lato, a circa 2\u20133 metri. Devi vedere testa, piedi e il rialzo.",
+    steps: [
+      "Mettiti davanti a una sedia o a un rialzo stabile.",
+      "Scendi con il bacino indietro finch\xE9 sfiori il rialzo, braccia avanti.",
+      "Non sederti del tutto: tocca e risali subito.",
+      "Risali spingendo sui talloni fino a gambe distese."
+    ],
+    faults: ["Non arrivi al rialzo (non conta)", "Busto troppo inclinato in avanti"]
+  },
+  revlunge: {
+    name: "Affondi posteriori",
+    unit: "reps",
+    for: "mf",
+    tag: "Gambe e glutei",
+    cam: "Telefono a terra, di lato, a circa 2\u20133 metri. Devi vedere testa e piedi.",
+    steps: [
+      "In piedi, mani giunte al petto, busto dritto.",
+      "Fai un passo lungo all'indietro e scendi piegando entrambe le ginocchia.",
+      "Il ginocchio dietro arriva vicino a terra.",
+      "Torna su riportando la gamba avanti. Alterna i lati."
+    ],
+    faults: ["Non scendi abbastanza (non conta)", "Busto inclinato in avanti"]
+  },
+  sidelunge: {
+    name: "Affondi laterali",
+    unit: "reps",
+    for: "mf",
+    tag: "Interno coscia e glutei",
+    front: 1,
+    cam: "Telefono in verticale, di fronte a te, a circa 3 metri. Devi vedere dalla testa ai piedi.",
+    steps: [
+      "Piedi larghi, mani giunte al petto.",
+      "Piega un ginocchio e sposta il peso su quel lato, l'altra gamba resta tesa.",
+      "Scendi finch\xE9 la coscia \xE8 quasi parallela al suolo.",
+      "Torna al centro e alterna i lati."
+    ],
+    faults: ["Non scendi abbastanza (non conta)", "Piedi troppo stretti"]
+  },
+  stepup: {
+    name: "Step-up su rialzo",
+    unit: "reps",
+    for: "m",
+    tag: "Gambe, equilibrio",
+    cam: "Telefono a terra, di lato, a circa 3 metri. Devi vedere te e il rialzo.",
+    steps: [
+      "Mettiti davanti a un gradino o a un rialzo stabile.",
+      "Appoggia tutto il piede sul rialzo.",
+      "Sali spingendo con quella gamba fino a stare dritto sopra.",
+      "Scendi controllando e alterna i lati."
+    ],
+    faults: ["Non arrivi dritto in cima (non conta)"]
+  },
+  wallsit: {
+    name: "Squat statico al muro",
+    unit: "secs",
+    for: "f",
+    hold: 1,
+    tag: "Tenuta per le gambe",
+    cam: "Telefono a terra, di lato, a circa 2 metri. Devi vedere te e il muro.",
+    steps: [
+      "Schiena appoggiata al muro, piedi avanti alla larghezza delle anche.",
+      "Scivola gi\xF9 finch\xE9 le ginocchia sono a 90\xB0.",
+      "Mani sulle cosce, schiena tutta appoggiata.",
+      "Il tempo scorre solo quando la posizione \xE8 corretta."
+    ],
+    faults: ["Non scendi abbastanza", "Scendi troppo"]
+  },
+  widepush: {
+    name: "Piegamenti a presa larga",
+    unit: "reps",
+    for: "f",
+    tag: "Petto e braccia",
+    cam: "Telefono a terra, di lato, a circa 2 metri, all'altezza del pavimento.",
+    steps: [
+      "Mani pi\xF9 larghe delle spalle, corpo dritto. Puoi appoggiare le ginocchia.",
+      "Contrai addome e glutei.",
+      "Scendi con il petto verso terra, gomiti verso l'esterno.",
+      "Spingi fino a braccia distese."
+    ],
+    faults: ["Bacino che cede verso il basso", "Bacino troppo alto", "Gomiti non piegati a 90\xB0 (non conta)"]
+  },
+  bridge: {
+    name: "Plank bridge",
+    unit: "reps",
+    for: "f",
+    tag: "Glutei e schiena",
+    cam: "Telefono a terra, di lato, a circa 2 metri.",
+    steps: [
+      "Seduta a terra, mani dietro di te, ginocchia piegate, piedi a terra.",
+      "Spingi il bacino in alto finch\xE9 il corpo forma un tavolo.",
+      "Stringi i glutei per un istante.",
+      "Torna gi\xF9 controllando, senza sederti del tutto."
+    ],
+    faults: ["Bacino non abbastanza alto (non conta)"]
+  },
+  crunch: {
+    name: "Crunch a gambe piegate",
+    unit: "reps",
+    for: "f",
+    tag: "Addominali",
+    cam: "Telefono a terra, di lato, a circa 2 metri. Devi vedere spalle, bacino e ginocchia.",
+    steps: [
+      "Supina, ginocchia piegate, piedi sollevati o a terra.",
+      "Mani dietro la testa, gomiti larghi.",
+      "Solleva le spalle da terra contraendo l'addome.",
+      "Torna gi\xF9 lentamente."
+    ],
+    faults: ["Spalle non abbastanza sollevate (non conta)"]
+  },
+  scissor: {
+    name: "Incrocio gambe alternato",
+    unit: "secs",
+    for: "f",
+    hold: 1,
+    tag: "Addome basso",
+    cam: "Telefono a terra, di lato, a circa 2 metri.",
+    steps: [
+      "Supina, appoggiata sugli avambracci.",
+      "Solleva le gambe tese da terra.",
+      "Incrocia le gambe alternandole, su e gi\xF9, senza toccare terra.",
+      "Il tempo scorre solo con le gambe sollevate."
+    ],
+    faults: ["Gambe a terra"]
   }
 };
+let gender = (() => {
+  try {
+    const v = JSON.parse(localStorage.getItem("recluta:gender"));
+    return v === "f" || v === "m" ? v : null;
+  } catch (e) {
+    return null;
+  }
+})();
+const G = () => gender || "m";
+const GENDER_EX = {
+  m: ["squat", "pushup", "situp", "jacks", "plank", "jumpsquat", "boxsquat", "revlunge", "sidelunge", "stepup", "lunge", "climber", "burpee"],
+  f: ["squat", "jacks", "plank", "lunge", "widepush", "wallsit", "bridge", "crunch", "scissor", "sidelunge", "jumpsquat", "revlunge", "climber"]
+};
+const MAX = 0;
 function session(week, day) {
   const w = week - 1;
-  const r = (n) => n;
-  const P2 = { pushup: 8 + 2 * w, squat: 15 + 3 * w, situp: 12 + 3 * w, jacks: 25 + 5 * w, plank: 30 + 10 * w };
   const sets = week >= 3 ? 4 : 3;
+  if (G() === "f") {
+    const plans2 = [
+      { title: "Gambe, glutei e addome", blocks: [["lunge", 3, 20 + 4 * w], ["wallsit", 3, 30 + 5 * w], ["widepush", 3, MAX], ["bridge", 3, 20], ["crunch", 3, 20], ["scissor", 3, 30]] },
+      { title: "Tonificazione", blocks: [["jacks", 1, 30 + 5 * w], ["squat", 3, 15 + 3 * w], ["sidelunge", 3, 12 + 2 * w], ["bridge", 3, 20 + 2 * w], ["plank", 2, 30 + 10 * w]] },
+      { title: "Cardio e core", blocks: [["jacks", 2, 30 + 5 * w], ["jumpsquat", 3, 10 + 2 * w], ["revlunge", 3, 16 + 2 * w], ["crunch", 3, 20 + 2 * w], ["scissor", 2, 30 + 5 * w]] }
+    ];
+    return plans2[day];
+  }
+  const P2 = { pushup: 8 + 2 * w, squat: 15 + 3 * w, situp: 12 + 3 * w, jacks: 25 + 5 * w, plank: 30 + 10 * w };
   const plans = [
     { title: "Forza di base", blocks: [["jacks", 1, P2.jacks], ["pushup", sets, P2.pushup], ["squat", sets, P2.squat], ["plank", 2, P2.plank]] },
-    { title: "Core e resistenza", blocks: [["jacks", 1, P2.jacks], ["situp", sets, P2.situp], ["pushup", sets - 1, r(P2.pushup)], ["plank", 3, P2.plank]] },
+    { title: "Gambe esplosive", blocks: [["climber", 3, MAX], ["jumpsquat", 3, MAX], ["boxsquat", 3, MAX], ["revlunge", 3, MAX], ["sidelunge", 3, MAX], ["stepup", 3, MAX]] },
     { title: "Circuito da campo", blocks: [["jacks", 2, P2.jacks], ["squat", sets, P2.squat + 5], ["situp", sets - 1, P2.situp], ["pushup", sets, P2.pushup + 2]] }
   ];
   return plans[day];
 }
+const progKey = (wk, d) => (G() === "f" ? "f:" : "") + wk + "-" + d;
 function blocksToQueue(blocks) {
   const q = [];
-  for (const [ex, sets, target] of blocks) for (let s = 1; s <= sets; s++) q.push({ ex, target, set: s, sets });
+  for (const [ex, sets, target] of blocks) for (let s = 1; s <= sets; s++) q.push({ ex, target, set: s, sets, max: !target });
   return q;
 }
 const store = {
@@ -900,7 +1574,7 @@ let progress = store.get("progress", {});
 let records = store.get("records", {});
 let voiceOn = store.get("voice", true);
 function nextSession() {
-  for (let wk = 1; wk <= 4; wk++) for (let d = 0; d < 3; d++) if (!progress[wk + "-" + d]) return { wk, d };
+  for (let wk = 1; wk <= 4; wk++) for (let d = 0; d < 3; d++) if (!progress[progKey(wk, d)]) return { wk, d };
   return { wk: 4, d: 2 };
 }
 const COMPAT_MSG = !(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) ? "Questo browser non pu\xF2 usare la fotocamera. Su iPhone apri il link con Safari, su Android con Chrome, e aggiorna il telefono se puoi." : typeof WebAssembly !== "object" ? "Questo browser \xE8 troppo vecchio per l'analisi dei movimenti. Aggiorna Chrome o Safari." : "";
@@ -939,6 +1613,92 @@ try {
   speechSynthesis.onvoiceschanged = onVoices;
 } catch (e) {
 }
+const VP = { map: null, audio: null, queue: [], playing: false, unlocked: false };
+const vnorm = (s) => String(s).toLowerCase().replace(/[.,!?;:¡¿'’"«»…\-–]+/g, " ").replace(/\s+/g, " ").trim();
+async function loadVoicePack() {
+  var _a;
+  if (!SITE || store.get("vpack", true) === false) return;
+  try {
+    const man = await (await fetch("voice/manifest.json", { cache: "no-cache" })).json();
+    const ids = (_a = man == null ? void 0 : man.langs) == null ? void 0 : _a[lang];
+    if (!Array.isArray(ids) || !ids.length) return;
+    const ph = await (await fetch("voice-phrases.json")).json();
+    const have = new Set(ids), m = /* @__PURE__ */ new Map();
+    for (const r of ph.phrases || []) if (have.has(r.id) && r[lang]) m.set(vnorm(r[lang]), "voice/".concat(lang, "/").concat(r.id, ".mp3"));
+    VP.map = m;
+    VP.audio = new Audio();
+    VP.audio.preload = "auto";
+    VP.audio.onended = VP.audio.onerror = () => playNextClip();
+  } catch (e) {
+  }
+}
+function unlockVoicePack() {
+  if (!VP.map || VP.unlocked) return;
+  VP.unlocked = true;
+  try {
+    const a = VP.audio;
+    a.muted = true;
+    a.src = VP.map.values().next().value;
+    a.play().then(() => {
+      a.pause();
+      a.muted = false;
+    }).catch(() => {
+      a.muted = false;
+      VP.unlocked = false;
+    });
+  } catch (e) {
+  }
+}
+document.addEventListener("pointerdown", unlockVoicePack, true);
+function playNextClip() {
+  const u = VP.queue.shift();
+  if (!u) {
+    VP.playing = false;
+    return;
+  }
+  VP.playing = true;
+  try {
+    VP.audio.src = u;
+    VP.audio.play().catch(() => {
+      VP.queue = [];
+      VP.playing = false;
+    });
+  } catch (e) {
+    VP.playing = false;
+  }
+}
+function packClips(text) {
+  const parts = (text.match(/[^.!?]+[.!?]*/g) || []).map((x) => x.trim()).filter(Boolean);
+  const out = [];
+  for (let i = 0; i < parts.length; ) {
+    let hit = null;
+    for (let j = parts.length; j > i && !hit; j--) {
+      const u = VP.map.get(vnorm(parts.slice(i, j).join(" ")));
+      if (u) hit = [u, j];
+    }
+    if (!hit) return null;
+    out.push(hit[0]);
+    i = hit[1];
+  }
+  return out.length ? out : null;
+}
+function sayPack(text, urgent) {
+  if (!VP.map || !VP.unlocked) return false;
+  const clips = packClips(text);
+  if (!clips) return false;
+  if (VP.playing && !urgent) return true;
+  try {
+    speechSynthesis.cancel();
+  } catch (e) {
+  }
+  try {
+    VP.audio.pause();
+  } catch (e) {
+  }
+  VP.queue = clips;
+  playNextClip();
+  return true;
+}
 let lastSpoken = { text: "", t: 0 }, lastAny = 0;
 const IS_IOS = /iP(hone|ad|od)/.test(navigator.userAgent) || navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1;
 function say(text, { urgent = false, minGap = 3200 } = {}) {
@@ -948,8 +1708,23 @@ function say(text, { urgent = false, minGap = 3200 } = {}) {
   try {
     const now = performance.now();
     if (!urgent && (now - lastAny < minGap || text === lastSpoken.text && now - lastSpoken.t < 7e3)) return;
+    const spoken = ownSet.has(text) ? text : tr(text);
+    if (sayPack(spoken, urgent)) {
+      lastSpoken = { text, t: now };
+      lastAny = now;
+      return;
+    }
+    if (VP.playing) {
+      if (!urgent) return;
+      VP.queue = [];
+      try {
+        VP.audio.pause();
+      } catch (e) {
+      }
+      VP.playing = false;
+    }
     if (urgent) speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(ownSet.has(text) ? text : tr(text));
+    const u = new SpeechSynthesisUtterance(spoken);
     u.lang = ttsLang();
     if (itVoice) u.voice = itVoice;
     u.rate = (_a = voiceCfg.rate) != null ? _a : gritOn ? 1.12 : 1.08;
@@ -1281,8 +2056,112 @@ function makeTracker(exId) {
         }
       }
       return { metric, event, fault, cue, noRepCue };
+    },
+    // front view squat: how low the hips sit between shoulders and ankles
+    jumpsquat(lm) {
+      var _a;
+      const g = (i) => P(lm, i);
+      const lSh = g(11), rSh = g(12), lH = g(23), rH = g(24), lA = g(27), rA = g(28);
+      if (!vis(lSh, rSh, lH, rH, lA, rA)) return { lost: "Inquadrati di fronte, dalla testa ai piedi" };
+      const shY = (lSh.y + rSh.y) / 2, hipY = (lH.y + rH.y) / 2, anY = (lA.y + rA.y) / 2;
+      const h = (anY - hipY) / (anY - shY || 1) * 100;
+      st.hTop = Math.max(h, ((_a = st.hTop) != null ? _a : h) - 0.01);
+      const r = angleRep({ value: st.hTop - h, top: 3, bottom: 9, partial: 5, invert: true });
+      return { ...r, fault: null, cue: null, noRepCue: "Scendi di pi\xF9 nello squat! Non conta" };
+    },
+    boxsquat(lm) {
+      const p = pick(lm, side(lm, [23, 25, 27], [24, 26, 28]));
+      if (!vis(p.sh, p.hip, p.kn, p.an)) return { lost: "Inquadra tutto il corpo, di lato" };
+      const knee = ang(p.hip, p.kn, p.an);
+      const torso = Math.atan2(Math.abs(p.sh.x - p.hip.x), Math.abs(p.hip.y - p.sh.y)) * 180 / Math.PI;
+      let fault = null, cue = null;
+      if (st.phase !== "top" && torso > 55) {
+        fault = "torso";
+        cue = "Petto in alto, schiena dritta";
+      }
+      const r = angleRep({ value: knee, top: 158, bottom: 108, partial: 140, fault });
+      return { ...r, fault, cue, noRepCue: "Scendi fino al rialzo! Non conta" };
+    },
+    sidelunge(lm) {
+      var _a;
+      const g = (i) => P(lm, i);
+      const lSh = g(11), rSh = g(12), lH = g(23), rH = g(24), lA = g(27), rA = g(28);
+      if (!vis(lSh, rSh, lH, rH, lA, rA)) return { lost: "Inquadrati di fronte, dalla testa ai piedi" };
+      const shW = Math.abs(lSh.x - rSh.x) || 0.1;
+      const feet = Math.abs(lA.x - rA.x) / shW;
+      const shY = (lSh.y + rSh.y) / 2, hipY = (lH.y + rH.y) / 2, anY = Math.max(lA.y, rA.y);
+      const h = (anY - hipY) / (anY - shY || 1) * 100;
+      let fault = null, cue = null;
+      if (st.phase === "bottom" && feet < 1.3) {
+        fault = "narrow";
+        cue = "Allarga di pi\xF9 i piedi";
+      }
+      st.hTop = Math.max(h, ((_a = st.hTop) != null ? _a : h) - 0.01);
+      const r = angleRep({ value: st.hTop - h, top: 3, bottom: 8, partial: 5, invert: true, fault });
+      return { ...r, fault, cue, noRepCue: "Scendi di pi\xF9 sul lato! Non conta" };
+    },
+    // the hips rise by the height of the step: measured against their lowest recent position
+    stepup(lm) {
+      var _a;
+      const p = pick(lm, side(lm, [11, 23, 25], [12, 24, 26]));
+      if (!vis(p.sh, p.hip)) return { lost: "Inquadrati di lato, con il rialzo" };
+      const torso = Math.hypot(p.sh.x - p.hip.x, p.sh.y - p.hip.y) || 0.2;
+      st.base = Math.max(p.hip.y, ((_a = st.base) != null ? _a : p.hip.y) - 4e-4);
+      const rise = (st.base - p.hip.y) / torso * 100;
+      const r = angleRep({ value: rise, top: 10, bottom: 24, partial: 16, invert: true, countAt: "bottom" });
+      return { ...r, fault: null, cue: null, noRepCue: "Sali fino in cima, gamba distesa! Non conta" };
+    },
+    wallsit(lm, t) {
+      const p = pick(lm, side(lm, [23, 25, 27], [24, 26, 28]));
+      const dt = st.lastT ? Math.min(250, t - st.lastT) : 0;
+      st.lastT = t;
+      if (!vis(p.sh, p.hip, p.kn, p.an)) return { lost: "Inquadrati di lato, dalla testa ai piedi", metric: 0 };
+      const knee = ang(p.hip, p.kn, p.an);
+      let fault = null, cue = null;
+      if (knee > 115) {
+        fault = "high";
+        cue = "Scendi di pi\xF9, ginocchia a novanta gradi";
+      } else if (knee < 65) {
+        fault = "low";
+        cue = "Risali un po', ginocchia a novanta gradi";
+      } else st.holdMs += dt;
+      return { metric: Math.max(0, Math.min(1, (170 - knee) / 80)), fault, cue, hold: st.holdMs };
+    },
+    bridge(lm) {
+      const p = pick(lm, side(lm, [11, 23, 25], [12, 24, 26]));
+      if (!vis(p.sh, p.hip, p.kn)) return { lost: "Inquadrati di lato: spalle, bacino e ginocchia" };
+      const hip = ang(p.sh, p.hip, p.kn);
+      const r = angleRep({ value: hip, top: 125, bottom: 155, partial: 138, invert: true, countAt: "bottom" });
+      return { ...r, fault: null, cue: null, noRepCue: "Bacino pi\xF9 in alto, corpo a tavolo! Non conta" };
+    },
+    crunch(lm) {
+      const p = pick(lm, side(lm, [11, 23, 25], [12, 24, 26]));
+      if (!vis(p.sh, p.hip, p.kn)) return { lost: "Inquadrati di lato: spalle, bacino e ginocchia" };
+      const lift = Math.atan2(p.hip.y - p.sh.y, Math.abs(p.sh.x - p.hip.x)) * 180 / Math.PI;
+      const r = angleRep({ value: lift, top: 12, bottom: 26, partial: 18, invert: true, countAt: "bottom" });
+      return { ...r, fault: null, cue: null, noRepCue: "Solleva di pi\xF9 le spalle! Non conta" };
+    },
+    scissor(lm, t) {
+      const p = pick(lm, side(lm, [11, 23, 27], [12, 24, 28]));
+      const dt = st.lastT ? Math.min(250, t - st.lastT) : 0;
+      st.lastT = t;
+      const la = P(lm, 27), ra = P(lm, 28);
+      if (!vis(p.sh, p.hip) || la.v < 0.4 && ra.v < 0.4) return { lost: "Inquadrati di lato, dalla testa ai piedi", metric: 0 };
+      const lying = Math.abs(p.sh.x - p.hip.x) > Math.abs(p.sh.y - p.hip.y);
+      if (!lying) return { lost: "Sdraiati sulla schiena", metric: 0 };
+      const legH = Math.max(0, p.hip.y - Math.min(la.v > 0.4 ? la.y : 9, ra.v > 0.4 ? ra.y : 9));
+      const len = Math.hypot(p.sh.x - p.hip.x, p.sh.y - p.hip.y) || 0.2;
+      const up = legH / len;
+      let fault = null, cue = null;
+      if (up < 0.12) {
+        fault = "down";
+        cue = "Gambe su! Non toccare terra";
+      } else st.holdMs += dt;
+      return { metric: Math.max(0, Math.min(1, up / 0.5)), fault, cue, hold: st.holdMs };
     }
   };
+  T.revlunge = T.lunge;
+  T.widepush = T.pushup;
   return { st, step: T[exId] };
 }
 const SITE = true;
@@ -1327,7 +2206,7 @@ const $ = (id) => document.getElementById(id);
 const app = $("app");
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 const fmt = (s) => String(Math.floor(s / 60)).padStart(2, "0") + ":" + String(Math.floor(s % 60)).padStart(2, "0");
-const targetTxt = (ex, n) => EX[ex].unit === "secs" ? n + " s" : n + " rip.";
+const targetTxt = (ex, n) => !n ? "MAX" : EX[ex].unit === "secs" ? n + " s" : n + " rip.";
 const icon = {
   squat: '<svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="color:var(--brass)"><circle cx="30" cy="9" r="4" fill="currentColor"/><path d="M29 14 L22 27 L34 31 L33 45 M22 27 L14 38 L20 45 M27 18 L40 20"/></svg>',
   pushup: '<svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="color:var(--brass)"><circle cx="10" cy="24" r="4" fill="currentColor"/><path d="M15 27 L46 34 M18 28 L18 40 M4 40 L48 40"/></svg>',
@@ -1338,6 +2217,14 @@ const icon = {
 icon.lunge = '<svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="color:var(--brass)"><circle cx="26" cy="8" r="4" fill="currentColor"/><path d="M26 13 L26 28 M26 28 L36 34 L36 46 M26 28 L16 38 L8 44"/></svg>';
 icon.climber = '<svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="color:var(--brass)"><circle cx="10" cy="20" r="4" fill="currentColor"/><path d="M15 23 L34 30 L46 40 M34 30 L26 34 L24 40 M14 24 L14 40 M4 40 L48 40"/></svg>';
 icon.burpee = '<svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="color:var(--brass)"><circle cx="26" cy="10" r="4" fill="currentColor"/><path d="M26 15 L26 30 M26 30 L20 42 M26 30 L32 42 M26 18 L18 4 M26 18 L34 4 M12 48 L40 48" /></svg>';
+const ARROW = '<svg class="arrow" viewBox="0 0 34 34" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12 C12 3 23 5 28 16"/><path d="M20 15 L28.5 17 L30 8.5"/></svg>';
+const TAB_ICO = {
+  home: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 12 4l9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg>',
+  exercises: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7v10M18 7v10M3 9v6M21 9v6M6 12h12"/></svg>',
+  duels: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4l9 9M20 4l-9 9"/><path d="M6 18l-2 2M18 18l2 2"/><path d="M8 16l-2-2M16 16l2-2"/></svg>',
+  ranking: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4"/><path d="M7 4h10v5a5 5 0 0 1-10 0V4z"/><path d="M7 6H4a3 3 0 0 0 3 4M17 6h3a3 3 0 0 1-3 4"/></svg>',
+  profile: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg>'
+};
 const lockIco = '<svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="4" y="9" width="12" height="9" rx="1.5"/><path d="M7 9V6a3 3 0 0 1 6 0v3"/></svg>';
 const sideCam = '<svg viewBox="0 0 64 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="color:var(--muted)"><rect x="2" y="26" width="8" height="14" rx="1.5" stroke="var(--brass)"/><path d="M12 33 L22 30 M12 33 L22 36" stroke-dasharray="2 3"/><circle cx="34" cy="20" r="3" fill="currentColor"/><path d="M36 23 L56 30 M2 42 L62 42"/></svg>';
 let route = { name: "home" };
@@ -1346,7 +2233,26 @@ function go(r) {
   render();
   window.scrollTo(0, 0);
 }
+const TABS = ["home", "exercises", "duels", "ranking", "profile"];
 function render() {
+  const tab = TABS.includes(route.name);
+  $("tabbar").hidden = !tab;
+  document.body.classList.toggle("tabs", tab);
+  $("tabbar").querySelectorAll("[data-tab]").forEach((b) => {
+    if (b.dataset.tab === route.name) b.setAttribute("aria-current", "page");
+    else b.removeAttribute("aria-current");
+  });
+  figAnim.els.clear();
+  renderRoute();
+  animateFigs(app);
+}
+document.querySelectorAll("#tabbar [data-tab]").forEach((b) => b.onclick = () => go({ name: b.dataset.tab }));
+function renderRoute() {
+  if (route.name === "onboard") return renderOnboard();
+  if (route.name === "exercises") return renderExercises();
+  if (route.name === "duels") return renderDuels();
+  if (route.name === "searching") return renderSearching();
+  if (route.name === "profile") return renderProfile();
   if (route.name === "home") return renderHome();
   if (route.name === "brief") return renderBrief();
   if (route.name === "summary") return renderSummary();
@@ -1358,25 +2264,96 @@ function render() {
   if (route.name === "voice") return renderVoice();
 }
 function renderHome() {
-  var _a, _b;
   const n = nextSession();
   const s = session(n.wk, n.d);
-  const done = Object.keys(progress).length;
-  const weeks = [1, 2, 3, 4].map((wk) => '<div class="wk '.concat(wk === n.wk ? "now" : "", '">Sett. ').concat(wk, '<div class="dots">').concat([0, 1, 2].map((d) => '<i class="'.concat(progress[wk + "-" + d] ? "done" : "", '"></i>')).join(""), "</div></div>")).join("");
-  app.innerHTML = '\n  <div class="screen">\n    <header class="mast">\n      <div><h1>Istruttore Recluta</h1><div class="sub">Addestramento a corpo libero</div></div>\n      <div class="callsign">Sessioni<b>'.concat(done, "/12</b></div>\n    </header>\n\n    ").concat((() => {
+  const done = [1, 2, 3, 4].reduce((a, wk) => a + [0, 1, 2].filter((d) => progress[progKey(wk, d)]).length, 0);
+  const weeks = [1, 2, 3, 4].map((wk) => '<div class="wk '.concat(wk === n.wk ? "now" : "", '">Sett. ').concat(wk, '<div class="dots">').concat([0, 1, 2].map((d) => '<i class="'.concat(progress[progKey(wk, d)] ? "done" : "", '"></i>')).join(""), "</div></div>")).join("");
+  const tests = G() === "f" ? ["squat", "crunch"] : ["pushup", "situp"];
+  app.innerHTML = '\n  <div class="screen">\n    <header class="mast">\n      <div class="hello"><div class="avatar" data-fig="jacks" data-t="0" data-g="'.concat(G(), '"></div><div><div class="sub">Ciao,</div><h1>').concat(esc(myName || (G() === "f" ? "Recluta" : "Recluta")), '</h1></div></div>\n      <div class="callsign">Sessioni<b>').concat(done, "/12</b></div>\n    </header>\n\n    ").concat((() => {
     const ri = rankIndex(), cur = RANKS[ri], nx = RANKS[ri + 1];
     const pct = nx ? Math.round((stats.total - cur[1]) / (nx[1] - cur[1]) * 100) : 100;
-    return '<button class="rankcard" id="openRank" type="button" style="text-align:left;color:inherit">\n      <div><div class="label">Il tuo grado</div><div class="rname">'.concat(esc(myName || "Recluta"), " ").concat(myBadge(), ' <span style="font-weight:600;color:var(--muted);font-size:17px">').concat(cur[0], '</span></div></div>\n      <div class="pts">').concat(stats.month.pts, '<small>punti del mese</small></div>\n      <div class="xp"><i style="width:').concat(pct, '%"></i></div>\n      <div class="meta">').concat(nx ? "".concat(nx[1] - stats.total, " punti al grado ").concat(nx[0]) : "Grado massimo raggiunto", " \xB7 Classifica \u203A</div>\n    </button>");
-  })(), '\n\n    <section class="section">\n      <div class="label">Ordine del giorno \xB7 Settimana ').concat(n.wk, ", sessione ").concat(n.d + 1, '</div>\n      <div class="order">\n        <h2>').concat(esc(s.title), '</h2>\n        <ul class="blocks">').concat(s.blocks.map(([ex, sets, t]) => "<li><span>".concat(EX[ex].name, "</span><span>").concat(sets, " \xD7 ").concat(targetTxt(ex, t), "</span></li>")).join(""), '</ul>\n        <p class="meta">Recupero 60 s tra le serie. La telecamera conta le ripetizioni e ti corregge a voce.</p>\n        <div class="row"><button class="btn primary" id="startDay" type="button">Inizia la sessione</button></div>\n        <div class="weeks">').concat(weeks, '</div>\n      </div>\n    </section>\n\n    <section class="section">\n      <div class="label">Prova di efficienza fisica</div>\n      <div class="exlist">\n        <button class="ex" data-test="pushup" type="button">').concat(icon.pushup, "<span><b>Piegamenti in 2 minuti</b><small>Record: ").concat((_a = records.pushup) != null ? _a : "\u2014", '</small></span><span class="go">\u203A</span></button>\n        <button class="ex" data-test="situp" type="button">').concat(icon.situp, "<span><b>Addominali in 2 minuti</b><small>Record: ").concat((_b = records.situp) != null ? _b : "\u2014", '</small></span><span class="go">\u203A</span></button>\n      </div>\n    </section>\n\n    ').concat(SITE ? '<section class="section">\n      <div class="label">Sfida un amico</div>\n      <div class="order">\n        <h2>Uno contro uno, in videochiamata</h2>\n        <p class="meta">Vi vedete in diretta, la fotocamera conta le ripetizioni di entrambi e l\'istruttore annuncia il vincitore.</p>\n        <div class="row">\n          <button class="btn primary" id="duelNew" type="button">Crea una sfida</button>\n          <button class="btn ghost" id="duelJoin" type="button">Ho un codice</button>\n        </div>\n      </div>\n    </section>' : "", '\n\n    <section class="section">\n      <div class="label">Esercizi singoli</div>\n      <div class="exlist">\n        ').concat(Object.entries(EX).map(([id, e]) => isUnlocked(id) ? '<button class="ex" data-ex="'.concat(id, '" type="button">').concat(icon[id], "<span><b>").concat(e.name, "</b><small>").concat(e.tag, '</small></span><span class="go">\u203A</span></button>') : '<div class="ex locked">'.concat(icon[id], "<span><b>").concat(e.name, "</b><small>Si sblocca al grado ").concat(RANKS[e.lock][0], " (").concat(RANKS[e.lock][1], ' punti)</small></span><span class="go">').concat(lockIco, "</span></div>")).join(""), '\n      </div>\n    </section>\n\n    <section class="section elite">\n      <div class="label">Riservato ai primi 3 del mese</div>\n      <div class="exlist">\n        ').concat(Object.entries(ELITE).map(([id, e]) => isElite() ? '<button class="ex" data-elite="'.concat(id, '" type="button">').concat(icon[id === "gold" ? "jacks" : id === "hell" ? "burpee" : "climber"], "<span><b>").concat(e.name, "</b><small>").concat(id === "gold" ? stats.gold ? "Attiva \xB7 tocca per disattivare" : "Disattivata \xB7 tocca per attivare" : e.desc, '</small></span><span class="go">\u203A</span></button>') : '<div class="ex locked">'.concat(icon[id === "gold" ? "jacks" : id === "hell" ? "burpee" : "climber"], "<span><b>").concat(e.name, "</b><small>").concat(e.desc, '</small></span><span class="go">').concat(lockIco, "</span></div>")).join(""), "\n      </div>\n      ").concat(isElite() ? '<p class="note">Sei tra i primi 3 di '.concat(monthName(prevMonthKey()), ": queste opzioni restano attive per tutto il mese.</p>") : '<p class="note">Chiudi il mese tra i primi 3 in classifica per sbloccarle per tutto il mese successivo.</p>', '\n    </section>\n\n    <label class="toggle"><input type="checkbox" id="voiceT" ').concat(voiceOn ? "checked" : "", '> Istruttore vocale (italiano)</label>\n    <label class="toggle"><input type="checkbox" id="gritT" ').concat(gritOn ? "checked" : "", '> Voce del sergente: incitamento durante l\'esercizio</label>\n    <button class="btn ghost small" id="voiceSet" type="button">Personalizza la voce</button>\n    ').concat(COMPAT_MSG ? '<p class="note" style="border-color:var(--bad)">'.concat(COMPAT_MSG, "</p>") : "", '\n    <p class="note">Il video resta sul tuo telefono: l\'analisi della postura avviene nel browser e nessuna immagine viene inviata.</p>\n  </div>');
+    return '<button class="rankcard" id="openRank" type="button" style="text-align:left;color:inherit">\n      <div><div class="label">Il tuo grado</div><div class="rname">'.concat(myBadge(), " <span>").concat(cur[0], '</span></div></div>\n      <div class="pts">').concat(stats.month.pts, '<small>punti del mese</small></div>\n      <div class="xp"><i style="width:').concat(pct, '%"></i></div>\n      <div class="meta">').concat(nx ? "".concat(nx[1] - stats.total, " punti al grado ").concat(nx[0]) : "Grado massimo raggiunto", " \xB7 Classifica \u203A</div>\n    </button>");
+  })(), '\n\n    <section class="section">\n      <div class="label">Ordine del giorno \xB7 Settimana ').concat(n.wk, ", sessione ").concat(n.d + 1, '</div>\n      <div class="order">\n        <h2>').concat(esc(s.title), '</h2>\n        <div class="circuit">').concat(s.blocks.map(([ex, sets, t]) => '<button class="step" type="button" data-ex="'.concat(ex, '"><div class="figbox" data-fig="').concat(ex, '" data-g="').concat(G(), '"></div><b>').concat(EX[ex].name, "</b><span>").concat(sets, " \xD7 ").concat(targetTxt(ex, t), "</span>").concat(ARROW, "</button>")).join(""), '</div>\n        <p class="restnote">1 minuto di riposo tra ogni serie \xB7 la telecamera conta le ripetizioni e ti corregge a voce</p>\n        <button class="btn primary big" id="startDay" type="button">Inizia la sessione</button>\n        <div class="weeks">').concat(weeks, '</div>\n      </div>\n    </section>\n\n    <section class="section">\n      <div class="label">Prova di efficienza fisica</div>\n      <div class="exlist">\n        ').concat(tests.map((id) => {
+    var _a;
+    return '<button class="ex wide" data-test="'.concat(id, '" type="button"><div class="figbox" data-fig="').concat(id, '" data-g="').concat(G(), '"></div><span><b>').concat(EX[id].name, " in 2 minuti</b><small>Record: ").concat((_a = records[id]) != null ? _a : "\u2014", '</small></span><span class="go">\u203A</span></button>');
+  }).join(""), "\n      </div>\n    </section>\n\n    ").concat(SITE ? '<section class="section">\n      <div class="label">Sfida</div>\n      <button class="mode" id="openDuels" type="button"><span class="ico">'.concat(TAB_ICO.duels, '</span><span><b>Sfida qualcuno in videochiamata</b><small>Avversario casuale, un amico invitato o un codice</small></span><span class="go">\u203A</span></button>\n    </section>') : "", "\n    ").concat(COMPAT_MSG ? '<p class="note" style="background:#fdecea">'.concat(COMPAT_MSG, "</p>") : "", "\n  </div>");
   $("startDay").onclick = () => go({ name: "brief", queue: blocksToQueue(s.blocks), day: n, title: s.title });
-  app.querySelectorAll("[data-ex]").forEach((b) => b.onclick = () => {
-    const id = b.dataset.ex;
-    go({ name: "brief", queue: [{ ex: id, target: EX[id].unit === "secs" ? 45 : 15, set: 1, sets: 1 }], title: EX[id].name, free: true });
-  });
+  app.querySelectorAll("[data-ex]").forEach((b) => b.onclick = () => openFree(b.dataset.ex));
   app.querySelectorAll("[data-test]").forEach((b) => b.onclick = () => {
     const id = b.dataset.test;
     go({ name: "brief", queue: [{ ex: id, target: 0, set: 1, sets: 1, timeLimit: 120 }], title: EX[id].name + " in 2 minuti", test: id });
   });
+  $("openRank").onclick = () => go({ name: "ranking" });
+  if (SITE) $("openDuels").onclick = () => go({ name: "duels" });
+}
+function openFree(id) {
+  go({ name: "brief", queue: [{ ex: id, target: EX[id].unit === "secs" ? 45 : 15, set: 1, sets: 1 }], title: EX[id].name, free: true });
+}
+function renderExercises() {
+  const list = GENDER_EX[G()];
+  app.innerHTML = '\n  <div class="screen">\n    <header class="mast"><div><h1>Esercizi</h1><div class="sub">'.concat(G() === "f" ? "Percorso Donna" : "Percorso Uomo", ' \xB7 tocca per allenarti</div></div></header>\n    <div class="exlist">\n      ').concat(list.map((id) => {
+    const e = EX[id];
+    return isUnlocked(id) ? '<button class="ex" data-ex="'.concat(id, '" type="button"><div class="figbox" data-fig="').concat(id, '" data-g="').concat(G(), '"></div><b>').concat(e.name, "</b><small>").concat(e.tag, '</small><span class="go">\u203A</span></button>') : '<div class="ex locked"><div class="figbox" data-fig="'.concat(id, '" data-g="').concat(G(), '"></div><b>').concat(e.name, "</b><small>Si sblocca al grado ").concat(RANKS[e.lock][0], " (").concat(RANKS[e.lock][1], ' punti)</small><span class="go">').concat(lockIco, "</span></div>");
+  }).join(""), '\n    </div>\n    <section class="section elite">\n      <div class="label">Riservato ai primi 3 del mese</div>\n      <div class="exlist">\n        ').concat(Object.entries(ELITE).map(([id, e]) => {
+    const f = id === "gold" ? "jacks" : id === "hell" ? "burpee" : "climber";
+    return isElite() ? '<button class="ex wide" data-elite="'.concat(id, '" type="button"><div class="figbox" data-fig="').concat(f, '" data-g="').concat(G(), '"></div><span><b>').concat(e.name, "</b><small>").concat(id === "gold" ? stats.gold ? "Attiva \xB7 tocca per disattivare" : "Disattivata \xB7 tocca per attivare" : e.desc, '</small></span><span class="go">\u203A</span></button>') : '<div class="ex wide locked"><div class="figbox" data-fig="'.concat(f, '" data-g="').concat(G(), '"></div><span><b>').concat(e.name, "</b><small>").concat(e.desc, '</small></span><span class="go">').concat(lockIco, "</span></div>");
+  }).join(""), "\n      </div>\n      ").concat(isElite() ? '<p class="note">Sei tra i primi 3 di '.concat(monthName(prevMonthKey()), ": queste opzioni restano attive per tutto il mese.</p>") : '<p class="note">Chiudi il mese tra i primi 3 in classifica per sbloccarle per tutto il mese successivo.</p>', "\n    </section>\n  </div>");
+  app.querySelectorAll("[data-ex]").forEach((b) => b.onclick = () => openFree(b.dataset.ex));
+  app.querySelectorAll("[data-elite]").forEach((b) => b.onclick = () => {
+    const id = b.dataset.elite;
+    if (id === "gold") {
+      stats.gold = !stats.gold;
+      store.set("stats", stats);
+      applyTheme();
+      lbSchedule();
+      return renderExercises();
+    }
+    go({ name: "brief", queue: eliteQueue(id), title: ELITE[id].name, elite: id });
+  });
+}
+function genderPick(sel) {
+  return '<div class="pick" role="group" aria-label="Percorso">\n    <button class="m" type="button" data-g="m" '.concat(sel === "m" ? 'style="border-color:#2e86de"' : "", '><div class="figbox" data-fig="squat" data-g="m"></div><b>Uomo</b><small>Forza, gambe esplosive, circuito da campo</small></button>\n    <button class="f" type="button" data-g="f" ').concat(sel === "f" ? 'style="border-color:#b02a91"' : "", '><div class="figbox" data-fig="lunge" data-g="f"></div><b>Donna</b><small>Gambe, glutei, addome e tonificazione</small></button>\n  </div>');
+}
+function setGender(g) {
+  gender = g;
+  store.set("gender", g);
+  applyTheme();
+}
+function renderOnboard() {
+  app.innerHTML = '\n  <div class="screen">\n    <header class="mast"><div><h1>Istruttore Recluta</h1><div class="sub">Il tuo personal trainer con la fotocamera</div></div></header>\n    <div class="section"><div class="h2">Chi si allena?</div><p class="meta">Scegli il percorso: esercizi e programma cambiano. Puoi cambiarlo quando vuoi dal Profilo.</p></div>\n    <div class="field"><label class="label" for="nm">Il tuo nome</label><input id="nm" maxlength="20" autocomplete="nickname" placeholder="Es. Marco" value="'.concat(esc(myName), '"></div>\n    ').concat(genderPick(null), "\n  </div>");
+  app.querySelectorAll(".pick > button").forEach((b) => b.onclick = () => {
+    const v = $("nm").value.trim();
+    if (v) {
+      myName = v;
+      store.set("name", v);
+    }
+    setGender(b.dataset.g);
+    go({ name: "home" });
+  });
+}
+function renderProfile() {
+  app.innerHTML = '\n  <div class="screen">\n    <header class="mast"><div><h1>Profilo</h1><div class="sub">'.concat(myName ? esc(myName) + " \xB7 " : "").concat(RANKS[rankIndex()][0], '</div></div></header>\n    <div class="section"><div class="label">Percorso</div>').concat(genderPick(G()), '</div>\n    <div class="field"><label class="label" for="nm">Il tuo nome</label><input id="nm" maxlength="20" autocomplete="nickname" placeholder="Es. Marco" value="').concat(esc(myName), '"></div>\n    <div class="field"><label class="label" for="pLang">Lingua</label>\n      <select id="pLang" class="sel">\n        <option value="">Automatica (').concat(LANGS[detectLang()].name, ")</option>\n        ").concat(LANG_ORDER.map((k) => '<option value="'.concat(k, '" ').concat(store.get("lang", "") === k ? "selected" : "", ">").concat(LANGS[k].name, "</option>")).join(""), '\n      </select></div>\n    <div class="section"><div class="label">Voce</div>\n      <label class="toggle"><input type="checkbox" id="voiceT" ').concat(voiceOn ? "checked" : "", '> Istruttore vocale</label>\n      <label class="toggle"><input type="checkbox" id="gritT" ').concat(gritOn ? "checked" : "", '> Voce del sergente: incitamento durante l\'esercizio</label>\n      <button class="btn ghost" id="voiceSet" type="button">Personalizza la voce</button>\n    </div>\n    <p class="note">Il video resta sul tuo telefono: l\'analisi della postura avviene nel browser e nessuna immagine viene inviata.</p>\n  </div>');
+  app.querySelectorAll(".pick > button").forEach((b) => b.onclick = () => {
+    setGender(b.dataset.g);
+    renderProfile();
+  });
+  $("nm").onchange = () => {
+    const v = $("nm").value.trim();
+    if (v) {
+      myName = v;
+      store.set("name", v);
+      lbSchedule();
+    }
+  };
+  $("pLang").onchange = (e) => {
+    const v = e.target.value;
+    if (v) store.set("lang", v);
+    else try {
+      localStorage.removeItem("recluta:lang");
+    } catch (e2) {
+    }
+    location.reload();
+  };
   $("voiceT").onchange = (e) => {
     voiceOn = e.target.checked;
     store.set("voice", voiceOn);
@@ -1392,33 +2369,21 @@ function renderHome() {
       say("Agli ordini! Da adesso ti tengo sotto pressione.", { urgent: true });
     }
   };
-  $("openRank").onclick = () => go({ name: "ranking" });
-  app.querySelectorAll("[data-elite]").forEach((b) => b.onclick = () => {
-    const id = b.dataset.elite;
-    if (id === "gold") {
-      stats.gold = !stats.gold;
-      store.set("stats", stats);
-      applyGold();
-      lbSchedule();
-      return renderHome();
-    }
-    go({ name: "brief", queue: eliteQueue(id), title: ELITE[id].name, elite: id });
-  });
-  if (SITE) {
-    $("duelNew").onclick = () => go({ name: "duel-new" });
-    $("duelJoin").onclick = () => go({ name: "duel-join", code: "" });
-  }
 }
 function renderBrief() {
   const first = route.queue[0];
   const e = EX[first.ex];
   const uniq = [...new Set(route.queue.map((q) => q.ex))];
+  const plan = (id) => {
+    const q = route.queue.filter((x) => x.ex === id);
+    return route.test ? "Massimo in 2:00" : "".concat(q.length, " \xD7 ").concat(targetTxt(id, q[0].target));
+  };
   const goal = route.test ? "Massimo numero di ripetizioni valide in 2:00." : route.free ? "Obiettivo: ".concat(targetTxt(first.ex, first.target)) : "".concat(route.queue.length, " serie in tutto \xB7 si parte con ").concat(e.name);
-  app.innerHTML = '\n  <div class="screen brief">\n    <button class="back" id="back" type="button">\u2039 Indietro</button>\n    <div class="section">\n      <div class="label">'.concat(route.free || route.test ? "Esercizio" : "Sessione", "</div>\n      <h2>").concat(esc(route.title), '</h2>\n      <p class="goal">').concat(goal, "</p>\n    </div>\n    ").concat(route.free && e.unit === "reps" ? '<div class="row" role="group" aria-label="Obiettivo">'.concat([10, 15, 20, 30].map((n) => '<button class="btn ghost small tgt" data-n="'.concat(n, '" type="button" ').concat(n === first.target ? 'style="border-color:var(--brass)"' : "", ">").concat(n, "</button>")).join(""), "</div>") : "", "\n    ").concat(uniq.map((id) => '\n      <div class="section">\n        <div class="label">'.concat(EX[id].name, ': esecuzione</div>\n        <ol class="steps">').concat(EX[id].steps.map((s) => "<li>".concat(s, "</li>")).join(""), '</ol>\n        <div class="label" style="margin-top:6px">Cosa ti correggo</div>\n        <ul class="faults">').concat(EX[id].faults.map((s) => "<li>".concat(s, "</li>")).join(""), '</ul>\n        <div class="camtip">').concat(sideCam, "<span>").concat(EX[id].cam, "</span></div>\n      </div>")).join(""), '\n    <div class="section">\n      <div class="row">\n        <button class="btn primary" id="live" type="button">Telecamera dal vivo</button>\n        <button class="btn ghost" id="rec" type="button">Registra un video</button>\n      </div>\n      <p class="note" id="camNote">Al primo avvio il telefono ti chiede il permesso di usare la fotocamera: tocca Consenti. In alternativa puoi registrare un video della serie e farlo analizzare.</p>\n    </div>\n  </div>');
-  $("back").onclick = () => go({ name: "home" });
+  app.innerHTML = '\n  <div class="screen brief">\n    <button class="back" id="back" type="button">\u2039 Indietro</button>\n    <div class="section">\n      <div class="label">'.concat(route.free || route.test ? "Esercizio" : "Sessione", "</div>\n      <h2>").concat(esc(route.title), '</h2>\n      <p class="goal">').concat(goal, "</p>\n    </div>\n    ").concat(route.free && e.unit === "reps" ? '<div class="row" role="group" aria-label="Obiettivo">'.concat([10, 15, 20, 30].map((n) => '<button class="btn ghost small tgt" data-n="'.concat(n, '" type="button" ').concat(n === first.target ? 'style="border-color:var(--brass);color:var(--brass)"' : "", ">").concat(n, "</button>")).join(""), "</div>") : "", "\n    ").concat(route.free && e.unit === "secs" ? '<div class="row" role="group" aria-label="Obiettivo">'.concat([20, 30, 45, 60].map((n) => '<button class="btn ghost small tgt" data-n="'.concat(n, '" type="button" ').concat(n === first.target ? 'style="border-color:var(--brass);color:var(--brass)"' : "", ">").concat(n, " s</button>")).join(""), "</div>") : "", "\n    ").concat(uniq.map((id, k) => '\n      <div class="demo">\n        <div class="figbox" data-fig="'.concat(id, '" data-g="').concat(G(), '" data-anim></div>\n        <div class="row" style="justify-content:space-between;align-items:baseline"><h3>').concat(k + 1, ". ").concat(EX[id].name, '</h3><span class="goal">').concat(route.free ? "" : plan(id), '</span></div>\n        <ol class="steps">').concat(EX[id].steps.map((s) => "<li>".concat(s, "</li>")).join(""), '</ol>\n        <div class="label" style="margin-top:4px">Cosa ti correggo</div>\n        <ul class="faults">').concat(EX[id].faults.map((s) => "<li>".concat(s, "</li>")).join(""), '</ul>\n        <div class="camtip">').concat(sideCam, "<span>").concat(EX[id].cam, "</span></div>\n      </div>")).join(""), "\n    ").concat(uniq.length > 1 ? '<p class="restnote">1 minuto di riposo tra ogni serie</p>' : "", '\n    <p class="note" id="camNote">Al primo avvio il telefono ti chiede il permesso di usare la fotocamera: tocca Consenti. In alternativa puoi registrare un video della serie e farlo analizzare.</p>\n    <div class="stickybar"><div class="row">\n      <button class="btn primary big" id="live" type="button" style="flex:2 1 200px">Telecamera dal vivo</button>\n      <button class="btn ghost" id="rec" type="button" style="flex:1 1 110px">Registra un video</button>\n    </div></div>\n  </div>');
+  $("back").onclick = () => go({ name: route.free ? "exercises" : "home" });
   app.querySelectorAll(".tgt").forEach((b) => b.onclick = () => {
     route.queue[0].target = +b.dataset.n;
-    renderBrief();
+    render();
   });
   $("live").onclick = () => startSession("live");
   $("rec").onclick = () => {
@@ -1443,7 +2408,7 @@ function renderVoice() {
   var _a, _b;
   const vs = itVoices();
   const rate = (_a = voiceCfg.rate) != null ? _a : gritOn ? 1.12 : 1.08, pitch = (_b = voiceCfg.pitch) != null ? _b : gritOn ? 0.8 : 0.9;
-  app.innerHTML = '\n  <div class="screen brief">\n    <button class="back" id="back" type="button">\u2039 Indietro</button>\n    <div class="section"><div class="label">Impostazioni</div><h2>Voce dell\'istruttore</h2></div>\n    <div class="field"><label class="label" for="vLang">Lingua</label>\n      <select id="vLang" class="sel">\n        <option value="">Automatica ('.concat(LANGS[detectLang()].name, ")</option>\n        ").concat(LANG_ORDER.map((k) => '<option value="'.concat(k, '" ').concat(store.get("lang", "") === k ? "selected" : "", ">").concat(LANGS[k].name, "</option>")).join(""), '\n      </select></div>\n    <div class="field"><label class="label" for="vVoice">Voce</label>\n      <select id="vVoice" class="sel">\n        <option value="">Automatica</option>\n        ').concat(vs.map((v) => '<option data-notr value="'.concat(esc(v.name), '" ').concat(v.name === voiceCfg.voice ? "selected" : "", ">").concat(esc(v.name), "</option>")).join(""), "\n      </select>\n      ").concat(vs.length ? "" : '<p class="note">Il telefono non ha ancora una voce per questa lingua: vedi sotto come aggiungerla.</p>', '\n    </div>\n    <div class="field"><label class="label" for="vRate">Velocit\xE0 \xB7 <span id="vRateV">').concat(rate.toFixed(2), '</span></label><input id="vRate" type="range" min="0.6" max="1.6" step="0.02" value="').concat(rate, '"></div>\n    <div class="field"><label class="label" for="vPitch">Tono \xB7 <span id="vPitchV">').concat(pitch.toFixed(2), '</span> <small style="text-transform:none;letter-spacing:0">(pi\xF9 basso = pi\xF9 grave e deciso)</small></label><input id="vPitch" type="range" min="0.4" max="1.6" step="0.02" value="').concat(pitch, '"></div>\n    <div class="row"><button class="btn primary small" id="vTest" type="button">Prova la voce</button><button class="btn ghost small" id="vReset" type="button">Ripristina</button></div>\n    <div class="field"><label class="label" for="vOwn">Le tue frasi di incitamento (una per riga)</label>\n      <textarea id="vOwn" rows="5" maxlength="3000" placeholder="Forza Marco, non mollare!&#10;Ogni ripetizione ti rende pi\xF9 forte!">').concat(esc(voiceCfg.own || ""), '</textarea></div>\n    <div class="field"><label class="label" for="vOwnStart">Le tue frasi a inizio serie (una per riga)</label>\n      <textarea id="vOwnStart" rows="3" maxlength="1500" placeholder="Si comincia, soldato!">').concat(esc(voiceCfg.ownStart || ""), '</textarea></div>\n    <label class="toggle"><input type="checkbox" id="vOnly" ').concat(voiceCfg.onlyOwn ? "checked" : "", '> Usa solo le mie frasi</label>\n    <div class="row"><button class="btn primary" id="vSave" type="button">Salva</button></div>\n    <p class="note" id="vSaved" hidden>Salvato.</p>\n    <div class="section"><div class="label">Altre voci sul telefono</div>\n      <p class="meta"><b>iPhone:</b> Impostazioni \u203A Accessibilit\xE0 \u203A Contenuti letti \u203A Voci \u203A la tua lingua. Scarica una voce, per esempio una "Avanzata", poi riapri l\'app e sceglila qui.</p>\n      <p class="meta"><b>Android:</b> Impostazioni \u203A Sistema \u203A Lingue \u203A Output sintesi vocale. Con "Sintesi vocale di Google" scegli la tua lingua e scarica le voci, poi riapri l\'app.</p>\n    </div>\n  </div>');
+  app.innerHTML = '\n  <div class="screen brief">\n    <button class="back" id="back" type="button">\u2039 Indietro</button>\n    <div class="section"><div class="label">Impostazioni</div><h2>Voce dell\'istruttore</h2></div>\n    <div class="field"><label class="label" for="vLang">Lingua</label>\n      <select id="vLang" class="sel">\n        <option value="">Automatica ('.concat(LANGS[detectLang()].name, ")</option>\n        ").concat(LANG_ORDER.map((k) => '<option value="'.concat(k, '" ').concat(store.get("lang", "") === k ? "selected" : "", ">").concat(LANGS[k].name, "</option>")).join(""), "\n      </select></div>\n    ").concat(VP.map ? '<label class="toggle"><input type="checkbox" id="vPack" '.concat(store.get("vpack", true) ? "checked" : "", "> Usa la voce registrata</label>") : "", '\n    <div class="field"><label class="label" for="vVoice">Voce</label>\n      <select id="vVoice" class="sel">\n        <option value="">Automatica</option>\n        ').concat(vs.map((v) => '<option data-notr value="'.concat(esc(v.name), '" ').concat(v.name === voiceCfg.voice ? "selected" : "", ">").concat(esc(v.name), "</option>")).join(""), "\n      </select>\n      ").concat(vs.length ? "" : '<p class="note">Il telefono non ha ancora una voce per questa lingua: vedi sotto come aggiungerla.</p>', '\n    </div>\n    <div class="field"><label class="label" for="vRate">Velocit\xE0 \xB7 <span id="vRateV">').concat(rate.toFixed(2), '</span></label><input id="vRate" type="range" min="0.6" max="1.6" step="0.02" value="').concat(rate, '"></div>\n    <div class="field"><label class="label" for="vPitch">Tono \xB7 <span id="vPitchV">').concat(pitch.toFixed(2), '</span> <small style="text-transform:none;letter-spacing:0">(pi\xF9 basso = pi\xF9 grave e deciso)</small></label><input id="vPitch" type="range" min="0.4" max="1.6" step="0.02" value="').concat(pitch, '"></div>\n    <div class="row"><button class="btn primary small" id="vTest" type="button">Prova la voce</button><button class="btn ghost small" id="vReset" type="button">Ripristina</button></div>\n    <div class="field"><label class="label" for="vOwn">Le tue frasi di incitamento (una per riga)</label>\n      <textarea id="vOwn" rows="5" maxlength="3000" placeholder="Forza Marco, non mollare!&#10;Ogni ripetizione ti rende pi\xF9 forte!">').concat(esc(voiceCfg.own || ""), '</textarea></div>\n    <div class="field"><label class="label" for="vOwnStart">Le tue frasi a inizio serie (una per riga)</label>\n      <textarea id="vOwnStart" rows="3" maxlength="1500" placeholder="Si comincia, soldato!">').concat(esc(voiceCfg.ownStart || ""), '</textarea></div>\n    <label class="toggle"><input type="checkbox" id="vOnly" ').concat(voiceCfg.onlyOwn ? "checked" : "", '> Usa solo le mie frasi</label>\n    <div class="row"><button class="btn primary" id="vSave" type="button">Salva</button></div>\n    <p class="note" id="vSaved" hidden>Salvato.</p>\n    <div class="section"><div class="label">Altre voci sul telefono</div>\n      <p class="meta"><b>iPhone:</b> Impostazioni \u203A Accessibilit\xE0 \u203A Contenuti letti \u203A Voci \u203A la tua lingua. Scarica una voce, per esempio una "Avanzata", poi riapri l\'app e sceglila qui.</p>\n      <p class="meta"><b>Android:</b> Impostazioni \u203A Sistema \u203A Lingue \u203A Output sintesi vocale. Con "Sintesi vocale di Google" scegli la tua lingua e scarica le voci, poi riapri l\'app.</p>\n    </div>\n  </div>');
   const read = () => ({ voice: $("vVoice").value, rate: +$("vRate").value, pitch: +$("vPitch").value, own: $("vOwn").value, ownStart: $("vOwnStart").value, onlyOwn: $("vOnly").checked });
   $("vRate").oninput = (e) => $("vRateV").textContent = (+e.target.value).toFixed(2);
   $("vPitch").oninput = (e) => $("vPitchV").textContent = (+e.target.value).toFixed(2);
@@ -1479,7 +2444,11 @@ function renderVoice() {
     }
     location.reload();
   };
-  $("back").onclick = () => go({ name: "home" });
+  if ($("vPack")) $("vPack").onchange = (e) => {
+    store.set("vpack", e.target.checked);
+    location.reload();
+  };
+  $("back").onclick = () => go({ name: "profile" });
 }
 const S = {};
 const vid = $("vid"), cv = $("cv"), ctx = cv.getContext("2d");
@@ -1575,11 +2544,11 @@ function beginSet() {
   $("hudName").textContent = EX[q.ex].name;
   $("hudSet").textContent = S.test ? "Prova \xB7 2:00" : q.sets > 1 || S.queue.length > 1 ? "Serie ".concat(q.set, " di ").concat(q.sets) : "Serie libera";
   $("count").textContent = EX[q.ex].unit === "secs" ? "0" : "0";
-  $("countOf").textContent = EX[q.ex].unit === "secs" ? q.target ? "di ".concat(q.target, " s") : "secondi" : q.target ? "di ".concat(q.target) : "ripetizioni";
+  $("countOf").textContent = EX[q.ex].unit === "secs" ? q.target ? "di ".concat(q.target, " s") : "secondi" : q.target ? "di ".concat(q.target) : q.max ? "MAX" : "ripetizioni";
   $("minus").hidden = $("plus").hidden = EX[q.ex].unit === "secs";
   $("stop").textContent = S.idx < S.queue.length - 1 ? "Fine serie" : "Termina";
   setBanner("In posizione!", "warn");
-  say("".concat(EX[q.ex].name, ". ").concat(q.target ? EX[q.ex].unit === "secs" ? "Tieni per ".concat(q.target, " secondi") : "".concat(q.target, " ripetizioni") : q.timeLimit ? "Massimo in ".concat(q.timeLimit, " secondi") : "Massimo in due minuti", ". Via!"), { urgent: true });
+  say("".concat(EX[q.ex].name, ". ").concat(q.target ? EX[q.ex].unit === "secs" ? "Tieni per ".concat(q.target, " secondi") : "".concat(q.target, " ripetizioni") : q.timeLimit ? "Massimo in ".concat(q.timeLimit, " secondi") : q.max ? "Pi\xF9 ripetizioni che puoi" : "Massimo in due minuti", ". Via!"), { urgent: true });
   S.inRest = false;
   coach.reset(S.cur);
   if (gritOn) setTimeout(() => {
@@ -1629,6 +2598,10 @@ function tickTimer() {
   if (!S.cur || S.inRest) return;
   const el = (performance.now() - S.cur.t0) / 1e3;
   const secs = S.mode === "file" ? vid.currentTime : el;
+  if (S.cur.max && S.cur.count > 0 && performance.now() - (S.cur.lastRepT || 0) > 8e3) {
+    say("Stop! Hai dato tutto.", { urgent: true });
+    return endSet(true);
+  }
   if (S.cur.timeLimit) {
     const left = Math.max(0, S.cur.timeLimit - secs);
     $("hudTimer").textContent = fmt(left);
@@ -1667,7 +2640,7 @@ function process(res, ts) {
     }
     c.lastFault = out.fault;
   } else if (!out.event) {
-    if (EX[c.ex].unit === "secs") setBanner(c.hold > 0 ? "Tieni! Posizione corretta" : "In posizione di plank", "ok");
+    if (EX[c.ex].unit === "secs") setBanner(c.hold > 0 ? "Tieni! Posizione corretta" : "Mettiti in posizione", "ok");
     else setBanner("Posizione corretta", "ok");
     c.lastFault = null;
   }
@@ -1684,6 +2657,7 @@ function process(res, ts) {
   }
   if (out.event === "rep") {
     c.count++;
+    c.lastRepT = performance.now();
     $("count").textContent = c.count;
     bump();
     addPoints(EX[c.ex].pts || 1);
@@ -1746,6 +2720,11 @@ function startRest(secs) {
   const nq = S.queue[S.idx];
   $("rest").hidden = false;
   $("restNext").textContent = "Prossima: ".concat(EX[nq.ex].name, " \xB7 ").concat(targetTxt(nq.ex, nq.target));
+  const rf = $("restFig");
+  rf.dataset.fig = nq.ex;
+  rf.dataset.g = G();
+  rf.setAttribute("data-anim", "");
+  animateFigs($("rest"));
   let left = secs;
   $("restN").textContent = left;
   clearInterval(S.restTimer);
@@ -1775,7 +2754,7 @@ function finish(all) {
   }
   const remaining = S.queue.slice(S.idx);
   if (S.day && all) {
-    progress[S.day.wk + "-" + S.day.d] = true;
+    progress[progKey(S.day.wk, S.day.d)] = true;
     store.set("progress", progress);
     addPoints(50);
   }
@@ -1903,7 +2882,7 @@ function myBadge() {
   return rankBadge(rankIndex(), isElite() && stats.gold);
 }
 function isUnlocked(exId) {
-  const need = EX[exId].lock;
+  const need = G() === "f" && exId === "lunge" ? null : EX[exId].lock;
   return need == null || rankIndex() >= need || isElite();
 }
 function addPoints(n, why) {
@@ -2020,8 +2999,7 @@ function renderRanking() {
     const n = /* @__PURE__ */ new Date(), e = new Date(Date.UTC(n.getUTCFullYear(), n.getUTCMonth() + 1, 1));
     return Math.max(0, Math.ceil((e - n) / 864e5));
   })();
-  app.innerHTML = '\n  <div class="screen">\n    <button class="back" id="back" type="button">\u2039 Indietro</button>\n    <header class="mast"><div><h1>Classifica</h1><div class="sub">'.concat(monthName(monthKey()), '</div></div><div class="callsign">Fine mese<b>').concat(left, ' g</b></div></header>\n    <div class="order">\n      <div class="label">I tuoi punti questo mese</div>\n      <div class="code">').concat(stats.month.pts, '</div>\n      <p class="meta">').concat(esc(myName || "Tu"), " ").concat(myBadge(), " ").concat(RANKS[ri][0], " \xB7 ").concat(stats.total, " punti totali").concat(next ? " \xB7 ".concat(next[1] - stats.total, " al grado ").concat(next[0]) : "", '</p>\n    </div>\n    <div class="section">\n      <div class="label">Premio del mese</div>\n      <p class="meta">I primi 3 a fine mese sbloccano per tutto il mese successivo: ').concat(Object.values(ELITE).map((e) => e.name).join(", "), ".</p>\n    </div>\n    ").concat(!myName ? '<div class="field"><label class="label" for="nm">Il tuo nome in classifica</label><input id="nm" maxlength="20" autocomplete="nickname" placeholder="Es. Marco"></div><div class="row"><button class="btn ghost small" id="saveName" type="button">Salva nome</button></div>' : "", "\n    ").concat(FIREBASE_CONFIG ? '<div class="section"><div class="label">Mondiale \xB7 primi 50</div><ol class="lb" id="lb"><li class="lbmsg">Carico la classifica\u2026</li></ol></div>' : "", '\n    <div class="section"><div class="label">Tu e gli amici che hai sfidato</div><ol class="lb">').concat(lbRows(friendsBoard(monthKey()), (r) => r.me), "</ol>\n      ").concat(Object.keys(friends).length ? "" : '<p class="note">Sfida un amico: dopo la prima sfida compare qui con il suo grado e i suoi punti.</p>', "\n      ").concat(FIREBASE_CONFIG ? "" : '<p class="note">Finch\xE9 la classifica mondiale non \xE8 attiva, il premio va ai primi 3 tra te e gli amici sfidati (servono almeno 4 partecipanti).</p>', '</div>\n    <div class="section"><div class="label">Come si guadagnano i punti</div>\n      <ul class="log">\n        <li><span>Ogni ripetizione valida</span><span>1 pt (burpee 3)</span></li>\n        <li><span>Plank, ogni 2 secondi in posizione</span><span>1 pt</span></li>\n        <li><span>Sessione del programma completata</span><span>+50</span></li>\n        <li><span>Prova di efficienza completata</span><span>+20</span></li>\n        <li><span>Sfida: vittoria / pareggio / sconfitta</span><span>+30 / +15 / +10</span></li>\n      </ul>\n    </div>\n  </div>');
-  $("back").onclick = () => go({ name: "home" });
+  app.innerHTML = '\n  <div class="screen">\n    <header class="mast"><div><h1>Classifica</h1><div class="sub">'.concat(monthName(monthKey()), '</div></div><div class="callsign">Fine mese<b>').concat(left, ' g</b></div></header>\n    <div class="order">\n      <div class="label">I tuoi punti questo mese</div>\n      <div class="code">').concat(stats.month.pts, '</div>\n      <p class="meta">').concat(esc(myName || "Tu"), " ").concat(myBadge(), " ").concat(RANKS[ri][0], " \xB7 ").concat(stats.total, " punti totali").concat(next ? " \xB7 ".concat(next[1] - stats.total, " al grado ").concat(next[0]) : "", '</p>\n    </div>\n    <div class="section">\n      <div class="label">Premio del mese</div>\n      <p class="meta">I primi 3 a fine mese sbloccano per tutto il mese successivo: ').concat(Object.values(ELITE).map((e) => e.name).join(", "), ".</p>\n    </div>\n    ").concat(!myName ? '<div class="field"><label class="label" for="nm">Il tuo nome in classifica</label><input id="nm" maxlength="20" autocomplete="nickname" placeholder="Es. Marco"></div><div class="row"><button class="btn ghost small" id="saveName" type="button">Salva nome</button></div>' : "", "\n    ").concat(FIREBASE_CONFIG ? '<div class="section"><div class="label">Mondiale \xB7 primi 50</div><ol class="lb" id="lb"><li class="lbmsg">Carico la classifica\u2026</li></ol></div>' : "", '\n    <div class="section"><div class="label">Tu e gli amici che hai sfidato</div><ol class="lb">').concat(lbRows(friendsBoard(monthKey()), (r) => r.me), "</ol>\n      ").concat(Object.keys(friends).length ? "" : '<p class="note">Sfida un amico: dopo la prima sfida compare qui con il suo grado e i suoi punti.</p>', "\n      ").concat(FIREBASE_CONFIG ? "" : '<p class="note">Finch\xE9 la classifica mondiale non \xE8 attiva, il premio va ai primi 3 tra te e gli amici sfidati (servono almeno 4 partecipanti).</p>', '</div>\n    <div class="section"><div class="label">Come si guadagnano i punti</div>\n      <ul class="log">\n        <li><span>Ogni ripetizione valida</span><span>1 pt (burpee 3)</span></li>\n        <li><span>Esercizi a tempo, ogni 2 secondi in posizione</span><span>1 pt</span></li>\n        <li><span>Sessione del programma completata</span><span>+50</span></li>\n        <li><span>Prova di efficienza completata</span><span>+20</span></li>\n        <li><span>Sfida: vittoria / pareggio / sconfitta</span><span>+30 / +15 / +10</span></li>\n      </ul>\n    </div>\n  </div>');
   if ($("saveName")) $("saveName").onclick = () => {
     const v = $("nm").value.trim();
     if (!v) return;
@@ -2061,14 +3039,16 @@ const meId = (() => {
 let friends = store.get("friends", {});
 function myCard() {
   rollMonth();
-  return { id: meId, name: (myName || "Recluta").slice(0, 20), rank: rankIndex(), total: stats.total, gold: isElite() && !!stats.gold, months: { [stats.month.key]: stats.month.pts, ...stats.prev ? { [stats.prev.key]: stats.prev.pts } : {} } };
+  return { id: meId, fcode: typeof myFcode === "string" ? myFcode : void 0, name: (myName || "Recluta").slice(0, 20), rank: rankIndex(), total: stats.total, gold: isElite() && !!stats.gold, months: { [stats.month.key]: stats.month.pts, ...stats.prev ? { [stats.prev.key]: stats.prev.pts } : {} } };
 }
 function saveFriend(c) {
   if (!c || typeof c.id !== "string" || c.id === meId || c.id.length > 40) return;
   const old = friends[c.id] || { months: {} };
   const months = { ...old.months };
   for (const [k, v] of Object.entries(c.months || {})) if (/^\d{4}-\d{2}$/.test(k)) months[k] = Math.max(months[k] || 0, Math.max(0, v | 0));
-  friends[c.id] = { name: String(c.name || "Amico").slice(0, 20), rank: Math.min(RANKS.length - 1, Math.max(0, c.rank | 0)), total: Math.max(0, c.total | 0), gold: !!c.gold, months };
+  const fcode = typeof c.fcode === "string" && /^[A-Z2-9]{6}$/.test(c.fcode) ? c.fcode : old.fcode;
+  if (fcode) delete friends["code:" + fcode];
+  friends[c.id] = { name: String(c.name || "Amico").slice(0, 20), rank: Math.min(RANKS.length - 1, Math.max(0, c.rank | 0)), total: Math.max(0, c.total | 0), gold: !!c.gold, months, ...fcode ? { fcode } : {} };
   store.set("friends", friends);
 }
 function friendsBoard(key) {
@@ -2086,10 +3066,12 @@ function checkFriendsElite() {
   stats.elite = board.length >= 4 && pos > -1 && pos < 3 ? k : stats.elite === k ? null : stats.elite;
   store.set("stats", stats);
 }
-function applyGold() {
+function applyTheme() {
   document.body.classList.toggle("goldtheme", isElite() && !!stats.gold);
+  document.body.classList.toggle("g-f", G() === "f");
 }
-const DUEL_EX_ALL = ["pushup", "squat", "situp", "jacks", "lunge", "climber", "burpee"];
+const applyGold = applyTheme;
+const DUEL_EX_ALL = ["pushup", "squat", "jacks", "situp", "widepush", "crunch", "jumpsquat", "bridge", "lunge", "revlunge", "sidelunge", "climber", "burpee"];
 const duelExList = () => DUEL_EX_ALL.filter((id) => isUnlocked(id) || id === CH.cfg.ex);
 const DUEL_FMT = {
   time: { label: "Pi\xF9 ripetizioni in 60 s", short: "60 secondi", n: 60 },
@@ -2168,7 +3150,16 @@ async function recoverCamera() {
   if (CH.recovering) return;
   CH.recovering = true;
   try {
-    const fresh = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user", ...camSize() }, audio: false });
+    let late = false;
+    const gum = navigator.mediaDevices.getUserMedia({ video: { facingMode: "user", ...camSize() }, audio: false });
+    gum.then((st) => {
+      if (late) st.getTracks().forEach((t) => t.stop());
+    }, () => {
+    });
+    const fresh = await Promise.race([gum, new Promise((_, rej) => setTimeout(() => {
+      late = true;
+      rej(new Error("timeout"));
+    }, 6e3))]);
     const nt = fresh.getVideoTracks()[0];
     for (const old of CH.stream.getVideoTracks()) {
       CH.stream.removeTrack(old);
@@ -2186,10 +3177,11 @@ async function recoverCamera() {
     vid.srcObject = localView();
     vid.play().catch(() => {
     });
+    CH.lastRecover = performance.now();
   } catch (e) {
+    CH.lastRecover = performance.now() - 6e3;
   }
   CH.recovering = false;
-  CH.lastRecover = performance.now();
 }
 function startCamWatchdog() {
   clearInterval(CH.wd);
@@ -2229,7 +3221,7 @@ function duelReset() {
     (_d = CH.stream) == null ? void 0 : _d.getTracks().forEach((t) => t.stop());
   } catch (e) {
   }
-  Object.assign(CH, { peer: null, conn: null, call: null, stream: null, remote: null, role: null, code: "", oppName: "", oppReps: 0, connected: false, myFinal: null, oppFinal: null, wins: { me: 0, opp: 0 } });
+  Object.assign(CH, { peer: null, conn: null, call: null, stream: null, remote: null, role: null, code: "", oppName: "", oppReps: 0, connected: false, myFinal: null, oppFinal: null, wins: { me: 0, opp: 0 }, random: false, searching: false, notFound: false, oppCard: null });
 }
 function setupConn(conn) {
   CH.conn = conn;
@@ -2318,24 +3310,7 @@ async function duelHost() {
     }
   }
   if (!CH.peer) throw new Error("no-id");
-  CH.peer.on("connection", (c) => {
-    var _a;
-    if ((_a = CH.conn) == null ? void 0 : _a.open) {
-      c.on("open", () => c.close());
-      return;
-    }
-    setupConn(c);
-  });
-  CH.peer.on("call", (call) => {
-    call.answer(CH.stream);
-    setupCall(call);
-  });
-  CH.peer.on("disconnected", () => {
-    try {
-      CH.peer.reconnect();
-    } catch (e) {
-    }
-  });
+  hostHandlers(CH.peer);
 }
 async function duelJoin(code) {
   const P2 = await loadPeer();
@@ -2355,19 +3330,357 @@ async function duelJoin(code) {
   setupConn(CH.peer.connect(peerId(code), { reliable: true }));
   setupCall(CH.peer.call(peerId(code), CH.stream));
 }
+const RND_SLOTS = 6;
+const rndId = (n) => "istruttore-recluta-rnd-" + n;
+const presenceId = (code) => "istruttore-recluta-u-" + code;
+const myFcode = (() => {
+  let c = store.get("fcode", null);
+  if (!c || !/^[A-Z2-9]{6}$/.test(c)) {
+    c = newCode();
+    store.set("fcode", c);
+  }
+  return c;
+})();
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+function newPeer(id) {
+  return loadPeer().then((P2) => new Promise((res, rej) => {
+    const p = id ? new P2(id, peerOpts()) : new P2(peerOpts());
+    const t = setTimeout(() => {
+      rej(new Error("timeout"));
+      try {
+        p.destroy();
+      } catch (e) {
+      }
+    }, 1e4);
+    p.on("open", () => {
+      clearTimeout(t);
+      res(p);
+    });
+    p.on("error", (e) => {
+      clearTimeout(t);
+      rej(e);
+      if ((e == null ? void 0 : e.type) === "unavailable-id") try {
+        p.destroy();
+      } catch (e2) {
+      }
+    });
+  }));
+}
+function hostHandlers(peer) {
+  peer.on("connection", (c) => {
+    var _a;
+    if (((_a = CH.conn) == null ? void 0 : _a.open) || CH.conn && CH.connected) {
+      c.on("open", () => c.close());
+      return;
+    }
+    setupConn(c);
+  });
+  peer.on("call", (call) => {
+    if (CH.conn && call.peer !== CH.conn.peer) {
+      try {
+        call.close();
+      } catch (e) {
+      }
+      return;
+    }
+    call.answer(CH.stream);
+    setupCall(call);
+  });
+  peer.on("disconnected", () => {
+    try {
+      peer.reconnect();
+    } catch (e) {
+    }
+  });
+}
+function probeJoin(peer, id) {
+  return new Promise((res) => {
+    let done = false;
+    const c = peer.connect(id, { reliable: true });
+    const fin = (ok) => {
+      if (done) return;
+      done = true;
+      clearTimeout(t);
+      if (!ok) try {
+        c.close();
+      } catch (e) {
+      }
+      res(ok);
+    };
+    const t = setTimeout(() => fin(false), 7e3);
+    c.on("open", () => {
+      try {
+        c.send({ t: "hello", name: myName || "Recluta", card: myCard() });
+      } catch (e) {
+      }
+    });
+    c.on("data", (m) => {
+      if (done || !m || m.t !== "hello") return;
+      CH.conn = c;
+      CH.connected = true;
+      c.on("data", onDuelMsg);
+      c.on("close", () => {
+        CH.connected = false;
+        onDuelDrop();
+      });
+      onDuelMsg(m);
+      fin(true);
+    });
+    c.on("close", () => fin(false));
+    c.on("error", () => fin(false));
+  });
+}
+async function duelRandom(status) {
+  CH.searching = true;
+  CH.random = true;
+  const end = Date.now() + 12e4;
+  let guest = null;
+  try {
+    while (CH.searching && Date.now() < end) {
+      for (let n = 0; n < RND_SLOTS && CH.searching; n++) {
+        let mine = null;
+        try {
+          mine = await newPeer(rndId(n));
+        } catch (e) {
+          if ((e == null ? void 0 : e.type) !== "unavailable-id") {
+            if ((e == null ? void 0 : e.type) === "network" || (e == null ? void 0 : e.type) === "server-error" || (e == null ? void 0 : e.type) === "socket-error" || (e == null ? void 0 : e.message) === "timeout") throw e;
+          }
+        }
+        if (!CH.searching) {
+          try {
+            mine == null ? void 0 : mine.destroy();
+          } catch (e) {
+          }
+          break;
+        }
+        if (mine) {
+          CH.role = "host";
+          CH.code = "rnd" + n;
+          CH.peer = mine;
+          hostHandlers(mine);
+          status("Cerco un avversario\u2026");
+          const until = Date.now() + 25e3;
+          while (CH.searching && !CH.connected && Date.now() < until) await sleep(300);
+          if (CH.connected) {
+            CH.searching = false;
+            if (guest) try {
+              guest.destroy();
+            } catch (e) {
+            }
+            return true;
+          }
+          try {
+            mine.destroy();
+          } catch (e) {
+          }
+          CH.peer = null;
+          continue;
+        }
+        guest = guest || await newPeer();
+        status("Trovato qualcuno, mi collego\u2026");
+        if (await probeJoin(guest, rndId(n))) {
+          CH.role = "guest";
+          CH.code = "rnd" + n;
+          CH.peer = guest;
+          CH.searching = false;
+          setupCall(guest.call(rndId(n), CH.stream));
+          return true;
+        }
+        status("Cerco un avversario\u2026");
+      }
+    }
+  } finally {
+    if (CH.searching) {
+      CH.searching = false;
+    }
+  }
+  if (guest && CH.peer !== guest) try {
+    guest.destroy();
+  } catch (e) {
+  }
+  return false;
+}
+const PRES = { peer: null, started: false };
+async function presenceStart() {
+  if (!SITE || PRES.started) return;
+  PRES.started = true;
+  for (let attempt = 0; attempt < 3; attempt++) {
+    try {
+      PRES.peer = await newPeer(presenceId(myFcode));
+      break;
+    } catch (e) {
+      if ((e == null ? void 0 : e.type) === "unavailable-id") return;
+      await sleep(5e3);
+    }
+  }
+  if (!PRES.peer) return;
+  PRES.peer.on("disconnected", () => {
+    try {
+      PRES.peer.reconnect();
+    } catch (e) {
+    }
+  });
+  PRES.peer.on("connection", (c) => {
+    c.on("data", (m) => {
+      if (!m || typeof m !== "object") return;
+      if (m.t === "card?") {
+        try {
+          c.send({ t: "card", card: myCard() });
+        } catch (e) {
+        }
+        setTimeout(() => {
+          try {
+            c.close();
+          } catch (e) {
+          }
+        }, 1500);
+      } else if (m.t === "invite" && typeof m.code === "string" && /^[A-Z2-9]{6}$/.test(m.code)) {
+        if (m.card && typeof m.card === "object") saveFriend(m.card);
+        showInvite({ code: m.code, name: String(m.name || "Un amico").slice(0, 20), cfg: m.cfg && EX[m.cfg.ex] && DUEL_FMT[m.cfg.fmt] ? m.cfg : null });
+      }
+    });
+  });
+}
+function showInvite(inv) {
+  var _a;
+  (_a = document.getElementById("inviteToast")) == null ? void 0 : _a.remove();
+  const d = document.createElement("div");
+  d.className = "invite";
+  d.id = "inviteToast";
+  d.setAttribute("role", "alertdialog");
+  d.innerHTML = "<b>".concat(esc(inv.name), " ti sfida!</b>").concat(inv.cfg ? '<p class="meta">'.concat(esc(fmtTxt(inv.cfg)), "</p>") : "", '<div class="row"><button class="btn primary small" id="invOk" type="button">Accetta</button><button class="btn ghost small" id="invNo" type="button">Rifiuta</button></div>');
+  document.body.append(d);
+  say("".concat(inv.name, " ti sfida!"), { urgent: true });
+  d.querySelector("#invNo").onclick = () => d.remove();
+  d.querySelector("#invOk").onclick = () => {
+    d.remove();
+    if (S.running) return;
+    if (CH.peer) duelReset();
+    go({ name: "duel-join", code: inv.code, auto: true });
+  };
+  setTimeout(() => d.remove(), 6e4);
+}
+async function reachFriend(fcode, msg, wantReply) {
+  try {
+    const p = CH.invPeer && !CH.invPeer.destroyed ? CH.invPeer : CH.invPeer = await newPeer();
+    return await new Promise((res) => {
+      let done = false;
+      const c = p.connect(presenceId(fcode), { reliable: true });
+      const fin = (v) => {
+        if (done) return;
+        done = true;
+        clearTimeout(t);
+        setTimeout(() => {
+          try {
+            c.close();
+          } catch (e) {
+          }
+        }, 600);
+        res(v);
+      };
+      const t = setTimeout(() => fin(null), 7e3);
+      c.on("open", () => {
+        try {
+          c.send(msg);
+        } catch (e) {
+        }
+        if (!wantReply) fin(true);
+      });
+      c.on("data", (m) => {
+        if (wantReply && m && m.t === "card") fin(m.card);
+      });
+      c.on("error", () => fin(null));
+    });
+  } catch (e) {
+    return null;
+  }
+}
+async function addFriendByCode(code) {
+  const card = await reachFriend(code, { t: "card?" }, true);
+  if (card && typeof card === "object") {
+    card.fcode = code;
+    saveFriend(card);
+    return card.name || "Amico";
+  }
+  friends["code:" + code] = friends["code:" + code] || { name: "Amico " + code, rank: 0, total: 0, gold: false, months: {}, fcode: code };
+  store.set("friends", friends);
+  return null;
+}
+const invitable = () => Object.entries(friends).filter(([, f]) => f.fcode).map(([id, f]) => ({ id, ...f }));
+function renderDuels() {
+  const fl = invitable();
+  app.innerHTML = '\n  <div class="screen">\n    <header class="mast"><div><h1>Sfide</h1><div class="sub">Uno contro uno in videochiamata: la fotocamera conta le ripetizioni di entrambi</div></div></header>\n    <div class="modes">\n      <button class="mode" id="duelRandom" type="button"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg></span><span><b>Sfida casuale</b><small>Ti abbino a chi sta cercando una sfida in questo momento</small></span><span class="go">\u203A</span></button>\n      <button class="mode" id="duelNew" type="button"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v12H5.5L4 17.5z"/><path d="M8 9h8M8 12h5"/></svg></span><span><b>Invita un amico</b><small>Crea la sfida e mandagli il link o l\'invito</small></span><span class="go">\u203A</span></button>\n      <button class="mode" id="duelJoin" type="button"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="10" rx="2"/><path d="M7 12h.01M11 12h.01M15 12h.01"/></svg></span><span><b>Ho un codice</b><small>Entra nella sfida di un amico</small></span><span class="go">\u203A</span></button>\n    </div>\n    <div class="section"><div class="label">I tuoi amici</div>\n      '.concat(fl.length ? '<ol class="lb">'.concat(fl.map((f) => '<li><span class="pos">'.concat(rankBadge(Math.min(RANKS.length - 1, Math.max(0, f.rank | 0)), !!f.gold), '</span><span class="who">').concat(esc(f.name), '</span><button class="btn primary small inv" type="button" data-inv="').concat(esc(f.fcode), '">Sfida</button></li>')).join(""), "</ol>") : '<p class="note">Aggiungi un amico con il suo codice, oppure sfidalo con un link: comparir\xE0 qui e potrai invitarlo con un tocco.</p>', '\n    </div>\n    <div class="order">\n      <div class="label">Il tuo codice amico</div>\n      <div class="code">').concat(myFcode, '</div>\n      <p class="meta">Dallo ai tuoi amici: con questo codice ti aggiungono e ti invitano alle sfide quando hai l\'app aperta.</p>\n      <div class="field"><label class="label" for="addCode">Aggiungi un amico</label><input id="addCode" maxlength="6" autocapitalize="characters" autocomplete="off" placeholder="Codice amico" style="letter-spacing:.2em;text-transform:uppercase"></div>\n      <div class="row"><button class="btn ghost small" id="addBtn" type="button">Aggiungi</button><button class="btn ghost small" id="shareMe" type="button">Invia il mio codice</button></div>\n      <p class="note" id="addNote" hidden></p>\n    </div>\n  </div>');
+  $("duelRandom").onclick = () => go({ name: "duel-new", mode: "random" });
+  $("duelNew").onclick = () => go({ name: "duel-new", mode: "invite" });
+  $("duelJoin").onclick = () => go({ name: "duel-join", code: "" });
+  app.querySelectorAll("[data-inv]").forEach((b) => b.onclick = () => go({ name: "duel-new", mode: "invite", inviteTo: b.dataset.inv }));
+  $("addBtn").onclick = async () => {
+    const code = $("addCode").value.trim().toUpperCase().replace(/[^A-Z0-9]/g, "");
+    const n = $("addNote");
+    n.hidden = false;
+    if (code.length !== 6) {
+      n.textContent = "Il codice ha 6 caratteri: controlla e riprova.";
+      return;
+    }
+    if (code === myFcode) {
+      n.textContent = "Questo \xE8 il tuo codice.";
+      return;
+    }
+    n.textContent = "Cerco il tuo amico\u2026";
+    const name = await addFriendByCode(code);
+    if (route.name !== "duels") return;
+    renderDuels();
+    animateFigs(app);
+    const n2 = $("addNote");
+    n2.hidden = false;
+    n2.textContent = name ? "".concat(name, " aggiunto ai tuoi amici.") : "Amico aggiunto. Il suo nome comparir\xE0 dopo la prima sfida.";
+  };
+  $("shareMe").onclick = async () => {
+    const text = tr("Aggiungimi su Istruttore Recluta: il mio codice amico \xE8 ".concat(myFcode)), url = location.origin + location.pathname;
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: "Istruttore Recluta", text, url });
+        return;
+      }
+    } catch (e) {
+      if ((e == null ? void 0 : e.name) === "AbortError") return;
+    }
+    const n = $("addNote");
+    n.hidden = false;
+    try {
+      await navigator.clipboard.writeText(text + " " + url);
+      n.textContent = "Copiato: incollalo in chat ai tuoi amici.";
+    } catch (e) {
+      n.textContent = text;
+    }
+  };
+}
+function renderSearching() {
+  app.innerHTML = '\n  <div class="screen brief">\n    <div class="section"><div class="label">Sfida casuale \xB7 '.concat(esc(fmtTxt(CH.cfg)), '</div><h2>Cerco un avversario</h2></div>\n    <div class="searching"><div class="radar"></div><p class="status"><span id="srch">Cerco un avversario\u2026</span></p>\n      <p class="meta">Resta su questa schermata. Se nessuno \xE8 libero entro 2 minuti, riprova pi\xF9 tardi o invita un amico.</p></div>\n    <div class="row"><button class="btn ghost" id="cancel" type="button">Annulla</button></div>\n  </div>');
+  $("cancel").onclick = () => {
+    CH.searching = false;
+    duelReset();
+    go({ name: "duels" });
+  };
+}
 function renderDuelNew() {
-  const c = CH.cfg;
-  app.innerHTML = '\n  <div class="screen brief">\n    <button class="back" id="back" type="button">\u2039 Indietro</button>\n    <div class="section"><div class="label">Sfida un amico</div><h2>Nuova sfida</h2></div>\n    <div class="field"><label class="label" for="nm">Il tuo nome</label><input id="nm" maxlength="20" autocomplete="nickname" placeholder="Es. Marco" value="'.concat(esc(myName), '"></div>\n    <div class="section"><div class="label">Esercizio</div>\n      <div class="choices">').concat(duelExList().map((id) => '<button class="choice" type="button" data-ex="'.concat(id, '" aria-pressed="').concat(c.ex === id, '">').concat(EX[id].name, "<small>").concat(EX[id].tag, "</small></button>")).join(""), '</div>\n    </div>\n    <div class="section"><div class="label">Formato</div>\n      <div class="choices">').concat(Object.entries(DUEL_FMT).map(([k, f]) => '<button class="choice" type="button" data-fmt="'.concat(k, '" aria-pressed="').concat(c.fmt === k, '">').concat(f.label, "<small>").concat(k === "time" ? "Vince chi ne fa di pi\xF9" : "Vince chi arriva prima", "</small></button>")).join(""), '</div>\n    </div>\n    <div class="camtip">').concat(sideCam, "<span>Mettete i telefoni nella stessa posizione. ").concat(EX[c.ex].cam, '</span></div>\n    <div class="row"><button class="btn primary" id="create" type="button">Crea la sfida</button></div>\n    <p class="note" id="err" hidden></p>\n  </div>');
-  $("back").onclick = () => go({ name: "home" });
+  const c = CH.cfg, mode = route.mode || "invite";
+  const lbl = mode === "random" ? "Cerca un avversario" : "Crea la sfida";
+  app.innerHTML = '\n  <div class="screen brief">\n    <button class="back" id="back" type="button">\u2039 Indietro</button>\n    <div class="section"><div class="label">'.concat(mode === "random" ? "Sfida casuale" : "Invita un amico", "</div><h2>").concat(mode === "random" ? "Scegli la sfida" : "Nuova sfida", '</h2></div>\n    <div class="field"><label class="label" for="nm">Il tuo nome</label><input id="nm" maxlength="20" autocomplete="nickname" placeholder="Es. Marco" value="').concat(esc(myName), '"></div>\n    <div class="section"><div class="label">Esercizio</div>\n      <div class="choices">').concat(duelExList().map((id) => '<button class="choice" type="button" data-ex="'.concat(id, '" aria-pressed="').concat(c.ex === id, '"><div class="figbox" data-fig="').concat(id, '" data-g="').concat(G(), '"></div>').concat(EX[id].name, "</button>")).join(""), '</div>\n    </div>\n    <div class="section"><div class="label">Formato</div>\n      <div class="choices">').concat(Object.entries(DUEL_FMT).map(([k, f]) => '<button class="choice" type="button" data-fmt="'.concat(k, '" aria-pressed="').concat(c.fmt === k, '">').concat(f.label, "<small>").concat(k === "time" ? "Vince chi ne fa di pi\xF9" : "Vince chi arriva prima", "</small></button>")).join(""), "</div>\n    </div>\n    ").concat(mode === "random" ? "<p class=\"note\">Se l'avversario aveva gi\xE0 scelto un'altra sfida, si fa la sua.</p>" : "", '\n    <div class="camtip">').concat(sideCam, "<span>Mettete i telefoni nella stessa posizione. ").concat(EX[c.ex].cam, '</span></div>\n    <div class="stickybar"><button class="btn primary big" id="create" type="button">').concat(lbl, '</button>\n    <p class="note" id="err" hidden></p></div>\n  </div>');
+  $("back").onclick = () => go({ name: "duels" });
+  const keep = () => {
+    myName = $("nm").value.trim();
+    const y = window.scrollY;
+    render();
+    window.scrollTo(0, y);
+  };
   app.querySelectorAll("[data-ex]").forEach((b) => b.onclick = () => {
     CH.cfg.ex = b.dataset.ex;
-    myName = $("nm").value.trim();
-    renderDuelNew();
+    keep();
   });
   app.querySelectorAll("[data-fmt]").forEach((b) => b.onclick = () => {
     CH.cfg.fmt = b.dataset.fmt;
-    myName = $("nm").value.trim();
-    renderDuelNew();
+    keep();
   });
   $("create").onclick = async () => {
     myName = $("nm").value.trim() || "Recluta";
@@ -2378,14 +3691,33 @@ function renderDuelNew() {
     try {
       await getDuelStream();
     } catch (e) {
-      return duelError("Non riesco ad aprire fotocamera e microfono. Dai il permesso nelle impostazioni del browser e riprova.", btn, "Crea la sfida");
+      return duelError("Non riesco ad aprire fotocamera e microfono. Dai il permesso nelle impostazioni del browser e riprova.", btn, lbl);
+    }
+    if (mode === "random") {
+      go({ name: "searching" });
+      let ok = false;
+      try {
+        ok = await duelRandom((t) => {
+          const e2 = $("srch");
+          if (e2) e2.textContent = t;
+        });
+      } catch (e2) {
+        ok = false;
+      }
+      if (route.name !== "searching") return;
+      if (ok) return go({ name: "lobby" });
+      duelReset();
+      const e = $("srch");
+      if (e) e.textContent = "Nessun avversario libero in questo momento. Riprova tra poco o invita un amico.";
+      $("cancel").textContent = "Indietro";
+      return;
     }
     try {
       await duelHost();
     } catch (e) {
-      return duelError("Non riesco a collegarmi al servizio delle sfide. Controlla la connessione e riprova.", btn, "Crea la sfida");
+      return duelError("Non riesco a collegarmi al servizio delle sfide. Controlla la connessione e riprova.", btn, lbl);
     }
-    go({ name: "lobby" });
+    go({ name: "lobby", inviteTo: route.inviteTo });
   };
 }
 function duelError(msg, btn, label) {
@@ -2406,7 +3738,7 @@ function renderDuelJoin() {
       history.replaceState(null, "", location.pathname);
     } catch (e) {
     }
-    go({ name: "home" });
+    go({ name: "duels" });
   };
   $("join").onclick = async () => {
     const code = $("cd").value.trim().toUpperCase().replace(/[^A-Z0-9]/g, "");
@@ -2428,12 +3760,16 @@ function renderDuelJoin() {
     }
     go({ name: "lobby" });
   };
+  if (route.auto) {
+    route.auto = false;
+    $("join").click();
+  }
 }
 function renderLobby() {
   const host = CH.role === "host";
-  app.innerHTML = '\n  <div class="screen brief">\n    <div class="section"><div class="label">Sfida \xB7 '.concat(esc(fmtTxt(CH.cfg)), "</div><h2>").concat(host ? "Invita il tuo amico" : "Sala d'attesa", "</h2></div>\n    ").concat(host ? '<div class="order">\n      <div class="label">Codice sfida</div>\n      <div class="code">'.concat(CH.code, '</div>\n      <p class="meta">Mandagli il link: lo apre dal telefono ed entra subito.</p>\n      <div class="row"><button class="btn ghost small" id="share" type="button">Invia il link</button></div>\n      <p class="note" id="shareNote" hidden></p>\n    </div>') : "", '\n    <div class="status" id="lobStatus"><i></i><span></span></div>\n    <div class="lobvids">\n      <div class="lobvid"><video id="lobMe" playsinline autoplay muted></video><span>').concat(esc(myName || "Tu"), " ").concat(myBadge(), '</span></div>\n      <div class="lobvid"><video id="lobOpp" playsinline autoplay></video><div class="empty" id="lobOppEmpty">In attesa della videochiamata\u2026</div><span id="lobOppName">Amico</span></div>\n    </div>\n    ').concat(CH.wins.me + CH.wins.opp > 0 ? '<p class="meta">Punteggio: '.concat(esc(myName), " ").concat(CH.wins.me, " \u2013 ").concat(CH.wins.opp, " ").concat(esc(CH.oppName), "</p>") : "", '\n    <div class="row">\n      ').concat(host ? '<button class="btn primary" id="go" type="button" disabled>Via!</button>' : "", '\n      <button class="btn ghost" id="leave" type="button">Esci dalla sfida</button>\n    </div>\n    ').concat(host ? '<details class="note"><summary>Cambia esercizio o formato</summary><div class="choices" style="margin-top:8px">'.concat(duelExList().map((id) => '<button class="choice" type="button" data-ex="'.concat(id, '" aria-pressed="').concat(CH.cfg.ex === id, '">').concat(EX[id].name, "</button>")).join("")).concat(Object.entries(DUEL_FMT).map(([k, f]) => '<button class="choice" type="button" data-fmt="'.concat(k, '" aria-pressed="').concat(CH.cfg.fmt === k, '">').concat(f.label, "</button>")).join(""), "</div></details>") : "", "\n  </div>");
+  app.innerHTML = '\n  <div class="screen brief">\n    <div class="section"><div class="label">Sfida \xB7 '.concat(esc(fmtTxt(CH.cfg)), "</div><h2>").concat(CH.random ? "Avversario trovato" : host ? "Invita il tuo amico" : "Sala d'attesa", "</h2></div>\n    ").concat(host && !CH.random ? '<div class="order">\n      <div class="label">Codice sfida</div>\n      <div class="code">'.concat(CH.code, '</div>\n      <p class="meta">Mandagli il link: lo apre dal telefono ed entra subito.</p>\n      <div class="row"><button class="btn ghost small" id="share" type="button">Invia il link</button></div>\n      <p class="note" id="shareNote" hidden></p>\n      ').concat(invitable().length ? '<div class="label">Oppure invitalo direttamente</div><ol class="lb">'.concat(invitable().map((f) => '<li><span class="pos">'.concat(rankBadge(Math.min(RANKS.length - 1, Math.max(0, f.rank | 0)), !!f.gold), '</span><span class="who">').concat(esc(f.name), '</span><button class="btn ghost small inv" type="button" data-inv="').concat(esc(f.fcode), '">Invita</button></li>')).join(""), "</ol>") : "", "\n    </div>") : "", '\n    <div class="status" id="lobStatus"><i></i><span></span></div>\n    <div class="lobvids">\n      <div class="lobvid"><video id="lobMe" playsinline autoplay muted></video><span>').concat(esc(myName || "Tu"), " ").concat(myBadge(), '</span></div>\n      <div class="lobvid"><video id="lobOpp" playsinline autoplay></video><div class="empty" id="lobOppEmpty">In attesa della videochiamata\u2026</div><span id="lobOppName">Amico</span></div>\n    </div>\n    ').concat(CH.wins.me + CH.wins.opp > 0 ? '<p class="meta">Punteggio: '.concat(esc(myName), " ").concat(CH.wins.me, " \u2013 ").concat(CH.wins.opp, " ").concat(esc(CH.oppName), "</p>") : "", '\n    <div class="row">\n      ').concat(host ? '<button class="btn primary" id="go" type="button" disabled>Via!</button>' : "", '\n      <button class="btn ghost" id="leave" type="button">Esci dalla sfida</button>\n    </div>\n    ').concat(host ? '<details class="note"><summary>Cambia esercizio o formato</summary><div class="choices" style="margin-top:8px">'.concat(duelExList().map((id) => '<button class="choice" type="button" data-ex="'.concat(id, '" aria-pressed="').concat(CH.cfg.ex === id, '">').concat(EX[id].name, "</button>")).join("")).concat(Object.entries(DUEL_FMT).map(([k, f]) => '<button class="choice" type="button" data-fmt="'.concat(k, '" aria-pressed="').concat(CH.cfg.fmt === k, '">').concat(f.label, "</button>")).join(""), "</div></details>") : "", "\n  </div>");
   attach($("lobMe"), localView(), true);
-  if (host) {
+  if (host && $("share")) {
     $("share").onclick = async () => {
       const link = duelLink(), text = tr("Ti sfido a ".concat(fmtTxt(CH.cfg), " su Istruttore Recluta! Codice ").concat(CH.code));
       try {
@@ -2453,10 +3789,35 @@ function renderLobby() {
         n.textContent = link;
       }
     };
+  }
+  if (host) {
     $("go").onclick = () => {
       duelSend({ t: "start" });
       startDuelSession();
     };
+    const invite = async (fc, btn) => {
+      const f = invitable().find((x) => x.fcode === fc);
+      const n = $("shareNote");
+      if (!f || !n) return;
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = "Invio\u2026";
+      }
+      const ok = await reachFriend(fc, { t: "invite", code: CH.code, name: myName || "Recluta", cfg: CH.cfg, card: myCard() });
+      if (!$("shareNote")) return;
+      n.hidden = false;
+      n.textContent = ok ? "Invito inviato a ".concat(f.name, ": deve solo toccare Accetta.") : "".concat(f.name, " non ha l'app aperta in questo momento: mandagli il link.");
+      if (btn) {
+        btn.disabled = false;
+        btn.textContent = ok ? "Inviato" : "Invita";
+      }
+    };
+    app.querySelectorAll("[data-inv]").forEach((b) => b.onclick = () => invite(b.dataset.inv, b));
+    if (route.inviteTo) {
+      const fc = route.inviteTo;
+      route.inviteTo = null;
+      invite(fc, app.querySelector('[data-inv="'.concat(fc, '"]')));
+    }
     app.querySelectorAll("[data-ex]").forEach((b) => b.onclick = () => {
       CH.cfg.ex = b.dataset.ex;
       duelSend({ t: "cfg", cfg: CH.cfg });
@@ -2474,7 +3835,7 @@ function renderLobby() {
       history.replaceState(null, "", location.pathname);
     } catch (e) {
     }
-    go({ name: "home" });
+    go({ name: "duels" });
   };
   refreshLobby();
 }
@@ -2650,9 +4011,10 @@ function renderDuelResult() {
       history.replaceState(null, "", location.pathname);
     } catch (e) {
     }
-    go({ name: "home" });
+    go({ name: "duels" });
   };
 }
+if (!gender) route = { name: "onboard" };
 try {
   const code = new URLSearchParams(location.search).get("sfida");
   if (SITE && code) route = { name: "duel-join", code: code.toUpperCase().slice(0, 6) };
@@ -2667,7 +4029,10 @@ if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catc
 });
 loadEngine().catch(() => {
 });
-window.__test = { makeTracker, setAspect: (a) => aspect = a };
+setTimeout(() => presenceStart().catch(() => {
+}), 2500);
+loadVoicePack();
+window.__test = { POSES, placeDef, makeTracker, figureSVG, tr, GRIT, EX, session, setGender: (g) => gender = g, VP, packClips, setAspect: (a) => aspect = a };
 </script>
 
 </body>

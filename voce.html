@@ -1,0 +1,663 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Voce Istruttore</title>
+<style>
+  :root {
+    --accent: #2e86de;
+    --accent-dark: #1f6fbf;
+    --text: #1d2733;
+    --muted: #5b6776;
+    --line: #dde3ea;
+    --soft: #f3f7fb;
+    --ok: #1e8e4e;
+    --warn: #a86400;
+    --err: #c0392b;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; background: #fff; color: var(--text);
+    font: 16px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    overflow-x: hidden;
+  }
+  main { max-width: 640px; margin: 0 auto; padding: 20px 16px 64px; }
+  h1 { font-size: 1.5rem; line-height: 1.25; margin: 0 0 4px; }
+  h2 { font-size: 1.1rem; margin: 0 0 12px; }
+  p { margin: 0 0 10px; }
+  .sub { color: var(--muted); margin-bottom: 20px; }
+  section { border: 1px solid var(--line); border-radius: 14px; padding: 16px; margin: 0 0 16px; }
+  ol.steps { margin: 0; padding-left: 22px; }
+  ol.steps li { margin-bottom: 10px; }
+  ol.steps li:last-child { margin-bottom: 0; }
+  .note { background: var(--soft); border-radius: 10px; padding: 10px 12px; font-size: .94rem; color: var(--muted); margin-top: 12px; }
+  label.f { display: block; font-weight: 600; margin: 14px 0 6px; }
+  label.f:first-of-type { margin-top: 0; }
+  input[type=text], input[type=password], select {
+    width: 100%; min-height: 48px; padding: 10px 12px; font: inherit; color: var(--text);
+    border: 1px solid #b9c4d0; border-radius: 10px; background: #fff;
+  }
+  input:focus, select:focus, button:focus-visible { outline: 3px solid rgba(46,134,222,.35); outline-offset: 1px; border-color: var(--accent); }
+  .row { display: flex; gap: 8px; align-items: stretch; }
+  .row > input { flex: 1; min-width: 0; }
+  .check { display: flex; align-items: center; gap: 10px; min-height: 48px; cursor: pointer; }
+  .check input { width: 22px; height: 22px; accent-color: var(--accent); flex: none; margin: 0; }
+  .langs { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 0 12px; }
+  button {
+    min-height: 48px; padding: 10px 18px; font: inherit; font-weight: 600; border-radius: 10px;
+    border: 1px solid var(--accent); background: #fff; color: var(--accent); cursor: pointer;
+    touch-action: manipulation;
+  }
+  button.primary { background: var(--accent); color: #fff; }
+  button.primary:active { background: var(--accent-dark); }
+  button.danger { border-color: var(--err); color: var(--err); }
+  button.link { border: 0; background: none; padding: 10px 0; color: var(--muted); font-weight: 500; text-decoration: underline; }
+  button:disabled { opacity: .45; cursor: default; }
+  .btns { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+  .btns button { flex: 1 1 150px; }
+  .est { margin-top: 12px; font-size: .95rem; }
+  .est b { font-variant-numeric: tabular-nums; }
+  .bar { height: 14px; background: var(--soft); border-radius: 7px; overflow: hidden; border: 1px solid var(--line); margin: 12px 0 8px; }
+  .bar > div { height: 100%; width: 0; background: var(--accent); transition: width .2s; }
+  .count { font-weight: 700; font-variant-numeric: tabular-nums; }
+  .current { color: var(--muted); font-size: .94rem; min-height: 1.5em; overflow-wrap: anywhere; }
+  .msg { border-radius: 10px; padding: 10px 12px; margin-top: 12px; font-size: .95rem; overflow-wrap: anywhere; }
+  .msg:empty { display: none; }
+  .msg.info { background: var(--soft); }
+  .msg.ok { background: #e7f6ee; color: var(--ok); }
+  .msg.warn { background: #fff4e0; color: var(--warn); }
+  .msg.err { background: #fdecea; color: var(--err); }
+  .hidden { display: none !important; }
+  a { color: var(--accent); }
+  audio { width: 100%; margin-top: 10px; }
+  small { color: var(--muted); }
+</style>
+</head>
+<body>
+<main>
+  <h1>Voce dell'Istruttore</h1>
+  <p class="sub">Genera tutte le frasi di <b>Istruttore Recluta</b> con la tua voce clonata su ElevenLabs. Tutto avviene nel tuo telefono: la chiave non viene inviata a nessuno tranne ElevenLabs.</p>
+
+  <section aria-labelledby="h-come">
+    <h2 id="h-come">Come fare, passo per passo</h2>
+    <ol class="steps">
+      <li><b>Crea la tua voce.</b> Vai su <a href="https://elevenlabs.io" target="_blank" rel="noopener">elevenlabs.io</a>, accedi e apri <i>Voices › Add a new voice › Instant Voice Clone</i>. Carica una o più registrazioni pulite della tua voce (almeno 1–2 minuti, senza musica). Conferma di avere il diritto di usare quella voce: deve essere la tua.</li>
+      <li><b>Crea una chiave API.</b> Clicca sul tuo profilo (in basso a sinistra) › <i>API keys</i> › <i>Create API key</i>. Copia la chiave (inizia di solito con <code>sk_</code>).</li>
+      <li><b>Incollala qui sotto</b>, premi <i>Carica le mie voci</i> e scegli la tua voce. Premi <i>Prova</i> per sentire un esempio, poi <i>Genera tutto</i>.</li>
+      <li><b>Invia lo zip.</b> Alla fine scarica (o condividi) il file <code>voce-istruttore.zip</code> e mandalo nella chat con Claude.</li>
+    </ol>
+    <p class="note">Nota: i piani gratuiti di ElevenLabs potrebbero non includere la clonazione della voce o non avere abbastanza caratteri per tutte le frasi. Se ti fermi a metà, nessun problema: i clip già fatti restano salvati e, premendo di nuovo <i>Genera</i>, si riparte da dove eri rimasto.</p>
+  </section>
+
+  <section aria-labelledby="h-chiave">
+    <h2 id="h-chiave">1. Chiave e voce</h2>
+    <label class="f" for="apiKey">Chiave API ElevenLabs</label>
+    <input id="apiKey" type="password" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="sk_...">
+    <label class="check"><input id="remember" type="checkbox"> Ricorda su questo telefono</label>
+
+    <button id="btnVoices" type="button" style="width:100%">Carica le mie voci</button>
+    <div id="voicesWrap" class="hidden">
+      <label class="f" for="voiceSelect" style="margin-top:14px">La tua voce</label>
+      <select id="voiceSelect"></select>
+    </div>
+
+    <label class="f" for="voiceId" style="margin-top:14px">Voice ID</label>
+    <input id="voiceId" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="si compila da solo scegliendo la voce">
+    <div id="keyMsg" class="msg" role="status"></div>
+  </section>
+
+  <section aria-labelledby="h-lingue">
+    <h2 id="h-lingue">2. Lingue</h2>
+    <div class="langs" id="langs"></div>
+    <div class="est" id="est">Caricamento frasi…</div>
+    <p class="note" style="margin-top:10px">ElevenLabs conta i caratteri in base al tuo piano: controlla quanti te ne restano in <i>Profilo › Subscription</i> prima di generare.</p>
+  </section>
+
+  <section aria-labelledby="h-genera">
+    <h2 id="h-genera">3. Prova e genera</h2>
+    <div class="btns" style="margin-top:0">
+      <button id="btnTry" type="button">Prova</button>
+      <button id="btnGen" type="button" class="primary">Genera tutto</button>
+      <button id="btnStop" type="button" class="danger hidden">Stop</button>
+    </div>
+    <audio id="player" controls class="hidden"></audio>
+    <div class="bar" aria-hidden="true"><div id="barFill"></div></div>
+    <div><span class="count" id="count">0 di 0</span></div>
+    <div class="current" id="current"></div>
+    <div id="genMsg" class="msg" role="status" aria-live="polite"></div>
+  </section>
+
+  <section aria-labelledby="h-scarica">
+    <h2 id="h-scarica">4. Scarica e invia</h2>
+    <div class="btns" style="margin-top:0">
+      <button id="btnZip" type="button" class="primary">Scarica quello che c'è</button>
+      <button id="btnShare" type="button" class="hidden">Condividi lo zip</button>
+    </div>
+    <div id="zipMsg" class="msg" role="status"></div>
+    <button id="btnClear" type="button" class="link">Cancella i clip salvati per questa voce</button>
+  </section>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  var API = 'https://api.elevenlabs.io/v1';
+  var LANGS = [
+    ['it', 'Italiano'], ['en', 'Inglese'], ['es', 'Spagnolo'],
+    ['fr', 'Francese'], ['de', 'Tedesco'], ['pt', 'Portoghese']
+  ];
+  var MODEL = 'eleven_multilingual_v2';
+  var CONCURRENCY = 3;
+  var BACKOFF = [2000, 4000, 8000, 16000];
+  var LS_KEY = 'voce-istruttore-key';
+  var LS_VOICE = 'voce-istruttore-voice';
+  var LS_NAMES = 'voce-istruttore-voice-names';
+
+  var $ = function (id) { return document.getElementById(id); };
+  var el = {
+    apiKey: $('apiKey'), remember: $('remember'), btnVoices: $('btnVoices'),
+    voicesWrap: $('voicesWrap'), voiceSelect: $('voiceSelect'), voiceId: $('voiceId'),
+    keyMsg: $('keyMsg'), langs: $('langs'), est: $('est'), btnTry: $('btnTry'),
+    btnGen: $('btnGen'), btnStop: $('btnStop'), player: $('player'), barFill: $('barFill'),
+    count: $('count'), current: $('current'), genMsg: $('genMsg'), btnZip: $('btnZip'),
+    btnShare: $('btnShare'), zipMsg: $('zipMsg'), btnClear: $('btnClear')
+  };
+
+  var phrasesData = null;      // { version, phrases }
+  var voiceNames = {};         // voice_id -> name
+  var skipLangCode = false;    // set if API rejects language_code
+  var running = false;
+  var stopRequested = false;
+  var controllers = [];
+  var lastZipFile = null;
+
+  // ---------- storage helpers (all guarded) ----------
+  function lsGet(k) { try { return window.localStorage.getItem(k); } catch (e) { return null; } }
+  function lsSet(k, v) { try { window.localStorage.setItem(k, v); } catch (e) {} }
+  function lsDel(k) { try { window.localStorage.removeItem(k); } catch (e) {} }
+
+  var mem = new Map();  // fallback store
+  var dbPromise = null;
+  function openDb() {
+    if (dbPromise) return dbPromise;
+    dbPromise = new Promise(function (resolve) {
+      try {
+        if (!window.indexedDB) return resolve(null);
+        var req = indexedDB.open('voce-istruttore', 1);
+        req.onupgradeneeded = function () {
+          try { req.result.createObjectStore('clips'); } catch (e) {}
+        };
+        req.onsuccess = function () { resolve(req.result); };
+        req.onerror = function () { resolve(null); };
+        req.onblocked = function () { resolve(null); };
+      } catch (e) { resolve(null); }
+    });
+    return dbPromise;
+  }
+  function clipKey(voiceId, lang, id) { return voiceId + '|' + lang + '/' + id; }
+
+  function idbReq(mode, fn) {
+    return openDb().then(function (db) {
+      if (!db) return undefined;
+      return new Promise(function (resolve) {
+        try {
+          var tx = db.transaction('clips', mode);
+          var r = fn(tx.objectStore('clips'));
+          tx.oncomplete = function () { resolve(r && 'result' in r ? r.result : true); };
+          tx.onerror = tx.onabort = function () { resolve(undefined); };
+        } catch (e) { resolve(undefined); }
+      });
+    });
+  }
+  function storeGet(key) {
+    if (mem.has(key)) return Promise.resolve(mem.get(key));
+    return idbReq('readonly', function (s) { return s.get(key); }).then(function (v) {
+      if (v && v.blob) mem.set(key, v);
+      return v || null;
+    }).catch(function () { return null; });
+  }
+  function storePut(key, rec) {
+    mem.set(key, rec);
+    return idbReq('readwrite', function (s) { return s.put(rec, key); }).catch(function () {});
+  }
+  function storeDeletePrefix(prefix) {
+    Array.from(mem.keys()).forEach(function (k) { if (k.indexOf(prefix) === 0) mem.delete(k); });
+    return idbReq('readwrite', function (s) {
+      var range = IDBKeyRange.bound(prefix, prefix + '￿');
+      return s.delete(range);
+    }).catch(function () {});
+  }
+
+  // ---------- UI helpers ----------
+  function msg(target, text, kind) {
+    target.className = 'msg ' + (kind || 'info');
+    target.textContent = text || '';
+  }
+  function getKey() { return el.apiKey.value.trim(); }
+  function getVoiceId() { return el.voiceId.value.trim(); }
+  function selectedLangs() {
+    return LANGS.map(function (l) { return l[0]; }).filter(function (c) {
+      var cb = $('lang-' + c); return cb && cb.checked;
+    });
+  }
+  function setRunning(on) {
+    running = on;
+    el.btnGen.disabled = on; el.btnTry.disabled = on; el.btnVoices.disabled = on;
+    el.btnClear.disabled = on;
+    el.btnStop.classList.toggle('hidden', !on);
+  }
+  function setProgress(done, total, current) {
+    el.count.textContent = done + ' di ' + total;
+    el.barFill.style.width = total ? (100 * done / total).toFixed(1) + '%' : '0';
+    if (current !== undefined) el.current.textContent = current;
+  }
+  function fmt(n) { return n.toLocaleString('it-IT'); }
+
+  // ---------- languages ----------
+  LANGS.forEach(function (l) {
+    var lab = document.createElement('label');
+    lab.className = 'check';
+    var cb = document.createElement('input');
+    cb.type = 'checkbox'; cb.id = 'lang-' + l[0]; cb.checked = true; cb.value = l[0];
+    cb.addEventListener('change', updateEstimate);
+    lab.appendChild(cb);
+    lab.appendChild(document.createTextNode(' ' + l[1] + ' (' + l[0] + ')'));
+    el.langs.appendChild(lab);
+  });
+
+  // ---------- estimate ----------
+  var estSeq = 0;
+  function buildTasks(langs) {
+    var tasks = [];
+    if (!phrasesData) return tasks;
+    langs.forEach(function (lang) {
+      phrasesData.phrases.forEach(function (p) {
+        var t = typeof p[lang] === 'string' ? p[lang].trim() : '';
+        if (t && p.id) tasks.push({ lang: lang, id: String(p.id), text: t });
+      });
+    });
+    return tasks;
+  }
+  function updateEstimate() {
+    if (!phrasesData) return;
+    var seq = ++estSeq;
+    var tasks = buildTasks(selectedLangs());
+    var total = tasks.reduce(function (a, t) { return a + t.text.length; }, 0);
+    var base = '<b>' + fmt(tasks.length) + '</b> clip, circa <b>' + fmt(total) + '</b> caratteri per le lingue scelte.';
+    el.est.innerHTML = base;
+    var vid = getVoiceId();
+    if (!vid || !tasks.length) return;
+    Promise.all(tasks.map(function (t) {
+      return storeGet(clipKey(vid, t.lang, t.id)).then(function (r) { return r && r.text === t.text ? 0 : t.text.length; });
+    })).then(function (rest) {
+      if (seq !== estSeq) return;
+      var left = rest.reduce(function (a, b) { return a + b; }, 0);
+      var done = rest.filter(function (x) { return x === 0; }).length;
+      if (done > 0) el.est.innerHTML = base + '<br>Già fatti: <b>' + fmt(done) + '</b> clip. Restano circa <b>' + fmt(left) + '</b> caratteri.';
+    });
+  }
+
+  // ---------- phrases ----------
+  fetch('voice-phrases.json', { cache: 'no-store' }).then(function (r) {
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return r.json();
+  }).then(function (data) {
+    if (!data || !Array.isArray(data.phrases)) throw new Error('formato non valido');
+    phrasesData = data;
+    updateEstimate();
+  }).catch(function (e) {
+    el.est.textContent = 'Non riesco a caricare l\'elenco delle frasi (voice-phrases.json): ' + e.message;
+    el.est.className = 'est msg err';
+  });
+
+  // ---------- key / voice persistence ----------
+  (function restore() {
+    var k = lsGet(LS_KEY);
+    if (k) { el.apiKey.value = k; el.remember.checked = true; }
+    var v = lsGet(LS_VOICE);
+    if (v) el.voiceId.value = v;
+    try { var n = JSON.parse(lsGet(LS_NAMES) || '{}'); if (n && typeof n === 'object') voiceNames = n; } catch (e) {}
+  })();
+  function persistKey() {
+    if (el.remember.checked && getKey()) lsSet(LS_KEY, getKey()); else lsDel(LS_KEY);
+  }
+  el.remember.addEventListener('change', persistKey);
+  el.apiKey.addEventListener('change', persistKey);
+  el.voiceId.addEventListener('change', function () { lsSet(LS_VOICE, getVoiceId()); updateEstimate(); });
+  el.voiceId.addEventListener('input', updateEstimate);
+
+  // ---------- API helpers ----------
+  function readError(res) {
+    return res.text().then(function (t) {
+      var detail = t;
+      try {
+        var j = JSON.parse(t);
+        if (j && j.detail) detail = typeof j.detail === 'string' ? j.detail : (j.detail.message || JSON.stringify(j.detail));
+        else if (j && j.message) detail = j.message;
+      } catch (e) {}
+      return { status: res.status, body: t || '', detail: String(detail || '').slice(0, 300) };
+    }).catch(function () { return { status: res.status, body: '', detail: '' }; });
+  }
+  function FatalError(kind, text) { this.kind = kind; this.message = text; }
+
+  el.btnVoices.addEventListener('click', function () {
+    var key = getKey();
+    if (!key) { msg(el.keyMsg, 'Incolla prima la chiave API.', 'warn'); el.apiKey.focus(); return; }
+    persistKey();
+    el.btnVoices.disabled = true;
+    msg(el.keyMsg, 'Carico le tue voci…', 'info');
+    fetch(API + '/voices', { headers: { 'xi-api-key': key } }).then(function (res) {
+      if (!res.ok) return readError(res).then(function (e) {
+        if (e.status === 401) throw new Error('Chiave API non valida (401). Ricontrolla di averla copiata tutta.');
+        throw new Error('Errore ' + e.status + (e.detail ? ': ' + e.detail : ''));
+      });
+      return res.json();
+    }).then(function (data) {
+      var voices = (data && data.voices) || [];
+      voices.sort(function (a, b) {
+        var ac = a.category === 'cloned' ? 0 : 1, bc = b.category === 'cloned' ? 0 : 1;
+        return ac - bc || String(a.name).localeCompare(String(b.name));
+      });
+      el.voiceSelect.innerHTML = '';
+      var ph = document.createElement('option');
+      ph.value = ''; ph.textContent = 'Scegli una voce…';
+      el.voiceSelect.appendChild(ph);
+      voices.forEach(function (v) {
+        voiceNames[v.voice_id] = v.name;
+        var o = document.createElement('option');
+        o.value = v.voice_id;
+        o.textContent = v.name + (v.category === 'cloned' ? ' (tua)' : '');
+        el.voiceSelect.appendChild(o);
+      });
+      el.voicesWrap.classList.remove('hidden');
+      try { lsSet(LS_NAMES, JSON.stringify(voiceNames)); } catch (e) {}
+      var cur = getVoiceId();
+      if (cur && voiceNames[cur]) el.voiceSelect.value = cur;
+      else {
+        var cloned = voices.filter(function (v) { return v.category === 'cloned'; });
+        if (cloned.length === 1) { el.voiceSelect.value = cloned[0].voice_id; el.voiceId.value = cloned[0].voice_id; lsSet(LS_VOICE, cloned[0].voice_id); }
+      }
+      updateEstimate();
+      msg(el.keyMsg, voices.length ? 'Trovate ' + voices.length + ' voci. Scegli la tua dall\'elenco.' : 'Nessuna voce trovata nel tuo account. Crea prima la voce con Instant Voice Clone.', voices.length ? 'ok' : 'warn');
+    }).catch(function (e) {
+      var t = e && e.message ? e.message : String(e);
+      if (e instanceof TypeError) t = 'Impossibile contattare ElevenLabs. Controlla la connessione e riprova.';
+      msg(el.keyMsg, t, 'err');
+    }).then(function () { el.btnVoices.disabled = running; });
+  });
+  el.voiceSelect.addEventListener('change', function () {
+    if (el.voiceSelect.value) {
+      el.voiceId.value = el.voiceSelect.value;
+      lsSet(LS_VOICE, el.voiceSelect.value);
+      updateEstimate();
+    }
+  });
+
+  function sleep(ms, signal) {
+    return new Promise(function (resolve) {
+      var t = setTimeout(resolve, ms);
+      if (signal) signal.addEventListener('abort', function () { clearTimeout(t); resolve(); }, { once: true });
+    });
+  }
+
+  // Generates one clip; resolves to an mp3 Blob, or throws FatalError / Error.
+  function tts(key, voiceId, text, lang, signal) {
+    var attempt = 0;
+    var triedWithoutLang = false;
+    function once() {
+      var body = {
+        text: text,
+        model_id: MODEL,
+        voice_settings: { stability: 0.45, similarity_boost: 0.85, style: 0.35, use_speaker_boost: true }
+      };
+      if (!skipLangCode && !triedWithoutLang) body.language_code = lang;
+      var sentLang = 'language_code' in body;
+      return fetch(API + '/text-to-speech/' + encodeURIComponent(voiceId) + '?output_format=mp3_44100_64', {
+        method: 'POST',
+        headers: { 'xi-api-key': key, 'Content-Type': 'application/json', 'Accept': 'audio/mpeg' },
+        body: JSON.stringify(body)
+      }).then(function (res) {
+        if (res.ok) return res.blob().then(function (b) {
+          if (!b.size) throw new Error('Risposta vuota');
+          return b.type === 'audio/mpeg' ? b : new Blob([b], { type: 'audio/mpeg' });
+        });
+        return readError(res).then(function (e) {
+          var low = (e.body + ' ' + e.detail).toLowerCase();
+          if ((e.status === 400 || e.status === 422) && sentLang && low.indexOf('language') !== -1) {
+            triedWithoutLang = true; skipLangCode = true;
+            return once();
+          }
+          if (low.indexOf('quota') !== -1 || low.indexOf('credits') !== -1 || e.status === 402) {
+            throw new FatalError('quota', 'Caratteri esauriti sul tuo piano ElevenLabs' + (e.detail ? ' (' + e.detail + ')' : '') + '.');
+          }
+          if (e.status === 401) {
+            throw new FatalError('auth', 'La chiave API non è valida o non ha i permessi per la sintesi vocale (401)' + (e.detail ? ': ' + e.detail : '') + '.');
+          }
+          if (e.status === 403) {
+            throw new FatalError('auth', 'Accesso negato (403)' + (e.detail ? ': ' + e.detail : '') + '. Controlla piano e permessi della chiave.');
+          }
+          if (e.status === 404) {
+            throw new FatalError('voice', 'Voce non trovata (404). Controlla il Voice ID.');
+          }
+          if (e.status === 429 || e.status >= 500) {
+            if (attempt < BACKOFF.length) {
+              var wait = BACKOFF[attempt++];
+              return sleep(wait, signal).then(function () {
+                if (signal && signal.aborted) throw new DOMException('Aborted', 'AbortError');
+                return once();
+              });
+            }
+            throw new FatalError('busy', 'ElevenLabs è troppo occupato (' + e.status + '), riprova tra qualche minuto.');
+          }
+          throw new Error('Errore ' + e.status + (e.detail ? ': ' + e.detail : ''));
+        });
+      });
+    }
+    return once();
+  }
+
+  function checkInputs() {
+    if (!getKey()) { msg(el.genMsg, 'Incolla la chiave API al punto 1.', 'warn'); el.apiKey.focus(); return false; }
+    if (!getVoiceId()) { msg(el.genMsg, 'Scegli la tua voce al punto 1 (premi "Carica le mie voci").', 'warn'); return false; }
+    if (!phrasesData) { msg(el.genMsg, 'L\'elenco delle frasi non è ancora caricato.', 'warn'); return false; }
+    return true;
+  }
+
+  // ---------- Prova ----------
+  el.btnTry.addEventListener('click', function () {
+    if (!checkInputs()) return;
+    var p = phrasesData.phrases.find(function (x) { return x && x.it && String(x.it).trim(); });
+    if (!p) { msg(el.genMsg, 'Nessuna frase in italiano da provare.', 'warn'); return; }
+    var key = getKey(), vid = getVoiceId(), text = String(p.it).trim();
+    var k = clipKey(vid, 'it', String(p.id));
+    persistKey();
+    setRunning(true); stopRequested = false;
+    var ctrl = new AbortController(); controllers = [ctrl];
+    msg(el.genMsg, 'Genero la frase di prova: "' + text + '"…', 'info');
+    storeGet(k).then(function (rec) {
+      if (rec && rec.text === text) return rec.blob;
+      return tts(key, vid, text, 'it', ctrl.signal).then(function (blob) {
+        return storePut(k, { blob: blob, text: text, voiceId: vid, lang: 'it', id: String(p.id), t: Date.now() }).then(function () { return blob; });
+      });
+    }).then(function (blob) {
+      try { if (el.player.src) URL.revokeObjectURL(el.player.src); } catch (e) {}
+      el.player.src = URL.createObjectURL(blob);
+      el.player.classList.remove('hidden');
+      var pr = el.player.play();
+      if (pr && pr.catch) pr.catch(function () {});
+      msg(el.genMsg, 'Ascolta l\'esempio. Se la voce ti piace, premi "Genera tutto".', 'ok');
+      updateEstimate();
+    }).catch(function (e) { showError(e, 0); }).then(function () { setRunning(false); });
+  });
+
+  function showError(e, doneCount) {
+    if (e && e.name === 'AbortError') { msg(el.genMsg, 'Fermato. Clip fatti finora: ' + doneCount + '. Premi "Genera tutto" per continuare.', 'warn'); return; }
+    if (e instanceof FatalError) {
+      var extra = '';
+      if (e.kind === 'quota') extra = ' Clip completati finora: ' + doneCount + '. Puoi scaricare quello che c\'è, oppure aumentare il piano e premere di nuovo "Genera tutto".';
+      if (e.kind === 'auth') extra = ' Ricontrolla la chiave al punto 1.';
+      msg(el.genMsg, e.message + extra, 'err');
+      return;
+    }
+    if (e instanceof TypeError) { msg(el.genMsg, 'Impossibile contattare ElevenLabs (rete o blocco del browser). Controlla la connessione e riprova. Clip fatti: ' + doneCount + '.', 'err'); return; }
+    msg(el.genMsg, (e && e.message ? e.message : String(e)) + ' — Clip fatti: ' + doneCount + '.', 'err');
+  }
+
+  // ---------- Genera ----------
+  el.btnGen.addEventListener('click', function () {
+    if (running || !checkInputs()) return;
+    var langs = selectedLangs();
+    if (!langs.length) { msg(el.genMsg, 'Scegli almeno una lingua.', 'warn'); return; }
+    var key = getKey(), vid = getVoiceId();
+    persistKey(); lsSet(LS_VOICE, vid);
+    var tasks = buildTasks(langs);
+    var total = tasks.length;
+    var done = 0, made = 0, skipped = 0, failed = [];
+    var fatal = null;
+    stopRequested = false;
+    controllers = [];
+    setRunning(true);
+    msg(el.genMsg, 'Controllo i clip già fatti…', 'info');
+    setProgress(0, total, '');
+
+    Promise.all(tasks.map(function (t) {
+      return storeGet(clipKey(vid, t.lang, t.id)).then(function (r) { t.have = !!(r && r.text === t.text); });
+    })).then(function () {
+      var todo = tasks.filter(function (t) { skipped += t.have ? 1 : 0; return !t.have; });
+      done = skipped;
+      setProgress(done, total, '');
+      msg(el.genMsg, todo.length ? 'Genero ' + todo.length + ' clip' + (skipped ? ' (' + skipped + ' già pronti, li salto)' : '') + '…' : 'Tutti i clip sono già pronti.', 'info');
+      var idx = 0;
+      function worker() {
+        if (stopRequested || fatal || idx >= todo.length) return Promise.resolve();
+        var t = todo[idx++];
+        var ctrl = new AbortController(); controllers.push(ctrl);
+        el.current.textContent = '[' + t.lang + '] ' + t.text;
+        return tts(key, vid, t.text, t.lang, ctrl.signal).then(function (blob) {
+          return storePut(clipKey(vid, t.lang, t.id), { blob: blob, text: t.text, voiceId: vid, lang: t.lang, id: t.id, t: Date.now() });
+        }).then(function () {
+          made++; done++;
+          setProgress(done, total);
+        }, function (e) {
+          if (e && e.name === 'AbortError') return;
+          if (e instanceof FatalError) {
+            if (!fatal) { fatal = e; controllers.forEach(function (c) { try { c.abort(); } catch (x) {} }); }
+            return;
+          }
+          if (e instanceof TypeError && !navigator.onLine) {
+            if (!fatal) { fatal = e; controllers.forEach(function (c) { try { c.abort(); } catch (x) {} }); }
+            return;
+          }
+          failed.push(t.lang + '/' + t.id + ': ' + (e && e.message ? e.message : e));
+        }).then(function () {
+          controllers = controllers.filter(function (c) { return c !== ctrl; });
+          return worker();
+        });
+      }
+      var ws = [];
+      for (var i = 0; i < CONCURRENCY; i++) ws.push(worker());
+      return Promise.all(ws);
+    }).then(function () {
+      setRunning(false);
+      updateEstimate();
+      el.current.textContent = '';
+      if (fatal) { showError(fatal, done); return; }
+      if (stopRequested) { msg(el.genMsg, 'Fermato. Clip pronti: ' + done + ' di ' + total + '. Premi "Genera tutto" per continuare.', 'warn'); return; }
+      if (failed.length) {
+        msg(el.genMsg, 'Finito con ' + failed.length + ' errori (' + done + ' di ' + total + ' pronti). Premi di nuovo "Genera tutto" per riprovare solo quelli mancanti. Primo errore: ' + failed[0], 'warn');
+        return;
+      }
+      msg(el.genMsg, 'Fatto! ' + total + ' clip pronti (' + made + ' nuovi). Preparo lo zip…', 'ok');
+      makeZip(true);
+    }).catch(function (e) { setRunning(false); showError(e, done); });
+  });
+
+  el.btnStop.addEventListener('click', function () {
+    stopRequested = true;
+    controllers.forEach(function (c) { try { c.abort(); } catch (e) {} });
+    el.current.textContent = 'Finisco le frasi già in corso e mi fermo…';
+  });
+
+  // ---------- Zip ----------
+  function makeZip(auto) {
+    if (typeof JSZip === 'undefined') { msg(el.zipMsg, 'Non riesco a caricare JSZip (serve la connessione internet). Ricarica la pagina e riprova.', 'err'); return; }
+    var vid = getVoiceId();
+    if (!vid) { msg(el.zipMsg, 'Scegli prima la voce al punto 1.', 'warn'); return; }
+    if (!phrasesData) { msg(el.zipMsg, 'Elenco frasi non caricato.', 'warn'); return; }
+    var langs = LANGS.map(function (l) { return l[0]; });
+    var tasks = buildTasks(langs);
+    el.btnZip.disabled = true;
+    msg(el.zipMsg, 'Preparo lo zip…', 'info');
+    var zip = new JSZip();
+    var manifestLangs = {};
+    var n = 0;
+    Promise.all(tasks.map(function (t) {
+      return storeGet(clipKey(vid, t.lang, t.id)).then(function (r) { t.rec = r && r.text === t.text ? r : null; });
+    })).then(function () {
+      tasks.forEach(function (t) {
+        if (!t.rec) return;
+        zip.file('voice/' + t.lang + '/' + t.id + '.mp3', t.rec.blob, { binary: true });
+        (manifestLangs[t.lang] = manifestLangs[t.lang] || []).push(t.id);
+        n++;
+      });
+      if (!n) throw new Error('Non c\'è ancora nessun clip per questa voce. Premi prima "Genera tutto".');
+      var manifest = {
+        version: phrasesData.version != null ? phrasesData.version : 1,
+        voiceName: voiceNames[vid] || (el.voiceSelect.value === vid && el.voiceSelect.selectedOptions[0] ? el.voiceSelect.selectedOptions[0].textContent.replace(/ \(tua\)$/, '') : vid),
+        created: new Date().toISOString(),
+        langs: manifestLangs
+      };
+      zip.file('voice/manifest.json', JSON.stringify(manifest, null, 2));
+      // mp3 is already compressed: STORE is faster and the same size
+      return zip.generateAsync({ type: 'blob', compression: 'STORE', mimeType: 'application/zip' });
+    }).then(function (blob) {
+      var name = 'voce-istruttore.zip';
+      try { lastZipFile = new File([blob], name, { type: 'application/zip' }); } catch (e) { lastZipFile = null; }
+      var canShare = false;
+      try { canShare = !!(lastZipFile && navigator.canShare && navigator.share && navigator.canShare({ files: [lastZipFile] })); } catch (e) {}
+      el.btnShare.classList.toggle('hidden', !canShare);
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url; a.download = name; a.rel = 'noopener';
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(function () { try { URL.revokeObjectURL(url); } catch (e) {} }, 60000);
+      var mb = (blob.size / 1048576).toFixed(1);
+      msg(el.zipMsg, 'Zip pronto: ' + n + ' clip, ' + mb + ' MB.' + (canShare ? ' Se il download non parte, premi "Condividi lo zip" e mandalo nella chat con Claude.' : ' Ora mandalo nella chat con Claude.'), 'ok');
+    }).catch(function (e) {
+      msg(el.zipMsg, e && e.message ? e.message : String(e), auto ? 'warn' : 'err');
+    }).then(function () { el.btnZip.disabled = false; });
+  }
+  el.btnZip.addEventListener('click', function () { makeZip(false); });
+
+  el.btnShare.addEventListener('click', function () {
+    if (!lastZipFile) return;
+    try {
+      navigator.share({ files: [lastZipFile], title: 'Voce Istruttore' }).catch(function (e) {
+        if (e && e.name !== 'AbortError') msg(el.zipMsg, 'Condivisione non riuscita: ' + e.message, 'warn');
+      });
+    } catch (e) { msg(el.zipMsg, 'Condivisione non disponibile su questo browser.', 'warn'); }
+  });
+
+  el.btnClear.addEventListener('click', function () {
+    var vid = getVoiceId();
+    if (!vid) { msg(el.zipMsg, 'Scegli prima la voce.', 'warn'); return; }
+    if (!window.confirm('Cancellare tutti i clip già generati per questa voce? Dovrai rigenerarli (e consumare di nuovo caratteri).')) return;
+    storeDeletePrefix(vid + '|').then(function () {
+      msg(el.zipMsg, 'Clip cancellati.', 'info');
+      setProgress(0, 0, '');
+      updateEstimate();
+    });
+  });
+
+  window.addEventListener('beforeunload', function (ev) {
+    if (running) { ev.preventDefault(); ev.returnValue = ''; }
+  });
+})();
+</script>
+</body>
+</html>
