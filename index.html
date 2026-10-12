@@ -362,6 +362,96 @@ body.fx-full .stat b, body.fx-full .verdict { display: inline-block; animation: 
 
 body.fx-off *, body.fx-off *::before, body.fx-off *::after { animation-duration: .001s !important; animation-iteration-count: 1 !important; transition-duration: .001s !important; }
 body.fx-off .ld3d i { animation-duration: 1.4s !important; animation-iteration-count: infinite !important; }
+
+/* ---------- Look professionale: copertina in home, pagina di benvenuto, tab bar flottante, tema scuro ---------- */
+:root { --hero1: #0a1424; --hero2: #123a6e; --glowA: rgba(74,168,255,.55); --glowB: rgba(74,168,255,.18); }
+body.g-f { --hero2: #5a1752; --glowA: rgba(255,106,213,.5); --glowB: rgba(255,106,213,.16); }
+body.goldtheme { --hero2: #5a420c; --glowA: rgba(255,211,107,.5); --glowB: rgba(255,211,107,.16); }
+
+.hero { position: relative; overflow: hidden; isolation: isolate; border-radius: 26px; padding: 20px 18px 18px; color: #fff;
+  background: radial-gradient(90% 80% at 80% 30%, var(--glowA), transparent 62%), linear-gradient(155deg, var(--hero1) 15%, var(--hero2) 100%);
+  box-shadow: 0 22px 44px -16px rgba(10,20,36,.65); display: grid; grid-template-columns: minmax(0, 1fr) 46%; gap: 8px 6px; }
+.hero::after { content: ""; position: absolute; z-index: -1; left: -30%; top: -60%; width: 70%; height: 220%; background: linear-gradient(90deg, transparent, rgba(255,255,255,.07), transparent); transform: rotate(18deg); }
+.hero .hi { font-size: 15px; color: rgba(255,255,255,.75); }
+.hero h1 { font-family: var(--f-display); font-weight: 800; font-size: 34px; line-height: 1; text-transform: uppercase; letter-spacing: .01em; margin-top: 2px; overflow-wrap: anywhere; }
+.hero .chip { display: inline-flex; align-items: center; gap: 6px; margin-top: 10px; padding: 4px 10px 4px 6px; border-radius: 999px; background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.18); font-family: var(--f-cond); font-weight: 700; font-size: 14px; letter-spacing: .04em; text-transform: uppercase; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+.hero .chip .rk { background: rgba(255,255,255,.9); }
+.hero .ringwrap { display: flex; align-items: center; gap: 10px; margin-top: 14px; }
+.hero .ring { position: relative; width: 62px; height: 62px; flex: 0 0 auto; }
+.hero .ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+.hero .ring .bgc { fill: none; stroke: rgba(255,255,255,.14); stroke-width: 6; }
+.hero .ring .fgc { fill: none; stroke: url(#ringGrad); stroke-width: 6; stroke-linecap: round; stroke-dasharray: 163.4; }
+body:not(.fx-off) .hero .ring .fgc { animation: fxRingIn 1.3s cubic-bezier(.2,.8,.2,1) .35s both; }
+@keyframes fxRingIn { from { stroke-dashoffset: 163.4; } }
+.hero .ring b { position: absolute; top: 0; right: 0; bottom: 0; left: 0; display: grid; place-items: center; font-family: var(--f-display); font-weight: 800; font-size: 22px; font-variant-numeric: tabular-nums; }
+.hero .ringwrap small { font-family: var(--f-cond); font-weight: 600; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: rgba(255,255,255,.7); line-height: 1.2; }
+.hero .ringwrap small b { display: block; color: #fff; font-size: 17px; letter-spacing: .02em; }
+.hero-fig { position: relative; align-self: center; }
+.hero-fig::before { content: ""; position: absolute; left: 8%; right: 8%; bottom: 2%; height: 30%; border-radius: 50%; background: radial-gradient(closest-side, var(--glowA), transparent); filter: blur(4px); }
+.hero-fig .figbox { position: relative; width: 100%; aspect-ratio: 6 / 5; filter: drop-shadow(0 10px 14px rgba(0,0,0,.35)); transform: scale(1.35); transform-origin: 50% 85%; }
+.hero-cta { grid-column: 1 / -1; display: flex; flex-direction: column; gap: 12px; margin-top: 4px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,.12); }
+.hero .today small { display: block; font-family: var(--f-cond); font-weight: 700; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.65); }
+.hero .today b { display: block; font-family: var(--f-display); font-weight: 800; font-size: 26px; line-height: 1.05; text-transform: uppercase; }
+.hero .today span { font-size: 14px; color: rgba(255,255,255,.75); }
+.hero .btn.primary { background: #fff; color: var(--hero1); box-shadow: 0 5px 0 rgba(255,255,255,.35), 0 12px 28px var(--glowA); }
+.hero .btn.primary .play { width: 26px; height: 26px; border-radius: 50%; background: var(--brass); display: grid; place-items: center; }
+.hero .btn.primary .play svg { width: 11px; height: 11px; margin-left: 2px; fill: #fff; }
+.hero .pt { position: absolute; z-index: -1; width: 5px; height: 5px; border-radius: 50%; background: #fff; opacity: 0; left: var(--x); bottom: -10px; box-shadow: 0 0 8px #fff; }
+body.fx-full .hero .pt { animation: fxRiseUp var(--d) linear infinite; animation-delay: var(--w); }
+@keyframes fxRiseUp { 0% { transform: translateY(0); opacity: 0; } 15% { opacity: .7; } 100% { transform: translateY(-340px); opacity: 0; } }
+
+/* welcome page */
+body.landing-on { background: var(--hero1); }
+body.landing-on::before { display: none; }
+.landing { color: #fff; min-height: 100vh; position: relative; isolation: isolate; padding-top: calc(env(safe-area-inset-top, 0px) + 22px); }
+.landing::before { content: ""; position: fixed; z-index: -1; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(70% 45% at 25% 22%, rgba(74,168,255,.42), transparent 70%), radial-gradient(60% 40% at 80% 30%, rgba(255,106,213,.36), transparent 70%), linear-gradient(180deg, #0a1424, #0d1b33 60%, #0a1424); }
+.landing .brand { font-family: var(--f-display); font-weight: 800; font-size: 22px; letter-spacing: .04em; text-transform: uppercase; text-align: center; }
+.landing .brand b { color: #6cb8ff; }
+.land-figs { display: grid; grid-template-columns: 1fr 1fr; gap: 0; margin: 0 -8px; }
+.land-figs .figbox { aspect-ratio: 6 / 5; filter: drop-shadow(0 14px 18px rgba(0,0,0,.45)); }
+.land-h { font-family: var(--f-display); font-weight: 800; font-size: 40px; line-height: .98; text-transform: uppercase; text-align: center; letter-spacing: .005em;
+  background: linear-gradient(100deg, #ffffff 30%, #a9d4ff 60%, #ffb3ea 90%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.land-p { text-align: center; color: rgba(255,255,255,.78); font-size: 16px; max-width: 460px; margin: 0 auto; }
+.feats { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.feats li { display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center; padding: 12px 6px; border-radius: 16px; background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12); font-family: var(--f-cond); font-weight: 700; font-size: 14px; line-height: 1.15; letter-spacing: .03em; text-transform: uppercase; -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+.feats li svg { width: 28px; height: 28px; color: #6cb8ff; }
+.landing .label { color: rgba(255,255,255,.65); }
+.landing .h2 { text-align: center; }
+.landing .field input { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.2); color: #fff; }
+.landing .field input::placeholder { color: rgba(255,255,255,.45); }
+.landing .pick button { background: rgba(255,255,255,.08); border: 1.5px solid rgba(255,255,255,.16); box-shadow: 0 12px 30px rgba(0,0,0,.35); color: #fff; -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+.landing .pick button.m b { color: #6cb8ff; } .landing .pick button.f b { color: #ff8be0; }
+.landing .pick button small { color: rgba(255,255,255,.7); }
+.landing .pick button .go-pill { margin-top: 4px; padding: 6px 14px; border-radius: 999px; background: #fff; color: #0a1424; font-family: var(--f-cond); font-weight: 800; font-size: 14px; letter-spacing: .06em; text-transform: uppercase; }
+.land-note { text-align: center; font-size: 13px; color: rgba(255,255,255,.6); }
+
+/* floating tab bar */
+.tabbar { left: 10px; right: 10px; bottom: calc(env(safe-area-inset-bottom, 0px) + 8px); max-width: 620px; margin: 0 auto; border-radius: 24px; border: 1px solid var(--line); padding: 6px; background: rgba(255,255,255,.9); box-shadow: 0 12px 32px rgba(22,32,44,.18); }
+.tabbar button { border-radius: 18px; transition: background .25s, color .25s; }
+.tabbar button[aria-current="page"] { background: var(--soft); }
+body:not(.fx-off) .tabbar button[aria-current="page"]::after { display: none; }
+body.tabs .screen { padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 110px); }
+
+/* finishing touches */
+body.fx-full .btn.primary::after { content: ""; position: absolute; top: 0; bottom: 0; left: -60%; width: 40%; pointer-events: none; background: linear-gradient(100deg, transparent, rgba(255,255,255,.5), transparent); transform: skewX(-20deg); animation: fxShine 3.8s ease-in-out infinite; }
+.hero .btn.primary::after { background: linear-gradient(100deg, transparent, rgba(120,180,255,.35), transparent) !important; }
+@keyframes fxShine { 0%, 55% { left: -60%; } 100% { left: 130%; } }
+body:not(.fx-off) .xp i { transform-origin: left; animation: fxGrow 1.2s cubic-bezier(.2,.8,.2,1) .3s both; }
+@keyframes fxGrow { from { transform: scaleX(0); } }
+.order { overflow: hidden; }
+.order::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 4px; background: linear-gradient(90deg, var(--brass), var(--glowA)); }
+.section > .label::before { content: ""; display: inline-block; width: 14px; height: 3px; border-radius: 2px; background: var(--brass); vertical-align: middle; margin: -2px 8px 0 0; }
+
+/* dark theme (Profilo › Tema) */
+body.dark { --bg: #0b1220; --panel: #151e2d; --panel-2: #1c2738; --line: #27344b; --fg: #eef2f8; --muted: #9aa8bb; --soft: rgba(74,168,255,.16); --shadow: 0 1px 2px rgba(0,0,0,.3), 0 10px 26px rgba(0,0,0,.35); color-scheme: dark; }
+body.dark.g-f { --soft: rgba(255,106,213,.16); }
+body.dark.goldtheme { --soft: rgba(255,211,107,.16); }
+body.dark .tabbar { background: rgba(21,30,45,.92); box-shadow: 0 12px 32px rgba(0,0,0,.5); }
+body.dark .rest { background: var(--bg); }
+body.dark .step .arrow, body.dark .dots i { color: #4b5a72; border-color: #4b5a72; }
+body.dark #splash { background: radial-gradient(120% 80% at 50% 30%, #1a2740, #0b1220 70%); }
+body.dark #splash .sp-logo { color: #eef2f8; text-shadow: 0 1px 0 #2a3a55, 0 2px 0 #22314a, 0 3px 0 #1b2840, 0 4px 0 #142035, 0 8px 14px rgba(0,0,0,.5); }
+body.dark .pick button.m b { color: #6cb8ff; } body.dark .pick button.f b { color: #ff8be0; }
 </style>
 
 </head>
@@ -438,6 +528,7 @@ const ttsLang = () => {
   return own && own.length > 2 ? own : LANGS[lang].tts;
 };
 const I18N_RX = [
+  [/≈ (\d+) min · (\d+) esercizi/g, "\u2248 $1 min \xB7 $2 exercises", "\u2248 $1 min \xB7 $2 ejercicios", "\u2248 $1 min \xB7 $2 exercices", "\u2248 $1 Min. \xB7 $2 \xDCbungen", "\u2248 $1 min \xB7 $2 exerc\xEDcios"],
   [/Ordine del giorno · Settimana (\d+), sessione (\d+)/g, "Orders of the day \xB7 Week $1, session $2", "Orden del d\xEDa \xB7 Semana $1, sesi\xF3n $2", "Ordre du jour \xB7 Semaine $1, s\xE9ance $2", "Tagesbefehl \xB7 Woche $1, Einheit $2", "Ordem do dia \xB7 Semana $1, sess\xE3o $2"],
   [/Sett\. (\d+)/g, "Wk $1", "Sem. $1", "Sem. $1", "Wo. $1", "Sem. $1"],
   [/(\d+) rip\./g, "$1 reps", "$1 rep.", "$1 r\xE9p.", "$1 Wdh.", "$1 rep."],
@@ -479,11 +570,26 @@ const I18N_RX = [
   [/Aggiungimi su Istruttore Recluta: il mio codice amico è (\w+)/g, "Add me on Recruit Trainer: my friend code is $1", "Agr\xE9game en Instructor Recluta: mi c\xF3digo de amigo es $1", "Ajoute-moi sur Instructeur Recrue : mon code ami est $1", "F\xFCg mich bei Rekruten-Ausbilder hinzu: Mein Freundescode ist $1", "Me adicione no Instrutor Recruta: meu c\xF3digo de amigo \xE9 $1"]
 ];
 const I18N = [
+  // --- look professionale
+  ["Allenamento di oggi", "Today's workout", "Entrenamiento de hoy", "Entra\xEEnement du jour", "Heutiges Training", "Treino de hoje"],
+  ["Inizia ora", "Start now", "Empieza ya", "Commencer", "Jetzt starten", "Come\xE7ar agora"],
+  ["Sessioni completate", "Sessions done", "Sesiones hechas", "S\xE9ances faites", "Einheiten erledigt", "Sess\xF5es feitas"],
+  ["Conta le ripetizioni, corregge la postura a voce e ti fa sfidare gli amici. Gratis, senza registrazione.", "It counts your reps, corrects your form out loud and lets you challenge friends. Free, no sign-up.", "Cuenta tus repeticiones, corrige tu postura en voz alta y te deja retar a tus amigos. Gratis, sin registro.", "Il compte tes r\xE9p\xE9titions, corrige ta posture \xE0 voix haute et te permet de d\xE9fier tes amis. Gratuit, sans inscription.", "Z\xE4hlt deine Wiederholungen, korrigiert deine Haltung laut und l\xE4sst dich Freunde herausfordern. Kostenlos, ohne Anmeldung.", "Conta as repeti\xE7\xF5es, corrige a postura em voz alta e deixa voc\xEA desafiar os amigos. Gr\xE1tis, sem cadastro."],
+  ["Conta le ripetizioni", "Counts your reps", "Cuenta repeticiones", "Compte les r\xE9p\xE9titions", "Z\xE4hlt Wiederholungen", "Conta repeti\xE7\xF5es"],
+  ["Corregge la postura", "Corrects your form", "Corrige la postura", "Corrige la posture", "Korrigiert die Haltung", "Corrige a postura"],
+  ["Sfide in video", "Video challenges", "Retos en v\xEDdeo", "D\xE9fis en vid\xE9o", "Video-Duelle", "Desafios em v\xEDdeo"],
+  ["Il video resta sul tuo telefono. Puoi cambiare percorso quando vuoi dal Profilo.", "The video stays on your phone. You can change path any time in Profile.", "El v\xEDdeo se queda en tu tel\xE9fono. Puedes cambiar de plan cuando quieras en Perfil.", "La vid\xE9o reste sur ton t\xE9l\xE9phone. Tu peux changer de parcours \xE0 tout moment dans Profil.", "Das Video bleibt auf deinem Handy. Du kannst den Plan jederzeit im Profil \xE4ndern.", "O v\xEDdeo fica no seu celular. Voc\xEA pode mudar de plano quando quiser no Perfil."],
+  ["Tema", "Theme", "Tema", "Th\xE8me", "Design", "Tema"],
+  ["Chiaro", "Light", "Claro", "Clair", "Hell", "Claro"],
+  ["Scuro", "Dark", "Oscuro", "Sombre", "Dunkel", "Escuro"],
+  ["Automatico", "Automatic", "Autom\xE1tico", "Automatique", "Automatisch", "Autom\xE1tico"],
+  ["Inizia \u203A", "Start \u203A", "Empezar \u203A", "Commencer \u203A", "Los geht's \u203A", "Come\xE7ar \u203A"],
+  ["Effetti", "Effects", "Efectos", "Effets", "Effekte", "Efeitos"],
   // --- grafica ed effetti
   ["Grafica ed effetti", "Graphics and effects", "Gr\xE1ficos y efectos", "Graphismes et effets", "Grafik und Effekte", "Gr\xE1ficos e efeitos"],
   ["Livello degli effetti", "Effects level", "Nivel de efectos", "Niveau des effets", "Effektstufe", "N\xEDvel dos efeitos"],
   ["Completi", "Full", "Completos", "Complets", "Voll", "Completos"],
-  ["Leggeri", "Light", "Ligeros", "L\xE9gers", "Leicht", "Leves"],
+  ["Leggeri", "Lite", "Ligeros", "L\xE9gers", "Leicht", "Leves"],
   ["Spenti", "Off", "Desactivados", "D\xE9sactiv\xE9s", "Aus", "Desligados"],
   ["Passaggio tra le schermate", "Screen transition", "Transici\xF3n entre pantallas", "Transition entre les \xE9crans", "Bildschirm\xFCbergang", "Transi\xE7\xE3o entre telas"],
   ["Scorrimento", "Slide", "Deslizar", "Glissement", "Schieben", "Deslizar"],
@@ -2414,6 +2520,7 @@ function go(r) {
 const TABS = ["home", "exercises", "duels", "ranking", "profile"];
 function render() {
   const tab = TABS.includes(route.name);
+  document.body.classList.toggle("landing-on", route.name === "onboard");
   $("tabbar").hidden = !tab;
   document.body.classList.toggle("tabs", tab);
   $("tabbar").querySelectorAll("[data-tab]").forEach((b) => {
@@ -2448,11 +2555,14 @@ function renderHome() {
   const done = [1, 2, 3, 4].reduce((a, wk) => a + [0, 1, 2].filter((d) => progress[progKey(wk, d)]).length, 0);
   const weeks = [1, 2, 3, 4].map((wk) => '<div class="wk '.concat(wk === n.wk ? "now" : "", '">Sett. ').concat(wk, '<div class="dots">').concat([0, 1, 2].map((d) => '<i class="'.concat(progress[progKey(wk, d)] ? "done" : "", '"></i>')).join(""), "</div></div>")).join("");
   const tests = G() === "f" ? ["squat", "crunch"] : ["pushup", "situp"];
-  app.innerHTML = '\n  <div class="screen">\n    <header class="mast">\n      <div class="hello"><div class="avatar" data-fig="jacks" data-t="0" data-g="'.concat(G(), '"></div><div><div class="sub">Ciao,</div><h1>').concat(esc(myName || (G() === "f" ? "Recluta" : "Recluta")), '</h1></div></div>\n      <div class="callsign">Sessioni<b>').concat(done, "/12</b></div>\n    </header>\n\n    ").concat((() => {
+  app.innerHTML = '\n  <div class="screen">\n    '.concat((() => {
+    const ri = rankIndex(), first = s.blocks[0][0], nsets = s.blocks.reduce((a, b) => a + b[1], 0), mins = Math.max(5, Math.round(nsets * 1.6));
+    return '<section class="hero">\n      <div>\n        <div class="hi">Ciao,</div><h1>'.concat(esc(myName || "Recluta"), '</h1>\n        <div class="chip">').concat(myBadge(), " ").concat(RANKS[ri][0], '</div>\n        <div class="ringwrap"><div class="ring"><svg viewBox="0 0 62 62" aria-hidden="true"><defs><linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7ee29b"/><stop offset="1" stop-color="#6cb8ff"/></linearGradient></defs><circle class="bgc" cx="31" cy="31" r="26"/><circle class="fgc" cx="31" cy="31" r="26" style="stroke-dashoffset:').concat((163.4 * (1 - done / 12)).toFixed(1)).concat(done ? "" : ";stroke-opacity:0", '"/></svg><b>').concat(done, "</b></div><small>Sessioni completate<b>").concat(done, ' / 12</b></small></div>\n      </div>\n      <div class="hero-fig"><div class="figbox" data-fig="').concat(first, '" data-g="').concat(G(), '" data-anim></div></div>\n      <div class="hero-cta">\n        <div class="today"><small>Allenamento di oggi</small><b>').concat(esc(s.title), "</b><span>\u2248 ").concat(mins, " min \xB7 ").concat(s.blocks.length, ' esercizi</span></div>\n        <button class="btn primary big" id="startDay" type="button"><span class="play"><svg viewBox="0 0 10 12"><path d="M0 0 10 6 0 12z"/></svg></span>Inizia ora</button>\n      </div>\n      ').concat([12, 26, 41, 57, 70, 83, 93].map((x, i) => '<i class="pt" style="--x:'.concat(x, "%;--d:").concat(5 + i % 3 * 1.6, "s;--w:").concat((i * 0.9).toFixed(1), 's"></i>')).join(""), "\n    </section>");
+  })(), "\n\n    ").concat((() => {
     const ri = rankIndex(), cur = RANKS[ri], nx = RANKS[ri + 1];
     const pct = nx ? Math.round((stats.total - cur[1]) / (nx[1] - cur[1]) * 100) : 100;
     return '<button class="rankcard" id="openRank" type="button" style="text-align:left;color:inherit">\n      <div><div class="label">Il tuo grado</div><div class="rname">'.concat(myBadge(), " <span>").concat(cur[0], '</span></div></div>\n      <div class="pts">').concat(stats.month.pts, '<small>punti del mese</small></div>\n      <div class="xp"><i style="width:').concat(pct, '%"></i></div>\n      <div class="meta">').concat(nx ? "".concat(nx[1] - stats.total, " punti al grado ").concat(nx[0]) : "Grado massimo raggiunto", " \xB7 Classifica \u203A</div>\n    </button>");
-  })(), '\n\n    <section class="section">\n      <div class="label">Ordine del giorno \xB7 Settimana ').concat(n.wk, ", sessione ").concat(n.d + 1, '</div>\n      <div class="order">\n        <h2>').concat(esc(s.title), '</h2>\n        <div class="circuit">').concat(s.blocks.map(([ex, sets, t]) => '<button class="step" type="button" data-ex="'.concat(ex, '"><div class="figbox" data-fig="').concat(ex, '" data-g="').concat(G(), '"></div><b>').concat(EX[ex].name, "</b><span>").concat(sets, " \xD7 ").concat(targetTxt(ex, t), "</span>").concat(ARROW, "</button>")).join(""), '</div>\n        <p class="restnote">1 minuto di riposo tra ogni serie \xB7 la telecamera conta le ripetizioni e ti corregge a voce</p>\n        <button class="btn primary big" id="startDay" type="button">Inizia la sessione</button>\n        <div class="weeks">').concat(weeks, '</div>\n      </div>\n    </section>\n\n    <section class="section">\n      <div class="label">Prova di efficienza fisica</div>\n      <div class="exlist">\n        ').concat(tests.map((id) => {
+  })(), '\n\n    <section class="section">\n      <div class="label">Ordine del giorno \xB7 Settimana ').concat(n.wk, ", sessione ").concat(n.d + 1, '</div>\n      <div class="order">\n        <h2>').concat(esc(s.title), '</h2>\n        <div class="circuit">').concat(s.blocks.map(([ex, sets, t]) => '<button class="step" type="button" data-ex="'.concat(ex, '"><div class="figbox" data-fig="').concat(ex, '" data-g="').concat(G(), '"></div><b>').concat(EX[ex].name, "</b><span>").concat(sets, " \xD7 ").concat(targetTxt(ex, t), "</span>").concat(ARROW, "</button>")).join(""), '</div>\n        <p class="restnote">1 minuto di riposo tra ogni serie \xB7 la telecamera conta le ripetizioni e ti corregge a voce</p>\n        <div class="weeks">').concat(weeks, '</div>\n      </div>\n    </section>\n\n    <section class="section">\n      <div class="label">Prova di efficienza fisica</div>\n      <div class="exlist">\n        ').concat(tests.map((id) => {
     var _a;
     return '<button class="ex wide" data-test="'.concat(id, '" type="button"><div class="figbox" data-fig="').concat(id, '" data-g="').concat(G(), '"></div><span><b>').concat(EX[id].name, " in 2 minuti</b><small>Record: ").concat((_a = records[id]) != null ? _a : "\u2014", '</small></span><span class="go">\u203A</span></button>');
   }).join(""), "\n      </div>\n    </section>\n\n    ").concat(SITE ? '<section class="section">\n      <div class="label">Sfida</div>\n      <button class="mode" id="openDuels" type="button"><span class="ico">'.concat(TAB_ICO.duels, '</span><span><b>Sfida qualcuno in videochiamata</b><small>Avversario casuale, un amico invitato o un codice</small></span><span class="go">\u203A</span></button>\n    </section>') : "", "\n    ").concat(COMPAT_MSG ? '<p class="note" style="background:#fdecea">'.concat(COMPAT_MSG, "</p>") : "", "\n  </div>");
@@ -2499,7 +2609,16 @@ function setGender(g) {
   applyTheme();
 }
 function renderOnboard() {
-  app.innerHTML = '\n  <div class="screen">\n    <header class="mast"><div><h1>Istruttore Recluta</h1><div class="sub">Il tuo personal trainer con la fotocamera</div></div></header>\n    <div class="section"><div class="h2">Chi si allena?</div><p class="meta">Scegli il percorso: esercizi e programma cambiano. Puoi cambiarlo quando vuoi dal Profilo.</p></div>\n    <div class="field"><label class="label" for="nm">Il tuo nome</label><input id="nm" maxlength="20" autocomplete="nickname" placeholder="Es. Marco" value="'.concat(esc(myName), '"></div>\n    ').concat(genderPick(null), "\n  </div>");
+  const ico = {
+    reps: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.6 2.6L16 9.5"/></svg>',
+    form: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M17 9a4 4 0 0 1 0 6M19.5 6.5a8 8 0 0 1 0 11"/></svg>',
+    duel: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="14" height="12" rx="2"/><path d="M16 10l6-3v10l-6-3"/></svg>'
+  };
+  app.innerHTML = '\n  <div class="screen landing">\n    <div class="brand" data-notr>'.concat((() => {
+    const w = tr("Istruttore Recluta").split(" ");
+    return esc(w.slice(0, -1).join(" ")) + " <b>" + esc(w[w.length - 1]) + "</b>";
+  })(), '</div>\n    <div class="land-figs"><div class="figbox" data-fig="jacks" data-g="m" data-anim></div><div class="figbox" data-fig="squat" data-g="f" data-anim></div></div>\n    <h1 class="land-h">Il tuo personal trainer con la fotocamera</h1>\n    <p class="land-p">Conta le ripetizioni, corregge la postura a voce e ti fa sfidare gli amici. Gratis, senza registrazione.</p>\n    <ul class="feats"><li>').concat(ico.reps, "Conta le ripetizioni</li><li>").concat(ico.form, "Corregge la postura</li><li>").concat(ico.duel, 'Sfide in video</li></ul>\n    <div class="field"><label class="label" for="nm">Il tuo nome</label><input id="nm" maxlength="20" autocomplete="nickname" placeholder="Es. Marco" value="').concat(esc(myName), '"></div>\n    <div class="h2">Chi si allena?</div>\n    ').concat(genderPick(null), '\n    <p class="land-note">Il video resta sul tuo telefono. Puoi cambiare percorso quando vuoi dal Profilo.</p>\n  </div>');
+  app.querySelectorAll(".pick > button").forEach((b) => b.insertAdjacentHTML("beforeend", '<span class="go-pill">Inizia \u203A</span>'));
   app.querySelectorAll(".pick > button").forEach((b) => b.onclick = () => {
     const v = $("nm").value.trim();
     if (v) {
@@ -3248,9 +3367,27 @@ function checkFriendsElite() {
   stats.elite = board.length >= 4 && pos > -1 && pos < 3 ? k : stats.elite === k ? null : stats.elite;
   store.set("stats", stats);
 }
+function themeDark() {
+  const t = store.get("theme", "light");
+  if (t === "auto") {
+    try {
+      return matchMedia("(prefers-color-scheme: dark)").matches;
+    } catch (e) {
+      return false;
+    }
+  }
+  return t === "dark";
+}
 function applyTheme() {
   document.body.classList.toggle("goldtheme", isElite() && !!stats.gold);
   document.body.classList.toggle("g-f", G() === "f");
+  document.body.classList.toggle("dark", themeDark());
+  const m = document.querySelector('meta[name="theme-color"]');
+  if (m) m.content = themeDark() ? "#0b1220" : "#f3f5f9";
+}
+try {
+  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => applyTheme());
+} catch (e) {
 }
 const applyGold = applyTheme;
 const DUEL_EX_ALL = ["pushup", "squat", "jacks", "situp", "widepush", "crunch", "jumpsquat", "bridge", "lunge", "revlunge", "sidelunge", "climber", "burpee"];
@@ -4233,8 +4370,26 @@ function fxEnter(force) {
   app.setAttribute("data-enter", kind);
   clearTimeout(fxEnter.t);
   fxEnter.t = setTimeout(() => app.removeAttribute("data-enter"), 1300);
+  countUp();
   if (prev != null && name === "summary") confetti(route.result && (route.result.promoted != null || route.result.newRecord) ? 220 : 90);
   if (prev != null && name === "duel-result" && route.outcome === "win") confetti(200);
+}
+function countUp() {
+  if (fx.level === "off") return;
+  app.querySelectorAll(".stat b, .pts, .hero .ring b, .callsign b").forEach((el) => {
+    const tn = el.firstChild;
+    if (!tn || tn.nodeType !== 3) return;
+    const m = /^(\+?)(\d+)(.*)$/.exec(tn.nodeValue.trim());
+    if (!m || +m[2] < 2) return;
+    const to = +m[2], t0 = performance.now(), dur = 900;
+    const step = (now) => {
+      const k = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - k, 3);
+      tn.nodeValue = m[1] + Math.round(to * e) + m[3];
+      if (k < 1 && tn.isConnected) requestAnimationFrame(step);
+    };
+    tn.nodeValue = m[1] + "0" + m[3];
+    requestAnimationFrame(step);
+  });
 }
 document.addEventListener("pointerdown", (e) => {
   if (fx.level === "off" || !e.target.closest) return;
@@ -4375,11 +4530,18 @@ function loadFx(ex) {
 }
 function fxSettings() {
   const opt = (k, v, t) => '<button type="button" data-k="'.concat(k, '" data-v="').concat(v, '" aria-pressed="').concat(fx[k] === v, '">').concat(t, "</button>");
-  return '<div class="section" id="fxSet"><div class="label">Grafica ed effetti</div>\n    <div class="fxopts" role="group" aria-label="Livello degli effetti">'.concat(opt("level", "full", "Completi")).concat(opt("level", "lite", "Leggeri")).concat(opt("level", "off", "Spenti"), "</div>\n    ").concat(fx.level === "off" ? "" : '<div class="label">Passaggio tra le schermate</div>\n    <div class="fxopts" role="group" aria-label="Passaggio tra le schermate">'.concat(opt("trans", "slide", "Scorrimento")).concat(opt("trans", "zoom", "Zoom")).concat(opt("trans", "flip", "Rotazione 3D")).concat(opt("trans", "fade", "Dissolvenza"), '</div>\n    <div class="label">Effetto a ogni ripetizione</div>\n    <div class="fxopts" role="group" aria-label="Effetto a ogni ripetizione">').concat(opt("rep", "sparks", "Scintille")).concat(opt("rep", "ring", "Onda")).concat(opt("rep", "none", "Nessuno"), "</div>"), '\n    <p class="note">').concat(fx.level === "lite" ? "Effetti leggeri: dissolvenze brevi, consigliati sui telefoni meno recenti." : fx.level === "off" ? "Nessuna animazione: le figure degli esercizi restano in movimento." : "Tocca un'opzione per vederla in azione.", "</p>\n  </div>");
+  const th = store.get("theme", "light"), topt = (v, t) => '<button type="button" data-k="theme" data-v="'.concat(v, '" aria-pressed="').concat(th === v, '">').concat(t, "</button>");
+  return '<div class="section" id="fxSet"><div class="label">Grafica ed effetti</div>\n    <div class="label">Tema</div>\n    <div class="fxopts" role="group" aria-label="Tema">'.concat(topt("light", "Chiaro")).concat(topt("dark", "Scuro")).concat(topt("auto", "Automatico"), '</div>\n    <div class="label">Effetti</div>\n    <div class="fxopts" role="group" aria-label="Livello degli effetti">').concat(opt("level", "full", "Completi")).concat(opt("level", "lite", "Leggeri")).concat(opt("level", "off", "Spenti"), "</div>\n    ").concat(fx.level === "off" ? "" : '<div class="label">Passaggio tra le schermate</div>\n    <div class="fxopts" role="group" aria-label="Passaggio tra le schermate">'.concat(opt("trans", "slide", "Scorrimento")).concat(opt("trans", "zoom", "Zoom")).concat(opt("trans", "flip", "Rotazione 3D")).concat(opt("trans", "fade", "Dissolvenza"), '</div>\n    <div class="label">Effetto a ogni ripetizione</div>\n    <div class="fxopts" role="group" aria-label="Effetto a ogni ripetizione">').concat(opt("rep", "sparks", "Scintille")).concat(opt("rep", "ring", "Onda")).concat(opt("rep", "none", "Nessuno"), "</div>"), '\n    <p class="note">').concat(fx.level === "lite" ? "Effetti leggeri: dissolvenze brevi, consigliati sui telefoni meno recenti." : fx.level === "off" ? "Nessuna animazione: le figure degli esercizi restano in movimento." : "Tocca un'opzione per vederla in azione.", "</p>\n  </div>");
 }
 function fxSettingsWire() {
   app.querySelectorAll("#fxSet [data-k]").forEach((b) => b.onclick = () => {
     const k = b.dataset.k, v = b.dataset.v;
+    if (k === "theme") {
+      store.set("theme", v);
+      applyTheme();
+      render();
+      return;
+    }
     fx[k] = v;
     store.set({ level: "fx", trans: "fxTrans", rep: "fxRep" }[k], v);
     applyFx();
