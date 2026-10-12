@@ -389,11 +389,65 @@ function say(text, { urgent = false, minGap = 3200 } = {}) {
     if (!urgent && (now - lastAny < minGap || (text === lastSpoken.text && now - lastSpoken.t < 7000))) return;
     if (urgent) speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(text);
-    u.lang = "it-IT"; if (itVoice) u.voice = itVoice; u.rate = 1.08; u.pitch = 0.9;
+    u.lang = "it-IT"; if (itVoice) u.voice = itVoice; u.rate = gritOn ? 1.12 : 1.08; u.pitch = gritOn ? 0.8 : 0.9; u.volume = 1;
     speechSynthesis.speak(u);
     lastSpoken = { text, t: now }; lastAny = now;
   } catch {}
 }
+
+
+/* ---------- Sergente: incitamento a voce ---------- */
+let gritOn = store.get("grit", true);
+const GRIT = {
+  start: ["Forza soldato, fammi vedere cosa sai fare!", "Testa alta, petto in fuori. Si comincia!", "Nessuna scusa oggi. Via!", "Concentrato. Ogni ripetizione conta!"],
+  every5: ["Così si fa!", "Bravo, continua!", "Non fermarti adesso!", "Questo è il ritmo giusto!", "Sei più forte di quanto pensi!", "Il dolore passa, l'orgoglio resta!", "Spingi, soldato!", "Ottima forma, avanti!"],
+  half: ["Metà fatta! Adesso viene il bello!", "Sei a metà strada. Non mollare!"],
+  last3: ["Ultime tre! Dai tutto!", "Tre alla fine! Stringi i denti!"],
+  last: ["Ultima! Tutto quello che hai!", "L'ultima è la più importante. Spingi!"],
+  slow: ["Non mollare! Su!", "Avanti, non ti ho detto di riposare!", "Rialzati e continua!", "Respira e spingi! Ancora una!", "Il traguardo è vicino, muoviti!", "Chi molla adesso? Non tu!"],
+  plank: ["Tieni duro!", "Addome di ferro, non cedere!", "Il corpo vuole fermarsi, la testa no!", "Respira. Resisti!"],
+  done: ["Serie completata! Ottimo lavoro, soldato!", "Questo è lo spirito! Serie chiusa!", "Bravo! Un passo più vicino al prossimo grado!"],
+  rest: ["Respira. Recupera. Tra poco si riparte.", "Bevi un sorso d'acqua. Il prossimo giro è tuo."],
+  t30: ["Trenta secondi! Accelera!"], t10: ["Dieci secondi! Tutto quello che hai!"],
+  ahead: ["Sei in testa! Non rallentare!", "Stai vincendo, chiudi la partita!"],
+  behind: ["Ti sta superando! Reagisci!", "Sei indietro! Adesso o mai più!"]
+};
+const pickLine = k => { const a = GRIT[k]; return a[Math.floor(Math.random() * a.length)]; };
+const coach = {
+  reset(c) { this.lastRepT = performance.now(); this.lastSlowT = 0; this.t30 = this.t10 = false; this.lastDuelT = performance.now(); this.lastPlankT = 0; },
+  // text spoken after a valid rep: the number first, then (sometimes) a push
+  onRep(c) {
+    this.lastRepT = performance.now();
+    const n = c.count, t = c.target;
+    if (!gritOn) return t && t - n === 3 && t >= 8 ? `${n}. Ancora tre!` : String(n);
+    let extra = "";
+    if (t && n === t - 1) extra = pickLine("last");
+    else if (t && t - n === 3 && t >= 8) extra = pickLine("last3");
+    else if (t && t >= 10 && n === Math.floor(t / 2)) extra = pickLine("half");
+    else if (n % 5 === 0) extra = pickLine("every5");
+    return extra ? `${n}! ${extra}` : String(n);
+  },
+  tick(c) {
+    if (!gritOn || !c || S.inRest) return;
+    const now = performance.now();
+    const unit = EX[c.ex].unit;
+    if (unit === "secs") {
+      if (c.hold > 3 && now - this.lastPlankT > 14000) { this.lastPlankT = now; say(c.target && c.target - c.hold < 10 ? "Ultimi secondi! Tieni duro!" : pickLine("plank"), { minGap: 4000 }); }
+      return;
+    }
+    if (c.timeLimit) {
+      const left = c.timeLimit - (now - c.t0) / 1000;
+      if (!this.t30 && left <= 30 && c.timeLimit > 40) { this.t30 = true; return say(pickLine("t30"), { urgent: true }); }
+      if (!this.t10 && left <= 10) { this.t10 = true; return say(pickLine("t10"), { urgent: true }); }
+    }
+    if (S.challenge && now - this.lastDuelT > 12000 && c.count > 0) {
+      const diff = c.count - (CH.oppReps || 0);
+      if (Math.abs(diff) >= 3) { this.lastDuelT = now; return say(pickLine(diff > 0 ? "ahead" : "behind"), { minGap: 3000 }); }
+    }
+    // slowing down: no rep for a while once the set is under way
+    if (c.count > 0 && now - this.lastRepT > 5000 && now - this.lastSlowT > 7000) { this.lastSlowT = now; say(pickLine("slow"), { minGap: 3000 }); }
+  }
+};
 
 /* ---------- Geometry ---------- */
 const L = { nose: 0, lSh: 11, rSh: 12, lEl: 13, rEl: 14, lWr: 15, rWr: 16, lHip: 23, rHip: 24, lKn: 25, rKn: 26, lAn: 27, rAn: 28 };
@@ -721,6 +775,7 @@ function renderHome() {
     </section>
 
     <label class="toggle"><input type="checkbox" id="voiceT" ${voiceOn ? "checked" : ""}> Istruttore vocale (italiano)</label>
+    <label class="toggle"><input type="checkbox" id="gritT" ${gritOn ? "checked" : ""}> Voce del sergente: incitamento durante l'esercizio</label>
     <p class="note">Il video resta sul tuo telefono: l'analisi della postura avviene nel browser e nessuna immagine viene inviata.</p>
   </div>`;
   $("startDay").onclick = () => go({ name: "brief", queue: blocksToQueue(s.blocks), day: n, title: s.title });
@@ -733,6 +788,7 @@ function renderHome() {
     go({ name: "brief", queue: [{ ex: id, target: 0, set: 1, sets: 1, timeLimit: 120 }], title: EX[id].name + " in 2 minuti", test: id });
   });
   $("voiceT").onchange = e => { voiceOn = e.target.checked; store.set("voice", voiceOn); };
+  $("gritT").onchange = e => { gritOn = e.target.checked; store.set("grit", gritOn); if (gritOn) { voiceOn = true; store.set("voice", true); $("voiceT").checked = true; say("Agli ordini! Da adesso ti tengo sotto pressione.", { urgent: true }); } };
   $("openRank").onclick = () => go({ name: "ranking" });
   app.querySelectorAll("[data-elite]").forEach(b => b.onclick = () => {
     const id = b.dataset.elite;
@@ -880,6 +936,8 @@ function beginSet() {
   setBanner("In posizione!", "warn");
   say(`${EX[q.ex].name}. ${q.target ? (EX[q.ex].unit === "secs" ? `Tieni per ${q.target} secondi` : `${q.target} ripetizioni`) : q.timeLimit ? `Massimo in ${q.timeLimit} secondi` : "Massimo in due minuti"}. Via!`, { urgent: true });
   S.inRest = false;
+  coach.reset(S.cur);
+  if (gritOn) setTimeout(() => { if (S.cur && S.cur.count === 0 && !S.inRest) say(pickLine("start")); }, 4000);
 }
 
 function setBanner(text, kind) {
@@ -903,6 +961,7 @@ function loop() {
     } catch (e) { /* skip frame */ }
   }
   tickTimer();
+  if (S.cur) coach.tick(S.cur);
   next();
 }
 
@@ -954,7 +1013,7 @@ function process(res, ts) {
     addPoints(EX[c.ex].pts || 1);
     setBanner(c.count + "!", "ok");
     const left = c.target ? c.target - c.count : null;
-    say(left === 3 && c.target >= 8 ? `${c.count}. Ancora tre!` : String(c.count), { urgent: true });
+    say(coach.onRep(c), { urgent: true });
     if (S.challenge) duelSend({ t: "reps", n: c.count });
     if (c.target && c.count >= c.target) endSet(true);
   } else if (out.event === "norep") {
@@ -996,7 +1055,7 @@ function endSet() {
   }
   if (last) return finish(true);
   S.idx++;
-  say("Serie completata. Recupero.", { urgent: true });
+  say(gritOn ? `${pickLine("done")} ${pickLine("rest")}` : "Serie completata. Recupero.", { urgent: true });
   startRest(60);
 }
 
