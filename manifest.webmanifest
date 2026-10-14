@@ -1,6 +1,6 @@
 {
-  "name": "Istruttore Recluta",
-  "short_name": "Recluta",
+  "name": "FitQuest",
+  "short_name": "FitQuest",
   "description": "Allenamento a corpo libero: la fotocamera conta le ripetizioni e corregge la postura.",
   "lang": "it",
   "start_url": "./",
