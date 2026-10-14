@@ -1212,7 +1212,7 @@ const I18N = [
   ["Torna gi\xF9 controllando, senza sederti del tutto.", "Lower with control, without sitting all the way down.", "Baja con control, sin sentarte del todo.", "Redescends en contr\xF4lant, sans t'asseoir compl\xE8tement.", "Kontrolliert absenken, ohne dich ganz hinzusetzen.", "Des\xE7a com controle, sem sentar totalmente."],
   ["Bacino non abbastanza alto (non conta)", "Hips not high enough (doesn't count)", "Cadera no suficientemente alta (no cuenta)", "Bassin pas assez haut (ne compte pas)", "H\xFCfte nicht hoch genug (z\xE4hlt nicht)", "Quadril n\xE3o alto o suficiente (n\xE3o conta)"],
   ["Supina, ginocchia piegate, piedi sollevati o a terra.", "Lie on your back, knees bent, feet raised or on the floor.", "Boca arriba, rodillas dobladas, pies elevados o en el suelo.", "Sur le dos, genoux pli\xE9s, pieds lev\xE9s ou au sol.", "R\xFCckenlage, Knie gebeugt, F\xFC\xDFe angehoben oder am Boden.", "Deitada de costas, joelhos dobrados, p\xE9s elevados ou no ch\xE3o."],
-  ["Mani dietro la testa, gomiti larghi.", "Hands behind your head, elbows wide.", "Manos detr\xE1s de la cabeza, codos abiertos.", "Mains derri\xE8re la t\xEAte, coudes \xE9cart\xE9s.", "H\xE4nde hinter dem Kopf, Ellbogen weit.", "M\xE3os atr\xE1s da cabe\xE7a, cotovelos abertos."],
+  ["Braccia incrociate sul petto.", "Arms crossed on your chest.", "Brazos cruzados sobre el pecho.", "Bras crois\xE9s sur la poitrine.", "Arme vor der Brust verschr\xE4nkt.", "Bra\xE7os cruzados sobre o peito."],
   ["Solleva le spalle da terra contraendo l'addome.", "Lift your shoulders off the floor by tightening your abs.", "Levanta los hombros del suelo contrayendo el abdomen.", "D\xE9colle les \xE9paules du sol en contractant les abdos.", "Heb die Schultern vom Boden, indem du den Bauch anspannst.", "Levante os ombros do ch\xE3o contraindo o abd\xF4men."],
   ["Torna gi\xF9 lentamente.", "Lower back down slowly.", "Vuelve abajo despacio.", "Redescends lentement.", "Langsam wieder absenken.", "Des\xE7a devagar."],
   ["Spalle non abbastanza sollevate (non conta)", "Shoulders not lifted enough (doesn't count)", "Hombros no suficientemente levantados (no cuenta)", "\xC9paules pas assez d\xE9coll\xE9es (ne compte pas)", "Schultern nicht genug angehoben (z\xE4hlt nicht)", "Ombros n\xE3o levantados o suficiente (n\xE3o conta)"],
@@ -1825,12 +1825,13 @@ function drawFrontToon(j, g, C) {
   return s + behind + headUse("front-" + g, [n[0], n[1] - 2]) + front;
 }
 const charImg = (ex, g) => SITE ? '<img class="char char-stand" src="img/chars/stand-'.concat(g === "f" ? "f" : "m", '.png" alt="" draggable="false" decoding="async">') : "";
-const PICS = { "stepup": { "m": { "w": 263, "h": 502, "n": 4 }, "f": { "w": 212, "h": 465, "n": 4 } }, "lunge": { "m": { "w": 248, "h": 509, "n": 2 }, "f": { "w": 231, "h": 460, "n": 2 } }, "plank": { "m": { "w": 396, "h": 169, "n": 1 }, "f": { "w": 416, "h": 200, "n": 1 } } };
+const PICS = { "stepup": { "m": { "w": 263, "h": 502, "n": 4 }, "f": { "w": 212, "h": 465, "n": 4 } }, "lunge": { "m": { "w": 248, "h": 509, "n": 2 }, "f": { "w": 231, "h": 460, "n": 2 } }, "squat": { "m": { "w": 369, "h": 560, "n": 2 }, "f": { "w": 358, "h": 560, "n": 2 } }, "jacks": { "m": { "w": 377, "h": 560, "n": 2 }, "f": { "w": 339, "h": 560, "n": 2 } }, "pushup": { "m": { "w": 783, "h": 560, "n": 2 }, "f": { "w": 725, "h": 560, "n": 2 } }, "plank": { "m": { "w": 900, "h": 468, "n": 2 }, "f": { "w": 900, "h": 494, "n": 2 } }, "abs": { "m": { "w": 900, "h": 443, "n": 2 }, "f": { "w": 900, "h": 381, "n": 2 } } };
 PICS.revlunge = PICS.lunge;
+PICS.situp = PICS.crunch = PICS.abs;
 function picHTML(ex, g) {
   const P3 = SITE && PICS[ex], p = P3 && P3[g === "f" ? "f" : "m"];
   if (!p) return "";
-  const base = ex === "revlunge" ? "lunge" : ex;
+  const base = ex === "revlunge" ? "lunge" : ex === "situp" || ex === "crunch" ? "abs" : ex;
   let s = '<div class="pics" style="aspect-ratio:'.concat(p.w, " / ").concat(p.h, '">');
   for (let i = 0; i < p.n; i++) s += '<img src="img/ex/'.concat(base, "-").concat(g === "f" ? "f" : "m", "-").concat(i, '.png" alt="" draggable="false" decoding="async"').concat(i ? ' style="opacity:0"' : "", ">");
   return s + "</div>";
@@ -2153,7 +2154,7 @@ const EX = {
     cam: "Telefono a terra, di lato, a circa 2 metri. Devi vedere spalle, bacino e ginocchia.",
     steps: [
       "Supina, ginocchia piegate, piedi sollevati o a terra.",
-      "Mani dietro la testa, gomiti larghi.",
+      "Braccia incrociate sul petto.",
       "Solleva le spalle da terra contraendo l'addome.",
       "Torna gi\xF9 lentamente."
     ],
