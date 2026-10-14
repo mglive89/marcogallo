@@ -716,6 +716,54 @@ body.dark .lbz-info .lbz-rules { background: rgba(255,255,255,.05); }
 .excat button[aria-selected="true"] { color: #fff; }
 .excat i { position: absolute; top: 4px; bottom: 4px; left: 4px; width: calc(50% - 4px); border-radius: 12px; background: linear-gradient(120deg, #3b8cff, #8a6bff); box-shadow: 0 6px 16px rgba(91,110,255,.35); transition: transform .3s cubic-bezier(.3,1.3,.5,1), background .3s; }
 .excat button[data-cat="band"][aria-selected="true"] ~ i { transform: translateX(100%); background: linear-gradient(120deg, #20b38a, #3ddc97); box-shadow: 0 6px 16px rgba(32,179,138,.35); }
+.wp-list { display: grid; gap: 8px; }
+.wp { display: grid; grid-template-columns: 48px minmax(0, 1fr) 26px; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 18px; border: 2px solid var(--line); background: var(--panel); text-align: left; color: var(--fg); transition: border-color .2s, background .2s, transform .15s; }
+.wp:active { transform: scale(.98); }
+.wp .who { min-width: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 3px; }
+.wp .who b { font-family: var(--f-cond); font-weight: 800; font-size: 18px; text-transform: uppercase; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100%; }
+.wp .who small { color: var(--muted); font-size: 13px; }
+.wp .tick { width: 26px; height: 26px; border-radius: 50%; border: 2px solid var(--line); transition: all .2s; }
+.wp[aria-pressed="true"] { border-color: var(--brass); background: var(--soft); }
+.wp[aria-pressed="true"] .tick { border-color: var(--brass); background: var(--brass) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12.5l4 4 8-9'/%3E%3C/svg%3E") center / 16px no-repeat; }
+.dz-av.lk { --h: 160; }
+.dz-av.lk svg { width: 24px; height: 24px; }
+.label.step { display: flex; flex-direction: row !important; align-items: center !important; justify-content: flex-start !important; align-self: stretch; text-align: left; gap: 8px; width: 100%; }
+.section > .label.step::before { display: none; }
+.pk .btn { display: flex; align-items: center; justify-content: center; gap: 8px; }
+.pk .btn svg { width: 22px; height: 22px; flex: 0 0 22px; }
+.label.step em { font-style: normal; width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; background: var(--brass); color: #fff; font-size: 12px; letter-spacing: 0; }
+.pick3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-bottom: 10px; }
+.pick3 button { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 12px 6px; border-radius: 16px; border: 2px solid var(--line); background: var(--panel); color: var(--fg); text-align: center; transition: border-color .2s, background .2s, transform .15s; }
+.pick3 button:active { transform: scale(.96); }
+.pick3 svg { width: 30px; height: 30px; color: var(--brass); }
+.pick3 b { font-family: var(--f-cond); font-weight: 800; font-size: 16px; text-transform: uppercase; }
+.pick3 small { color: var(--muted); font-size: 11.5px; line-height: 1.25; }
+.pick3 button[aria-pressed="true"] { border-color: var(--brass); background: var(--soft); }
+.pk { position: relative; display: grid; gap: 10px; padding: 14px; border-radius: 20px; background: var(--panel); box-shadow: var(--shadow); overflow: hidden; }
+.pk::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 4px; background: linear-gradient(90deg, #ffb347, #ff5e8a, #b45cff); }
+.pk > .label { display: flex; align-items: center; gap: 6px; }
+.pk > .label svg { width: 20px; height: 20px; color: var(--brass); }
+.pk .meta { margin: 0; }
+.pk-reel { height: 64px; border-radius: 16px; display: grid; place-items: center; background: linear-gradient(135deg, #1b2230, #2a2140); overflow: hidden; box-shadow: inset 0 2px 10px rgba(0,0,0,.4); }
+.pk-reel b { font-family: var(--f-display); font-weight: 800; font-size: 24px; text-transform: uppercase; color: #fff; text-align: center; padding: 0 10px; line-height: 1.05; }
+.pk.spin .pk-reel b { animation: pkRoll .09s linear infinite; }
+.pk-reel b.hit { animation: pkHit .6s cubic-bezier(.3,1.6,.5,1) both !important; color: #ffd36b; text-shadow: 0 0 18px rgba(255,200,80,.7); }
+@keyframes pkRoll { from { transform: translateY(-30%); opacity: .4; } to { transform: translateY(30%); opacity: 1; } }
+@keyframes pkHit { from { transform: scale(.6); } to { transform: scale(1); } }
+.pk-votes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.pk-v { position: relative; min-height: 48px; padding: 8px 10px; border-radius: 14px; border: 2px solid var(--line); background: var(--panel-2); color: var(--fg); text-align: left; font-family: var(--f-cond); font-weight: 700; font-size: 15px; text-transform: uppercase; line-height: 1.1; }
+.pk-v.me { border-color: var(--brass); background: var(--soft); }
+.pk-v.opp { border-color: #ff8a5c; }
+.pk-v.me.opp { border-color: #22c08a; background: color-mix(in srgb, #3ddc97 18%, var(--panel)); }
+.pk-v i { position: absolute; top: -8px; font-style: normal; font-size: 11px; font-weight: 800; padding: 2px 7px; border-radius: 999px; color: #fff; }
+.pk-v .t-me { right: 8px; background: var(--brass); }
+.pk-v .t-opp { right: 8px; background: #ff7a50; }
+.pk-v.me .t-opp { right: 44px; }
+.pk.done { grid-template-columns: 92px minmax(0, 1fr); align-items: center; }
+.pk.done .figbox { width: 92px; aspect-ratio: 6 / 5; }
+.pk.done b { font-family: var(--f-display); font-weight: 800; font-size: 22px; text-transform: uppercase; line-height: 1.05; }
+.btn.glow { animation: glowPulse 1.6s ease-in-out infinite; }
+@keyframes glowPulse { 50% { box-shadow: 0 0 0 6px color-mix(in srgb, var(--brass) 25%, transparent); } }
 .band-note { display: grid; gap: 2px; padding: 12px 14px; border-radius: 16px; background: color-mix(in srgb, #3ddc97 16%, var(--panel)); border: 1px solid color-mix(in srgb, #3ddc97 40%, transparent); font-size: 14px; color: var(--fg); }
 .band-note b { font-family: var(--f-cond); font-weight: 800; font-size: 16px; text-transform: uppercase; letter-spacing: .04em; color: #16936a; }
 body.dark .band-note b { color: #3ddc97; }
@@ -894,6 +942,10 @@ const I18N_RX = [
   [/Hai sbloccato /g, "You unlocked ", "Has desbloqueado ", "Tu as d\xE9bloqu\xE9 ", "Freigeschaltet: ", "Voc\xEA desbloqueou "],
   [/^(\d+) g$/g, "$1 d", "$1 d", "$1 j", "$1 T", "$1 d"],
   [/(\d+)\. Ancora tre!/g, "$1. Three more!", "$1. \xA1Tres m\xE1s!", "$1. Encore trois !", "$1. Noch drei!", "$1. Mais tr\xEAs!"],
+  [/D'accordo: (.+?)!/g, "Agreed: $1!", "\xA1De acuerdo: $1!", "D'accord : $1 !", "Einig: $1!", "Combinado: $1!"],
+  [/Esce: (.+?)!/g, "It's $1!", "\xA1Sale: $1!", "C'est : $1 !", "Es wird: $1!", "Saiu: $1!"],
+  [/Aspetto la scelta di (.+?)…/g, "Waiting for $1 to choose\u2026", "Esperando la elecci\xF3n de $1\u2026", "J'attends le choix de $1\u2026", "Warte auf die Wahl von $1\u2026", "Esperando a escolha de $1\u2026"],
+  [/(.+?) gira la ruota: guardate insieme cosa esce\./g, "$1 spins the wheel: watch together what comes out.", "$1 gira la ruleta: mirad juntos qu\xE9 sale.", "$1 fait tourner la roue : regardez ensemble ce qui sort.", "$1 dreht das Rad: Schaut gemeinsam, was kommt.", "$1 gira a roleta: vejam juntos o que sai."],
   [/(.+?) ti sfida!/g, "$1 challenges you!", "\xA1$1 te reta!", "$1 te d\xE9fie !", "$1 fordert dich heraus!", "$1 te desafia!"],
   [/Invito inviato a (.+?): deve solo toccare Accetta\./g, "Invite sent to $1: they just need to tap Accept.", "Invitaci\xF3n enviada a $1: solo tiene que tocar Aceptar.", "Invitation envoy\xE9e \xE0 $1 : il n'a qu'\xE0 toucher Accepter.", "Einladung an $1 gesendet: Er muss nur auf Annehmen tippen.", "Convite enviado para $1: \xE9 s\xF3 tocar em Aceitar."],
   [/(.+?) non ha l'app aperta in questo momento: mandagli il link\./g, "$1 doesn't have the app open right now: send them the link.", "$1 no tiene la app abierta ahora: m\xE1ndale el enlace.", "$1 n'a pas l'app ouverte en ce moment : envoie-lui le lien.", "$1 hat die App gerade nicht offen: Schick ihm den Link.", "$1 n\xE3o est\xE1 com o app aberto agora: mande o link."],
@@ -1086,6 +1138,33 @@ const I18N = [
   ["Inquadrati di fronte, con le braccia in vista", "Face the camera with your arms in view", "Ponte de frente, con los brazos a la vista", "Mets-toi de face, bras visibles", "Stell dich frontal ins Bild, Arme sichtbar", "Fique de frente, com os bra\xE7os \xE0 vista"],
   ["Inquadrati di lato: spalle, bacino e ginocchia", "Get in frame from the side: shoulders, hips and knees", "Ponte de lado: hombros, cadera y rodillas", "Mets-toi de profil : \xE9paules, bassin et genoux", "Stell dich seitlich ins Bild: Schultern, H\xFCfte und Knie", "Fique de lado: ombros, quadril e joelhos"],
   ["Inquadrati di lato, a quattro zampe", "Get in frame from the side, on all fours", "Ponte de lado, a cuatro patas", "Mets-toi de profil, \xE0 quatre pattes", "Stell dich seitlich ins Bild, im Vierf\xFC\xDFlerstand", "Fique de lado, de quatro"],
+  ["Esercizio a sorte", "Random exercise", "Ejercicio al azar", "Exercice au hasard", "Zuf\xE4llige \xDCbung", "Exerc\xEDcio sorteado"],
+  ["Esercizio da decidere insieme", "Exercise to decide together", "Ejercicio a decidir juntos", "Exercice \xE0 choisir ensemble", "\xDCbung gemeinsam w\xE4hlen", "Exerc\xEDcio a decidir juntos"],
+  ["Chi vuoi sfidare?", "Who do you want to challenge?", "\xBFA qui\xE9n quieres retar?", "Qui veux-tu d\xE9fier ?", "Wen willst du herausfordern?", "Quem voc\xEA quer desafiar?"],
+  ["Come scegliete l'esercizio?", "How do you pick the exercise?", "\xBFC\xF3mo eleg\xEDs el ejercicio?", "Comment choisir l'exercice ?", "Wie w\xE4hlt ihr die \xDCbung?", "Como voc\xEAs escolhem o exerc\xEDcio?"],
+  ["Invia un link", "Send a link", "Enviar un enlace", "Envoyer un lien", "Link senden", "Enviar um link"],
+  ["WhatsApp, SMS o un'altra app", "WhatsApp, SMS or another app", "WhatsApp, SMS u otra app", "WhatsApp, SMS ou une autre appli", "WhatsApp, SMS oder eine andere App", "WhatsApp, SMS ou outro app"],
+  ["Scelgo io", "I choose", "Elijo yo", "Je choisis", "Ich w\xE4hle", "Eu escolho"],
+  ["Lo decidi tu", "You decide", "Decides t\xFA", "Tu d\xE9cides", "Du entscheidest", "Voc\xEA decide"],
+  ["Insieme", "Together", "Juntos", "Ensemble", "Gemeinsam", "Juntos"],
+  ["Lo votate nella sala", "You vote in the lobby", "Vot\xE1is en la sala", "Vous votez dans le salon", "Ihr stimmt in der Lobby ab", "Voc\xEAs votam na sala"],
+  ["A sorte", "Random", "Al azar", "Au hasard", "Zufall", "Sorteio"],
+  ["Gira la ruota", "Spin the wheel", "Gira la ruleta", "Fais tourner la roue", "Dreh das Rad", "Gire a roleta"],
+  ["Scegli chi sfidare", "Choose who to challenge", "Elige a qui\xE9n retar", "Choisis qui d\xE9fier", "W\xE4hle, wen du herausforderst", "Escolha quem desafiar"],
+  ["Crea la sfida e invia il link", "Create the challenge and send the link", "Crea el reto y env\xEDa el enlace", "Cr\xE9e le d\xE9fi et envoie le lien", "Duell erstellen und Link senden", "Crie o desafio e envie o link"],
+  ["Crea la sfida e invita", "Create the challenge and invite", "Crea el reto e invita", "Cr\xE9e le d\xE9fi et invite", "Duell erstellen und einladen", "Crie o desafio e convide"],
+  ["Nella sala d'attesa, quando il tuo amico \xE8 entrato, girate la ruota: esce lo stesso esercizio per tutti e due.", "In the lobby, once your friend has joined, spin the wheel: the same exercise comes out for both of you.", "En la sala, cuando tu amigo haya entrado, girad la ruleta: sale el mismo ejercicio para los dos.", "Dans le salon, quand ton ami est arriv\xE9, faites tourner la roue : le m\xEAme exercice sort pour vous deux.", "In der Lobby, sobald dein Freund da ist, dreht ihr das Rad: F\xFCr beide kommt dieselbe \xDCbung.", "Na sala, quando seu amigo entrar, girem a roleta: sai o mesmo exerc\xEDcio para os dois."],
+  ["Nella sala d'attesa tu e il tuo amico toccate l'esercizio che volete: quando scegliete lo stesso, si parte.", "In the lobby you and your friend tap the exercise you want: when you pick the same one, you start.", "En la sala t\xFA y tu amigo toc\xE1is el ejercicio que quer\xE9is: cuando eleg\xEDs el mismo, se empieza.", "Dans le salon, toi et ton ami touchez l'exercice voulu : quand vous choisissez le m\xEAme, c'est parti.", "In der Lobby tippt ihr beide die gew\xFCnschte \xDCbung an: W\xE4hlt ihr dieselbe, geht's los.", "Na sala voc\xEA e seu amigo tocam o exerc\xEDcio que querem: quando escolherem o mesmo, come\xE7a."],
+  ["Vi dir\xF2 dove metterlo quando l'esercizio \xE8 deciso.", "I'll tell you where to put it once the exercise is decided.", "Os dir\xE9 d\xF3nde ponerlo cuando el ejercicio est\xE9 decidido.", "Je vous dirai o\xF9 le poser quand l'exercice sera choisi.", "Ich sage euch, wo es hin soll, sobald die \xDCbung feststeht.", "Direi onde colocar quando o exerc\xEDcio estiver decidido."],
+  ["Decidete insieme", "Decide together", "Decidid juntos", "D\xE9cidez ensemble", "Entscheidet gemeinsam", "Decidam juntos"],
+  ["Tocca l'esercizio che vuoi fare. Quando scegliete lo stesso, si parte.", "Tap the exercise you want to do. When you both pick the same one, you start.", "Toca el ejercicio que quieres hacer. Cuando eleg\xEDs el mismo, se empieza.", "Touche l'exercice que tu veux faire. Quand vous choisissez le m\xEAme, c'est parti.", "Tippe die \xDCbung an, die du machen willst. W\xE4hlt ihr dieselbe, geht's los.", "Toque o exerc\xEDcio que quer fazer. Quando escolherem o mesmo, come\xE7a."],
+  ["Non siete d'accordo? Decida la sorte", "Can't agree? Let chance decide", "\xBFNo os pon\xE9is de acuerdo? Que decida la suerte", "Pas d'accord ? Laissez le hasard d\xE9cider", "Nicht einig? Lasst den Zufall entscheiden", "N\xE3o concordam? Que a sorte decida"],
+  ["Non siete d'accordo? Chi ha creato la sfida pu\xF2 far decidere alla sorte.", "Can't agree? Whoever created the challenge can let chance decide.", "\xBFNo os pon\xE9is de acuerdo? Quien cre\xF3 el reto puede dejarlo a la suerte.", "Pas d'accord ? Celui qui a cr\xE9\xE9 le d\xE9fi peut laisser faire le hasard.", "Nicht einig? Wer das Duell erstellt hat, kann den Zufall entscheiden lassen.", "N\xE3o concordam? Quem criou o desafio pode deixar a sorte decidir."],
+  ["Giratela quando siete pronti: esce lo stesso esercizio per tutti e due.", "Spin it when you're ready: the same exercise comes out for both of you.", "Giradla cuando est\xE9is listos: sale el mismo ejercicio para los dos.", "Faites-la tourner quand vous \xEAtes pr\xEAts : le m\xEAme exercice sort pour vous deux.", "Dreht es, wenn ihr bereit seid: F\xFCr beide kommt dieselbe \xDCbung.", "Girem quando estiverem prontos: sai o mesmo exerc\xEDcio para os dois."],
+  ["Quando il tuo amico entra, gira la ruota.", "When your friend joins, spin the wheel.", "Cuando entre tu amigo, gira la ruleta.", "Quand ton ami arrive, fais tourner la roue.", "Sobald dein Freund da ist, dreh das Rad.", "Quando seu amigo entrar, gire a roleta."],
+  ["Decidiamo insieme", "Let's decide together", "Decidamos juntos", "D\xE9cidons ensemble", "Gemeinsam entscheiden", "Vamos decidir juntos"],
+  ["uscito a sorte", "drawn at random", "salido al azar", "tir\xE9 au hasard", "zuf\xE4llig gezogen", "sorteado"],
+  ["scelto insieme", "chosen together", "elegido juntos", "choisi ensemble", "gemeinsam gew\xE4hlt", "escolhido juntos"],
   ["Gambe e glutei", "Legs and glutes", "Piernas y gl\xFAteos", "Jambes et fessiers", "Beine und Po", "Pernas e gl\xFAteos"],
   ["Petto, spalle, tricipiti", "Chest, shoulders, triceps", "Pecho, hombros, tr\xEDceps", "Pectoraux, \xE9paules, triceps", "Brust, Schultern, Trizeps", "Peito, ombros, tr\xEDceps"],
   ["Sit-up completi", "Full sit-ups", "Abdominales completos", "Abdos complets", "Komplette Sit-ups", "Abdominais completos"],
@@ -4339,7 +4418,7 @@ const DUEL_FMT = {
   first: { label: "Primo a 20", short: "primo a 20", n: 20 }
 };
 const CROWN_WINS = 3;
-const CH = { peer: null, conn: null, call: null, stream: null, remote: null, role: null, code: "", oppName: "", oppReps: 0, cfg: { ex: "pushup", fmt: "time" }, connected: false, myFinal: null, oppFinal: null, wins: { me: 0, opp: 0 } };
+const CH = { peer: null, conn: null, call: null, stream: null, remote: null, role: null, code: "", oppName: "", oppReps: 0, cfg: { ex: "pushup", fmt: "time", pick: "me", ok: true }, votes: { me: null, opp: null }, connected: false, myFinal: null, oppFinal: null, wins: { me: 0, opp: 0 } };
 let myName = store.get("name", "");
 function loadScript(src) {
   return new Promise((res, rej) => {
@@ -4370,8 +4449,13 @@ const CODE_CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 const newCode = () => Array.from({ length: 6 }, () => CODE_CHARS[Math.floor(Math.random() * CODE_CHARS.length)]).join("");
 const peerId = (code) => "istruttore-recluta-" + code;
 const duelLink = () => location.origin + location.pathname + "?sfida=" + CH.code;
-const fmtTxt = (cfg) => "".concat(EX[cfg.ex].name, " \xB7 ").concat(DUEL_FMT[cfg.fmt].short);
-const MSG_T = /* @__PURE__ */ new Set(["hello", "cfg", "start", "card", "reps", "final", "lobby", "peek", "offer", "busy", "card?", "invite"]);
+const PICKS = ["me", "together", "rand"];
+const normCfg = (c) => {
+  const pick2 = PICKS.includes(c.pick) ? c.pick : "me";
+  return { ex: c.ex, fmt: c.fmt, pick: pick2, ok: pick2 === "me" || !!c.ok };
+};
+const fmtTxt = (cfg) => "".concat(cfg.ok === false || cfg === CH.cfg && CH.spinning ? cfg.pick === "rand" ? "Esercizio a sorte" : "Esercizio da decidere insieme" : EX[cfg.ex].name, " \xB7 ").concat(DUEL_FMT[cfg.fmt].short);
+const MSG_T = /* @__PURE__ */ new Set(["hello", "cfg", "start", "card", "reps", "final", "lobby", "peek", "offer", "busy", "card?", "invite", "vote"]);
 function okMsg(m) {
   if (!m || typeof m !== "object" || Array.isArray(m) || typeof m.t !== "string" || !MSG_T.has(m.t)) return false;
   try {
@@ -4496,7 +4580,7 @@ function duelReset() {
     (_d = CH.stream) == null ? void 0 : _d.getTracks().forEach((t) => t.stop());
   } catch (e) {
   }
-  Object.assign(CH, { peer: null, conn: null, call: null, stream: null, remote: null, role: null, code: "", oppName: "", oppReps: 0, connected: false, myFinal: null, oppFinal: null, wins: { me: 0, opp: 0 }, random: false, searching: false, notFound: false, oppCard: null, sid: "", goT: 0, lead: 0 });
+  Object.assign(CH, { peer: null, conn: null, call: null, stream: null, remote: null, role: null, code: "", oppName: "", oppReps: 0, connected: false, myFinal: null, oppFinal: null, wins: { me: 0, opp: 0 }, votes: { me: null, opp: null }, spinning: false, random: false, searching: false, notFound: false, oppCard: null, sid: "", goT: 0, lead: 0 });
 }
 function setupConn(conn) {
   CH.conn = conn;
@@ -4504,6 +4588,7 @@ function setupConn(conn) {
     CH.connected = true;
     duelSend({ t: "hello", name: myName || "Atleta", card: myCard(), ...CH.sid ? { sid: CH.sid } : {} });
     if (CH.role === "host") duelSend({ t: "cfg", cfg: CH.cfg });
+    if (CH.votes.me) duelSend({ t: "vote", ex: CH.votes.me });
     refreshLobby();
   };
   if (conn.open) opened();
@@ -4538,10 +4623,16 @@ function onDuelMsg(m) {
     }
     refreshLobby();
   } else if (m.t === "cfg" && CH.role === "guest" && okCfg(m.cfg)) {
-    CH.cfg = { ex: m.cfg.ex, fmt: m.cfg.fmt };
-    refreshLobby();
-  } else if (m.t === "start") startDuelSession();
-  else if (m.t === "card" && m.card && typeof m.card === "object") {
+    setCfg(normCfg(m.cfg));
+  } else if (m.t === "vote" && typeof m.ex === "string" && DUEL_EX_ALL.includes(m.ex)) {
+    if (CH.cfg.ok === false && CH.cfg.pick === "together") {
+      CH.votes.opp = m.ex;
+      checkAgree();
+      refreshLobby();
+    }
+  } else if (m.t === "start") {
+    if (CH.cfg.ok !== false) startDuelSession();
+  } else if (m.t === "card" && m.card && typeof m.card === "object") {
     CH.oppCard = m.card;
     saveFriend(m.card);
   } else if (m.t === "reps") {
@@ -4859,7 +4950,7 @@ async function presenceStart() {
         if (now - (PRES.lastInv || 0) < 8e3) return;
         PRES.lastInv = now;
         if (m.card && typeof m.card === "object") saveFriend(m.card);
-        showInvite({ code: m.code, name: cleanName(m.name, "Un amico"), cfg: okCfg(m.cfg) ? m.cfg : null });
+        showInvite({ code: m.code, name: cleanName(m.name, "Un amico"), cfg: okCfg(m.cfg) ? normCfg(m.cfg) : null });
       }
     });
   });
@@ -5071,7 +5162,7 @@ function renderRndJoin() {
     if (here && await probeJoin(guest, rndId(here.n), o.sid)) {
       if (route !== mine) return duelReset();
       CH.code = "rnd" + here.n;
-      if (here.cfg) CH.cfg = here.cfg;
+      if (here.cfg) CH.cfg = normCfg(here.cfg);
       setupCall(guest.call(rndId(here.n), CH.stream));
       return go({ name: "lobby" });
     }
@@ -5146,9 +5237,15 @@ function renderSearching() {
   };
 }
 function renderDuelNew() {
-  const c = CH.cfg, mode = route.mode || "invite";
-  const lbl = mode === "random" ? "Cerca un avversario" : "Crea la sfida";
-  app.innerHTML = '\n  <div class="screen brief">\n    <button class="back" id="back" type="button">\u2039 Indietro</button>\n    <div class="section"><div class="label">'.concat(mode === "random" ? "Sfida casuale" : "Invita un amico", "</div><h2>").concat(mode === "random" ? "Scegli la sfida" : "Nuova sfida", '</h2></div>\n    <div class="field"><label class="label" for="nm">Il tuo nome</label><input id="nm" maxlength="20" autocomplete="nickname" placeholder="Es. Marco" value="').concat(esc(myName), '"></div>\n    <div class="section"><div class="label">Esercizio</div>\n      <div class="choices">').concat(duelExList().map((id) => '<button class="choice" type="button" data-ex="'.concat(id, '" aria-pressed="').concat(c.ex === id, '"><div class="figbox" data-fig="').concat(id, '" data-g="').concat(G(), '"></div>').concat(EX[id].name, "</button>")).join(""), '</div>\n    </div>\n    <div class="section"><div class="label">Formato</div>\n      <div class="choices">').concat(Object.entries(DUEL_FMT).map(([k, f]) => '<button class="choice" type="button" data-fmt="'.concat(k, '" aria-pressed="').concat(c.fmt === k, '">').concat(f.label, "<small>").concat(k === "time" ? "Vince chi ne fa di pi\xF9" : "Vince chi arriva prima", "</small></button>")).join(""), "</div>\n    </div>\n    ").concat(mode === "random" ? "<p class=\"note\">Se l'avversario aveva gi\xE0 scelto un'altra sfida, si fa la sua.</p>" : "", '\n    <div class="camtip">').concat(sideCam, "<span>Mettete i telefoni nella stessa posizione. ").concat(EX[c.ex].cam, '</span></div>\n    <div class="stickybar"><button class="btn primary big" id="create" type="button">').concat(lbl, '</button>\n    <p class="note" id="err" hidden></p></div>\n  </div>');
+  const mode = route.mode || "invite";
+  if (mode === "random" || !PICKS.includes(CH.cfg.pick)) CH.cfg.pick = "me";
+  const c = CH.cfg, inv = mode === "invite", fl = inv ? invitable() : [];
+  if (inv && !route.inviteTo && !fl.length) route.inviteTo = "link";
+  const to = inv ? route.inviteTo : "x", pick2 = c.pick;
+  const lbl = mode === "random" ? "Cerca un avversario" : !to ? "Scegli chi sfidare" : to === "link" ? "Crea la sfida e invia il link" : "Crea la sfida e invita";
+  const exGrid = '<div class="choices">'.concat(duelExList().map((id) => '<button class="choice" type="button" data-ex="'.concat(id, '" aria-pressed="').concat(c.ex === id, '"><div class="figbox" data-fig="').concat(id, '" data-g="').concat(G(), '"></div>').concat(EX[id].name, "</button>")).join(""), "</div>");
+  const step = (n, t) => inv ? '<div class="label step"><em>'.concat(n, "</em>").concat(t, "</div>") : '<div class="label">'.concat(t, "</div>");
+  app.innerHTML = '\n  <div class="screen brief">\n    <button class="back" id="back" type="button">\u2039 Indietro</button>\n    <div class="section"><div class="label">'.concat(mode === "random" ? "Sfida casuale" : "Invita un amico", "</div><h2>").concat(mode === "random" ? "Scegli la sfida" : "Nuova sfida", '</h2></div>\n    <div class="field"><label class="label" for="nm">Il tuo nome</label><input id="nm" maxlength="20" autocomplete="nickname" placeholder="Es. Marco" value="').concat(esc(myName), '"></div>\n    ').concat(inv ? '<div class="section">'.concat(step(1, "Chi vuoi sfidare?"), '\n      <div class="wp-list">').concat(fl.map((f) => '<button class="wp" type="button" data-to="'.concat(esc(f.fcode), '" aria-pressed="').concat(to === f.fcode, '">').concat(avatar(f.name), '<span class="who"><b>').concat(esc(f.name), "</b>").concat(rankBadge(Math.min(RANKS.length - 1, Math.max(0, f.rank | 0)), !!f.gold, f.crowns), '</span><i class="tick"></i></button>')).join(""), '\n        <button class="wp link" type="button" data-to="link" aria-pressed="').concat(to === "link", '"><span class="dz-av lk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg></span><span class="who"><b>Invia un link</b><small>WhatsApp, SMS o un\'altra app</small></span><i class="tick"></i></button>\n      </div></div>\n    <div class="section">').concat(step(2, "Come scegliete l'esercizio?"), '\n      <div class="pick3">').concat([["me", "Scelgo io", "Lo decidi tu"], ["together", "Insieme", "Lo votate nella sala"], ["rand", "A sorte", "Gira la ruota"]].map(([k, t, d]) => '<button type="button" data-pick="'.concat(k, '" aria-pressed="').concat(pick2 === k, '">').concat(pickIco[k], "<b>").concat(t, "</b><small>").concat(d, "</small></button>")).join(""), "</div>\n      ").concat(pick2 === "me" ? exGrid : '<p class="note">'.concat(pick2 === "rand" ? "Nella sala d'attesa, quando il tuo amico \xE8 entrato, girate la ruota: esce lo stesso esercizio per tutti e due." : "Nella sala d'attesa tu e il tuo amico toccate l'esercizio che volete: quando scegliete lo stesso, si parte.", "</p>"), "\n    </div>") : '<div class="section"><div class="label">Esercizio</div>'.concat(exGrid, "</div>"), '\n    <div class="section">').concat(step(3, "Formato"), '\n      <div class="choices">').concat(Object.entries(DUEL_FMT).map(([k, f]) => '<button class="choice" type="button" data-fmt="'.concat(k, '" aria-pressed="').concat(c.fmt === k, '">').concat(f.label, "<small>").concat(k === "time" ? "Vince chi ne fa di pi\xF9" : "Vince chi arriva prima", "</small></button>")).join(""), "</div>\n    </div>\n    ").concat(mode === "random" ? "<p class=\"note\">Se l'avversario aveva gi\xE0 scelto un'altra sfida, si fa la sua.</p>" : "", '\n    <div class="camtip">').concat(sideCam, "<span>Mettete i telefoni nella stessa posizione. ").concat(pick2 === "me" ? EX[c.ex].cam : "Vi dir\xF2 dove metterlo quando l'esercizio \xE8 deciso.", '</span></div>\n    <div class="stickybar"><button class="btn primary big" id="create" type="button" ').concat(to ? "" : "disabled", ">").concat(lbl, '</button>\n    <p class="note" id="err" hidden></p></div>\n  </div>');
   $("back").onclick = () => go({ name: "duels" });
   const keep = () => {
     myName = $("nm").value.trim();
@@ -5164,9 +5261,20 @@ function renderDuelNew() {
     CH.cfg.fmt = b.dataset.fmt;
     keep();
   });
+  app.querySelectorAll("[data-to]").forEach((b) => b.onclick = () => {
+    route.inviteTo = b.dataset.to;
+    keep();
+  });
+  app.querySelectorAll("[data-pick]").forEach((b) => b.onclick = () => {
+    CH.cfg.pick = b.dataset.pick;
+    keep();
+  });
   $("create").onclick = async () => {
+    if (!to) return;
     myName = $("nm").value.trim() || "Atleta";
     store.set("name", myName);
+    CH.cfg = { ...CH.cfg, ok: CH.cfg.pick === "me" };
+    CH.votes = { me: null, opp: null };
     const btn = $("create");
     btn.disabled = true;
     btn.textContent = "Preparo la sfida\u2026";
@@ -5199,7 +5307,7 @@ function renderDuelNew() {
     } catch (e) {
       return duelError("Non riesco a collegarmi al servizio delle sfide. Controlla la connessione e riprova.", btn, lbl);
     }
-    go({ name: "lobby", inviteTo: route.inviteTo });
+    go({ name: "lobby", inviteTo: to === "link" ? null : to, linkFirst: to === "link" });
   };
 }
 function duelError(msg, btn, label) {
@@ -5247,9 +5355,100 @@ function renderDuelJoin() {
     $("join").click();
   }
 }
+function setCfg(c) {
+  const was = CH.cfg;
+  CH.cfg = c;
+  if (c.ok === false && (was.ok !== false || was.pick !== c.pick)) CH.votes = { me: null, opp: null };
+  if (was.ok === false && c.ok && c.pick === "rand") spinTo(c.ex);
+  if (route.name === "lobby") {
+    if (CH.role === "host") renderLobby();
+    else refreshLobby();
+  }
+}
+function hostCfg(c) {
+  duelSend({ t: "cfg", cfg: c });
+  setCfg(c);
+}
+function drawEx(from) {
+  const l = from && from.length ? from : duelExList();
+  return l[Math.floor(Math.random() * l.length)];
+}
+function checkAgree() {
+  const v = CH.votes;
+  if (CH.role !== "host" || !v.me || v.me !== v.opp || CH.cfg.ok !== false) return;
+  hostCfg({ ...CH.cfg, ex: v.me, ok: true });
+  say("D'accordo: ".concat(EX[v.me].name, "!"));
+}
+function spinTo(ex) {
+  CH.spinning = true;
+  CH.spinEx = ex;
+  const pool = DUEL_EX_ALL.filter((id) => id !== ex);
+  let k = 0, delay = 60;
+  const tick = () => {
+    const r = document.getElementById("pkReel");
+    if (delay > 330) {
+      CH.spinning = false;
+      if (r) {
+        r.textContent = tr(EX[ex].name);
+        r.classList.add("hit");
+      }
+      say("Esce: ".concat(EX[ex].name, "!"));
+      setTimeout(() => {
+        if (route.name === "lobby") {
+          if (CH.role === "host") renderLobby();
+          else refreshLobby();
+        }
+      }, 1100);
+      return;
+    }
+    if (r) r.textContent = tr(EX[pool[k++ % pool.length]].name);
+    delay *= 1.13;
+    setTimeout(tick, delay);
+  };
+  if (route.name === "lobby") {
+    if (CH.role === "host") renderLobby();
+    else refreshLobby();
+  }
+  setTimeout(tick, 60);
+}
+const pickIco = {
+  me: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11V5a2 2 0 0 1 4 0v6"/><path d="M13 10a2 2 0 0 1 4 0v1a2 2 0 0 1 4 0v3a7 7 0 0 1-7 7h-1a7 7 0 0 1-6-3.4L4.5 15a2 2 0 0 1 3.3-2.2L9 14"/></svg>',
+  together: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="3"/><circle cx="16" cy="8" r="3"/><path d="M2 20a6 6 0 0 1 12 0M10 20a6 6 0 0 1 12 0"/></svg>',
+  rand: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="8" cy="8" r="1.3" fill="currentColor"/><circle cx="16" cy="16" r="1.3" fill="currentColor"/><circle cx="12" cy="12" r="1.3" fill="currentColor"/><circle cx="16" cy="8" r="1.3" fill="currentColor"/><circle cx="8" cy="16" r="1.3" fill="currentColor"/></svg>'
+};
+function pickHTML() {
+  const c = CH.cfg, host = CH.role === "host", v = CH.votes, opp = CH.oppName || "L'amico";
+  if (CH.spinning) return '<div class="pk spin"><div class="label">'.concat(pickIco.rand, ' Esercizio a sorte</div><div class="pk-reel"><b id="pkReel">?</b></div></div>');
+  if (c.ok !== false) return '<div class="pk done"><div class="figbox" data-fig="'.concat(c.ex, '" data-g="').concat(G(), '"></div><div><div class="label">Esercizio').concat(c.pick === "rand" ? " \xB7 uscito a sorte" : c.pick === "together" ? " \xB7 scelto insieme" : "", "</div><b>").concat(EX[c.ex].name, "</b></div></div>");
+  if (c.pick === "rand") return '<div class="pk"><div class="label">'.concat(pickIco.rand, ' Esercizio a sorte</div><div class="pk-reel"><b id="pkReel">?</b></div>\n    ').concat(host ? '<button class="btn primary" id="pkSpin" type="button" '.concat(CH.connected ? "" : "disabled", '>Gira la ruota</button><p class="meta">').concat(CH.connected ? "Giratela quando siete pronti: esce lo stesso esercizio per tutti e due." : "Quando il tuo amico entra, gira la ruota.", "</p>") : '<p class="meta">'.concat(esc(opp), " gira la ruota: guardate insieme cosa esce.</p>"), "</div>");
+  const list = [.../* @__PURE__ */ new Set([...duelExList(), ...[v.me, v.opp].filter(Boolean)])];
+  const split = v.me && v.opp && v.me !== v.opp;
+  return '<div class="pk"><div class="label">'.concat(pickIco.together, ' Decidete insieme</div>\n    <p class="meta">Tocca l\'esercizio che vuoi fare. Quando scegliete lo stesso, si parte.</p>\n    <div class="pk-votes">').concat(list.map((id) => '<button class="pk-v'.concat(v.me === id ? " me" : "").concat(v.opp === id ? " opp" : "", '" type="button" data-vote="').concat(id, '"><span>').concat(EX[id].name, "</span>").concat(v.me === id ? '<i class="t-me">Tu</i>' : "").concat(v.opp === id ? '<i class="t-opp">'.concat(esc([...opp][0].toUpperCase()), "</i>") : "", "</button>")).join(""), "</div>\n    ").concat(split ? host ? '<button class="btn ghost" id="pkCoin" type="button">'.concat(pickIco.rand, " Non siete d'accordo? Decida la sorte</button>") : '<p class="meta">Non siete d\'accordo? Chi ha creato la sfida pu\xF2 far decidere alla sorte.</p>' : v.me && !v.opp ? '<p class="meta">Aspetto la scelta di '.concat(esc(opp), "\u2026</p>") : "", "</div>");
+}
+function renderPick() {
+  const box = $("pickBox");
+  if (!box) return;
+  const key = JSON.stringify([CH.cfg, CH.votes, CH.spinning, CH.connected, CH.oppName, CH.role]);
+  if (box.dataset.k === key) return;
+  box.dataset.k = key;
+  box.innerHTML = pickHTML();
+  animateFigs(box);
+  box.querySelectorAll("[data-vote]").forEach((b) => b.onclick = () => {
+    CH.votes.me = b.dataset.vote;
+    duelSend({ t: "vote", ex: CH.votes.me });
+    checkAgree();
+    refreshLobby();
+  });
+  const sp = $("pkSpin");
+  if (sp) sp.onclick = () => {
+    if (CH.connected) hostCfg({ ...CH.cfg, ex: drawEx(), ok: true });
+  };
+  const co = $("pkCoin");
+  if (co) co.onclick = () => hostCfg({ ...CH.cfg, pick: "rand", ex: drawEx([CH.votes.me, CH.votes.opp]), ok: true });
+}
 function renderLobby() {
   const host = CH.role === "host";
-  app.innerHTML = '\n  <div class="screen brief">\n    <div class="section"><div class="label">Sfida \xB7 '.concat(esc(fmtTxt(CH.cfg)), "</div><h2>").concat(CH.random ? "Avversario trovato" : host ? "Invita il tuo amico" : "Sala d'attesa", "</h2></div>\n    ").concat(host && !CH.random ? '<div class="order">\n      <div class="label">Codice sfida</div>\n      <div class="code">'.concat(CH.code, '</div>\n      <p class="meta">Mandagli il link: lo apre dal telefono ed entra subito.</p>\n      <div class="row"><button class="btn ghost small" id="share" type="button">Invia il link</button></div>\n      <p class="note" id="shareNote" hidden></p>\n      ').concat(invitable().length ? '<div class="label">Oppure invitalo direttamente</div><ol class="lb">'.concat(invitable().map((f) => '<li><span class="pos">'.concat(rankBadge(Math.min(RANKS.length - 1, Math.max(0, f.rank | 0)), !!f.gold, f.crowns), '</span><span class="who">').concat(esc(f.name), '</span><button class="btn ghost small inv" type="button" data-inv="').concat(esc(f.fcode), '">Invita</button></li>')).join(""), "</ol>") : "", "\n    </div>") : "", '\n    <div class="status" id="lobStatus"><i></i><span></span></div>\n    <div class="lobvids">\n      <div class="lobvid"><video id="lobMe" playsinline autoplay muted></video><span>').concat(esc(myName || "Tu"), " ").concat(myBadge(), '</span></div>\n      <div class="lobvid"><video id="lobOpp" playsinline autoplay></video><div class="empty" id="lobOppEmpty">In attesa della videochiamata\u2026</div><span id="lobOppName">Amico</span></div>\n    </div>\n    ').concat(CH.wins.me + CH.wins.opp > 0 ? '<p class="meta">Punteggio: '.concat(esc(myName), " ").concat(CH.wins.me, " \u2013 ").concat(CH.wins.opp, " ").concat(esc(CH.oppName), "</p>") : "", '\n    <div class="row">\n      ').concat(host ? '<button class="btn primary" id="go" type="button" disabled>Via!</button>' : "", '\n      <button class="btn ghost" id="leave" type="button">Esci dalla sfida</button>\n    </div>\n    ').concat(host ? '<details class="note"><summary>Cambia esercizio o formato</summary><div class="choices" style="margin-top:8px">'.concat(duelExList().map((id) => '<button class="choice" type="button" data-ex="'.concat(id, '" aria-pressed="').concat(CH.cfg.ex === id, '">').concat(EX[id].name, "</button>")).join("")).concat(Object.entries(DUEL_FMT).map(([k, f]) => '<button class="choice" type="button" data-fmt="'.concat(k, '" aria-pressed="').concat(CH.cfg.fmt === k, '">').concat(f.label, "</button>")).join(""), "</div></details>") : "", "\n  </div>");
+  app.innerHTML = '\n  <div class="screen brief">\n    <div class="section"><div class="label">Sfida \xB7 '.concat(esc(fmtTxt(CH.cfg)), "</div><h2>").concat(CH.random ? "Avversario trovato" : host ? "Invita il tuo amico" : "Sala d'attesa", "</h2></div>\n    ").concat(host && !CH.random ? '<div class="order">\n      <div class="label">Codice sfida</div>\n      <div class="code">'.concat(CH.code, '</div>\n      <p class="meta">Mandagli il link: lo apre dal telefono ed entra subito.</p>\n      <div class="row"><button class="btn ').concat(route.linkFirst ? "primary glow" : "ghost", ' small" id="share" type="button">Invia il link</button></div>\n      <p class="note" id="shareNote" hidden></p>\n      ').concat(invitable().length ? '<div class="label">Oppure invitalo direttamente</div><ol class="lb">'.concat(invitable().map((f) => '<li><span class="pos">'.concat(rankBadge(Math.min(RANKS.length - 1, Math.max(0, f.rank | 0)), !!f.gold, f.crowns), '</span><span class="who">').concat(esc(f.name), '</span><button class="btn ghost small inv" type="button" data-inv="').concat(esc(f.fcode), '">Invita</button></li>')).join(""), "</ol>") : "", "\n    </div>") : "", '\n    <div class="status" id="lobStatus"><i></i><span></span></div>\n    <div id="pickBox"></div>\n    <div class="lobvids">\n      <div class="lobvid"><video id="lobMe" playsinline autoplay muted></video><span>').concat(esc(myName || "Tu"), " ").concat(myBadge(), '</span></div>\n      <div class="lobvid"><video id="lobOpp" playsinline autoplay></video><div class="empty" id="lobOppEmpty">In attesa della videochiamata\u2026</div><span id="lobOppName">Amico</span></div>\n    </div>\n    ').concat(CH.wins.me + CH.wins.opp > 0 ? '<p class="meta">Punteggio: '.concat(esc(myName), " ").concat(CH.wins.me, " \u2013 ").concat(CH.wins.opp, " ").concat(esc(CH.oppName), "</p>") : "", '\n    <div class="row">\n      ').concat(host ? '<button class="btn primary" id="go" type="button" disabled>Via!</button>' : "", '\n      <button class="btn ghost" id="leave" type="button">Esci dalla sfida</button>\n    </div>\n    ').concat(host ? '<details class="note"><summary>Cambia esercizio o formato</summary><div class="choices" style="margin-top:8px"><button class="choice" type="button" data-repick="rand">'.concat(pickIco.rand, ' A sorte</button><button class="choice" type="button" data-repick="together">').concat(pickIco.together, " Decidiamo insieme</button>").concat(duelExList().map((id) => '<button class="choice" type="button" data-ex="'.concat(id, '" aria-pressed="').concat(CH.cfg.ok !== false && CH.cfg.pick === "me" && CH.cfg.ex === id, '">').concat(EX[id].name, "</button>")).join("")).concat(Object.entries(DUEL_FMT).map(([k, f]) => '<button class="choice" type="button" data-fmt="'.concat(k, '" aria-pressed="').concat(CH.cfg.fmt === k, '">').concat(f.label, "</button>")).join(""), "</div></details>") : "", "\n  </div>");
   attach($("lobMe"), localView(), true);
   if (host && $("share")) {
     $("share").onclick = async () => {
@@ -5274,6 +5473,7 @@ function renderLobby() {
   }
   if (host) {
     $("go").onclick = () => {
+      if (CH.cfg.ok === false || CH.spinning) return;
       duelSend({ t: "start" });
       startDuelSession();
     };
@@ -5300,16 +5500,9 @@ function renderLobby() {
       route.inviteTo = null;
       invite(fc, app.querySelector('[data-inv="'.concat(fc, '"]')));
     }
-    app.querySelectorAll("[data-ex]").forEach((b) => b.onclick = () => {
-      CH.cfg.ex = b.dataset.ex;
-      duelSend({ t: "cfg", cfg: CH.cfg });
-      renderLobby();
-    });
-    app.querySelectorAll("[data-fmt]").forEach((b) => b.onclick = () => {
-      CH.cfg.fmt = b.dataset.fmt;
-      duelSend({ t: "cfg", cfg: CH.cfg });
-      renderLobby();
-    });
+    app.querySelectorAll("[data-ex]").forEach((b) => b.onclick = () => hostCfg({ ...CH.cfg, ex: b.dataset.ex, pick: "me", ok: true }));
+    app.querySelectorAll("[data-repick]").forEach((b) => b.onclick = () => hostCfg({ ...CH.cfg, pick: b.dataset.repick, ok: false }));
+    app.querySelectorAll("[data-fmt]").forEach((b) => b.onclick = () => hostCfg({ ...CH.cfg, fmt: b.dataset.fmt }));
   }
   $("leave").onclick = () => {
     duelReset();
@@ -5346,8 +5539,9 @@ function refreshLobby() {
     $("lobOppEmpty").hidden = true;
     attach($("lobOpp"), CH.remote, false);
   }
+  renderPick();
   const g = $("go");
-  if (g) g.disabled = !CH.connected;
+  if (g) g.disabled = !CH.connected || CH.cfg.ok === false || CH.spinning;
 }
 async function startDuelSession() {
   var _a;
