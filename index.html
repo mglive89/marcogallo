@@ -591,6 +591,11 @@ body.landing-on:has(.fq) { background: #15223f; }
 .dz-tile b { font-family: var(--f-cond); font-weight: 800; font-size: 19px; text-transform: uppercase; line-height: 1.05; }
 .audioOn { position: fixed; left: 50%; top: calc(env(safe-area-inset-top, 0px) + 14px); transform: translateX(-50%); z-index: 60; border: 0; border-radius: 999px; padding: 12px 20px; font-family: var(--f-cond); font-weight: 800; font-size: 16px; letter-spacing: .03em; color: #fff; background: linear-gradient(135deg, #ff7a3d, #e5487f); box-shadow: 0 8px 24px rgba(229,72,127,.45); animation: audioPulse 1.4s ease-in-out infinite; }
 @keyframes audioPulse { 50% { transform: translateX(-50%) scale(1.06); } }
+#rotate { display: none; }
+html.land #rotate { display: flex; position: fixed; inset: 0; z-index: 9999; flex-direction: column; align-items: center; justify-content: center; gap: 14px; padding: 24px; text-align: center; color: #fff; background: radial-gradient(circle at 50% 30%, #1d2b4a, #0b1220 70%); font-family: var(--f-cond); font-weight: 800; font-size: 22px; letter-spacing: .03em; text-transform: uppercase; }
+html.land #rotate small { font-family: var(--f-body); font-weight: 400; font-size: 14px; text-transform: none; letter-spacing: 0; color: #b8c4d6; }
+html.land #rotate svg { animation: rotPhone 1.8s ease-in-out infinite; }
+@keyframes rotPhone { 0%, 20% { transform: rotate(-90deg); } 55%, 100% { transform: rotate(0deg); } }
 .dz-tile small { color: var(--muted); font-size: 13px; line-height: 1.3; }
 .dz-tile:active { transform: scale(.97); }
 .dz-switch { display: grid; grid-template-columns: 40px 1fr 52px; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 18px; background: var(--panel); box-shadow: var(--shadow); font-size: 15px; cursor: pointer; }
@@ -882,8 +887,10 @@ body.fx-off .char-stand { animation: none; }
 
 <input type="file" id="fileIn" accept="video/*" capture="user" hidden>
 
+<div id="rotate" aria-live="polite"><svg width="64" height="64" viewBox="0 0 64 64" fill="none" stroke="#4aa8ff" stroke-width="3" stroke-linecap="round"><rect x="20" y="6" width="24" height="52" rx="5"/><path d="M29 51h6"/></svg><span>Ruota il telefono</span><small>FitQuest si usa in verticale.</small></div>
 <audio id="oppAudio" playsinline autoplay hidden></audio><button class="audioOn" id="audioOn" hidden>🔊 Tocca per sentire l'amico</button>
 <script type="module">
+var _a, _b, _c, _d;
 const LANGS = {
   it: { name: "Italiano", tts: "it-IT" },
   en: { name: "English", tts: "en-US" },
@@ -1238,6 +1245,8 @@ const I18N = [
   ["Inquadrati di lato, in piedi", "Get in frame from the side, standing", "Ponte de lado, de pie", "Mets-toi de profil, debout", "Seitlich ins Bild, stehend", "P\xF5e-te de lado, de p\xE9"],
   ["Spingi la gamba pi\xF9 indietro! Non conta", "Push your leg further back! Doesn't count", "\xA1Lleva la pierna m\xE1s atr\xE1s! No cuenta", "Pousse la jambe plus en arri\xE8re ! \xC7a ne compte pas", "Bein weiter nach hinten! Z\xE4hlt nicht", "Leva a perna mais para tr\xE1s! N\xE3o conta"],
   ["\u{1F50A} Tocca per sentire l'amico", "\u{1F50A} Tap to hear your friend", "\u{1F50A} Toca para o\xEDr a tu amigo", "\u{1F50A} Touche pour entendre ton ami", "\u{1F50A} Tippen, um deinen Freund zu h\xF6ren", "\u{1F50A} Toca para ouvir o teu amigo"],
+  ["Ruota il telefono", "Turn your phone", "Gira el tel\xE9fono", "Tourne ton t\xE9l\xE9phone", "Dreh dein Handy", "Roda o telem\xF3vel"],
+  ["FitQuest si usa in verticale.", "FitQuest works in portrait mode.", "FitQuest se usa en vertical.", "FitQuest s'utilise en mode portrait.", "FitQuest wird hochkant benutzt.", "O FitQuest usa-se na vertical."],
   ["Gambe e glutei", "Legs and glutes", "Piernas y gl\xFAteos", "Jambes et fessiers", "Beine und Po", "Pernas e gl\xFAteos"],
   ["Petto, spalle, tricipiti", "Chest, shoulders, triceps", "Pecho, hombros, tr\xEDceps", "Pectoraux, \xE9paules, triceps", "Brust, Schultern, Trizeps", "Peito, ombros, tr\xEDceps"],
   ["Sit-up completi", "Full sit-ups", "Abdominales completos", "Abdos complets", "Komplette Sit-ups", "Abdominais completos"],
@@ -1846,15 +1855,15 @@ const PALETTE = {
   f: { skin: "#f0bf9b", skin2: "#cf9672", hi: "#fff2e6", out: "#b02a91", out2: "#7d1b67", stripe: "#f6d6ee", shoe: "#8f2bd8", hair: "#2a1a12" }
 };
 function solve(def, pose) {
-  var _a, _b;
+  var _a2, _b2;
   const j = {};
   if (def.front) {
-    const pel2 = [60, 50], neck = fwd(pel2, (_a = pose.t) != null ? _a : -90, SEG.torso);
+    const pel2 = [60, 50], neck = fwd(pel2, (_a2 = pose.t) != null ? _a2 : -90, SEG.torso);
     const off = TOON ? 9.5 : 7.5, hoff = TOON ? 6 : 5;
     j.front = true;
     j.p = pel2;
     j.n = neck;
-    j.h = fwd(neck, (_b = pose.t) != null ? _b : -90, SEG.neck);
+    j.h = fwd(neck, (_b2 = pose.t) != null ? _b2 : -90, SEG.neck);
     j.shR = [neck[0] - off, neck[1] + 1];
     j.shL = [neck[0] + off, neck[1] + 1];
     j.hipR = [pel2[0] - hoff, pel2[1]];
@@ -2910,11 +2919,11 @@ try {
 const VP = { map: null, audio: null, queue: [], playing: false, unlocked: false };
 const vnorm = (s) => String(s).toLowerCase().replace(/[.,!?;:¡¿'’"«»…\-–]+/g, " ").replace(/\s+/g, " ").trim();
 async function loadVoicePack() {
-  var _a;
+  var _a2;
   if (!SITE || store.get("vpack", true) === false) return;
   try {
     const man = await (await fetch("voice/manifest.json", { cache: "no-cache" })).json();
-    const ids = (_a = man == null ? void 0 : man.langs) == null ? void 0 : _a[lang];
+    const ids = (_a2 = man == null ? void 0 : man.langs) == null ? void 0 : _a2[lang];
     if (!Array.isArray(ids) || !ids.length) return;
     const ph = await (await fetch("voice-phrases.json")).json();
     const have = new Set(ids), m = /* @__PURE__ */ new Map();
@@ -2996,7 +3005,7 @@ function sayPack(text, urgent) {
 let lastSpoken = { text: "", t: 0 }, lastAny = 0;
 const IS_IOS = /iP(hone|ad|od)/.test(navigator.userAgent) || navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1;
 function say(text, { urgent = false, minGap = 3200 } = {}) {
-  var _a, _b;
+  var _a2, _b2;
   if (!voiceOn) return;
   if (IS_IOS && S.challenge && CH.connected) return;
   try {
@@ -3021,8 +3030,8 @@ function say(text, { urgent = false, minGap = 3200 } = {}) {
     const u = new SpeechSynthesisUtterance(spoken);
     u.lang = ttsLang();
     if (itVoice) u.voice = itVoice;
-    u.rate = (_a = voiceCfg.rate) != null ? _a : gritOn ? 1.12 : 1.08;
-    u.pitch = (_b = voiceCfg.pitch) != null ? _b : gritOn ? 0.8 : 0.9;
+    u.rate = (_a2 = voiceCfg.rate) != null ? _a2 : gritOn ? 1.12 : 1.08;
+    u.pitch = (_b2 = voiceCfg.pitch) != null ? _b2 : gritOn ? 0.8 : 0.9;
     u.volume = 1;
     speechSynthesis.speak(u);
     lastSpoken = { text, t: now };
@@ -3116,8 +3125,8 @@ const coach = {
 const L = { nose: 0, lSh: 11, rSh: 12, lEl: 13, rEl: 14, lWr: 15, rWr: 16, lHip: 23, rHip: 24, lKn: 25, rKn: 26, lAn: 27, rAn: 28 };
 let aspect = 4 / 3;
 const P = (lm, i) => {
-  var _a;
-  return { x: lm[i].x * aspect, y: lm[i].y, v: (_a = lm[i].visibility) != null ? _a : 1 };
+  var _a2;
+  return { x: lm[i].x * aspect, y: lm[i].y, v: (_a2 = lm[i].visibility) != null ? _a2 : 1 };
 };
 function ang(a, b, c) {
   const v1 = { x: a.x - b.x, y: a.y - b.y }, v2 = { x: c.x - b.x, y: c.y - b.y };
@@ -3126,8 +3135,8 @@ function ang(a, b, c) {
 }
 function side(lm, idsL, idsR) {
   const s = (ids) => ids.reduce((a, i) => {
-    var _a;
-    return a + ((_a = lm[i].visibility) != null ? _a : 1);
+    var _a2;
+    return a + ((_a2 = lm[i].visibility) != null ? _a2 : 1);
   }, 0);
   return s(idsL) >= s(idsR) ? "l" : "r";
 }
@@ -3353,13 +3362,13 @@ function makeTracker(exId) {
     },
     // front view squat: how low the hips sit between shoulders and ankles
     jumpsquat(lm) {
-      var _a;
+      var _a2;
       const g = (i) => P(lm, i);
       const lSh = g(11), rSh = g(12), lH = g(23), rH = g(24), lA = g(27), rA = g(28);
       if (!vis(lSh, rSh, lH, rH, lA, rA)) return { lost: "Inquadrati di fronte, dalla testa ai piedi" };
       const shY = (lSh.y + rSh.y) / 2, hipY = (lH.y + rH.y) / 2, anY = (lA.y + rA.y) / 2;
       const h = (anY - hipY) / (anY - shY || 1) * 100;
-      st.hTop = Math.max(h, ((_a = st.hTop) != null ? _a : h) - 0.01);
+      st.hTop = Math.max(h, ((_a2 = st.hTop) != null ? _a2 : h) - 0.01);
       const r = angleRep({ value: st.hTop - h, top: 3, bottom: 9, partial: 5, invert: true });
       return { ...r, fault: null, cue: null, noRepCue: "Scendi di pi\xF9 nello squat! Non conta" };
     },
@@ -3377,7 +3386,7 @@ function makeTracker(exId) {
       return { ...r, fault, cue, noRepCue: "Scendi fino al rialzo! Non conta" };
     },
     sidelunge(lm) {
-      var _a;
+      var _a2;
       const g = (i) => P(lm, i);
       const lSh = g(11), rSh = g(12), lH = g(23), rH = g(24), lA = g(27), rA = g(28);
       if (!vis(lSh, rSh, lH, rH, lA, rA)) return { lost: "Inquadrati di fronte, dalla testa ai piedi" };
@@ -3390,17 +3399,17 @@ function makeTracker(exId) {
         fault = "narrow";
         cue = "Allarga di pi\xF9 i piedi";
       }
-      st.hTop = Math.max(h, ((_a = st.hTop) != null ? _a : h) - 0.01);
+      st.hTop = Math.max(h, ((_a2 = st.hTop) != null ? _a2 : h) - 0.01);
       const r = angleRep({ value: st.hTop - h, top: 3, bottom: 8, partial: 5, invert: true, fault });
       return { ...r, fault, cue, noRepCue: "Scendi di pi\xF9 sul lato! Non conta" };
     },
     // the hips rise by the height of the step: measured against their lowest recent position
     stepup(lm) {
-      var _a;
+      var _a2;
       const p = pick(lm, side(lm, [11, 23, 25], [12, 24, 26]));
       if (!vis(p.sh, p.hip)) return { lost: "Inquadrati di lato, con il rialzo" };
       const torso = Math.hypot(p.sh.x - p.hip.x, p.sh.y - p.hip.y) || 0.2;
-      st.base = Math.max(p.hip.y, ((_a = st.base) != null ? _a : p.hip.y) - 4e-4);
+      st.base = Math.max(p.hip.y, ((_a2 = st.base) != null ? _a2 : p.hip.y) - 4e-4);
       const rise = (st.base - p.hip.y) / torso * 100;
       const r = angleRep({ value: rise, top: 10, bottom: 24, partial: 16, invert: true, countAt: "bottom" });
       return { ...r, fault: null, cue: null, noRepCue: "Sali fino in cima, gamba distesa! Non conta" };
@@ -3638,8 +3647,8 @@ function renderHome() {
     const pct = nx ? Math.round((stats.total - cur[1]) / (nx[1] - cur[1]) * 100) : 100;
     return '<button class="rankcard" id="openRank" type="button" style="text-align:left;color:inherit">\n      <div><div class="label">Il tuo livello</div><div class="rname">'.concat(myBadge(), " <span>").concat(cur[0], '</span></div></div>\n      <div class="pts">').concat(stats.month.pts, '<small>punti del mese</small></div>\n      <div class="xp"><i style="width:').concat(pct, '%"></i></div>\n      <div class="meta">').concat(nx ? "".concat(nx[1] - stats.total, " punti al livello ").concat(nx[0]) : "Livello massimo raggiunto", " \xB7 Classifica \u203A</div>\n    </button>");
   })(), '\n\n    <section class="section">\n      <div class="label">Programma di oggi \xB7 Settimana ').concat(n.wk, ", sessione ").concat(n.d + 1, '</div>\n      <div class="order">\n        <h2>').concat(esc(s.title), '</h2>\n        <div class="circuit">').concat(s.blocks.map(([ex, sets, t]) => '<button class="step" type="button" data-ex="'.concat(ex, '"><div class="figbox" data-fig="').concat(ex, '" data-g="').concat(G(), '"></div><b>').concat(EX[ex].name, "</b><span>").concat(sets, " \xD7 ").concat(targetTxt(ex, t), "</span>").concat(ARROW, "</button>")).join(""), '</div>\n        <p class="restnote">1 minuto di riposo tra ogni serie \xB7 la telecamera conta le ripetizioni e ti corregge a voce</p>\n        <div class="weeks">').concat(weeks, '</div>\n      </div>\n    </section>\n\n    <section class="section">\n      <div class="label">Prova di efficienza fisica</div>\n      <div class="exlist">\n        ').concat(tests.map((id) => {
-    var _a;
-    return '<button class="ex wide" data-test="'.concat(id, '" type="button"><div class="figbox" data-fig="').concat(id, '" data-g="').concat(G(), '"></div><span><b>').concat(EX[id].name, " in 2 minuti</b><small>Record: ").concat((_a = records[id]) != null ? _a : "\u2014", '</small></span><span class="go">\u203A</span></button>');
+    var _a2;
+    return '<button class="ex wide" data-test="'.concat(id, '" type="button"><div class="figbox" data-fig="').concat(id, '" data-g="').concat(G(), '"></div><span><b>').concat(EX[id].name, " in 2 minuti</b><small>Record: ").concat((_a2 = records[id]) != null ? _a2 : "\u2014", '</small></span><span class="go">\u203A</span></button>');
   }).join(""), "\n      </div>\n    </section>\n\n    ").concat(SITE ? '<section class="section">\n      <div class="label">Sfida</div>\n      <button class="mode" id="openDuels" type="button"><span class="ico">'.concat(TAB_ICO.duels, '</span><span><b>Sfida qualcuno in videochiamata</b><small>Avversario casuale, un amico invitato o un codice</small></span><span class="go">\u203A</span></button>\n    </section>') : "", "\n    ").concat(COMPAT_MSG ? '<p class="note" style="background:#fdecea">'.concat(COMPAT_MSG, "</p>") : "", "\n  </div>");
   $("startDay").onclick = () => go({ name: "brief", queue: blocksToQueue(s.blocks), day: n, title: s.title });
   app.querySelectorAll("[data-ex]").forEach((b) => b.onclick = () => openFree(b.dataset.ex));
@@ -3826,8 +3835,8 @@ function renderBrief() {
     $("fileIn").click();
   };
   $("fileIn").onchange = (e2) => {
-    var _a;
-    const f = (_a = e2.target.files) == null ? void 0 : _a[0];
+    var _a2;
+    const f = (_a2 = e2.target.files) == null ? void 0 : _a2[0];
     if (f) startSession("file", f);
   };
 }
@@ -3840,9 +3849,9 @@ function renderSummary() {
   $("home").onclick = () => go({ name: "home" });
 }
 function renderVoice() {
-  var _a, _b;
+  var _a2, _b2;
   const vs = itVoices();
-  const rate = (_a = voiceCfg.rate) != null ? _a : gritOn ? 1.12 : 1.08, pitch = (_b = voiceCfg.pitch) != null ? _b : gritOn ? 0.8 : 0.9;
+  const rate = (_a2 = voiceCfg.rate) != null ? _a2 : gritOn ? 1.12 : 1.08, pitch = (_b2 = voiceCfg.pitch) != null ? _b2 : gritOn ? 0.8 : 0.9;
   app.innerHTML = '\n  <div class="screen brief">\n    <button class="back" id="back" type="button">\u2039 Indietro</button>\n    <div class="section"><div class="label">Impostazioni</div><h2>Voce dell\'istruttore</h2></div>\n    <div class="field"><label class="label" for="vLang">Lingua</label>\n      <select id="vLang" class="sel">\n        <option value="">Automatica ('.concat(LANGS[detectLang()].name, ")</option>\n        ").concat(LANG_ORDER.map((k) => '<option value="'.concat(k, '" ').concat(store.get("lang", "") === k ? "selected" : "", ">").concat(LANGS[k].name, "</option>")).join(""), "\n      </select></div>\n    ").concat(VP.map ? '<label class="toggle"><input type="checkbox" id="vPack" '.concat(store.get("vpack", true) ? "checked" : "", "> Usa la voce registrata</label>") : "", '\n    <div class="field"><label class="label" for="vVoice">Voce</label>\n      <select id="vVoice" class="sel">\n        <option value="">Automatica</option>\n        ').concat(vs.map((v) => '<option data-notr value="'.concat(esc(v.name), '" ').concat(v.name === voiceCfg.voice ? "selected" : "", ">").concat(esc(v.name), "</option>")).join(""), "\n      </select>\n      ").concat(vs.length ? "" : '<p class="note">Il telefono non ha ancora una voce per questa lingua: vedi sotto come aggiungerla.</p>', '\n    </div>\n    <div class="field"><label class="label" for="vRate">Velocit\xE0 \xB7 <span id="vRateV">').concat(rate.toFixed(2), '</span></label><input id="vRate" type="range" min="0.6" max="1.6" step="0.02" value="').concat(rate, '"></div>\n    <div class="field"><label class="label" for="vPitch">Tono \xB7 <span id="vPitchV">').concat(pitch.toFixed(2), '</span> <small style="text-transform:none;letter-spacing:0">(pi\xF9 basso = pi\xF9 grave e deciso)</small></label><input id="vPitch" type="range" min="0.4" max="1.6" step="0.02" value="').concat(pitch, '"></div>\n    <div class="row"><button class="btn primary small" id="vTest" type="button">Prova la voce</button><button class="btn ghost small" id="vReset" type="button">Ripristina</button></div>\n    <div class="field"><label class="label" for="vOwn">Le tue frasi di incitamento (una per riga)</label>\n      <textarea id="vOwn" rows="5" maxlength="3000" placeholder="Forza Marco, non mollare!&#10;Ogni ripetizione ti rende pi\xF9 forte!">').concat(esc(voiceCfg.own || ""), '</textarea></div>\n    <div class="field"><label class="label" for="vOwnStart">Le tue frasi a inizio serie (una per riga)</label>\n      <textarea id="vOwnStart" rows="3" maxlength="1500" placeholder="Si comincia!">').concat(esc(voiceCfg.ownStart || ""), '</textarea></div>\n    <label class="toggle"><input type="checkbox" id="vOnly" ').concat(voiceCfg.onlyOwn ? "checked" : "", '> Usa solo le mie frasi</label>\n    <div class="row"><button class="btn primary" id="vSave" type="button">Salva</button></div>\n    <p class="note" id="vSaved" hidden>Salvato.</p>\n    <div class="section"><div class="label">Altre voci sul telefono</div>\n      <p class="meta"><b>iPhone:</b> Impostazioni \u203A Accessibilit\xE0 \u203A Contenuti letti \u203A Voci \u203A la tua lingua. Scarica una voce, per esempio una "Avanzata", poi riapri l\'app e sceglila qui.</p>\n      <p class="meta"><b>Android:</b> Impostazioni \u203A Sistema \u203A Lingue \u203A Output sintesi vocale. Con "Sintesi vocale di Google" scegli la tua lingua e scarica le voci, poi riapri l\'app.</p>\n    </div>\n  </div>');
   const read = () => ({ voice: $("vVoice").value, rate: +$("vRate").value, pitch: +$("vPitch").value, own: $("vOwn").value, ownStart: $("vOwnStart").value, onlyOwn: $("vOnly").checked });
   $("vRate").oninput = (e) => $("vRateV").textContent = (+e.target.value).toFixed(2);
@@ -3888,7 +3897,7 @@ function renderVoice() {
 const S = {};
 const vid = $("vid"), cv = $("cv"), ctx = cv.getContext("2d");
 async function startSession(mode, file) {
-  var _a;
+  var _a2;
   say("", { urgent: true });
   Object.assign(S, {
     mode,
@@ -3921,7 +3930,7 @@ async function startSession(mode, file) {
   $("flip").hidden = mode !== "live";
   $("stage").classList.toggle("mirror", mode === "live");
   try {
-    S.wake = await ((_a = navigator.wakeLock) == null ? void 0 : _a.request("screen"));
+    S.wake = await ((_a2 = navigator.wakeLock) == null ? void 0 : _a2.request("screen"));
   } catch (e) {
   }
   try {
@@ -4048,7 +4057,7 @@ function tickTimer() {
   } else $("hudTimer").textContent = fmt(secs);
 }
 function process(res, ts) {
-  var _a;
+  var _a2;
   const w = vid.videoWidth, h = vid.videoHeight;
   if (cv.width !== w || cv.height !== h) {
     cv.width = w;
@@ -4056,7 +4065,7 @@ function process(res, ts) {
   }
   aspect = w / h || aspect;
   ctx.clearRect(0, 0, w, h);
-  const lm = (_a = res == null ? void 0 : res.landmarks) == null ? void 0 : _a[0];
+  const lm = (_a2 = res == null ? void 0 : res.landmarks) == null ? void 0 : _a2[0];
   if (!lm) {
     setBanner("Non ti vedo: entra nell'inquadratura", "warn");
     $("meterFill").style.height = "0%";
@@ -4117,14 +4126,14 @@ function process(res, ts) {
 }
 const BONES = [[11, 12], [11, 13], [13, 15], [12, 14], [14, 16], [11, 23], [12, 24], [23, 24], [23, 25], [25, 27], [24, 26], [26, 28], [27, 31], [28, 32]];
 function drawSkeleton(lm, kind) {
-  var _a, _b, _c;
+  var _a2, _b2, _c2;
   const w = cv.width, h = cv.height;
   const col = kind === "bad" ? "#e2603f" : kind === "warn" ? "#e8b23a" : "#7cbf62";
   ctx.lineWidth = Math.max(3, w / 160);
   ctx.lineCap = "round";
   ctx.strokeStyle = col;
   for (const [a, b] of BONES) {
-    if (((_a = lm[a].visibility) != null ? _a : 1) < 0.4 || ((_b = lm[b].visibility) != null ? _b : 1) < 0.4) continue;
+    if (((_a2 = lm[a].visibility) != null ? _a2 : 1) < 0.4 || ((_b2 = lm[b].visibility) != null ? _b2 : 1) < 0.4) continue;
     ctx.beginPath();
     ctx.moveTo(lm[a].x * w, lm[a].y * h);
     ctx.lineTo(lm[b].x * w, lm[b].y * h);
@@ -4132,7 +4141,7 @@ function drawSkeleton(lm, kind) {
   }
   ctx.fillStyle = "#f2efe0";
   for (const i of [0, 11, 12, 13, 14, 15, 16, 23, 24, 25, 26, 27, 28]) {
-    if (((_c = lm[i].visibility) != null ? _c : 1) < 0.4) continue;
+    if (((_c2 = lm[i].visibility) != null ? _c2 : 1) < 0.4) continue;
     ctx.beginPath();
     ctx.arc(lm[i].x * w, lm[i].y * h, Math.max(4, w / 110), 0, Math.PI * 2);
     ctx.fill();
@@ -4214,12 +4223,12 @@ function finish(all) {
   go({ name: "summary", result: { title: S.title, secs, log, faults: S.faults, newRecord, points: (route.carryPts || 0) + (S.points || 0), promoted: S.promoted } });
 }
 function closeSession() {
-  var _a, _b;
+  var _a2, _b2;
   S.running = false;
   clearInterval(CH.wd);
   clearInterval(S.restTimer);
   if (!S.challenge) try {
-    (_a = S.stream) == null ? void 0 : _a.getTracks().forEach((t) => t.stop());
+    (_a2 = S.stream) == null ? void 0 : _a2.getTracks().forEach((t) => t.stop());
   } catch (e) {
   }
   S.stream = null;
@@ -4231,7 +4240,7 @@ function closeSession() {
   vid.removeAttribute("src");
   vid.srcObject = null;
   try {
-    (_b = S.wake) == null ? void 0 : _b.release();
+    (_b2 = S.wake) == null ? void 0 : _b2.release();
   } catch (e) {
   }
   $("session").hidden = true;
@@ -4370,7 +4379,7 @@ function lbInit() {
   if (!FIREBASE_CONFIG || !SITE) return Promise.resolve(false);
   if (LB.init) return LB.init;
   LB.init = (async () => {
-    var _a, _b;
+    var _a2, _b2;
     const base = "https://www.gstatic.com/firebasejs/".concat(FB_V, "/");
     const [fbApp, fbAuth, fs] = await Promise.all([import(base + "firebase-app.js"), import(base + "firebase-auth.js"), import(base + "firebase-firestore.js")]);
     const fApp = fbApp.initializeApp(FIREBASE_CONFIG);
@@ -4380,7 +4389,7 @@ function lbInit() {
     try {
       const snap = await fs.getDoc(fs.doc(LB.db, "lb", monthKey(), "players", LB.uid));
       LB.sent = snap.exists() ? snap.data().pts : null;
-      if (snap.exists()) LB.lastSync = ((_b = (_a = snap.data().updated) == null ? void 0 : _a.toMillis) == null ? void 0 : _b.call(_a)) || 0;
+      if (snap.exists()) LB.lastSync = ((_b2 = (_a2 = snap.data().updated) == null ? void 0 : _a2.toMillis) == null ? void 0 : _b2.call(_a2)) || 0;
     } catch (e) {
     }
     await checkElite();
@@ -4413,12 +4422,12 @@ function lbSchedule() {
   LB.timer = setTimeout(lbSync, wait);
 }
 async function lbSync() {
-  var _a;
+  var _a2;
   if (!LB.ready) return;
   rollMonth();
   const pts = stats.month.pts;
   if (LB.sent != null && pts <= LB.sent) return;
-  const capped = Math.min(pts, ((_a = LB.sent) != null ? _a : 0) + 1500);
+  const capped = Math.min(pts, ((_a2 = LB.sent) != null ? _a2 : 0) + 1500);
   const { fs, db } = LB;
   try {
     await fs.setDoc(fs.doc(db, "lb", monthKey(), "players", LB.uid), {
@@ -4449,8 +4458,8 @@ function avatar(n, cls = "") {
 }
 const lbBadge = (r) => rankBadge(Math.min(RANKS.length - 1, Math.max(0, r.rank | 0)), !!r.gold, r.crowns);
 function lbRows(rows, isMe, from = 0) {
-  var _a;
-  const top = Math.max(1, ((_a = rows[0]) == null ? void 0 : _a.pts) || 1);
+  var _a2;
+  const top = Math.max(1, ((_a2 = rows[0]) == null ? void 0 : _a2.pts) || 1);
   return rows.slice(from).map((r, k) => {
     const i = k + from;
     return '<li class="lbx'.concat(isMe(r) ? " me" : "", '" style="--d:').concat(k * 70, 'ms"><span class="pos">').concat(i + 1, "</span>").concat(avatar(r.name), '<span class="who"><b>').concat(esc(r.name || "Atleta"), "</b>").concat(lbBadge(r), '<i class="bar"><i style="width:').concat(Math.max(4, Math.round(r.pts / top * 100)), '%"></i></i></span><span class="pts">').concat(r.pts, "</span></li>");
@@ -4528,9 +4537,9 @@ function saveFriend(c) {
   store.set("friends", friends);
 }
 function friendsBoard(key) {
-  var _a;
+  var _a2;
   const rows = Object.entries(friends).map(([id, f]) => ({ id, name: f.name, rank: f.rank, gold: f.gold, crowns: f.crowns, pts: f.months[key] || 0 }));
-  const mine = key === stats.month.key ? stats.month.pts : ((_a = stats.prev) == null ? void 0 : _a.key) === key ? stats.prev.pts : 0;
+  const mine = key === stats.month.key ? stats.month.pts : ((_a2 = stats.prev) == null ? void 0 : _a2.key) === key ? stats.prev.pts : 0;
   rows.push({ id: meId, name: myName || "Tu", rank: rankIndex(), gold: isElite() && !!stats.gold, crowns: stats.crowns, pts: mine, me: true });
   return rows.sort((a, b) => b.pts - a.pts);
 }
@@ -4623,9 +4632,9 @@ const okCfg = (c) => !!(c && typeof c === "object" && typeof c.ex === "string" &
 const oppRepCap = () => CH.goT ? Math.min(500, Math.floor((performance.now() - CH.goT) / 300) + 3) : 0;
 const newSid = () => Math.random().toString(36).slice(2, 10) + Math.random().toString(36).slice(2, 6);
 function duelSend(msg) {
-  var _a;
+  var _a2;
   try {
-    if ((_a = CH.conn) == null ? void 0 : _a.open) CH.conn.send(msg);
+    if ((_a2 = CH.conn) == null ? void 0 : _a2.open) CH.conn.send(msg);
   } catch (e) {
   }
 }
@@ -4660,6 +4669,21 @@ function playOppAudio() {
 document.addEventListener("pointerdown", () => {
   if (CH.remote) playOppAudio();
 }, true);
+try {
+  (_b = (_a = screen.orientation) == null ? void 0 : _a.lock) == null ? void 0 : _b.call(_a, "portrait").catch(() => {
+  });
+} catch (e) {
+}
+function checkLand() {
+  var _a2;
+  const t = ((_a2 = screen.orientation) == null ? void 0 : _a2.type) || (Math.abs(window.orientation) === 90 ? "landscape" : "portrait");
+  const phone = matchMedia("(pointer: coarse)").matches && Math.min(screen.width, screen.height) < 520;
+  document.documentElement.classList.toggle("land", phone && t.startsWith("landscape"));
+}
+checkLand();
+(_d = (_c = screen.orientation) == null ? void 0 : _c.addEventListener) == null ? void 0 : _d.call(_c, "change", checkLand);
+addEventListener("orientationchange", () => setTimeout(checkLand, 50));
+addEventListener("resize", checkLand);
 document.addEventListener("touchend", () => {
   if (CH.remote) playOppAudio();
 }, true);
@@ -4679,13 +4703,13 @@ function attach(video, stream, muted) {
   });
 }
 function localView() {
-  var _a;
-  const vt = ((_a = CH.stream) == null ? void 0 : _a.getVideoTracks()) || [];
+  var _a2;
+  const vt = ((_a2 = CH.stream) == null ? void 0 : _a2.getVideoTracks()) || [];
   if (!CH.view || CH.view.getVideoTracks()[0] !== vt[0]) CH.view = new MediaStream(vt);
   return CH.view;
 }
 async function recoverCamera() {
-  var _a, _b;
+  var _a2, _b2;
   if (CH.recovering) return;
   CH.recovering = true;
   try {
@@ -4708,9 +4732,9 @@ async function recoverCamera() {
       }
     }
     CH.stream.addTrack(nt);
-    const sender = (_b = (_a = CH.call) == null ? void 0 : _a.peerConnection) == null ? void 0 : _b.getSenders().find((x) => {
-      var _a2;
-      return ((_a2 = x.track) == null ? void 0 : _a2.kind) === "video" || !x.track && x.dtmf == null;
+    const sender = (_b2 = (_a2 = CH.call) == null ? void 0 : _a2.peerConnection) == null ? void 0 : _b2.getSenders().find((x) => {
+      var _a3;
+      return ((_a3 = x.track) == null ? void 0 : _a3.kind) === "video" || !x.track && x.dtmf == null;
     });
     if (sender) await sender.replaceTrack(nt);
     vid.srcObject = localView();
@@ -4726,9 +4750,9 @@ function startCamWatchdog() {
   clearInterval(CH.wd);
   let lastT = -1, stuckSince = 0;
   CH.wd = setInterval(() => {
-    var _a;
+    var _a2;
     if (!S.challenge || !S.running) return clearInterval(CH.wd);
-    const tr2 = (_a = CH.stream) == null ? void 0 : _a.getVideoTracks()[0];
+    const tr2 = (_a2 = CH.stream) == null ? void 0 : _a2.getVideoTracks()[0];
     if (vid.paused) vid.play().catch(() => {
     });
     const ov = $("oppVid");
@@ -4745,21 +4769,21 @@ function startCamWatchdog() {
   }, 1e3);
 }
 function duelReset() {
-  var _a, _b, _c, _d;
+  var _a2, _b2, _c2, _d2;
   try {
-    (_a = CH.call) == null ? void 0 : _a.close();
+    (_a2 = CH.call) == null ? void 0 : _a2.close();
   } catch (e) {
   }
   try {
-    (_b = CH.conn) == null ? void 0 : _b.close();
+    (_b2 = CH.conn) == null ? void 0 : _b2.close();
   } catch (e) {
   }
   try {
-    (_c = CH.peer) == null ? void 0 : _c.destroy();
+    (_c2 = CH.peer) == null ? void 0 : _c2.destroy();
   } catch (e) {
   }
   try {
-    (_d = CH.stream) == null ? void 0 : _d.getTracks().forEach((t) => t.stop());
+    (_d2 = CH.stream) == null ? void 0 : _d2.getTracks().forEach((t) => t.stop());
   } catch (e) {
   }
   try {
@@ -5146,8 +5170,8 @@ async function presenceStart() {
   });
 }
 function showInvite(inv) {
-  var _a;
-  (_a = document.getElementById("inviteToast")) == null ? void 0 : _a.remove();
+  var _a2;
+  (_a2 = document.getElementById("inviteToast")) == null ? void 0 : _a2.remove();
   const d = document.createElement("div");
   d.className = "invite";
   d.id = "inviteToast";
@@ -5277,8 +5301,8 @@ function rwStart() {
   setTimeout(rwTick, 2500);
 }
 function showRndInvite(o) {
-  var _a, _b, _c;
-  (_a = document.getElementById("inviteToast")) == null ? void 0 : _a.remove();
+  var _a2, _b2, _c2;
+  (_a2 = document.getElementById("inviteToast")) == null ? void 0 : _a2.remove();
   const d = document.createElement("div");
   d.className = "invite rnd";
   d.id = "inviteToast";
@@ -5287,10 +5311,10 @@ function showRndInvite(o) {
   document.body.append(d);
   say("Vuoi sfidare ".concat(o.name, "?"), { urgent: true });
   try {
-    (_b = navigator.vibrate) == null ? void 0 : _b.call(navigator, [80, 60, 80]);
+    (_b2 = navigator.vibrate) == null ? void 0 : _b2.call(navigator, [80, 60, 80]);
   } catch (e) {
   }
-  if (document.hidden && rwNotify()) (_c = navigator.serviceWorker) == null ? void 0 : _c.ready.then((r) => r.showNotification("FitQuest", { body: tr("Vuoi sfidare ".concat(o.name, "?")), tag: "fq-rnd", renotify: true, icon: "icons/icon-192.png", badge: "icons/icon-192.png", vibrate: [80, 60, 80] })).catch(() => {
+  if (document.hidden && rwNotify()) (_c2 = navigator.serviceWorker) == null ? void 0 : _c2.ready.then((r) => r.showNotification("FitQuest", { body: tr("Vuoi sfidare ".concat(o.name, "?")), tag: "fq-rnd", renotify: true, icon: "icons/icon-192.png", badge: "icons/icon-192.png", vibrate: [80, 60, 80] })).catch(() => {
   });
   d.querySelector("#invNo").onclick = () => d.remove();
   d.querySelector("#invOk").onclick = () => {
@@ -5303,8 +5327,8 @@ function showRndInvite(o) {
 }
 if ("serviceWorker" in navigator) try {
   navigator.serviceWorker.addEventListener("message", (e) => {
-    var _a;
-    if (((_a = e.data) == null ? void 0 : _a.t) === "fq-focus") rwTick();
+    var _a2;
+    if (((_a2 = e.data) == null ? void 0 : _a2.t) === "fq-focus") rwTick();
   });
 } catch (e) {
 }
@@ -5735,7 +5759,7 @@ function refreshLobby() {
   if (g) g.disabled = !CH.connected || CH.cfg.ok === false || CH.spinning;
 }
 async function startDuelSession() {
-  var _a;
+  var _a2;
   if (S.running) return;
   say("", { urgent: true });
   const f = DUEL_FMT[CH.cfg.fmt];
@@ -5774,7 +5798,7 @@ async function startDuelSession() {
   loadFx(CH.cfg && CH.cfg.ex);
   $("loadingMsg").textContent = "Carico il sistema di visione\u2026";
   try {
-    S.wake = await ((_a = navigator.wakeLock) == null ? void 0 : _a.request("screen"));
+    S.wake = await ((_a2 = navigator.wakeLock) == null ? void 0 : _a2.request("screen"));
   } catch (e) {
   }
   for (const id of ["lobMe", "lobOpp"]) {
@@ -5919,11 +5943,11 @@ function dfxAdd(cls, html, ms) {
   return d;
 }
 function duelFxVs() {
-  var _a;
+  var _a2;
   if (fx.level === "off") return 0;
   dfxAdd("vsfx", '<div class="vs-side me"><b>'.concat(esc(myName || "Tu"), "</b>").concat(myBadge(), '</div><em>VS</em><div class="vs-side op"><b>').concat(esc(CH.oppName || "Amico"), "</b>").concat(CH.oppCard ? rankBadge(Math.min(RANKS.length - 1, Math.max(0, CH.oppCard.rank | 0)), !!CH.oppCard.gold, CH.oppCard.crowns) : "", "</div>"), 2300);
   try {
-    (_a = navigator.vibrate) == null ? void 0 : _a.call(navigator, 60);
+    (_a2 = navigator.vibrate) == null ? void 0 : _a2.call(navigator, 60);
   } catch (e) {
   }
   return 1900;
@@ -5935,11 +5959,11 @@ function duelFxPop() {
   n.classList.add("dpop");
 }
 function duelFxGo() {
-  var _a;
+  var _a2;
   CH.goT = performance.now();
   if (fx.level !== "off") dfxAdd("gofx", "<b>VIA!</b>", 1e3);
   try {
-    (_a = navigator.vibrate) == null ? void 0 : _a.call(navigator, 120);
+    (_a2 = navigator.vibrate) == null ? void 0 : _a2.call(navigator, 120);
   } catch (e) {
   }
 }
