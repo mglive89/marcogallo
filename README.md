@@ -1,6 +1,6 @@
-# Istruttore Recluta
+# FitQuest
 
-Allenamento a corpo libero in stile militare. La fotocamera del telefono segue i movimenti, conta le ripetizioni e corregge la postura a voce, in italiano.
+Allenamento a corpo libero con la fotocamera. La fotocamera del telefono segue i movimenti, conta le ripetizioni e corregge la postura a voce, in 6 lingue.
 
 - Esercizi: squat, piegamenti, addominali, jumping jack, plank
 - Programma di 4 settimane e prova "piegamenti / addominali in 2 minuti"

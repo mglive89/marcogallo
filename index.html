@@ -643,10 +643,10 @@ const ttsLang = () => {
 };
 const I18N_RX = [
   [/≈ (\d+) min · (\d+) esercizi/g, "\u2248 $1 min \xB7 $2 exercises", "\u2248 $1 min \xB7 $2 ejercicios", "\u2248 $1 min \xB7 $2 exercices", "\u2248 $1 Min. \xB7 $2 \xDCbungen", "\u2248 $1 min \xB7 $2 exerc\xEDcios"],
-  [/Ordine del giorno · Settimana (\d+), sessione (\d+)/g, "Orders of the day \xB7 Week $1, session $2", "Orden del d\xEDa \xB7 Semana $1, sesi\xF3n $2", "Ordre du jour \xB7 Semaine $1, s\xE9ance $2", "Tagesbefehl \xB7 Woche $1, Einheit $2", "Ordem do dia \xB7 Semana $1, sess\xE3o $2"],
+  [/Programma di oggi · Settimana (\d+), sessione (\d+)/g, "Today's plan \xB7 Week $1, session $2", "Plan de hoy \xB7 Semana $1, sesi\xF3n $2", "Programme du jour \xB7 Semaine $1, s\xE9ance $2", "Heutiger Plan \xB7 Woche $1, Einheit $2", "Plano de hoje \xB7 Semana $1, sess\xE3o $2"],
   [/Sett\. (\d+)/g, "Wk $1", "Sem. $1", "Sem. $1", "Wo. $1", "Sem. $1"],
   [/(\d+) rip\./g, "$1 reps", "$1 rep.", "$1 r\xE9p.", "$1 Wdh.", "$1 rep."],
-  [/Si sblocca al grado (.+?) \((\d+) punti\)/g, "Unlocks at the rank of $1 ($2 points)", "Se desbloquea con el grado $1 ($2 puntos)", "Se d\xE9bloque au grade $1 ($2 points)", "Wird ab Rang $1 freigeschaltet ($2 Punkte)", "Desbloqueia na patente $1 ($2 pontos)"],
+  [/Si sblocca al livello (.+?) \((\d+) punti\)/g, "Unlocks at level $1 ($2 points)", "Se desbloquea en el nivel $1 ($2 puntos)", "Se d\xE9bloque au niveau $1 ($2 points)", "Wird ab Level $1 freigeschaltet ($2 Punkte)", "Desbloqueia no n\xEDvel $1 ($2 pontos)"],
   [/Serie (\d+) di (\d+)/g, "Set $1 of $2", "Serie $1 de $2", "S\xE9rie $1 sur $2", "Satz $1 von $2", "S\xE9rie $1 de $2"],
   [/^di (\d+)( s)?$/g, "of $1$2", "de $1$2", "sur $1$2", "von $1$2", "de $1$2"],
   [/(\d+) serie in tutto · si parte con /g, "$1 sets in total \xB7 starting with ", "$1 series en total \xB7 empezamos con ", "$1 s\xE9ries au total \xB7 on commence par ", "$1 S\xE4tze insgesamt \xB7 wir starten mit ", "$1 s\xE9ries no total \xB7 come\xE7amos com "],
@@ -657,12 +657,12 @@ const I18N_RX = [
   [/\((\d+) volte\)/g, "($1 times)", "($1 veces)", "($1 fois)", "($1-mal)", "($1 vezes)"],
   [/ · serie (\d+)/g, " \xB7 set $1", " \xB7 serie $1", " \xB7 s\xE9rie $1", " \xB7 Satz $1", " \xB7 s\xE9rie $1"],
   [/(\d+) punti totali/g, "$1 total points", "$1 puntos totales", "$1 points au total", "$1 Punkte insgesamt", "$1 pontos no total"],
-  [/(\d+) punti al grado /g, "$1 points to ", "$1 puntos para ", "$1 points avant ", "$1 Punkte bis ", "$1 pontos para "],
-  [/(\d+) al grado /g, "$1 to ", "$1 para ", "$1 avant ", "$1 bis ", "$1 para "],
+  [/(\d+) punti al livello /g, "$1 points to ", "$1 puntos para ", "$1 points avant ", "$1 Punkte bis ", "$1 pontos para "],
+  [/(\d+) al livello /g, "$1 to ", "$1 para ", "$1 avant ", "$1 bis ", "$1 para "],
   [/Sei tra i primi 3 di (.+?): queste opzioni restano attive per tutto il mese\./g, "You finished in the top 3 of $1: these options stay active all month.", "Est\xE1s entre los 3 primeros de $1: estas opciones siguen activas todo el mes.", "Tu es dans le top 3 de $1 : ces options restent actives tout le mois.", "Du bist unter den Top 3 von $1: Diese Optionen bleiben den ganzen Monat aktiv.", "Voc\xEA ficou entre os 3 primeiros de $1: estas op\xE7\xF5es ficam ativas o m\xEAs inteiro."],
   [/Nuovo record: (\d+) /g, "New record: $1 ", "Nuevo r\xE9cord: $1 ", "Nouveau record : $1 ", "Neuer Rekord: $1 ", "Novo recorde: $1 "],
   [/^Ha vinto (.+)$/g, "$1 wins", "Gana $1", "$1 a gagn\xE9", "$1 hat gewonnen", "$1 venceu"],
-  [/Ha vinto (.+?)\. Alla prossima, recluta\./g, "$1 wins. Next time, recruit.", "Gana $1. La pr\xF3xima vez, recluta.", "$1 a gagn\xE9. \xC0 la prochaine, recrue.", "$1 hat gewonnen. Beim n\xE4chsten Mal, Rekrut.", "$1 venceu. Fica para a pr\xF3xima, recruta."],
+  [/Ha vinto (.+?)\. Alla prossima!/g, "$1 wins. Next time!", "Gana $1. \xA1A la pr\xF3xima!", "$1 a gagn\xE9. \xC0 la prochaine !", "$1 hat gewonnen. Bis zum n\xE4chsten Mal!", "$1 venceu. At\xE9 a pr\xF3xima!"],
   [/Ti sfido a (.+?) su FitQuest! Codice (\w+)/g, "I challenge you to $1 on FitQuest! Code $2", "\xA1Te reto a $1 en FitQuest! C\xF3digo $2", "Je te d\xE9fie : $1 sur FitQuest ! Code $2", "Ich fordere dich heraus: $1 bei FitQuest! Code $2", "Te desafio para $1 no FitQuest! C\xF3digo $2"],
   [/Per la rivincita aspetta (.+?)\./g, "Wait for $1 to start the rematch.", "Para la revancha espera a $1.", "Pour la revanche, attends $1.", "F\xFCr die Revanche warte auf $1.", "Para a revanche, espere $1."],
   [/Connesso con (.+?)\. Aspetta il via\./g, "Connected with $1. Wait for the start.", "Conectado con $1. Espera la salida.", "Connect\xE9 avec $1. Attends le d\xE9part.", "Verbunden mit $1. Warte auf den Start.", "Conectado com $1. Aguarde a largada."],
@@ -672,7 +672,7 @@ const I18N_RX = [
   [/Vuoi sfidare (.+?)\?/g, "Challenge $1?", "\xBFQuieres retar a $1?", "D\xE9fier $1 ?", "$1 herausfordern?", "Quer desafiar $1?"],
   [/Mi collego a (.+?)…/g, "Connecting to $1\u2026", "Conectando con $1\u2026", "Connexion \xE0 $1\u2026", "Verbinde mit $1\u2026", "Conectando com $1\u2026"],
   [/(.+?) ti supera!/g, "$1 overtakes you!", "\xA1$1 te adelanta!", "$1 te d\xE9passe !", "$1 \xFCberholt dich!", "$1 passou voc\xEA!"],
-  [/Troppo tardi: un'altra recluta ha accettato prima di te, oppure (.+?) ha smesso di cercare\./g, "Too late: another player accepted first, or $1 stopped searching.", "Demasiado tarde: otro jugador acept\xF3 antes, o $1 dej\xF3 de buscar.", "Trop tard : un autre joueur a accept\xE9 avant toi, ou $1 a arr\xEAt\xE9 de chercher.", "Zu sp\xE4t: Jemand anderes hat zuerst angenommen, oder $1 sucht nicht mehr.", "Tarde demais: outro jogador aceitou antes, ou $1 parou de procurar."],
+  [/Troppo tardi: qualcun altro ha accettato prima di te, oppure (.+?) ha smesso di cercare\./g, "Too late: someone else accepted first, or $1 stopped searching.", "Demasiado tarde: otra persona acept\xF3 antes, o $1 dej\xF3 de buscar.", "Trop tard : quelqu'un d'autre a accept\xE9 avant toi, ou $1 a arr\xEAt\xE9 de chercher.", "Zu sp\xE4t: Jemand anderes hat zuerst angenommen, oder $1 sucht nicht mehr.", "Tarde demais: outra pessoa aceitou antes, ou $1 parou de procurar."],
   [/Sfida contro (.+)/g, "Challenge against $1", "Reto contra $1", "D\xE9fi contre $1", "Duell gegen $1", "Desafio contra $1"],
   [/Serie salvate: (.*)\. Registra la prossima\./g, "Sets saved: $1. Record the next one.", "Series guardadas: $1. Graba la siguiente.", "S\xE9ries enregistr\xE9es : $1. Filme la suivante.", "Gespeicherte S\xE4tze: $1. Nimm den n\xE4chsten auf.", "S\xE9ries salvas: $1. Grave a pr\xF3xima."],
   [/Promosso a (.+?)!/g, "Promoted to $1!", "\xA1Ascendido a $1!", "Promu $1 !", "Bef\xF6rdert zum $1!", "Promovido a $1!"],
@@ -752,9 +752,9 @@ const I18N = [
   // --- generale / home
   ["Addestramento a corpo libero", "Bodyweight training", "Entrenamiento con el propio peso", "Entra\xEEnement au poids du corps", "Training mit eigenem K\xF6rpergewicht", "Treino com o peso do corpo"],
   ["Sessioni", "Sessions", "Sesiones", "S\xE9ances", "Einheiten", "Sess\xF5es"],
-  ["Il tuo grado", "Your rank", "Tu grado", "Ton grade", "Dein Rang", "Sua patente"],
+  ["Il tuo livello", "Your level", "Tu nivel", "Ton niveau", "Dein Level", "Seu n\xEDvel"],
   ["punti del mese", "points this month", "puntos del mes", "points du mois", "Punkte im Monat", "pontos do m\xEAs"],
-  ["Grado massimo raggiunto", "Highest rank reached", "Grado m\xE1ximo alcanzado", "Grade maximum atteint", "H\xF6chster Rang erreicht", "Patente m\xE1xima alcan\xE7ada"],
+  ["Livello massimo raggiunto", "Highest level reached", "Nivel m\xE1ximo alcanzado", "Niveau maximum atteint", "H\xF6chstes Level erreicht", "N\xEDvel m\xE1ximo alcan\xE7ado"],
   ["Classifica \u203A", "Leaderboard \u203A", "Clasificaci\xF3n \u203A", "Classement \u203A", "Rangliste \u203A", "Ranking \u203A"],
   ["Recupero 60 s tra le serie. La telecamera conta le ripetizioni e ti corregge a voce.", "60 s rest between sets. The camera counts your reps and corrects you out loud.", "60 s de descanso entre series. La c\xE1mara cuenta las repeticiones y te corrige en voz alta.", "60 s de r\xE9cup\xE9ration entre les s\xE9ries. La cam\xE9ra compte les r\xE9p\xE9titions et te corrige \xE0 voix haute.", "60 s Pause zwischen den S\xE4tzen. Die Kamera z\xE4hlt deine Wiederholungen und korrigiert dich laut.", "60 s de descanso entre as s\xE9ries. A c\xE2mera conta as repeti\xE7\xF5es e corrige voc\xEA em voz alta."],
   ["Inizia la sessione", "Start the session", "Empezar la sesi\xF3n", "Commencer la s\xE9ance", "Einheit starten", "Come\xE7ar a sess\xE3o"],
@@ -774,7 +774,7 @@ const I18N = [
   ["Attiva \xB7 tocca per disattivare", "On \xB7 tap to turn off", "Activada \xB7 toca para desactivar", "Activ\xE9e \xB7 touche pour d\xE9sactiver", "An \xB7 zum Ausschalten tippen", "Ativada \xB7 toque para desativar"],
   ["Disattivata \xB7 tocca per attivare", "Off \xB7 tap to turn on", "Desactivada \xB7 toca para activar", "D\xE9sactiv\xE9e \xB7 touche pour activer", "Aus \xB7 zum Einschalten tippen", "Desativada \xB7 toque para ativar"],
   ["Istruttore vocale (italiano)", "Voice coach", "Instructor por voz", "Coach vocal", "Sprachtrainer", "Instrutor por voz"],
-  ["Voce del sergente: incitamento durante l'esercizio", "Sergeant voice: pushes you during the exercise", "Voz del sargento: te anima durante el ejercicio", "Voix du sergent : te motive pendant l'exercice", "Feldwebel-Stimme: treibt dich w\xE4hrend der \xDCbung an", "Voz do sargento: motiva voc\xEA durante o exerc\xEDcio"],
+  ["Voce del coach: incitamento durante l'esercizio", "Coach voice: pushes you during the exercise", "Voz del coach: te anima durante el ejercicio", "Voix du coach : te motive pendant l'exercice", "Coach-Stimme: feuert dich w\xE4hrend der \xDCbung an", "Voz do coach: te incentiva durante o exerc\xEDcio"],
   ["Personalizza la voce", "Customize the voice", "Personalizar la voz", "Personnaliser la voix", "Stimme anpassen", "Personalizar a voz"],
   ["Il video resta sul tuo telefono: l'analisi della postura avviene nel browser e nessuna immagine viene inviata.", "The video stays on your phone: posture analysis runs in the browser and no images are sent.", "El v\xEDdeo se queda en tu tel\xE9fono: el an\xE1lisis de la postura se hace en el navegador y no se env\xEDa ninguna imagen.", "La vid\xE9o reste sur ton t\xE9l\xE9phone : l'analyse de la posture se fait dans le navigateur et aucune image n'est envoy\xE9e.", "Das Video bleibt auf deinem Handy: Die Haltungsanalyse l\xE4uft im Browser und es werden keine Bilder gesendet.", "O v\xEDdeo fica no seu celular: a an\xE1lise da postura acontece no navegador e nenhuma imagem \xE9 enviada."],
   ["Questo browser non pu\xF2 usare la fotocamera. Su iPhone apri il link con Safari, su Android con Chrome, e aggiorna il telefono se puoi.", "This browser can't use the camera. On iPhone open the link in Safari, on Android in Chrome, and update your phone if you can.", "Este navegador no puede usar la c\xE1mara. En iPhone abre el enlace con Safari, en Android con Chrome, y actualiza el tel\xE9fono si puedes.", "Ce navigateur ne peut pas utiliser la cam\xE9ra. Sur iPhone ouvre le lien avec Safari, sur Android avec Chrome, et mets ton t\xE9l\xE9phone \xE0 jour si possible.", "Dieser Browser kann die Kamera nicht nutzen. \xD6ffne den Link auf dem iPhone mit Safari, auf Android mit Chrome, und aktualisiere dein Handy, wenn m\xF6glich.", "Este navegador n\xE3o consegue usar a c\xE2mera. No iPhone abra o link no Safari, no Android no Chrome, e atualize o celular se puder."],
@@ -782,13 +782,13 @@ const I18N = [
   // --- programma
   ["Forza di base", "Basic strength", "Fuerza b\xE1sica", "Force de base", "Grundkraft", "For\xE7a b\xE1sica"],
   ["Core e resistenza", "Core and endurance", "Core y resistencia", "Gainage et endurance", "Rumpf und Ausdauer", "Core e resist\xEAncia"],
-  ["Circuito da campo", "Field circuit", "Circuito de campo", "Circuit de terrain", "Feldzirkel", "Circuito de campo"],
-  ["Programma Forze Speciali", "Special Forces program", "Programa Fuerzas Especiales", "Programme Forces sp\xE9ciales", "Spezialkr\xE4fte-Programm", "Programa For\xE7as Especiais"],
+  ["Circuito completo", "Full-body circuit", "Circuito completo", "Circuit complet", "Ganzk\xF6rper-Zirkel", "Circuito completo"],
+  ["Programma Avanzato", "Advanced program", "Programa avanzado", "Programme avanc\xE9", "Fortgeschrittenen-Programm", "Programa avan\xE7ado"],
   ["Sessione avanzata con burpee, mountain climber e affondi.", "Advanced session with burpees, mountain climbers and lunges.", "Sesi\xF3n avanzada con burpees, escaladores y zancadas.", "S\xE9ance avanc\xE9e avec burpees, mountain climbers et fentes.", "Fortgeschrittene Einheit mit Burpees, Mountain Climbers und Ausfallschritten.", "Sess\xE3o avan\xE7ada com burpees, escaladores e afundos."],
-  ["Circuito Hell Week", "Hell Week circuit", "Circuito Hell Week", "Circuit Hell Week", "Hell-Week-Zirkel", "Circuito Hell Week"],
+  ["Circuito Estremo", "Extreme circuit", "Circuito extremo", "Circuit extr\xEAme", "Extrem-Zirkel", "Circuito extremo"],
   ["5 giri senza sconti: burpee, piegamenti, squat, mountain climber.", "5 rounds, no mercy: burpees, push-ups, squats, mountain climbers.", "5 rondas sin piedad: burpees, flexiones, sentadillas, escaladores.", "5 tours sans piti\xE9 : burpees, pompes, squats, mountain climbers.", "5 Runden ohne Gnade: Burpees, Liegest\xFCtze, Kniebeugen, Mountain Climbers.", "5 rodadas sem piedade: burpees, flex\xF5es, agachamentos, escaladores."],
-  ["Mimetica d'oro", "Gold camo", "Camuflaje dorado", "Camouflage dor\xE9", "Gold-Tarnmuster", "Camuflagem dourada"],
-  ["Grado dorato accanto al nome in classifica e nelle sfide.", "Gold rank next to your name on the leaderboard and in challenges.", "Grado dorado junto a tu nombre en la clasificaci\xF3n y en los retos.", "Grade dor\xE9 \xE0 c\xF4t\xE9 de ton nom dans le classement et les d\xE9fis.", "Goldener Rang neben deinem Namen in der Rangliste und in Duellen.", "Patente dourada ao lado do seu nome no ranking e nos desafios."],
+  ["Badge d'oro", "Gold badge", "Insignia dorada", "Badge dor\xE9", "Gold-Abzeichen", "Emblema dourado"],
+  ["Livello dorato accanto al nome in classifica e nelle sfide.", "Gold level next to your name on the leaderboard and in challenges.", "Nivel dorado junto a tu nombre en la clasificaci\xF3n y en los retos.", "Niveau dor\xE9 \xE0 c\xF4t\xE9 de ton nom dans le classement et les d\xE9fis.", "Goldenes Level neben deinem Namen in der Rangliste und in Duellen.", "N\xEDvel dourado ao lado do seu nome na classifica\xE7\xE3o e nos desafios."],
   // --- esercizi
   ["Squat", "Squats", "Sentadillas", "Squats", "Kniebeugen", "Agachamentos"],
   ["Piegamenti", "Push-ups", "Flexiones", "Pompes", "Liegest\xFCtze", "Flex\xF5es"],
@@ -802,12 +802,12 @@ const I18N = [
   ["Burpee", "Burpees", "Burpees", "Burpees", "Burpees", "Burpees"],
   ["Gambe e glutei", "Legs and glutes", "Piernas y gl\xFAteos", "Jambes et fessiers", "Beine und Po", "Pernas e gl\xFAteos"],
   ["Petto, spalle, tricipiti", "Chest, shoulders, triceps", "Pecho, hombros, tr\xEDceps", "Pectoraux, \xE9paules, triceps", "Brust, Schultern, Trizeps", "Peito, ombros, tr\xEDceps"],
-  ["Sit-up da prova militare", "Military-test sit-ups", "Abdominales de prueba militar", "Abdos d'\xE9preuve militaire", "Sit-ups wie im Milit\xE4rtest", "Abdominais de prova militar"],
+  ["Sit-up completi", "Full sit-ups", "Abdominales completos", "Abdos complets", "Komplette Sit-ups", "Abdominais completos"],
   ["Riscaldamento e cardio", "Warm-up and cardio", "Calentamiento y cardio", "\xC9chauffement et cardio", "Aufw\xE4rmen und Cardio", "Aquecimento e cardio"],
   ["Tenuta del core", "Core hold", "Resistencia del core", "Gainage du tronc", "Rumpfspannung", "Resist\xEAncia do core"],
   ["Gambe, equilibrio", "Legs, balance", "Piernas, equilibrio", "Jambes, \xE9quilibre", "Beine, Gleichgewicht", "Pernas, equil\xEDbrio"],
   ["Core e cardio", "Core and cardio", "Core y cardio", "Gainage et cardio", "Rumpf und Cardio", "Core e cardio"],
-  ["Il re dell'addestramento", "The king of drills", "El rey del entrenamiento", "Le roi de l'entra\xEEnement", "Der K\xF6nig des Drills", "O rei do treinamento"],
+  ["L'esercizio pi\xF9 completo", "The most complete exercise", "El ejercicio m\xE1s completo", "L'exercice le plus complet", "Die kompletteste \xDCbung", "O exerc\xEDcio mais completo"],
   ["Telefono a terra, di lato, a circa 2\u20133 metri. Devi vedere testa e piedi.", "Phone on the floor, to your side, about 2\u20133 metres away. Your head and feet must be in view.", "Tel\xE9fono en el suelo, de lado, a unos 2\u20133 metros. Se te deben ver la cabeza y los pies.", "T\xE9l\xE9phone au sol, de c\xF4t\xE9, \xE0 environ 2\u20133 m\xE8tres. On doit voir ta t\xEAte et tes pieds.", "Handy auf dem Boden, seitlich, etwa 2\u20133 Meter entfernt. Kopf und F\xFC\xDFe m\xFCssen zu sehen sein.", "Celular no ch\xE3o, de lado, a uns 2\u20133 metros. Sua cabe\xE7a e seus p\xE9s precisam aparecer."],
   ["Telefono a terra, di lato, a circa 2 metri, all'altezza del pavimento.", "Phone on the floor, to your side, about 2 metres away, at floor level.", "Tel\xE9fono en el suelo, de lado, a unos 2 metros, a ras de suelo.", "T\xE9l\xE9phone au sol, de c\xF4t\xE9, \xE0 environ 2 m\xE8tres, au ras du sol.", "Handy auf dem Boden, seitlich, etwa 2 Meter entfernt, auf Bodenh\xF6he.", "Celular no ch\xE3o, de lado, a uns 2 metros, na altura do piso."],
   ["Telefono a terra, di lato, a circa 2 metri. Devi vedere spalle, bacino e ginocchia.", "Phone on the floor, to your side, about 2 metres away. Shoulders, hips and knees must be in view.", "Tel\xE9fono en el suelo, de lado, a unos 2 metros. Se te deben ver hombros, cadera y rodillas.", "T\xE9l\xE9phone au sol, de c\xF4t\xE9, \xE0 environ 2 m\xE8tres. On doit voir \xE9paules, bassin et genoux.", "Handy auf dem Boden, seitlich, etwa 2 Meter entfernt. Schultern, H\xFCfte und Knie m\xFCssen zu sehen sein.", "Celular no ch\xE3o, de lado, a uns 2 metros. Ombros, quadril e joelhos precisam aparecer."],
@@ -940,7 +940,7 @@ const I18N = [
   ["Torna al programma", "Back to the program", "Volver al programa", "Retour au programme", "Zur\xFCck zum Programm", "Voltar ao programa"],
   ["Serie completata. Recupero.", "Set complete. Rest.", "Serie completada. Descanso.", "S\xE9rie termin\xE9e. R\xE9cup\xE9ration.", "Satz geschafft. Pause.", "S\xE9rie conclu\xEDda. Descanso."],
   ["Dieci secondi. Preparati.", "Ten seconds. Get ready.", "Diez segundos. Prep\xE1rate.", "Dix secondes. Pr\xE9pare-toi.", "Zehn Sekunden. Mach dich bereit.", "Dez segundos. Prepare-se."],
-  ["Sessione terminata. Ottimo lavoro, recluta.", "Session complete. Great work, recruit.", "Sesi\xF3n terminada. Buen trabajo, recluta.", "S\xE9ance termin\xE9e. Excellent travail, recrue.", "Einheit beendet. Starke Arbeit, Rekrut.", "Sess\xE3o conclu\xEDda. \xD3timo trabalho, recruta."],
+  ["Sessione terminata. Ottimo lavoro!", "Session complete. Great work!", "Sesi\xF3n terminada. \xA1Buen trabajo!", "S\xE9ance termin\xE9e. Excellent travail !", "Einheit beendet. Starke Arbeit!", "Sess\xE3o conclu\xEDda. \xD3timo trabalho!"],
   ["Serie registrata.", "Set recorded.", "Serie registrada.", "S\xE9rie enregistr\xE9e.", "Satz gespeichert.", "S\xE9rie registrada."],
   ["Massimo in due minuti", "As many as you can in two minutes", "El m\xE1ximo en dos minutos", "Le maximum en deux minutes", "So viele wie m\xF6glich in zwei Minuten", "O m\xE1ximo em dois minutos"],
   ["Ancora tre!", "Three more!", "\xA1Tres m\xE1s!", "Encore trois !", "Noch drei!", "Mais tr\xEAs!"],
@@ -948,8 +948,8 @@ const I18N = [
   ["Tre", "Three", "Tres", "Trois", "Drei", "Tr\xEAs"],
   ["Due", "Two", "Dos", "Deux", "Zwei", "Dois"],
   ["Uno", "One", "Uno", "Un", "Eins", "Um"],
-  // --- sergente
-  ["Forza soldato, fammi vedere cosa sai fare!", "Come on soldier, show me what you've got!", "\xA1Vamos soldado, ens\xE9\xF1ame de qu\xE9 eres capaz!", "Allez soldat, montre-moi ce que tu vaux !", "Los, Soldat, zeig mir, was du kannst!", "Vamos, soldado, mostre do que \xE9 capaz!"],
+  // --- coach
+  ["Forza, fammi vedere cosa sai fare!", "Come on, show me what you've got!", "\xA1Vamos, ens\xE9\xF1ame de qu\xE9 eres capaz!", "Allez, montre-moi ce que tu vaux !", "Los, zeig mir, was du kannst!", "Vamos, mostre do que voc\xEA \xE9 capaz!"],
   ["Testa alta, petto in fuori. Si comincia!", "Head up, chest out. Here we go!", "Cabeza alta, pecho fuera. \xA1Empezamos!", "T\xEAte haute, poitrine en avant. C'est parti !", "Kopf hoch, Brust raus. Es geht los!", "Cabe\xE7a erguida, peito para fora. Vamos come\xE7ar!"],
   ["Nessuna scusa oggi. Via!", "No excuses today. Go!", "Hoy no hay excusas. \xA1Ya!", "Pas d'excuses aujourd'hui. Go !", "Keine Ausreden heute. Los!", "Sem desculpas hoje. J\xE1!"],
   ["Concentrato. Ogni ripetizione conta!", "Focus. Every rep counts!", "Concentrado. \xA1Cada repetici\xF3n cuenta!", "Concentr\xE9. Chaque r\xE9p\xE9tition compte !", "Konzentration. Jede Wiederholung z\xE4hlt!", "Concentrado. Cada repeti\xE7\xE3o conta!"],
@@ -959,7 +959,7 @@ const I18N = [
   ["Questo \xE8 il ritmo giusto!", "That's the right pace!", "\xA1Ese es el ritmo!", "C'est le bon rythme !", "Genau das richtige Tempo!", "Esse \xE9 o ritmo certo!"],
   ["Sei pi\xF9 forte di quanto pensi!", "You're stronger than you think!", "\xA1Eres m\xE1s fuerte de lo que crees!", "Tu es plus fort que tu ne le crois !", "Du bist st\xE4rker, als du denkst!", "Voc\xEA \xE9 mais forte do que pensa!"],
   ["Il dolore passa, l'orgoglio resta!", "Pain fades, pride stays!", "\xA1El dolor pasa, el orgullo queda!", "La douleur passe, la fiert\xE9 reste !", "Der Schmerz vergeht, der Stolz bleibt!", "A dor passa, o orgulho fica!"],
-  ["Spingi, soldato!", "Push, soldier!", "\xA1Empuja, soldado!", "Pousse, soldat !", "Dr\xFCck, Soldat!", "For\xE7a, soldado!"],
+  ["Spingi forte!", "Push hard!", "\xA1Empuja fuerte!", "Pousse fort !", "Dr\xFCck kr\xE4ftig!", "For\xE7a total!"],
   ["Ottima forma, avanti!", "Great form, keep going!", "\xA1Muy buena t\xE9cnica, adelante!", "Excellente forme, continue !", "Saubere Technik, weiter!", "\xD3tima execu\xE7\xE3o, em frente!"],
   ["Met\xE0 fatta! Adesso viene il bello!", "Halfway there! Now the fun starts!", "\xA1Mitad hecha! \xA1Ahora viene lo bueno!", "La moiti\xE9 ! Maintenant le meilleur arrive !", "Halbzeit! Jetzt wird's spannend!", "Metade feita! Agora vem a parte boa!"],
   ["Sei a met\xE0 strada. Non mollare!", "You're halfway. Don't give up!", "Vas por la mitad. \xA1No te rindas!", "Tu es \xE0 mi-chemin. Ne l\xE2che rien !", "Du hast die H\xE4lfte. Nicht aufgeben!", "Voc\xEA est\xE1 na metade. N\xE3o desista!"],
@@ -978,9 +978,9 @@ const I18N = [
   ["Il corpo vuole fermarsi, la testa no!", "Your body wants to stop, your mind doesn't!", "\xA1El cuerpo quiere parar, la cabeza no!", "Le corps veut s'arr\xEAter, la t\xEAte non !", "Der K\xF6rper will aufh\xF6ren, der Kopf nicht!", "O corpo quer parar, a cabe\xE7a n\xE3o!"],
   ["Respira. Resisti!", "Breathe. Hold on!", "Respira. \xA1Resiste!", "Respire. R\xE9siste !", "Atme. Halte durch!", "Respire. Resista!"],
   ["Ultimi secondi! Tieni duro!", "Last seconds! Hang in there!", "\xA1\xDAltimos segundos! \xA1Aguanta!", "Derni\xE8res secondes ! Tiens bon !", "Letzte Sekunden! Halte durch!", "\xDAltimos segundos! Aguente firme!"],
-  ["Serie completata! Ottimo lavoro, soldato!", "Set complete! Great work, soldier!", "\xA1Serie completada! \xA1Buen trabajo, soldado!", "S\xE9rie termin\xE9e ! Excellent travail, soldat !", "Satz geschafft! Starke Arbeit, Soldat!", "S\xE9rie conclu\xEDda! \xD3timo trabalho, soldado!"],
+  ["Serie completata! Ottimo lavoro!", "Set complete! Great work!", "\xA1Serie completada! \xA1Buen trabajo!", "S\xE9rie termin\xE9e ! Excellent travail !", "Satz geschafft! Starke Arbeit!", "S\xE9rie conclu\xEDda! \xD3timo trabalho!"],
   ["Questo \xE8 lo spirito! Serie chiusa!", "That's the spirit! Set done!", "\xA1Ese es el esp\xEDritu! \xA1Serie cerrada!", "Voil\xE0 l'esprit ! S\xE9rie boucl\xE9e !", "So ist's richtig! Satz erledigt!", "Esse \xE9 o esp\xEDrito! S\xE9rie fechada!"],
-  ["Bravo! Un passo pi\xF9 vicino al prossimo grado!", "Well done! One step closer to the next rank!", "\xA1Bien! \xA1Un paso m\xE1s cerca del pr\xF3ximo grado!", "Bravo ! Un pas de plus vers le prochain grade !", "Gut gemacht! Ein Schritt n\xE4her am n\xE4chsten Rang!", "Muito bem! Um passo mais perto da pr\xF3xima patente!"],
+  ["Bravo! Un passo pi\xF9 vicino al prossimo livello!", "Well done! One step closer to the next level!", "\xA1Bien! \xA1Un paso m\xE1s cerca del pr\xF3ximo nivel!", "Bravo ! Un pas de plus vers le prochain niveau !", "Gut gemacht! Ein Schritt n\xE4her am n\xE4chsten Level!", "Muito bem! Um passo mais perto do pr\xF3ximo n\xEDvel!"],
   ["Respira. Recupera. Tra poco si riparte.", "Breathe. Recover. We go again soon.", "Respira. Recupera. Enseguida seguimos.", "Respire. R\xE9cup\xE8re. On repart bient\xF4t.", "Atme. Erhol dich. Gleich geht's weiter.", "Respire. Recupere. Logo recome\xE7amos."],
   ["Bevi un sorso d'acqua. Il prossimo giro \xE8 tuo.", "Have a sip of water. The next round is yours.", "Bebe un sorbo de agua. La pr\xF3xima ronda es tuya.", "Bois une gorg\xE9e d'eau. Le prochain tour est \xE0 toi.", "Trink einen Schluck Wasser. Die n\xE4chste Runde geh\xF6rt dir.", "Beba um gole de \xE1gua. A pr\xF3xima rodada \xE9 sua."],
   ["Trenta secondi! Accelera!", "Thirty seconds! Speed up!", "\xA1Treinta segundos! \xA1Acelera!", "Trente secondes ! Acc\xE9l\xE8re !", "Drei\xDFig Sekunden! Gib Gas!", "Trinta segundos! Acelere!"],
@@ -989,20 +989,21 @@ const I18N = [
   ["Stai vincendo, chiudi la partita!", "You're winning, finish it off!", "\xA1Vas ganando, cierra el reto!", "Tu gagnes, termine le travail !", "Du gewinnst, bring es zu Ende!", "Voc\xEA est\xE1 vencendo, feche a partida!"],
   ["Ti sta superando! Reagisci!", "They're overtaking you! Fight back!", "\xA1Te est\xE1 adelantando! \xA1Reacciona!", "Il te d\xE9passe ! R\xE9agis !", "Du wirst \xFCberholt! Wehr dich!", "Est\xE3o passando voc\xEA! Reaja!"],
   ["Sei indietro! Adesso o mai pi\xF9!", "You're behind! Now or never!", "\xA1Vas por detr\xE1s! \xA1Ahora o nunca!", "Tu es derri\xE8re ! C'est maintenant ou jamais !", "Du liegst hinten! Jetzt oder nie!", "Voc\xEA est\xE1 atr\xE1s! Agora ou nunca!"],
-  ["Agli ordini! Da adesso ti tengo sotto pressione.", "Yes sir! From now on I'll keep the pressure on.", "\xA1A la orden! A partir de ahora te aprieto.", "\xC0 vos ordres ! D\xE9sormais je te mets la pression.", "Zu Befehl! Ab jetzt mache ich dir Druck.", "\xC0s ordens! A partir de agora vou pegar no seu p\xE9."],
-  ["Dieci! Non fermarti adesso, soldato!", "Ten! Don't stop now, soldier!", "\xA1Diez! \xA1No te pares ahora, soldado!", "Dix ! Ne t'arr\xEAte pas maintenant, soldat !", "Zehn! H\xF6r jetzt nicht auf, Soldat!", "Dez! N\xE3o pare agora, soldado!"],
+  ["Ci sono! Da adesso ti sprono io.", "I'm on it! From now on I'll keep you going.", "\xA1Aqu\xED estoy! A partir de ahora te animo yo.", "C'est parti ! D\xE9sormais je te motive.", "Bin dabei! Ab jetzt feuere ich dich an.", "Estou aqui! A partir de agora eu te incentivo."],
+  ["Dieci! Non fermarti adesso!", "Ten! Don't stop now!", "\xA1Diez! \xA1No te pares ahora!", "Dix ! Ne t'arr\xEAte pas maintenant !", "Zehn! H\xF6r jetzt nicht auf!", "Dez! N\xE3o pare agora!"],
   ["Dieci!", "Ten!", "\xA1Diez!", "Dix !", "Zehn!", "Dez!"],
   // --- gradi
-  ["Recluta", "Recruit", "Recluta", "Recrue", "Rekrut", "Recruta"],
-  ["Soldato", "Private", "Soldado", "Soldat", "Soldat", "Soldado"],
-  ["Caporal maggiore", "Senior Corporal", "Cabo primero", "Caporal-chef", "Obergefreiter", "Primeiro-cabo"],
-  ["Caporale", "Corporal", "Cabo", "Caporal", "Gefreiter", "Cabo"],
-  ["Sergente maggiore", "Staff Sergeant", "Sargento primero", "Sergent-chef", "Feldwebel", "Primeiro-sargento"],
-  ["Sergente", "Sergeant", "Sargento", "Sergent", "Unteroffizier", "Sargento"],
-  ["Maresciallo", "Warrant Officer", "Brigada", "Adjudant", "Hauptfeldwebel", "Subtenente"],
-  ["Sottotenente", "Second Lieutenant", "Alf\xE9rez", "Sous-lieutenant", "Leutnant", "Segundo-tenente"],
-  ["Tenente", "Lieutenant", "Teniente", "Lieutenant", "Oberleutnant", "Tenente"],
-  ["Capitano", "Captain", "Capit\xE1n", "Capitaine", "Hauptmann", "Capit\xE3o"],
+  ["Principiante", "Beginner", "Principiante", "D\xE9butant", "Anf\xE4nger", "Iniciante"],
+  ["Motivato", "Motivated", "Motivado", "Motiv\xE9", "Motiviert", "Motivado"],
+  ["Atleta esperto", "Skilled athlete", "Atleta experto", "Athl\xE8te confirm\xE9", "Erfahrener Athlet", "Atleta experiente"],
+  ["Atleta", "Athlete", "Atleta", "Athl\xE8te", "Athlet", "Atleta"],
+  ["Campione", "Champion", "Campe\xF3n", "Champion", "Champion", "Campe\xE3o"],
+  ["Pro", "Pro", "Pro", "Pro", "Profi", "Pro"],
+  ["Fuoriclasse", "Ace", "Crack", "As", "Ass", "Craque"],
+  ["\xC9lite", "Elite", "\xC9lite", "\xC9lite", "Elite", "Elite"],
+  ["Maestro", "Master", "Maestro", "Ma\xEEtre", "Meister", "Mestre"],
+  ["Leggenda", "Legend", "Leyenda", "L\xE9gende", "Legende", "Lenda"],
+  ["Mito", "Icon", "Mito", "Mythe", "Ikone", "Mito"],
   ["Maggiore", "Major", "Comandante", "Commandant", "Major", "Major"],
   // --- classifica
   ["Classifica", "Leaderboard", "Clasificaci\xF3n", "Classement", "Rangliste", "Ranking"],
@@ -1015,7 +1016,7 @@ const I18N = [
   ["Mondiale \xB7 primi 50", "World \xB7 top 50", "Mundial \xB7 primeros 50", "Mondial \xB7 top 50", "Weltweit \xB7 Top 50", "Mundial \xB7 top 50"],
   ["Carico la classifica\u2026", "Loading the leaderboard\u2026", "Cargando la clasificaci\xF3n\u2026", "Chargement du classement\u2026", "Rangliste wird geladen\u2026", "Carregando o ranking\u2026"],
   ["Tu e gli amici che hai sfidato", "You and the friends you've challenged", "T\xFA y los amigos que has retado", "Toi et les amis que tu as d\xE9fi\xE9s", "Du und die Freunde, die du herausgefordert hast", "Voc\xEA e os amigos que desafiou"],
-  ["Sfida un amico: dopo la prima sfida compare qui con il suo grado e i suoi punti.", "Challenge a friend: after your first challenge they show up here with their rank and points.", "Reta a un amigo: tras el primer reto aparecer\xE1 aqu\xED con su grado y sus puntos.", "D\xE9fie un ami : apr\xE8s le premier d\xE9fi, il appara\xEEt ici avec son grade et ses points.", "Fordere einen Freund heraus: Nach dem ersten Duell erscheint er hier mit Rang und Punkten.", "Desafie um amigo: depois do primeiro desafio ele aparece aqui com patente e pontos."],
+  ["Sfida un amico: dopo la prima sfida compare qui con il suo livello e i suoi punti.", "Challenge a friend: after your first challenge they show up here with their level and points.", "Reta a un amigo: tras el primer reto aparece aqu\xED con su nivel y sus puntos.", "D\xE9fie un ami : apr\xE8s le premier d\xE9fi, il appara\xEEt ici avec son niveau et ses points.", "Fordere einen Freund heraus: Nach dem ersten Duell erscheint er hier mit Level und Punkten.", "Desafie um amigo: depois do primeiro desafio ele aparece aqui com o n\xEDvel e os pontos."],
   ["Finch\xE9 la classifica mondiale non \xE8 attiva, il premio va ai primi 3 tra te e gli amici sfidati (servono almeno 4 partecipanti).", "Until the world leaderboard is live, the prize goes to the top 3 among you and the friends you've challenged (at least 4 players needed).", "Mientras la clasificaci\xF3n mundial no est\xE9 activa, el premio es para los 3 primeros entre t\xFA y tus amigos retados (hacen falta al menos 4).", "Tant que le classement mondial n'est pas actif, la r\xE9compense va au top 3 entre toi et tes amis d\xE9fi\xE9s (au moins 4 participants).", "Solange die Weltrangliste nicht aktiv ist, geht der Preis an die Top 3 unter dir und deinen Freunden (mindestens 4 Teilnehmer).", "Enquanto o ranking mundial n\xE3o estiver ativo, o pr\xEAmio vai para os 3 primeiros entre voc\xEA e os amigos desafiados (m\xEDnimo de 4 participantes)."],
   ["Nessuno in classifica questo mese: fai il primo allenamento e conquista il primo posto.", "Nobody on the leaderboard this month: do the first workout and take first place.", "Nadie en la clasificaci\xF3n este mes: haz el primer entrenamiento y ll\xE9vate el primer puesto.", "Personne au classement ce mois-ci : fais le premier entra\xEEnement et prends la premi\xE8re place.", "Diesen Monat steht noch niemand in der Rangliste: Trainiere als Erster und hol dir Platz eins.", "Ningu\xE9m no ranking este m\xEAs: fa\xE7a o primeiro treino e conquiste o primeiro lugar."],
   ["Non riesco a caricare la classifica. Controlla la connessione.", "I can't load the leaderboard. Check your connection.", "No puedo cargar la clasificaci\xF3n. Revisa la conexi\xF3n.", "Je n'arrive pas \xE0 charger le classement. V\xE9rifie ta connexion.", "Die Rangliste l\xE4sst sich nicht laden. Pr\xFCfe die Verbindung.", "N\xE3o consigo carregar o ranking. Verifique a conex\xE3o."],
@@ -1027,7 +1028,7 @@ const I18N = [
   ["Sessione del programma completata", "Program session completed", "Sesi\xF3n del programa completada", "S\xE9ance du programme termin\xE9e", "Programmeinheit abgeschlossen", "Sess\xE3o do programa conclu\xEDda"],
   ["Prova di efficienza completata", "Fitness test completed", "Prueba de aptitud completada", "Test d'aptitude termin\xE9", "Fitnesstest abgeschlossen", "Teste de aptid\xE3o conclu\xEDdo"],
   ["Sfida: vittoria / pareggio / sconfitta", "Challenge: win / draw / loss", "Reto: victoria / empate / derrota", "D\xE9fi : victoire / nul / d\xE9faite", "Duell: Sieg / Unentschieden / Niederlage", "Desafio: vit\xF3ria / empate / derrota"],
-  ["punti al grado", "points to", "puntos para", "points avant", "Punkte bis", "pontos para"],
+  ["punti al livello", "points to", "puntos para", "points avant", "Punkte bis", "pontos para"],
   // --- sfida
   ["Nuova sfida", "New challenge", "Nuevo reto", "Nouveau d\xE9fi", "Neues Duell", "Novo desafio"],
   ["Il tuo nome", "Your name", "Tu nombre", "Ton nom", "Dein Name", "Seu nome"],
@@ -1062,7 +1063,7 @@ const I18N = [
   ["Sfida!", "Challenge!", "\xA1Retar!", "D\xE9fier !", "Herausfordern!", "Desafiar!"],
   ["No, grazie", "No, thanks", "No, gracias", "Non, merci", "Nein, danke", "N\xE3o, obrigado"],
   ["Sei in testa!", "You're ahead!", "\xA1Vas primero!", "Tu m\xE8nes !", "Du f\xFChrst!", "Voc\xEA est\xE1 na frente!"],
-  ["Una recluta", "A recruit", "Un recluta", "Une recrue", "Ein Rekrut", "Um recruta"],
+  ["Un atleta", "An athlete", "Un atleta", "Un athl\xE8te", "Ein Athlet", "Um atleta"],
   ["VIA!", "GO!", "\xA1YA!", "PARTEZ !", "LOS!", "J\xC1!"],
   ["Mi collego alla sfida\u2026", "Joining the challenge\u2026", "Conectando al reto\u2026", "Connexion au d\xE9fi\u2026", "Verbinde mit dem Duell\u2026", "Conectando ao desafio\u2026"],
   ["Sfida non trovata: controlla il codice o chiedi un nuovo link.", "Challenge not found: check the code or ask for a new link.", "Reto no encontrado: revisa el c\xF3digo o pide un enlace nuevo.", "D\xE9fi introuvable : v\xE9rifie le code ou demande un nouveau lien.", "Duell nicht gefunden: Pr\xFCfe den Code oder bitte um einen neuen Link.", "Desafio n\xE3o encontrado: confira o c\xF3digo ou pe\xE7a um novo link."],
@@ -1073,7 +1074,7 @@ const I18N = [
   ["Fine", "Done", "Fin", "Fin", "Ende", "Fim"],
   ["Mi ritiro", "I give up", "Me retiro", "J'abandonne", "Ich gebe auf", "Desisto"],
   ["Il tuo avversario si \xE8 disconnesso", "Your opponent disconnected", "Tu rival se ha desconectado", "Ton adversaire s'est d\xE9connect\xE9", "Dein Gegner hat die Verbindung getrennt", "Seu advers\xE1rio desconectou"],
-  ["Hai vinto! Ottimo lavoro, recluta.", "You won! Great work, recruit.", "\xA1Has ganado! Buen trabajo, recluta.", "Tu as gagn\xE9 ! Excellent travail, recrue.", "Du hast gewonnen! Starke Arbeit, Rekrut.", "Voc\xEA venceu! \xD3timo trabalho, recruta."],
+  ["Hai vinto! Ottimo lavoro!", "You won! Great work!", "\xA1Has ganado! \xA1Buen trabajo!", "Tu as gagn\xE9 ! Excellent travail !", "Du hast gewonnen! Starke Arbeit!", "Voc\xEA venceu! \xD3timo trabalho!"],
   ["Hai vinto!", "You won!", "\xA1Has ganado!", "Tu as gagn\xE9 !", "Du hast gewonnen!", "Voc\xEA venceu!"],
   ["Pareggio!", "It's a draw!", "\xA1Empate!", "Match nul !", "Unentschieden!", "Empate!"],
   ["Pareggio", "Draw", "Empate", "Match nul", "Unentschieden", "Empate"],
@@ -1113,7 +1114,7 @@ const I18N = [
   ['Impostazioni \u203A Sistema \u203A Lingue \u203A Output sintesi vocale. Con "Sintesi vocale di Google" scegli la tua lingua e scarica le voci, poi riapri l\'app.', 'Settings \u203A System \u203A Languages \u203A Text-to-speech output. With "Speech Services by Google" pick your language and download the voices, then reopen the app.', 'Ajustes \u203A Sistema \u203A Idiomas \u203A Salida de texto a voz. Con "Servicios de voz de Google" elige tu idioma y descarga las voces, luego vuelve a abrir la app.', "Param\xE8tres \u203A Syst\xE8me \u203A Langues \u203A Synth\xE8se vocale. Avec \xAB Services vocaux Google \xBB, choisis ta langue et t\xE9l\xE9charge les voix, puis rouvre l'app.", "Einstellungen \u203A System \u203A Sprachen \u203A Sprachausgabe. W\xE4hle bei \u201ESprachdienste von Google\u201C deine Sprache, lade die Stimmen und \xF6ffne die App neu.", 'Configura\xE7\xF5es \u203A Sistema \u203A Idiomas \u203A Sa\xEDda de convers\xE3o de texto em voz. Em "Servi\xE7os de voz do Google" escolha seu idioma e baixe as vozes, depois reabra o app.'],
   ["Forza Marco, non mollare!", "Come on, don't give up!", "\xA1Vamos, no te rindas!", "Allez, ne l\xE2che rien !", "Los, gib nicht auf!", "Vamos, n\xE3o desista!"],
   ["Ogni ripetizione ti rende pi\xF9 forte!", "Every rep makes you stronger!", "\xA1Cada repetici\xF3n te hace m\xE1s fuerte!", "Chaque r\xE9p\xE9tition te rend plus fort !", "Jede Wiederholung macht dich st\xE4rker!", "Cada repeti\xE7\xE3o deixa voc\xEA mais forte!"],
-  ["Si comincia, soldato!", "Let's go, soldier!", "\xA1Empezamos, soldado!", "C'est parti, soldat !", "Los geht's, Soldat!", "Vamos come\xE7ar, soldado!"],
+  ["Si comincia!", "Let's go!", "\xA1Empezamos!", "C'est parti !", "Los geht's!", "Vamos come\xE7ar!"],
   ["Sfida \xB7", "Challenge \xB7", "Reto \xB7", "D\xE9fi \xB7", "Duell \xB7", "Desafio \xB7"],
   ["Oggi", "Today", "Hoy", "Aujourd'hui", "Heute", "Hoje"],
   ["Esercizi", "Exercises", "Ejercicios", "Exercices", "\xDCbungen", "Exerc\xEDcios"],
@@ -1131,7 +1132,7 @@ const I18N = [
   ["tocca per allenarti", "tap to train", "toca para entrenar", "touche pour t'entra\xEEner", "tippe zum Trainieren", "toque para treinar"],
   ["Uomo", "Man", "Hombre", "Homme", "Mann", "Homem"],
   ["Donna", "Woman", "Mujer", "Femme", "Frau", "Mulher"],
-  ["Forza, gambe esplosive, circuito da campo", "Strength, explosive legs, field circuit", "Fuerza, piernas explosivas, circuito de campo", "Force, jambes explosives, circuit de terrain", "Kraft, explosive Beine, Feldzirkel", "For\xE7a, pernas explosivas, circuito de campo"],
+  ["Forza, gambe esplosive, circuito completo", "Strength, explosive legs, full-body circuit", "Fuerza, piernas explosivas, circuito completo", "Force, jambes explosives, circuit complet", "Kraft, explosive Beine, Ganzk\xF6rper-Zirkel", "For\xE7a, pernas explosivas, circuito completo"],
   ["Gambe, glutei, addome e tonificazione", "Legs, glutes, abs and toning", "Piernas, gl\xFAteos, abdomen y tonificaci\xF3n", "Jambes, fessiers, abdos et tonification", "Beine, Po, Bauch und Straffung", "Pernas, gl\xFAteos, abd\xF4men e tonifica\xE7\xE3o"],
   ["Il tuo personal trainer con la fotocamera", "Your personal trainer with the camera", "Tu entrenador personal con la c\xE1mara", "Ton coach personnel avec la cam\xE9ra", "Dein Personal Trainer mit der Kamera", "Seu personal trainer com a c\xE2mera"],
   ["Chi si allena?", "Who's training?", "\xBFQui\xE9n entrena?", "Qui s'entra\xEEne ?", "Wer trainiert?", "Quem vai treinar?"],
@@ -1143,8 +1144,7 @@ const I18N = [
   ["Mettiti in posizione", "Get into position", "Ponte en posici\xF3n", "Mets-toi en position", "Geh in Position", "Fique em posi\xE7\xE3o"],
   ["Pi\xF9 ripetizioni che puoi", "As many reps as you can", "Todas las repeticiones que puedas", "Autant de r\xE9p\xE9titions que possible", "So viele Wiederholungen wie m\xF6glich", "Quantas repeti\xE7\xF5es conseguir"],
   ["Stop! Hai dato tutto.", "Stop! You gave it everything.", "\xA1Para! Lo has dado todo.", "Stop ! Tu as tout donn\xE9.", "Stopp! Du hast alles gegeben.", "Pare! Voc\xEA deu tudo."],
-  ["Alla prossima, recluta.", "Next time, recruit.", "A la pr\xF3xima, recluta.", "\xC0 la prochaine, recrue.", "Bis zum n\xE4chsten Mal, Rekrut.", "At\xE9 a pr\xF3xima, recruta."],
-  ["Non fermarti adesso, soldato!", "Don't stop now, soldier!", "\xA1No te pares ahora, soldado!", "Ne t'arr\xEAte pas maintenant, soldat !", "H\xF6r jetzt nicht auf, Soldat!", "N\xE3o pare agora, soldado!"],
+  ["Alla prossima!", "Next time!", "\xA1A la pr\xF3xima!", "\xC0 la prochaine !", "Bis zum n\xE4chsten Mal!", "At\xE9 a pr\xF3xima!"],
   ["Gambe esplosive", "Explosive legs", "Piernas explosivas", "Jambes explosives", "Explosive Beine", "Pernas explosivas"],
   ["Gambe, glutei e addome", "Legs, glutes and abs", "Piernas, gl\xFAteos y abdomen", "Jambes, fessiers et abdos", "Beine, Po und Bauch", "Pernas, gl\xFAteos e abd\xF4men"],
   ["Tonificazione", "Toning", "Tonificaci\xF3n", "Tonification", "Straffung", "Tonifica\xE7\xE3o"],
@@ -1946,7 +1946,7 @@ const EX = {
   situp: {
     name: "Addominali",
     unit: "reps",
-    tag: "Sit-up da prova militare",
+    tag: "Sit-up completi",
     cam: "Telefono a terra, di lato, a circa 2 metri. Devi vedere spalle, bacino e ginocchia.",
     steps: [
       "Supino, ginocchia piegate a circa 90\xB0, piedi a terra.",
@@ -2015,7 +2015,7 @@ const EX = {
     unit: "reps",
     lock: 4,
     pts: 3,
-    tag: "Il re dell'addestramento",
+    tag: "L'esercizio pi\xF9 completo",
     cam: "Telefono in verticale, di lato, a circa 3 metri. Devi vederti in piedi e a terra.",
     steps: [
       "In piedi, scendi in accosciata e appoggia le mani a terra.",
@@ -2199,7 +2199,7 @@ function session(week, day) {
   const plans = [
     { title: "Forza di base", blocks: [["jacks", 1, P3.jacks], ["pushup", sets, P3.pushup], ["squat", sets, P3.squat], ["plank", 2, P3.plank]] },
     { title: "Gambe esplosive", blocks: [["climber", 3, MAX], ["jumpsquat", 3, MAX], ["boxsquat", 3, MAX], ["revlunge", 3, MAX], ["sidelunge", 3, MAX], ["stepup", 3, MAX]] },
-    { title: "Circuito da campo", blocks: [["jacks", 2, P3.jacks], ["squat", sets, P3.squat + 5], ["situp", sets - 1, P3.situp], ["pushup", sets, P3.pushup + 2]] }
+    { title: "Circuito completo", blocks: [["jacks", 2, P3.jacks], ["squat", sets, P3.squat + 5], ["situp", sets - 1, P3.situp], ["pushup", sets, P3.pushup + 2]] }
   ];
   return plans[day];
 }
@@ -2393,14 +2393,14 @@ function say(text, { urgent = false, minGap = 3200 } = {}) {
 }
 let gritOn = store.get("grit", true);
 const GRIT = {
-  start: ["Forza soldato, fammi vedere cosa sai fare!", "Testa alta, petto in fuori. Si comincia!", "Nessuna scusa oggi. Via!", "Concentrato. Ogni ripetizione conta!"],
-  every5: ["Cos\xEC si fa!", "Bravo, continua!", "Non fermarti adesso!", "Questo \xE8 il ritmo giusto!", "Sei pi\xF9 forte di quanto pensi!", "Il dolore passa, l'orgoglio resta!", "Spingi, soldato!", "Ottima forma, avanti!"],
+  start: ["Forza, fammi vedere cosa sai fare!", "Testa alta, petto in fuori. Si comincia!", "Nessuna scusa oggi. Via!", "Concentrato. Ogni ripetizione conta!"],
+  every5: ["Cos\xEC si fa!", "Bravo, continua!", "Non fermarti adesso!", "Questo \xE8 il ritmo giusto!", "Sei pi\xF9 forte di quanto pensi!", "Il dolore passa, l'orgoglio resta!", "Spingi forte!", "Ottima forma, avanti!"],
   half: ["Met\xE0 fatta! Adesso viene il bello!", "Sei a met\xE0 strada. Non mollare!"],
   last3: ["Ultime tre! Dai tutto!", "Tre alla fine! Stringi i denti!"],
   last: ["Ultima! Tutto quello che hai!", "L'ultima \xE8 la pi\xF9 importante. Spingi!"],
   slow: ["Non mollare! Su!", "Avanti, non ti ho detto di riposare!", "Rialzati e continua!", "Respira e spingi! Ancora una!", "Il traguardo \xE8 vicino, muoviti!", "Chi molla adesso? Non tu!"],
   plank: ["Tieni duro!", "Addome di ferro, non cedere!", "Il corpo vuole fermarsi, la testa no!", "Respira. Resisti!"],
-  done: ["Serie completata! Ottimo lavoro, soldato!", "Questo \xE8 lo spirito! Serie chiusa!", "Bravo! Un passo pi\xF9 vicino al prossimo grado!"],
+  done: ["Serie completata! Ottimo lavoro!", "Questo \xE8 lo spirito! Serie chiusa!", "Bravo! Un passo pi\xF9 vicino al prossimo livello!"],
   rest: ["Respira. Recupera. Tra poco si riparte.", "Bevi un sorso d'acqua. Il prossimo giro \xE8 tuo."],
   t30: ["Trenta secondi! Accelera!"],
   t10: ["Dieci secondi! Tutto quello che hai!"],
@@ -2929,12 +2929,12 @@ function renderHome() {
   const tests = G() === "f" ? ["squat", "crunch"] : ["pushup", "situp"];
   app.innerHTML = '\n  <div class="screen">\n    '.concat((() => {
     const ri = rankIndex(), first = s.blocks[0][0], nsets = s.blocks.reduce((a, b) => a + b[1], 0), mins = Math.max(5, Math.round(nsets * 1.6));
-    return '<section class="hero">\n      <div>\n        <div class="hi">Ciao,</div><h1>'.concat(esc(myName || "Recluta"), '</h1>\n        <div class="chip">').concat(myBadge(), " ").concat(RANKS[ri][0], '</div>\n        <div class="ringwrap"><div class="ring"><svg viewBox="0 0 62 62" aria-hidden="true"><defs><linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7ee29b"/><stop offset="1" stop-color="#6cb8ff"/></linearGradient></defs><circle class="bgc" cx="31" cy="31" r="26"/><circle class="fgc" cx="31" cy="31" r="26" style="stroke-dashoffset:').concat((163.4 * (1 - done / 12)).toFixed(1)).concat(done ? "" : ";stroke-opacity:0", '"/></svg><b>').concat(done, "</b></div><small>Sessioni completate<b>").concat(done, ' / 12</b></small></div>\n      </div>\n      <div class="hero-fig"><div class="figbox charbox" data-fig="jacks" data-g="').concat(G(), '" data-pic></div></div>\n      <div class="hero-cta">\n        <div class="today"><small>Allenamento di oggi</small><b>').concat(esc(s.title), "</b><span>\u2248 ").concat(mins, " min \xB7 ").concat(s.blocks.length, ' esercizi</span></div>\n        <button class="btn primary big" id="startDay" type="button"><span class="play"><svg viewBox="0 0 10 12"><path d="M0 0 10 6 0 12z"/></svg></span>Inizia ora</button>\n      </div>\n      ').concat([12, 26, 41, 57, 70, 83, 93].map((x, i) => '<i class="pt" style="--x:'.concat(x, "%;--d:").concat(5 + i % 3 * 1.6, "s;--w:").concat((i * 0.9).toFixed(1), 's"></i>')).join(""), "\n    </section>");
+    return '<section class="hero">\n      <div>\n        <div class="hi">Ciao,</div><h1>'.concat(esc(myName || "Atleta"), '</h1>\n        <div class="chip">').concat(myBadge(), " ").concat(RANKS[ri][0], '</div>\n        <div class="ringwrap"><div class="ring"><svg viewBox="0 0 62 62" aria-hidden="true"><defs><linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7ee29b"/><stop offset="1" stop-color="#6cb8ff"/></linearGradient></defs><circle class="bgc" cx="31" cy="31" r="26"/><circle class="fgc" cx="31" cy="31" r="26" style="stroke-dashoffset:').concat((163.4 * (1 - done / 12)).toFixed(1)).concat(done ? "" : ";stroke-opacity:0", '"/></svg><b>').concat(done, "</b></div><small>Sessioni completate<b>").concat(done, ' / 12</b></small></div>\n      </div>\n      <div class="hero-fig"><div class="figbox charbox" data-fig="jacks" data-g="').concat(G(), '" data-pic></div></div>\n      <div class="hero-cta">\n        <div class="today"><small>Allenamento di oggi</small><b>').concat(esc(s.title), "</b><span>\u2248 ").concat(mins, " min \xB7 ").concat(s.blocks.length, ' esercizi</span></div>\n        <button class="btn primary big" id="startDay" type="button"><span class="play"><svg viewBox="0 0 10 12"><path d="M0 0 10 6 0 12z"/></svg></span>Inizia ora</button>\n      </div>\n      ').concat([12, 26, 41, 57, 70, 83, 93].map((x, i) => '<i class="pt" style="--x:'.concat(x, "%;--d:").concat(5 + i % 3 * 1.6, "s;--w:").concat((i * 0.9).toFixed(1), 's"></i>')).join(""), "\n    </section>");
   })(), "\n\n    ").concat((() => {
     const ri = rankIndex(), cur = RANKS[ri], nx = RANKS[ri + 1];
     const pct = nx ? Math.round((stats.total - cur[1]) / (nx[1] - cur[1]) * 100) : 100;
-    return '<button class="rankcard" id="openRank" type="button" style="text-align:left;color:inherit">\n      <div><div class="label">Il tuo grado</div><div class="rname">'.concat(myBadge(), " <span>").concat(cur[0], '</span></div></div>\n      <div class="pts">').concat(stats.month.pts, '<small>punti del mese</small></div>\n      <div class="xp"><i style="width:').concat(pct, '%"></i></div>\n      <div class="meta">').concat(nx ? "".concat(nx[1] - stats.total, " punti al grado ").concat(nx[0]) : "Grado massimo raggiunto", " \xB7 Classifica \u203A</div>\n    </button>");
-  })(), '\n\n    <section class="section">\n      <div class="label">Ordine del giorno \xB7 Settimana ').concat(n.wk, ", sessione ").concat(n.d + 1, '</div>\n      <div class="order">\n        <h2>').concat(esc(s.title), '</h2>\n        <div class="circuit">').concat(s.blocks.map(([ex, sets, t]) => '<button class="step" type="button" data-ex="'.concat(ex, '"><div class="figbox" data-fig="').concat(ex, '" data-g="').concat(G(), '"></div><b>').concat(EX[ex].name, "</b><span>").concat(sets, " \xD7 ").concat(targetTxt(ex, t), "</span>").concat(ARROW, "</button>")).join(""), '</div>\n        <p class="restnote">1 minuto di riposo tra ogni serie \xB7 la telecamera conta le ripetizioni e ti corregge a voce</p>\n        <div class="weeks">').concat(weeks, '</div>\n      </div>\n    </section>\n\n    <section class="section">\n      <div class="label">Prova di efficienza fisica</div>\n      <div class="exlist">\n        ').concat(tests.map((id) => {
+    return '<button class="rankcard" id="openRank" type="button" style="text-align:left;color:inherit">\n      <div><div class="label">Il tuo livello</div><div class="rname">'.concat(myBadge(), " <span>").concat(cur[0], '</span></div></div>\n      <div class="pts">').concat(stats.month.pts, '<small>punti del mese</small></div>\n      <div class="xp"><i style="width:').concat(pct, '%"></i></div>\n      <div class="meta">').concat(nx ? "".concat(nx[1] - stats.total, " punti al livello ").concat(nx[0]) : "Livello massimo raggiunto", " \xB7 Classifica \u203A</div>\n    </button>");
+  })(), '\n\n    <section class="section">\n      <div class="label">Programma di oggi \xB7 Settimana ').concat(n.wk, ", sessione ").concat(n.d + 1, '</div>\n      <div class="order">\n        <h2>').concat(esc(s.title), '</h2>\n        <div class="circuit">').concat(s.blocks.map(([ex, sets, t]) => '<button class="step" type="button" data-ex="'.concat(ex, '"><div class="figbox" data-fig="').concat(ex, '" data-g="').concat(G(), '"></div><b>').concat(EX[ex].name, "</b><span>").concat(sets, " \xD7 ").concat(targetTxt(ex, t), "</span>").concat(ARROW, "</button>")).join(""), '</div>\n        <p class="restnote">1 minuto di riposo tra ogni serie \xB7 la telecamera conta le ripetizioni e ti corregge a voce</p>\n        <div class="weeks">').concat(weeks, '</div>\n      </div>\n    </section>\n\n    <section class="section">\n      <div class="label">Prova di efficienza fisica</div>\n      <div class="exlist">\n        ').concat(tests.map((id) => {
     var _a;
     return '<button class="ex wide" data-test="'.concat(id, '" type="button"><div class="figbox" data-fig="').concat(id, '" data-g="').concat(G(), '"></div><span><b>').concat(EX[id].name, " in 2 minuti</b><small>Record: ").concat((_a = records[id]) != null ? _a : "\u2014", '</small></span><span class="go">\u203A</span></button>');
   }).join(""), "\n      </div>\n    </section>\n\n    ").concat(SITE ? '<section class="section">\n      <div class="label">Sfida</div>\n      <button class="mode" id="openDuels" type="button"><span class="ico">'.concat(TAB_ICO.duels, '</span><span><b>Sfida qualcuno in videochiamata</b><small>Avversario casuale, un amico invitato o un codice</small></span><span class="go">\u203A</span></button>\n    </section>') : "", "\n    ").concat(COMPAT_MSG ? '<p class="note" style="background:#fdecea">'.concat(COMPAT_MSG, "</p>") : "", "\n  </div>");
@@ -2954,7 +2954,7 @@ function renderExercises() {
   const list = GENDER_EX[G()];
   app.innerHTML = '\n  <div class="screen">\n    <header class="mast"><div><h1>Esercizi</h1><div class="sub">'.concat(G() === "f" ? "Percorso Donna" : "Percorso Uomo", ' \xB7 tocca per allenarti</div></div></header>\n    <div class="exlist">\n      ').concat(list.map((id) => {
     const e = EX[id];
-    return isUnlocked(id) ? '<button class="ex" data-ex="'.concat(id, '" type="button"><div class="figbox" data-fig="').concat(id, '" data-g="').concat(G(), '"></div><b>').concat(e.name, "</b><small>").concat(e.tag, '</small><span class="go">\u203A</span></button>') : '<div class="ex locked"><div class="figbox" data-fig="'.concat(id, '" data-g="').concat(G(), '"></div><b>').concat(e.name, "</b><small>Si sblocca al grado ").concat(RANKS[e.lock][0], " (").concat(RANKS[e.lock][1], ' punti)</small><span class="go">').concat(lockIco, "</span></div>");
+    return isUnlocked(id) ? '<button class="ex" data-ex="'.concat(id, '" type="button"><div class="figbox" data-fig="').concat(id, '" data-g="').concat(G(), '"></div><b>').concat(e.name, "</b><small>").concat(e.tag, '</small><span class="go">\u203A</span></button>') : '<div class="ex locked"><div class="figbox" data-fig="'.concat(id, '" data-g="').concat(G(), '"></div><b>').concat(e.name, "</b><small>Si sblocca al livello ").concat(RANKS[e.lock][0], " (").concat(RANKS[e.lock][1], ' punti)</small><span class="go">').concat(lockIco, "</span></div>");
   }).join(""), '\n    </div>\n    <section class="section elite">\n      <div class="label">Riservato ai primi 3 del mese</div>\n      <div class="exlist">\n        ').concat(Object.entries(ELITE).map(([id, e]) => {
     const f = id === "gold" ? "jacks" : id === "hell" ? "burpee" : "climber";
     return isElite() ? '<button class="ex wide" data-elite="'.concat(id, '" type="button"><div class="figbox" data-fig="').concat(f, '" data-g="').concat(G(), '"></div><span><b>').concat(e.name, "</b><small>").concat(id === "gold" ? stats.gold ? "Attiva \xB7 tocca per disattivare" : "Disattivata \xB7 tocca per attivare" : e.desc, '</small></span><span class="go">\u203A</span></button>') : '<div class="ex wide locked"><div class="figbox" data-fig="'.concat(f, '" data-g="').concat(G(), '"></div><span><b>').concat(e.name, "</b><small>").concat(e.desc, '</small></span><span class="go">').concat(lockIco, "</span></div>");
@@ -2973,7 +2973,7 @@ function renderExercises() {
   });
 }
 function genderPick(sel) {
-  return '<div class="pick" role="group" aria-label="Percorso">\n    <button class="m" type="button" data-g="m" '.concat(sel === "m" ? 'style="border-color:#2e86de"' : "", '><div class="figbox charbox" data-fig="squat" data-g="m" data-pic></div><b>Uomo</b><small>Forza, gambe esplosive, circuito da campo</small></button>\n    <button class="f" type="button" data-g="f" ').concat(sel === "f" ? 'style="border-color:#b02a91"' : "", '><div class="figbox charbox" data-fig="squat" data-g="f" data-pic></div><b>Donna</b><small>Gambe, glutei, addome e tonificazione</small></button>\n  </div>');
+  return '<div class="pick" role="group" aria-label="Percorso">\n    <button class="m" type="button" data-g="m" '.concat(sel === "m" ? 'style="border-color:#2e86de"' : "", '><div class="figbox charbox" data-fig="squat" data-g="m" data-pic></div><b>Uomo</b><small>Forza, gambe esplosive, circuito completo</small></button>\n    <button class="f" type="button" data-g="f" ').concat(sel === "f" ? 'style="border-color:#b02a91"' : "", '><div class="figbox charbox" data-fig="squat" data-g="f" data-pic></div><b>Donna</b><small>Gambe, glutei, addome e tonificazione</small></button>\n  </div>');
 }
 function setGender(g) {
   gender = g;
@@ -3018,7 +3018,7 @@ function renderOnboard() {
   });
 }
 function renderProfile() {
-  app.innerHTML = '\n  <div class="screen">\n    <header class="mast"><div><h1>Profilo</h1><div class="sub">'.concat(myName ? esc(myName) + " \xB7 " : "").concat(RANKS[rankIndex()][0], '</div></div></header>\n    <div class="section"><div class="label">Percorso</div>').concat(genderPick(G()), '</div>\n    <div class="field"><label class="label" for="nm">Il tuo nome</label><input id="nm" maxlength="20" autocomplete="nickname" placeholder="Es. Marco" value="').concat(esc(myName), '"></div>\n    <div class="field"><label class="label" for="pLang">Lingua</label>\n      <select id="pLang" class="sel">\n        <option value="">Automatica (').concat(LANGS[detectLang()].name, ")</option>\n        ").concat(LANG_ORDER.map((k) => '<option value="'.concat(k, '" ').concat(store.get("lang", "") === k ? "selected" : "", ">").concat(LANGS[k].name, "</option>")).join(""), '\n      </select></div>\n    <div class="section"><div class="label">Voce</div>\n      <label class="toggle"><input type="checkbox" id="voiceT" ').concat(voiceOn ? "checked" : "", '> Istruttore vocale</label>\n      <label class="toggle"><input type="checkbox" id="gritT" ').concat(gritOn ? "checked" : "", '> Voce del sergente: incitamento durante l\'esercizio</label>\n      <button class="btn ghost" id="voiceSet" type="button">Personalizza la voce</button>\n    </div>\n    <button class="btn ghost" id="openStart" type="button">Rivedi la schermata iniziale</button>\n    ').concat(fxSettings(), '\n    <p class="note">Il video resta sul tuo telefono: l\'analisi della postura avviene nel browser e nessuna immagine viene inviata.</p>\n  </div>');
+  app.innerHTML = '\n  <div class="screen">\n    <header class="mast"><div><h1>Profilo</h1><div class="sub">'.concat(myName ? esc(myName) + " \xB7 " : "").concat(RANKS[rankIndex()][0], '</div></div></header>\n    <div class="section"><div class="label">Percorso</div>').concat(genderPick(G()), '</div>\n    <div class="field"><label class="label" for="nm">Il tuo nome</label><input id="nm" maxlength="20" autocomplete="nickname" placeholder="Es. Marco" value="').concat(esc(myName), '"></div>\n    <div class="field"><label class="label" for="pLang">Lingua</label>\n      <select id="pLang" class="sel">\n        <option value="">Automatica (').concat(LANGS[detectLang()].name, ")</option>\n        ").concat(LANG_ORDER.map((k) => '<option value="'.concat(k, '" ').concat(store.get("lang", "") === k ? "selected" : "", ">").concat(LANGS[k].name, "</option>")).join(""), '\n      </select></div>\n    <div class="section"><div class="label">Voce</div>\n      <label class="toggle"><input type="checkbox" id="voiceT" ').concat(voiceOn ? "checked" : "", '> Istruttore vocale</label>\n      <label class="toggle"><input type="checkbox" id="gritT" ').concat(gritOn ? "checked" : "", '> Voce del coach: incitamento durante l\'esercizio</label>\n      <button class="btn ghost" id="voiceSet" type="button">Personalizza la voce</button>\n    </div>\n    <button class="btn ghost" id="openStart" type="button">Rivedi la schermata iniziale</button>\n    ').concat(fxSettings(), '\n    <p class="note">Il video resta sul tuo telefono: l\'analisi della postura avviene nel browser e nessuna immagine viene inviata.</p>\n  </div>');
   fxSettingsWire();
   app.querySelectorAll(".pick > button").forEach((b) => b.onclick = () => {
     setGender(b.dataset.g);
@@ -3054,7 +3054,7 @@ function renderProfile() {
       voiceOn = true;
       store.set("voice", true);
       $("voiceT").checked = true;
-      say("Agli ordini! Da adesso ti tengo sotto pressione.", { urgent: true });
+      say("Ci sono! Da adesso ti sprono io.", { urgent: true });
     }
   };
 }
@@ -3096,7 +3096,7 @@ function renderVoice() {
   var _a, _b;
   const vs = itVoices();
   const rate = (_a = voiceCfg.rate) != null ? _a : gritOn ? 1.12 : 1.08, pitch = (_b = voiceCfg.pitch) != null ? _b : gritOn ? 0.8 : 0.9;
-  app.innerHTML = '\n  <div class="screen brief">\n    <button class="back" id="back" type="button">\u2039 Indietro</button>\n    <div class="section"><div class="label">Impostazioni</div><h2>Voce dell\'istruttore</h2></div>\n    <div class="field"><label class="label" for="vLang">Lingua</label>\n      <select id="vLang" class="sel">\n        <option value="">Automatica ('.concat(LANGS[detectLang()].name, ")</option>\n        ").concat(LANG_ORDER.map((k) => '<option value="'.concat(k, '" ').concat(store.get("lang", "") === k ? "selected" : "", ">").concat(LANGS[k].name, "</option>")).join(""), "\n      </select></div>\n    ").concat(VP.map ? '<label class="toggle"><input type="checkbox" id="vPack" '.concat(store.get("vpack", true) ? "checked" : "", "> Usa la voce registrata</label>") : "", '\n    <div class="field"><label class="label" for="vVoice">Voce</label>\n      <select id="vVoice" class="sel">\n        <option value="">Automatica</option>\n        ').concat(vs.map((v) => '<option data-notr value="'.concat(esc(v.name), '" ').concat(v.name === voiceCfg.voice ? "selected" : "", ">").concat(esc(v.name), "</option>")).join(""), "\n      </select>\n      ").concat(vs.length ? "" : '<p class="note">Il telefono non ha ancora una voce per questa lingua: vedi sotto come aggiungerla.</p>', '\n    </div>\n    <div class="field"><label class="label" for="vRate">Velocit\xE0 \xB7 <span id="vRateV">').concat(rate.toFixed(2), '</span></label><input id="vRate" type="range" min="0.6" max="1.6" step="0.02" value="').concat(rate, '"></div>\n    <div class="field"><label class="label" for="vPitch">Tono \xB7 <span id="vPitchV">').concat(pitch.toFixed(2), '</span> <small style="text-transform:none;letter-spacing:0">(pi\xF9 basso = pi\xF9 grave e deciso)</small></label><input id="vPitch" type="range" min="0.4" max="1.6" step="0.02" value="').concat(pitch, '"></div>\n    <div class="row"><button class="btn primary small" id="vTest" type="button">Prova la voce</button><button class="btn ghost small" id="vReset" type="button">Ripristina</button></div>\n    <div class="field"><label class="label" for="vOwn">Le tue frasi di incitamento (una per riga)</label>\n      <textarea id="vOwn" rows="5" maxlength="3000" placeholder="Forza Marco, non mollare!&#10;Ogni ripetizione ti rende pi\xF9 forte!">').concat(esc(voiceCfg.own || ""), '</textarea></div>\n    <div class="field"><label class="label" for="vOwnStart">Le tue frasi a inizio serie (una per riga)</label>\n      <textarea id="vOwnStart" rows="3" maxlength="1500" placeholder="Si comincia, soldato!">').concat(esc(voiceCfg.ownStart || ""), '</textarea></div>\n    <label class="toggle"><input type="checkbox" id="vOnly" ').concat(voiceCfg.onlyOwn ? "checked" : "", '> Usa solo le mie frasi</label>\n    <div class="row"><button class="btn primary" id="vSave" type="button">Salva</button></div>\n    <p class="note" id="vSaved" hidden>Salvato.</p>\n    <div class="section"><div class="label">Altre voci sul telefono</div>\n      <p class="meta"><b>iPhone:</b> Impostazioni \u203A Accessibilit\xE0 \u203A Contenuti letti \u203A Voci \u203A la tua lingua. Scarica una voce, per esempio una "Avanzata", poi riapri l\'app e sceglila qui.</p>\n      <p class="meta"><b>Android:</b> Impostazioni \u203A Sistema \u203A Lingue \u203A Output sintesi vocale. Con "Sintesi vocale di Google" scegli la tua lingua e scarica le voci, poi riapri l\'app.</p>\n    </div>\n  </div>');
+  app.innerHTML = '\n  <div class="screen brief">\n    <button class="back" id="back" type="button">\u2039 Indietro</button>\n    <div class="section"><div class="label">Impostazioni</div><h2>Voce dell\'istruttore</h2></div>\n    <div class="field"><label class="label" for="vLang">Lingua</label>\n      <select id="vLang" class="sel">\n        <option value="">Automatica ('.concat(LANGS[detectLang()].name, ")</option>\n        ").concat(LANG_ORDER.map((k) => '<option value="'.concat(k, '" ').concat(store.get("lang", "") === k ? "selected" : "", ">").concat(LANGS[k].name, "</option>")).join(""), "\n      </select></div>\n    ").concat(VP.map ? '<label class="toggle"><input type="checkbox" id="vPack" '.concat(store.get("vpack", true) ? "checked" : "", "> Usa la voce registrata</label>") : "", '\n    <div class="field"><label class="label" for="vVoice">Voce</label>\n      <select id="vVoice" class="sel">\n        <option value="">Automatica</option>\n        ').concat(vs.map((v) => '<option data-notr value="'.concat(esc(v.name), '" ').concat(v.name === voiceCfg.voice ? "selected" : "", ">").concat(esc(v.name), "</option>")).join(""), "\n      </select>\n      ").concat(vs.length ? "" : '<p class="note">Il telefono non ha ancora una voce per questa lingua: vedi sotto come aggiungerla.</p>', '\n    </div>\n    <div class="field"><label class="label" for="vRate">Velocit\xE0 \xB7 <span id="vRateV">').concat(rate.toFixed(2), '</span></label><input id="vRate" type="range" min="0.6" max="1.6" step="0.02" value="').concat(rate, '"></div>\n    <div class="field"><label class="label" for="vPitch">Tono \xB7 <span id="vPitchV">').concat(pitch.toFixed(2), '</span> <small style="text-transform:none;letter-spacing:0">(pi\xF9 basso = pi\xF9 grave e deciso)</small></label><input id="vPitch" type="range" min="0.4" max="1.6" step="0.02" value="').concat(pitch, '"></div>\n    <div class="row"><button class="btn primary small" id="vTest" type="button">Prova la voce</button><button class="btn ghost small" id="vReset" type="button">Ripristina</button></div>\n    <div class="field"><label class="label" for="vOwn">Le tue frasi di incitamento (una per riga)</label>\n      <textarea id="vOwn" rows="5" maxlength="3000" placeholder="Forza Marco, non mollare!&#10;Ogni ripetizione ti rende pi\xF9 forte!">').concat(esc(voiceCfg.own || ""), '</textarea></div>\n    <div class="field"><label class="label" for="vOwnStart">Le tue frasi a inizio serie (una per riga)</label>\n      <textarea id="vOwnStart" rows="3" maxlength="1500" placeholder="Si comincia!">').concat(esc(voiceCfg.ownStart || ""), '</textarea></div>\n    <label class="toggle"><input type="checkbox" id="vOnly" ').concat(voiceCfg.onlyOwn ? "checked" : "", '> Usa solo le mie frasi</label>\n    <div class="row"><button class="btn primary" id="vSave" type="button">Salva</button></div>\n    <p class="note" id="vSaved" hidden>Salvato.</p>\n    <div class="section"><div class="label">Altre voci sul telefono</div>\n      <p class="meta"><b>iPhone:</b> Impostazioni \u203A Accessibilit\xE0 \u203A Contenuti letti \u203A Voci \u203A la tua lingua. Scarica una voce, per esempio una "Avanzata", poi riapri l\'app e sceglila qui.</p>\n      <p class="meta"><b>Android:</b> Impostazioni \u203A Sistema \u203A Lingue \u203A Output sintesi vocale. Con "Sintesi vocale di Google" scegli la tua lingua e scarica le voci, poi riapri l\'app.</p>\n    </div>\n  </div>');
   const read = () => ({ voice: $("vVoice").value, rate: +$("vRate").value, pitch: +$("vPitch").value, own: $("vOwn").value, ownStart: $("vOwnStart").value, onlyOwn: $("vOnly").checked });
   $("vRate").oninput = (e) => $("vRateV").textContent = (+e.target.value).toFixed(2);
   $("vPitch").oninput = (e) => $("vPitchV").textContent = (+e.target.value).toFixed(2);
@@ -3106,7 +3106,7 @@ function renderVoice() {
     voiceOn = true;
     pickVoice();
     const mine = ownLines(voiceCfg.own);
-    say(mine.length ? "Dieci! ".concat(mine[Math.floor(Math.random() * mine.length)]) : "Dieci! Non fermarti adesso, soldato!", { urgent: true });
+    say(mine.length ? "Dieci! ".concat(mine[Math.floor(Math.random() * mine.length)]) : "Dieci! Non fermarti adesso!", { urgent: true });
     voiceCfg = keep;
     voiceOn = wasOn;
     pickVoice();
@@ -3455,7 +3455,7 @@ function finish(all) {
   }
   if ((S.test || S.elite) && all) addPoints(S.elite ? 50 : 20);
   closeSession(true);
-  say(all ? "Sessione terminata. Ottimo lavoro, recluta." : "Serie registrata.", { urgent: true });
+  say(all ? "Sessione terminata. Ottimo lavoro!" : "Serie registrata.", { urgent: true });
   if (!all && S.mode === "file" && remaining.length) {
     route = { name: "brief", queue: remaining, title: S.title, day: S.day, free: S.free, test: S.test, carry: (route.carry || []).concat(S.log), carryPts: (route.carryPts || 0) + (S.points || 0), elite: S.elite };
     render();
@@ -3523,17 +3523,17 @@ $("flip").onclick = async () => {
   }
 };
 const RANKS = [
-  ["Recluta", 0],
-  ["Soldato", 200],
-  ["Caporale", 600],
-  ["Caporal maggiore", 1200],
-  ["Sergente", 2e3],
-  ["Sergente maggiore", 3200],
-  ["Maresciallo", 4800],
-  ["Sottotenente", 7e3],
-  ["Tenente", 1e4],
-  ["Capitano", 14e3],
-  ["Maggiore", 2e4]
+  ["Principiante", 0],
+  ["Motivato", 200],
+  ["Atleta", 600],
+  ["Atleta esperto", 1200],
+  ["Pro", 2e3],
+  ["Campione", 3200],
+  ["Fuoriclasse", 4800],
+  ["\xC9lite", 7e3],
+  ["Maestro", 1e4],
+  ["Leggenda", 14e3],
+  ["Mito", 2e4]
 ];
 const monthKey = (d = /* @__PURE__ */ new Date()) => d.toISOString().slice(0, 7);
 const prevMonthKey = () => {
@@ -3597,9 +3597,9 @@ function addPoints(n, why) {
   lbSchedule();
 }
 const ELITE = {
-  forze: { name: "Programma Forze Speciali", desc: "Sessione avanzata con burpee, mountain climber e affondi." },
-  hell: { name: "Circuito Hell Week", desc: "5 giri senza sconti: burpee, piegamenti, squat, mountain climber." },
-  gold: { name: "Mimetica d'oro", desc: "Grado dorato accanto al nome in classifica e nelle sfide." }
+  forze: { name: "Programma Avanzato", desc: "Sessione avanzata con burpee, mountain climber e affondi." },
+  hell: { name: "Circuito Estremo", desc: "5 giri senza sconti: burpee, piegamenti, squat, mountain climber." },
+  gold: { name: "Badge d'oro", desc: "Livello dorato accanto al nome in classifica e nelle sfide." }
 };
 const eliteQueue = (id) => id === "forze" ? blocksToQueue([["jacks", 1, 40], ["burpee", 3, 10], ["lunge", 3, 16], ["climber", 3, 30], ["pushup", 3, 15], ["plank", 2, 60]]) : (() => {
   const q = [];
@@ -3665,7 +3665,7 @@ async function lbSync() {
   const { fs, db } = LB;
   try {
     await fs.setDoc(fs.doc(db, "lb", monthKey(), "players", LB.uid), {
-      name: (myName || "Recluta").slice(0, 20),
+      name: (myName || "Atleta").slice(0, 20),
       pts: capped,
       total: stats.total,
       rank: rankIndex(),
@@ -3686,7 +3686,7 @@ async function lbTop() {
   return (await fs.getDocs(q)).docs.map((d) => ({ id: d.id, ...d.data() }));
 }
 function lbRows(rows, isMe) {
-  return rows.map((r, i) => '<li class="'.concat(isMe(r) ? "me" : "").concat(i < 3 ? " podium" : "", '"><span class="pos">').concat(i + 1, '</span><span class="who">').concat(esc(r.name || "Recluta"), " ").concat(rankBadge(Math.min(RANKS.length - 1, Math.max(0, r.rank | 0)), !!r.gold), '</span><span class="pts">').concat(r.pts, "</span></li>")).join("");
+  return rows.map((r, i) => '<li class="'.concat(isMe(r) ? "me" : "").concat(i < 3 ? " podium" : "", '"><span class="pos">').concat(i + 1, '</span><span class="who">').concat(esc(r.name || "Atleta"), " ").concat(rankBadge(Math.min(RANKS.length - 1, Math.max(0, r.rank | 0)), !!r.gold), '</span><span class="pts">').concat(r.pts, "</span></li>")).join("");
 }
 function renderRanking() {
   const ri = rankIndex(), next = RANKS[ri + 1];
@@ -3694,7 +3694,7 @@ function renderRanking() {
     const n = /* @__PURE__ */ new Date(), e = new Date(Date.UTC(n.getUTCFullYear(), n.getUTCMonth() + 1, 1));
     return Math.max(0, Math.ceil((e - n) / 864e5));
   })();
-  app.innerHTML = '\n  <div class="screen">\n    <header class="mast"><div><h1>Classifica</h1><div class="sub">'.concat(monthName(monthKey()), '</div></div><div class="callsign">Fine mese<b>').concat(left, ' g</b></div></header>\n    <div class="order">\n      <div class="label">I tuoi punti questo mese</div>\n      <div class="code">').concat(stats.month.pts, '</div>\n      <p class="meta">').concat(esc(myName || "Tu"), " ").concat(myBadge(), " ").concat(RANKS[ri][0], " \xB7 ").concat(stats.total, " punti totali").concat(next ? " \xB7 ".concat(next[1] - stats.total, " al grado ").concat(next[0]) : "", '</p>\n    </div>\n    <div class="section">\n      <div class="label">Premio del mese</div>\n      <p class="meta">I primi 3 a fine mese sbloccano per tutto il mese successivo: ').concat(Object.values(ELITE).map((e) => e.name).join(", "), ".</p>\n    </div>\n    ").concat(!myName ? '<div class="field"><label class="label" for="nm">Il tuo nome in classifica</label><input id="nm" maxlength="20" autocomplete="nickname" placeholder="Es. Marco"></div><div class="row"><button class="btn ghost small" id="saveName" type="button">Salva nome</button></div>' : "", "\n    ").concat(FIREBASE_CONFIG ? '<div class="section"><div class="label">Mondiale \xB7 primi 50</div><ol class="lb" id="lb"><li class="lbmsg">Carico la classifica\u2026</li></ol></div>' : "", '\n    <div class="section"><div class="label">Tu e gli amici che hai sfidato</div><ol class="lb">').concat(lbRows(friendsBoard(monthKey()), (r) => r.me), "</ol>\n      ").concat(Object.keys(friends).length ? "" : '<p class="note">Sfida un amico: dopo la prima sfida compare qui con il suo grado e i suoi punti.</p>', "\n      ").concat(FIREBASE_CONFIG ? "" : '<p class="note">Finch\xE9 la classifica mondiale non \xE8 attiva, il premio va ai primi 3 tra te e gli amici sfidati (servono almeno 4 partecipanti).</p>', '</div>\n    <div class="section"><div class="label">Come si guadagnano i punti</div>\n      <ul class="log">\n        <li><span>Ogni ripetizione valida</span><span>1 pt (burpee 3)</span></li>\n        <li><span>Esercizi a tempo, ogni 2 secondi in posizione</span><span>1 pt</span></li>\n        <li><span>Sessione del programma completata</span><span>+50</span></li>\n        <li><span>Prova di efficienza completata</span><span>+20</span></li>\n        <li><span>Sfida: vittoria / pareggio / sconfitta</span><span>+30 / +15 / +10</span></li>\n      </ul>\n    </div>\n  </div>');
+  app.innerHTML = '\n  <div class="screen">\n    <header class="mast"><div><h1>Classifica</h1><div class="sub">'.concat(monthName(monthKey()), '</div></div><div class="callsign">Fine mese<b>').concat(left, ' g</b></div></header>\n    <div class="order">\n      <div class="label">I tuoi punti questo mese</div>\n      <div class="code">').concat(stats.month.pts, '</div>\n      <p class="meta">').concat(esc(myName || "Tu"), " ").concat(myBadge(), " ").concat(RANKS[ri][0], " \xB7 ").concat(stats.total, " punti totali").concat(next ? " \xB7 ".concat(next[1] - stats.total, " al livello ").concat(next[0]) : "", '</p>\n    </div>\n    <div class="section">\n      <div class="label">Premio del mese</div>\n      <p class="meta">I primi 3 a fine mese sbloccano per tutto il mese successivo: ').concat(Object.values(ELITE).map((e) => e.name).join(", "), ".</p>\n    </div>\n    ").concat(!myName ? '<div class="field"><label class="label" for="nm">Il tuo nome in classifica</label><input id="nm" maxlength="20" autocomplete="nickname" placeholder="Es. Marco"></div><div class="row"><button class="btn ghost small" id="saveName" type="button">Salva nome</button></div>' : "", "\n    ").concat(FIREBASE_CONFIG ? '<div class="section"><div class="label">Mondiale \xB7 primi 50</div><ol class="lb" id="lb"><li class="lbmsg">Carico la classifica\u2026</li></ol></div>' : "", '\n    <div class="section"><div class="label">Tu e gli amici che hai sfidato</div><ol class="lb">').concat(lbRows(friendsBoard(monthKey()), (r) => r.me), "</ol>\n      ").concat(Object.keys(friends).length ? "" : '<p class="note">Sfida un amico: dopo la prima sfida compare qui con il suo livello e i suoi punti.</p>', "\n      ").concat(FIREBASE_CONFIG ? "" : '<p class="note">Finch\xE9 la classifica mondiale non \xE8 attiva, il premio va ai primi 3 tra te e gli amici sfidati (servono almeno 4 partecipanti).</p>', '</div>\n    <div class="section"><div class="label">Come si guadagnano i punti</div>\n      <ul class="log">\n        <li><span>Ogni ripetizione valida</span><span>1 pt (burpee 3)</span></li>\n        <li><span>Esercizi a tempo, ogni 2 secondi in posizione</span><span>1 pt</span></li>\n        <li><span>Sessione del programma completata</span><span>+50</span></li>\n        <li><span>Prova di efficienza completata</span><span>+20</span></li>\n        <li><span>Sfida: vittoria / pareggio / sconfitta</span><span>+30 / +15 / +10</span></li>\n      </ul>\n    </div>\n  </div>');
   if ($("saveName")) $("saveName").onclick = () => {
     const v = $("nm").value.trim();
     if (!v) return;
@@ -3734,7 +3734,7 @@ const meId = (() => {
 let friends = store.get("friends", {});
 function myCard() {
   rollMonth();
-  return { id: meId, fcode: typeof myFcode === "string" ? myFcode : void 0, name: (myName || "Recluta").slice(0, 20), rank: rankIndex(), total: stats.total, gold: isElite() && !!stats.gold, months: { [stats.month.key]: stats.month.pts, ...stats.prev ? { [stats.prev.key]: stats.prev.pts } : {} } };
+  return { id: meId, fcode: typeof myFcode === "string" ? myFcode : void 0, name: (myName || "Atleta").slice(0, 20), rank: rankIndex(), total: stats.total, gold: isElite() && !!stats.gold, months: { [stats.month.key]: stats.month.pts, ...stats.prev ? { [stats.prev.key]: stats.prev.pts } : {} } };
 }
 function saveFriend(c) {
   if (!c || typeof c !== "object" || typeof c.id !== "string" || !/^[a-z0-9]{4,40}$/.test(c.id) || c.id === meId || c.id === "__proto__") return;
@@ -3953,7 +3953,7 @@ function setupConn(conn) {
   CH.conn = conn;
   const opened = () => {
     CH.connected = true;
-    duelSend({ t: "hello", name: myName || "Recluta", card: myCard(), ...CH.sid ? { sid: CH.sid } : {} });
+    duelSend({ t: "hello", name: myName || "Atleta", card: myCard(), ...CH.sid ? { sid: CH.sid } : {} });
     if (CH.role === "host") duelSend({ t: "cfg", cfg: CH.cfg });
     refreshLobby();
   };
@@ -4120,7 +4120,7 @@ function hostHandlers(peer) {
       if (!okMsg(m)) return bye(0);
       if (m.t === "peek") {
         if (CH.random && CH.searching && !busy()) try {
-          c.send({ t: "offer", sid: CH.sid, name: myName || "Recluta", cfg: CH.cfg, rank: rankIndex(), gold: isElite() && !!stats.gold });
+          c.send({ t: "offer", sid: CH.sid, name: myName || "Atleta", cfg: CH.cfg, rank: rankIndex(), gold: isElite() && !!stats.gold });
         } catch (e) {
         }
         return bye(800);
@@ -4176,7 +4176,7 @@ function probeJoin(peer, id, sid) {
     const t = setTimeout(() => fin(false), 7e3);
     c.on("open", () => {
       try {
-        c.send({ t: "hello", name: myName || "Recluta", card: myCard() });
+        c.send({ t: "hello", name: myName || "Atleta", card: myCard() });
       } catch (e) {
       }
     });
@@ -4419,7 +4419,7 @@ function peekSlot(p, n) {
       } catch (e) {
       }
     });
-    c.on("data", (m) => fin(okMsg(m) && m.t === "offer" && typeof m.sid === "string" && /^[a-z0-9]{6,20}$/.test(m.sid) ? { n, sid: m.sid, name: cleanName(m.name, "Una recluta"), cfg: okCfg(m.cfg) ? { ex: m.cfg.ex, fmt: m.cfg.fmt } : null, rank: Math.min(RANKS.length - 1, Math.max(0, m.rank | 0)), gold: !!m.gold } : null));
+    c.on("data", (m) => fin(okMsg(m) && m.t === "offer" && typeof m.sid === "string" && /^[a-z0-9]{6,20}$/.test(m.sid) ? { n, sid: m.sid, name: cleanName(m.name, "Un atleta"), cfg: okCfg(m.cfg) ? { ex: m.cfg.ex, fmt: m.cfg.fmt } : null, rank: Math.min(RANKS.length - 1, Math.max(0, m.rank | 0)), gold: !!m.gold } : null));
     c.on("error", () => fin(null));
     c.on("close", () => fin(null));
   });
@@ -4500,7 +4500,7 @@ function renderRndJoin() {
     $("cancel").textContent = "Indietro";
   };
   (async () => {
-    myName = myName || store.get("name", "") || "Recluta";
+    myName = myName || store.get("name", "") || "Atleta";
     try {
       await getDuelStream();
     } catch (e) {
@@ -4526,7 +4526,7 @@ function renderRndJoin() {
       setupCall(guest.call(rndId(here.n), CH.stream));
       return go({ name: "lobby" });
     }
-    fail("Troppo tardi: un'altra recluta ha accettato prima di te, oppure ".concat(o.name, " ha smesso di cercare."));
+    fail("Troppo tardi: qualcun altro ha accettato prima di te, oppure ".concat(o.name, " ha smesso di cercare."));
   })();
 }
 function renderDuels() {
@@ -4615,7 +4615,7 @@ function renderDuelNew() {
     keep();
   });
   $("create").onclick = async () => {
-    myName = $("nm").value.trim() || "Recluta";
+    myName = $("nm").value.trim() || "Atleta";
     store.set("name", myName);
     const btn = $("create");
     btn.disabled = true;
@@ -4675,7 +4675,7 @@ function renderDuelJoin() {
   $("join").onclick = async () => {
     const code = $("cd").value.trim().toUpperCase().replace(/[^A-Z0-9]/g, "");
     if (code.length !== 6) return duelError("Il codice ha 6 caratteri: controlla e riprova.");
-    myName = $("nm").value.trim() || "Recluta";
+    myName = $("nm").value.trim() || "Atleta";
     store.set("name", myName);
     const btn = $("join");
     btn.disabled = true;
@@ -4735,7 +4735,7 @@ function renderLobby() {
         btn.disabled = true;
         btn.textContent = "Invio\u2026";
       }
-      const ok = await reachFriend(fc, { t: "invite", code: CH.code, name: myName || "Recluta", cfg: CH.cfg, card: myCard() });
+      const ok = await reachFriend(fc, { t: "invite", code: CH.code, name: myName || "Atleta", cfg: CH.cfg, card: myCard() });
       if (!$("shareNote")) return;
       n.hidden = false;
       n.textContent = ok ? "Invito inviato a ".concat(f.name, ": deve solo toccare Accetta.") : "".concat(f.name, " non ha l'app aperta in questo momento: mandagli il link.");
@@ -4938,7 +4938,7 @@ function maybeDuelResult() {
   closeSession();
   S.challenge = false;
   const who = CH.oppName || "il tuo amico";
-  say(outcome === "win" ? "Hai vinto! Ottimo lavoro, recluta." : outcome === "lose" ? "Ha vinto ".concat(who, ". Alla prossima, recluta.") : "Pareggio!", { urgent: true });
+  say(outcome === "win" ? "Hai vinto! Ottimo lavoro!" : outcome === "lose" ? "Ha vinto ".concat(who, ". Alla prossima!") : "Pareggio!", { urgent: true });
   go({ name: "duel-result", outcome, me, opp });
 }
 function renderDuelResult() {
