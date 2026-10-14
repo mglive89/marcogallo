@@ -159,8 +159,11 @@ body.tabs .screen { padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 96px
 /* Session (camera) stays dark */
 #session { position: fixed; inset: 0; background: #000; display: flex; flex-direction: column; z-index: 10; color: #f4f6f9; }
 .stage { position: relative; flex: 1 1 auto; overflow: hidden; background: #000; }
-.stage video, .stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
-.stage.mirror video, .stage.mirror canvas { transform: scaleX(-1); }
+.stage { --z: 1; }
+.stage > video, .stage > canvas { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; transform: scale(var(--z)); transition: transform .3s ease; }
+.stage.mirror > video, .stage.mirror > canvas { transform: scale(calc(var(--z) * -1), var(--z)); }
+/* camera frame: a soft glowing border around your own picture */
+.stage::before { content: ""; position: absolute; inset: 6px; border-radius: 22px; pointer-events: none; z-index: 4; padding: 3px; background: linear-gradient(140deg, #4aa8ff, #9b8cff 45%, #ff7ac8); -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); box-shadow: 0 0 18px rgba(124,160,255,.45); opacity: .95; }
 .hud-top { position: absolute; left: 0; right: 0; top: 0; padding: calc(env(safe-area-inset-top, 0px) + 10px) 12px 10px; display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; background: linear-gradient(rgba(0,0,0,.75), rgba(0,0,0,0)); }
 .hud-ex { font-family: var(--f-cond); font-weight: 700; font-size: 14px; letter-spacing: .12em; text-transform: uppercase; color: #9ccaf5; }
 body.g-f .hud-ex { color: #f0a6dc; }
@@ -208,7 +211,8 @@ body.g-f .counter .of { color: #f0a6dc; }
 .toggle input { width: 22px; height: 22px; accent-color: var(--brass); flex: 0 0 auto; }
 
 /* Duel */
-.stage .opp { position: absolute; right: 12px; top: calc(env(safe-area-inset-top, 0px) + 72px); width: 32%; max-width: 200px; aspect-ratio: 3 / 4; border: 2px solid var(--brass); border-radius: 12px; overflow: hidden; background: #000; }
+.stage .opp { position: absolute; right: 14px; top: calc(env(safe-area-inset-top, 0px) + 70px); width: 44%; max-width: 300px; aspect-ratio: 3 / 4; border: 3px solid transparent; border-radius: 18px; overflow: hidden; background: linear-gradient(#000, #000) padding-box, linear-gradient(150deg, #ffb347, #ff5e8a 55%, #b45cff) border-box; box-shadow: 0 0 0 1px rgba(255,255,255,.12), 0 0 22px rgba(255,94,138,.55), 0 10px 26px rgba(0,0,0,.6); z-index: 6; }
+.stage .opp::after { content: "VS"; position: absolute; left: 8px; top: 8px; padding: 2px 8px; border-radius: 999px; font-family: var(--f-display); font-weight: 800; font-size: 14px; letter-spacing: .08em; color: #fff; background: linear-gradient(135deg, #ff5e8a, #b45cff); box-shadow: 0 2px 8px rgba(0,0,0,.4); }
 .stage .opp video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
 .oppTag { position: absolute; left: 0; right: 0; bottom: 0; display: flex; justify-content: space-between; align-items: baseline; gap: 6px; padding: 4px 8px; background: rgba(0,0,0,.7); font-family: var(--f-cond); font-weight: 700; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #fff; }
 .oppTag span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -260,13 +264,14 @@ body.g-f .counter .of { color: #f0a6dc; }
 @keyframes fin10t { 50% { transform: scale(1.18); } }
 body.fx-off .dfx, body.fx-off .invite.rnd, body.fx-off .rnd-ico, body.fx-off .rest .big.dpop, body.fx-off .stage.final10::after, body.fx-off .stage.final10 .hud-timer { animation: none; }
 @media (prefers-reduced-motion: reduce) { .dfx *, .dfx, .invite.rnd, .rnd-ico, .rest .big.dpop, .stage.final10::after { animation: none !important; } }
-.duel .banner { right: calc(min(32%, 200px) + 24px); font-size: 18px; }
+.duel .banner { right: calc(min(44%, 300px) + 26px); font-size: 17px; }
 .duel .counter .of { color: #7ee29b; }
 .code { font-family: var(--f-display); font-weight: 800; font-size: 46px; letter-spacing: .12em; color: var(--brass); line-height: 1; font-variant-numeric: tabular-nums; }
 .lobvids { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
-.lobvid { position: relative; aspect-ratio: 3 / 4; background: #10151c; border-radius: 16px; overflow: hidden; }
+.lobvid { position: relative; aspect-ratio: 3 / 4; border: 3px solid transparent; background: linear-gradient(#10151c, #10151c) padding-box, linear-gradient(140deg, #4aa8ff, #9b8cff 45%, #ff7ac8) border-box; border-radius: 18px; overflow: hidden; box-shadow: 0 8px 22px rgba(60,80,160,.25); }
+.lobvid + .lobvid { background: linear-gradient(#10151c, #10151c) padding-box, linear-gradient(150deg, #ffb347, #ff5e8a 55%, #b45cff) border-box; }
 .lobvid video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
-.lobvid span { position: absolute; left: 0; right: 0; bottom: 0; padding: 6px 10px; background: rgba(0,0,0,.6); font-family: var(--f-cond); font-weight: 700; font-size: 14px; letter-spacing: .06em; text-transform: uppercase; color: #fff; }
+.lobvid > span { position: absolute; left: 0; right: 0; bottom: 0; padding: 6px 10px; background: rgba(0,0,0,.6); font-family: var(--f-cond); font-weight: 700; font-size: 14px; letter-spacing: .06em; text-transform: uppercase; color: #fff; }
 .lobvid .empty { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 12px; text-align: center; color: #aab3bf; font-size: 13px; }
 .status { display: flex; align-items: center; gap: 10px; font-family: var(--f-cond); font-size: 19px; font-weight: 600; }
 .status i { width: 12px; height: 12px; border-radius: 50%; background: var(--warn); flex: 0 0 auto; }
@@ -5352,6 +5357,23 @@ setTimeout(() => presenceStart().catch(() => {
 }), 2500);
 rwStart();
 loadVoicePack();
+function camFit() {
+  const st = $("stage"), v = $("vid");
+  if (!st || !v || !v.videoWidth) return;
+  const W = st.clientWidth, H = st.clientHeight;
+  if (!W || !H) return;
+  const a = W / v.videoWidth, b = H / v.videoHeight, z = Math.min(1.18, Math.max(a, b) / Math.min(a, b));
+  st.style.setProperty("--z", z.toFixed(3));
+}
+window.addEventListener("resize", () => setTimeout(camFit, 120));
+{
+  const v = $("vid");
+  if (v) {
+    v.addEventListener("loadedmetadata", camFit);
+    v.addEventListener("resize", camFit);
+    v.addEventListener("playing", camFit);
+  }
+}
 window.__test = { POSES, placeDef, makeTracker, figureSVG, tr, GRIT, EX, session, setGender: (g) => gender = g, VP, packClips, setAspect: (a) => aspect = a, fxRep, loadFx, confetti, duelSend, oppReps: () => CH.oppReps, rep: () => {
   const c = S.cur;
   if (!c || S.inRest) return;
