@@ -589,6 +589,8 @@ body.landing-on:has(.fq) { background: #15223f; }
 .dz-tile.t2 .ico { background: linear-gradient(135deg, #ffb347, #ff6a5e); box-shadow: 0 6px 14px rgba(255,106,94,.35); }
 .dz-tile .ico svg { width: 26px; height: 26px; }
 .dz-tile b { font-family: var(--f-cond); font-weight: 800; font-size: 19px; text-transform: uppercase; line-height: 1.05; }
+.audioOn { position: fixed; left: 50%; top: calc(env(safe-area-inset-top, 0px) + 14px); transform: translateX(-50%); z-index: 60; border: 0; border-radius: 999px; padding: 12px 20px; font-family: var(--f-cond); font-weight: 800; font-size: 16px; letter-spacing: .03em; color: #fff; background: linear-gradient(135deg, #ff7a3d, #e5487f); box-shadow: 0 8px 24px rgba(229,72,127,.45); animation: audioPulse 1.4s ease-in-out infinite; }
+@keyframes audioPulse { 50% { transform: translateX(-50%) scale(1.06); } }
 .dz-tile small { color: var(--muted); font-size: 13px; line-height: 1.3; }
 .dz-tile:active { transform: scale(.97); }
 .dz-switch { display: grid; grid-template-columns: 40px 1fr 52px; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 18px; background: var(--panel); box-shadow: var(--shadow); font-size: 15px; cursor: pointer; }
@@ -859,7 +861,7 @@ body.fx-off .char-stand { animation: none; }
     </div>
     <div class="banner" id="banner">Mettiti in posizione</div>
     <div class="meter" id="meter"><i id="meterFill"></i><b id="meterMark"></b></div>
-    <div class="opp" id="opp" hidden><video id="oppVid" playsinline autoplay></video><div class="oppTag"><span id="oppName">Amico</span><b id="oppCount">0</b></div></div>
+    <div class="opp" id="opp" hidden><video id="oppVid" playsinline autoplay muted></video><div class="oppTag"><span id="oppName">Amico</span><b id="oppCount">0</b></div></div>
     <div class="counter"><div class="n" id="count">0</div><div class="of" id="countOf">ripetizioni</div></div>
     <div class="loading" id="loading"><div class="figbox ld-fig" id="ldFig"></div><div class="ld3d"><i></i><i></i><i></i></div><div id="loadingMsg">Carico il sistema di visione…</div><div class="ld-tip" id="ldTip"></div></div>
     <div class="rest" id="rest" hidden>
@@ -880,6 +882,7 @@ body.fx-off .char-stand { animation: none; }
 
 <input type="file" id="fileIn" accept="video/*" capture="user" hidden>
 
+<audio id="oppAudio" playsinline autoplay hidden></audio><button class="audioOn" id="audioOn" hidden>🔊 Tocca per sentire l'amico</button>
 <script type="module">
 const LANGS = {
   it: { name: "Italiano", tts: "it-IT" },
@@ -1234,6 +1237,7 @@ const I18N = [
   ["Inquadrati di lato, busto inclinato in avanti", "Get in frame from the side, torso leaning forward", "Ponte de lado, con el torso inclinado hacia delante", "Mets-toi de profil, buste pench\xE9 en avant", "Seitlich ins Bild, Oberk\xF6rper nach vorn geneigt", "P\xF5e-te de lado, tronco inclinado para a frente"],
   ["Inquadrati di lato, in piedi", "Get in frame from the side, standing", "Ponte de lado, de pie", "Mets-toi de profil, debout", "Seitlich ins Bild, stehend", "P\xF5e-te de lado, de p\xE9"],
   ["Spingi la gamba pi\xF9 indietro! Non conta", "Push your leg further back! Doesn't count", "\xA1Lleva la pierna m\xE1s atr\xE1s! No cuenta", "Pousse la jambe plus en arri\xE8re ! \xC7a ne compte pas", "Bein weiter nach hinten! Z\xE4hlt nicht", "Leva a perna mais para tr\xE1s! N\xE3o conta"],
+  ["\u{1F50A} Tocca per sentire l'amico", "\u{1F50A} Tap to hear your friend", "\u{1F50A} Toca para o\xEDr a tu amigo", "\u{1F50A} Touche pour entendre ton ami", "\u{1F50A} Tippen, um deinen Freund zu h\xF6ren", "\u{1F50A} Toca para ouvir o teu amigo"],
   ["Gambe e glutei", "Legs and glutes", "Piernas y gl\xFAteos", "Jambes et fessiers", "Beine und Po", "Pernas e gl\xFAteos"],
   ["Petto, spalle, tricipiti", "Chest, shoulders, triceps", "Pecho, hombros, tr\xEDceps", "Pectoraux, \xE9paules, triceps", "Brust, Schultern, Trizeps", "Peito, ombros, tr\xEDceps"],
   ["Sit-up completi", "Full sit-ups", "Abdominales completos", "Abdos complets", "Komplette Sit-ups", "Abdominais completos"],
@@ -4633,6 +4637,32 @@ async function getDuelStream() {
   });
   return CH.stream;
 }
+function playOppAudio() {
+  const a = $("oppAudio");
+  if (!a) return;
+  if (!CH.remote) {
+    $("audioOn").hidden = true;
+    return;
+  }
+  if (a.srcObject !== CH.remote) a.srcObject = CH.remote;
+  a.muted = false;
+  a.volume = 1;
+  if (!a.paused) {
+    $("audioOn").hidden = true;
+    return;
+  }
+  a.play().then(() => {
+    $("audioOn").hidden = true;
+  }).catch(() => {
+    $("audioOn").hidden = !CH.remote;
+  });
+}
+document.addEventListener("pointerdown", () => {
+  if (CH.remote) playOppAudio();
+}, true);
+document.addEventListener("touchend", () => {
+  if (CH.remote) playOppAudio();
+}, true);
 function attach(video, stream, muted) {
   if (!video || !stream) return;
   if (video.srcObject !== stream) video.srcObject = stream;
@@ -4704,6 +4734,8 @@ function startCamWatchdog() {
     const ov = $("oppVid");
     if (ov.srcObject && ov.paused) ov.play().catch(() => {
     });
+    const oa = $("oppAudio");
+    if (CH.remote && oa.paused) playOppAudio();
     const now = performance.now();
     const stalled = vid.currentTime === lastT;
     lastT = vid.currentTime;
@@ -4728,6 +4760,13 @@ function duelReset() {
   }
   try {
     (_d = CH.stream) == null ? void 0 : _d.getTracks().forEach((t) => t.stop());
+  } catch (e) {
+  }
+  try {
+    const a = $("oppAudio");
+    a.pause();
+    a.srcObject = null;
+    $("audioOn").hidden = true;
   } catch (e) {
   }
   Object.assign(CH, { peer: null, conn: null, call: null, stream: null, remote: null, role: null, code: "", oppName: "", oppReps: 0, connected: false, myFinal: null, oppFinal: null, wins: { me: 0, opp: 0 }, votes: { me: null, opp: null }, spinning: false, random: false, searching: false, notFound: false, oppCard: null, sid: "", goT: 0, lead: 0 });
@@ -4757,8 +4796,9 @@ function setupCall(call) {
   CH.call = call;
   call.on("stream", (remote) => {
     CH.remote = remote;
+    playOppAudio();
     refreshLobby();
-    if (!$("session").hidden) attach($("oppVid"), remote, false);
+    if (!$("session").hidden) attach($("oppVid"), remote, true);
   });
   call.on("close", () => {
   });
@@ -5598,7 +5638,7 @@ function renderPick() {
 }
 function renderLobby() {
   const host = CH.role === "host";
-  app.innerHTML = '\n  <div class="screen brief">\n    <div class="section"><div class="label">Sfida \xB7 '.concat(esc(fmtTxt(CH.cfg)), "</div><h2>").concat(CH.random ? "Avversario trovato" : host ? "Invita il tuo amico" : "Sala d'attesa", "</h2></div>\n    ").concat(host && !CH.random ? '<div class="order">\n      <div class="label">Codice sfida</div>\n      <div class="code">'.concat(CH.code, '</div>\n      <p class="meta">Mandagli il link: lo apre dal telefono ed entra subito.</p>\n      <div class="row"><button class="btn ').concat(route.linkFirst ? "primary glow" : "ghost", ' small" id="share" type="button">Invia il link</button></div>\n      <p class="note" id="shareNote" hidden></p>\n      ').concat(invitable().length ? '<div class="label">Oppure invitalo direttamente</div><ol class="lb">'.concat(invitable().map((f) => '<li><span class="pos">'.concat(rankBadge(Math.min(RANKS.length - 1, Math.max(0, f.rank | 0)), !!f.gold, f.crowns), '</span><span class="who">').concat(esc(f.name), '</span><button class="btn ghost small inv" type="button" data-inv="').concat(esc(f.fcode), '">Invita</button></li>')).join(""), "</ol>") : "", "\n    </div>") : "", '\n    <div class="status" id="lobStatus"><i></i><span></span></div>\n    <div id="pickBox"></div>\n    <div class="lobvids">\n      <div class="lobvid"><video id="lobMe" playsinline autoplay muted></video><span>').concat(esc(myName || "Tu"), " ").concat(myBadge(), '</span></div>\n      <div class="lobvid"><video id="lobOpp" playsinline autoplay></video><div class="empty" id="lobOppEmpty">In attesa della videochiamata\u2026</div><span id="lobOppName">Amico</span></div>\n    </div>\n    ').concat(CH.wins.me + CH.wins.opp > 0 ? '<p class="meta">Punteggio: '.concat(esc(myName), " ").concat(CH.wins.me, " \u2013 ").concat(CH.wins.opp, " ").concat(esc(CH.oppName), "</p>") : "", '\n    <div class="row">\n      ').concat(host ? '<button class="btn primary" id="go" type="button" disabled>Via!</button>' : "", '\n      <button class="btn ghost" id="leave" type="button">Esci dalla sfida</button>\n    </div>\n    ').concat(host ? '<details class="note"><summary>Cambia esercizio o formato</summary><div class="choices" style="margin-top:8px"><button class="choice" type="button" data-repick="rand">'.concat(pickIco.rand, ' A sorte</button><button class="choice" type="button" data-repick="together">').concat(pickIco.together, " Decidiamo insieme</button>").concat(duelExList().map((id) => '<button class="choice" type="button" data-ex="'.concat(id, '" aria-pressed="').concat(CH.cfg.ok !== false && CH.cfg.pick === "me" && CH.cfg.ex === id, '">').concat(EX[id].name, "</button>")).join("")).concat(Object.entries(DUEL_FMT).map(([k, f]) => '<button class="choice" type="button" data-fmt="'.concat(k, '" aria-pressed="').concat(CH.cfg.fmt === k, '">').concat(f.label, "</button>")).join(""), "</div></details>") : "", "\n  </div>");
+  app.innerHTML = '\n  <div class="screen brief">\n    <div class="section"><div class="label">Sfida \xB7 '.concat(esc(fmtTxt(CH.cfg)), "</div><h2>").concat(CH.random ? "Avversario trovato" : host ? "Invita il tuo amico" : "Sala d'attesa", "</h2></div>\n    ").concat(host && !CH.random ? '<div class="order">\n      <div class="label">Codice sfida</div>\n      <div class="code">'.concat(CH.code, '</div>\n      <p class="meta">Mandagli il link: lo apre dal telefono ed entra subito.</p>\n      <div class="row"><button class="btn ').concat(route.linkFirst ? "primary glow" : "ghost", ' small" id="share" type="button">Invia il link</button></div>\n      <p class="note" id="shareNote" hidden></p>\n      ').concat(invitable().length ? '<div class="label">Oppure invitalo direttamente</div><ol class="lb">'.concat(invitable().map((f) => '<li><span class="pos">'.concat(rankBadge(Math.min(RANKS.length - 1, Math.max(0, f.rank | 0)), !!f.gold, f.crowns), '</span><span class="who">').concat(esc(f.name), '</span><button class="btn ghost small inv" type="button" data-inv="').concat(esc(f.fcode), '">Invita</button></li>')).join(""), "</ol>") : "", "\n    </div>") : "", '\n    <div class="status" id="lobStatus"><i></i><span></span></div>\n    <div id="pickBox"></div>\n    <div class="lobvids">\n      <div class="lobvid"><video id="lobMe" playsinline autoplay muted></video><span>').concat(esc(myName || "Tu"), " ").concat(myBadge(), '</span></div>\n      <div class="lobvid"><video id="lobOpp" playsinline autoplay muted></video><div class="empty" id="lobOppEmpty">In attesa della videochiamata\u2026</div><span id="lobOppName">Amico</span></div>\n    </div>\n    ').concat(CH.wins.me + CH.wins.opp > 0 ? '<p class="meta">Punteggio: '.concat(esc(myName), " ").concat(CH.wins.me, " \u2013 ").concat(CH.wins.opp, " ").concat(esc(CH.oppName), "</p>") : "", '\n    <div class="row">\n      ').concat(host ? '<button class="btn primary" id="go" type="button" disabled>Via!</button>' : "", '\n      <button class="btn ghost" id="leave" type="button">Esci dalla sfida</button>\n    </div>\n    ').concat(host ? '<details class="note"><summary>Cambia esercizio o formato</summary><div class="choices" style="margin-top:8px"><button class="choice" type="button" data-repick="rand">'.concat(pickIco.rand, ' A sorte</button><button class="choice" type="button" data-repick="together">').concat(pickIco.together, " Decidiamo insieme</button>").concat(duelExList().map((id) => '<button class="choice" type="button" data-ex="'.concat(id, '" aria-pressed="').concat(CH.cfg.ok !== false && CH.cfg.pick === "me" && CH.cfg.ex === id, '">').concat(EX[id].name, "</button>")).join("")).concat(Object.entries(DUEL_FMT).map(([k, f]) => '<button class="choice" type="button" data-fmt="'.concat(k, '" aria-pressed="').concat(CH.cfg.fmt === k, '">').concat(f.label, "</button>")).join(""), "</div></details>") : "", "\n  </div>");
   attach($("lobMe"), localView(), true);
   if (host && $("share")) {
     $("share").onclick = async () => {
@@ -5687,7 +5727,8 @@ function refreshLobby() {
   $("lobOppName").innerHTML = esc(CH.oppName || "Amico") + (CH.oppCard ? " " + rankBadge(Math.min(RANKS.length - 1, Math.max(0, CH.oppCard.rank | 0)), !!CH.oppCard.gold, CH.oppCard.crowns) : "");
   if (CH.remote) {
     $("lobOppEmpty").hidden = true;
-    attach($("lobOpp"), CH.remote, false);
+    attach($("lobOpp"), CH.remote, true);
+    playOppAudio();
   }
   renderPick();
   const g = $("go");
@@ -5751,7 +5792,8 @@ async function startDuelSession() {
   vid.srcObject = localView();
   vid.play().catch(() => {
   });
-  attach($("oppVid"), CH.remote, false);
+  attach($("oppVid"), CH.remote, true);
+  playOppAudio();
   startCamWatchdog();
   try {
     await loadEngine();
