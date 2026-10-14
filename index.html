@@ -596,6 +596,10 @@ html.land #rotate { display: flex; position: fixed; inset: 0; z-index: 9999; fle
 html.land #rotate small { font-family: var(--f-body); font-weight: 400; font-size: 14px; text-transform: none; letter-spacing: 0; color: #b8c4d6; }
 html.land #rotate svg { animation: rotPhone 1.8s ease-in-out infinite; }
 @keyframes rotPhone { 0%, 20% { transform: rotate(-90deg); } 55%, 100% { transform: rotate(0deg); } }
+.dz-off { position: relative; margin: 10px 0 0; padding: 9px 12px; border-radius: 12px; background: rgba(255,122,61,.18); color: #ffd2bd; font-size: 14px; font-weight: 600; }
+.offcard { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px; padding: 34px 20px; margin-top: 18px; border-radius: 22px; background: var(--panel); box-shadow: var(--shadow); }
+.offcard svg { width: 58px; height: 58px; color: #ff7a3d; }
+.offcard h2 { margin: 0; }
 .dz-tile small { color: var(--muted); font-size: 13px; line-height: 1.3; }
 .dz-tile:active { transform: scale(.97); }
 .dz-switch { display: grid; grid-template-columns: 40px 1fr 52px; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 18px; background: var(--panel); box-shadow: var(--shadow); font-size: 15px; cursor: pointer; }
@@ -890,7 +894,7 @@ body.fx-off .char-stand { animation: none; }
 <div id="rotate" aria-live="polite"><svg width="64" height="64" viewBox="0 0 64 64" fill="none" stroke="#4aa8ff" stroke-width="3" stroke-linecap="round"><rect x="20" y="6" width="24" height="52" rx="5"/><path d="M29 51h6"/></svg><span>Ruota il telefono</span><small>FitQuest si usa in verticale.</small></div>
 <audio id="oppAudio" playsinline autoplay hidden></audio><button class="audioOn" id="audioOn" hidden>🔊 Tocca per sentire l'amico</button>
 <script type="module">
-var _a, _b, _c, _d;
+var _a, _b, _c, _d, _e;
 const LANGS = {
   it: { name: "Italiano", tts: "it-IT" },
   en: { name: "English", tts: "en-US" },
@@ -1247,6 +1251,10 @@ const I18N = [
   ["\u{1F50A} Tocca per sentire l'amico", "\u{1F50A} Tap to hear your friend", "\u{1F50A} Toca para o\xEDr a tu amigo", "\u{1F50A} Touche pour entendre ton ami", "\u{1F50A} Tippen, um deinen Freund zu h\xF6ren", "\u{1F50A} Toca para ouvir o teu amigo"],
   ["Ruota il telefono", "Turn your phone", "Gira el tel\xE9fono", "Tourne ton t\xE9l\xE9phone", "Dreh dein Handy", "Roda o telem\xF3vel"],
   ["FitQuest si usa in verticale.", "FitQuest works in portrait mode.", "FitQuest se usa en vertical.", "FitQuest s'utilise en mode portrait.", "FitQuest wird hochkant benutzt.", "O FitQuest usa-se na vertical."],
+  ["Le sfide funzionano solo con internet", "Challenges only work online", "Los retos solo funcionan con internet", "Les d\xE9fis ne fonctionnent qu'avec internet", "Duelle funktionieren nur mit Internet", "Os desafios s\xF3 funcionam com internet"],
+  ["Sei offline. Allenamenti, esercizi, progressi e profilo funzionano anche senza connessione: le sfide in videochiamata no.", "You're offline. Workouts, exercises, progress and profile work without a connection: video challenges don't.", "Est\xE1s sin conexi\xF3n. Entrenamientos, ejercicios, progreso y perfil funcionan sin conexi\xF3n: los retos en videollamada no.", "Tu es hors ligne. Entra\xEEnements, exercices, progr\xE8s et profil fonctionnent sans connexion : pas les d\xE9fis en visio.", "Du bist offline. Training, \xDCbungen, Fortschritt und Profil funktionieren ohne Verbindung, Video-Duelle nicht.", "Est\xE1s offline. Treinos, exerc\xEDcios, progresso e perfil funcionam sem liga\xE7\xE3o: os desafios por videochamada n\xE3o."],
+  ["Riprova", "Try again", "Reintentar", "R\xE9essayer", "Erneut versuchen", "Tentar de novo"],
+  ["Sei offline: per sfidare qualcuno serve internet.", "You're offline: challenging someone needs internet.", "Est\xE1s sin conexi\xF3n: para retar a alguien necesitas internet.", "Tu es hors ligne : pour d\xE9fier quelqu'un, il faut internet.", "Du bist offline: F\xFCr ein Duell brauchst du Internet.", "Est\xE1s offline: para desafiar algu\xE9m precisas de internet."],
   ["Gambe e glutei", "Legs and glutes", "Piernas y gl\xFAteos", "Jambes et fessiers", "Beine und Po", "Pernas e gl\xFAteos"],
   ["Petto, spalle, tricipiti", "Chest, shoulders, triceps", "Pecho, hombros, tr\xEDceps", "Pectoraux, \xE9paules, triceps", "Brust, Schultern, Trizeps", "Peito, ombros, tr\xEDceps"],
   ["Sit-up completi", "Full sit-ups", "Abdominales completos", "Abdos complets", "Komplette Sit-ups", "Abdominais completos"],
@@ -3545,6 +3553,7 @@ async function loadEngine() {
     }
     const wasmName = simd ? "vision_wasm_internal" : "vision_wasm_nosimd_internal";
     const fileset = { wasmLoaderPath: base + "wasm/" + wasmName + ".js", wasmBinaryPath: base + "wasm/" + wasmName + ".wasm" };
+    engineFiles = ["wasm/" + wasmName + ".js", "wasm/" + wasmName + ".wasm"];
     let model;
     if (SITE) model = new Uint8Array(await (await fetch(base + "pose_landmarker_lite.task")).arrayBuffer());
     else {
@@ -3616,7 +3625,22 @@ function render() {
   fxEnter();
 }
 document.querySelectorAll("#tabbar [data-tab]").forEach((b) => b.onclick = () => go({ name: b.dataset.tab }));
+const ONLINE_ROUTES = ["duel-new", "duel-join", "lobby", "searching", "rnd-join"];
+const offline = () => navigator.onLine === false;
+function renderOffline() {
+  app.innerHTML = '\n  <div class="screen brief">\n    <button class="back" id="back" type="button">\u2039 Indietro</button>\n    <div class="offcard">\n      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 2l20 20M8.5 16.5a5 5 0 0 1 7 0M5 12.9a10 10 0 0 1 5.2-2.8M19 12.9a10 10 0 0 0-2-1.5M1.4 9a15 15 0 0 1 4.3-2.6M22.6 9A15 15 0 0 0 12 5c-.7 0-1.4 0-2 .1M12 20h.01"/></svg>\n      <h2>Le sfide funzionano solo con internet</h2>\n      <p class="meta">Sei offline. Allenamenti, esercizi, progressi e profilo funzionano anche senza connessione: le sfide in videochiamata no.</p>\n      <button class="btn primary" id="offRetry" type="button">Riprova</button>\n    </div>\n  </div>';
+  $("back").onclick = () => go({ name: "duels" });
+  $("offRetry").onclick = () => render();
+}
+addEventListener("online", () => {
+  if ($("session").hidden && (ONLINE_ROUTES.includes(route.name) || route.name === "duels")) render();
+  rwStart();
+});
+addEventListener("offline", () => {
+  if ($("session").hidden && (route.name === "duels" || ONLINE_ROUTES.includes(route.name) && !CH.connected)) render();
+});
 function renderRoute() {
+  if (offline() && ONLINE_ROUTES.includes(route.name) && !CH.connected) return renderOffline();
   if (route.name === "onboard") return renderOnboard();
   if (route.name === "exercises") return renderExercises();
   if (route.name === "duels") return renderDuels();
@@ -3699,6 +3723,7 @@ function setGender(g) {
   gender = g;
   store.set("gender", g);
   applyTheme();
+  setTimeout(warmOffline, 3e3);
 }
 const TONE_NAMES = ["Chiara", "Media", "Scura"], TONE_DOT = ["#f6c29b", "#c68153", "#7c4c2f"];
 function tonePick(sel, g) {
@@ -3707,7 +3732,49 @@ function tonePick(sel, g) {
 function setTone(t) {
   tone = t === 1 || t === 2 ? t : 0;
   store.set("tone", tone);
+  setTimeout(warmOffline, 3e3);
 }
+let engineFiles = [], warming = false;
+async function warmOffline() {
+  var _a2, _b2, _c2;
+  if (!SITE || warming || offline() || !("caches" in window) || !((_a2 = navigator.serviceWorker) == null ? void 0 : _a2.controller)) return;
+  warming = true;
+  try {
+    try {
+      (_c2 = (_b2 = navigator.storage) == null ? void 0 : _b2.persist) == null ? void 0 : _c2.call(_b2);
+    } catch (e) {
+    }
+    const man = await (await fetch("assets.json", { cache: "no-store" })).json();
+    try {
+      await enginePromise;
+    } catch (e) {
+    }
+    const g = G(), d = imgDir();
+    const want = [
+      ...engineFiles,
+      "pose_landmarker_lite.task",
+      "icons/icon-192.png",
+      "img/logo.webp",
+      d + "fitquest-hero.jpg",
+      ...Object.keys(man).filter((p) => p.endsWith(".webp") && (p.startsWith(d + "ex/") && p.includes("-".concat(g, "-")) || p.startsWith(d + "chars/"))),
+      ...tone ? [d + "heads/front-m.png", d + "heads/front-f.png"] : []
+    ].filter((p) => p in man);
+    const c = await caches.open("fq-assets");
+    for (const p of want) {
+      if (offline()) break;
+      const u = new URL(p, location.href).href;
+      if (await c.match(u)) continue;
+      try {
+        const r = await fetch(u);
+        if (r.ok && r.status === 200) await c.put(u, r);
+      } catch (e) {
+      }
+    }
+  } catch (e) {
+  }
+  warming = false;
+}
+addEventListener("online", () => setTimeout(warmOffline, 2e3));
 function renderOnboard() {
   const ico = {
     reps: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.6 2.6L16 9.5"/></svg>',
@@ -5280,7 +5347,7 @@ function peekSlot(p, n) {
 }
 const peekAll = async (p) => (await Promise.all(Array.from({ length: RND_SLOTS }, (_, n) => peekSlot(p, n)))).filter(Boolean);
 async function rwTick() {
-  if (RW.busy || !rwIdle()) return;
+  if (RW.busy || !rwIdle() || offline()) return;
   RW.busy = true;
   try {
     const offers = await peekAll(await rwPeer());
@@ -5386,7 +5453,7 @@ function renderRndJoin() {
 function renderDuels() {
   const fl = invitable(), cr = crownN(stats.crowns);
   const av = (n) => avatar(n);
-  app.innerHTML = '\n  <div class="screen dz">\n    <section class="dz-hero">\n      <div class="dz-glow"></div>\n      <div class="dz-top"><h1>Sfide</h1>'.concat(cr ? '<span class="dz-crowns">'.concat(crownSVG(), "<b>").concat(cr, "</b></span>") : "", '</div>\n      <p class="dz-sub">Uno contro uno in videochiamata: la fotocamera conta le ripetizioni di entrambi</p>\n      ').concat(SITE ? '<div class="dz-arena"><img class="dz-m" src="'.concat(imgDir(), 'chars/vs-m.webp" alt="" draggable="false"><em class="dz-vs">VS</em><img class="dz-f" src="').concat(imgDir(), 'chars/vs-f.webp" alt="" draggable="false"></div>') : '<div class="dz-arena"><em class="dz-vs">VS</em></div>', '\n      <button class="dz-cta" id="duelRandom" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg><span><b>Sfida casuale</b><small>Ti abbino a chi sta cercando una sfida in questo momento</small></span></button>\n    </section>\n    <div class="dz-tiles">\n      <button class="dz-tile t1" id="duelNew" type="button"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v12H5.5L4 17.5z"/><path d="M8 9h8M8 12h5"/></svg></span><b>Invita un amico</b><small>Crea la sfida e mandagli il link o l\'invito</small></button>\n      <button class="dz-tile t2" id="duelJoin" type="button"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="10" rx="2"/><path d="M7 12h.01M11 12h.01M15 12h.01"/></svg></span><b>Ho un codice</b><small>Entra nella sfida di un amico</small></button>\n    </div>\n    <label class="dz-switch"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 21h4"/></svg></span><span>Avvisami quando qualcuno cerca una sfida casuale</span><input type="checkbox" id="rndT" ').concat(RW.on ? "checked" : "", '><i></i></label>\n    <div class="section"><div class="label">I tuoi amici</div>\n      ').concat(fl.length ? '<ol class="dz-friends">'.concat(fl.map((f) => "<li>".concat(av(f.name), '<span class="who"><b>').concat(esc(f.name), "</b>").concat(rankBadge(Math.min(RANKS.length - 1, Math.max(0, f.rank | 0)), !!f.gold, f.crowns), '</span><button class="btn primary small inv" type="button" data-inv="').concat(esc(f.fcode), '">Sfida</button></li>')).join(""), "</ol>") : '<p class="note">Aggiungi un amico con il suo codice, oppure sfidalo con un link: comparir\xE0 qui e potrai invitarlo con un tocco.</p>', '\n    </div>\n    <div class="dz-ticket">\n      <div class="dz-ticket-top">\n        <div class="label">Il tuo codice amico</div>\n        <div class="code">').concat(myFcode, '</div>\n        <p class="meta">Dallo ai tuoi amici: con questo codice ti aggiungono e ti invitano alle sfide quando hai l\'app aperta.</p>\n        <button class="btn ghost small" id="shareMe" type="button">Invia il mio codice</button>\n      </div>\n      <div class="dz-ticket-bot">\n        <label class="label" for="addCode">Aggiungi un amico</label>\n        <div class="dz-add"><input id="addCode" maxlength="6" autocapitalize="characters" autocomplete="off" placeholder="Codice amico"><button class="btn primary small" id="addBtn" type="button">Aggiungi</button></div>\n        <p class="note" id="addNote" hidden></p>\n      </div>\n    </div>\n  </div>');
+  app.innerHTML = '\n  <div class="screen dz">\n    <section class="dz-hero">\n      <div class="dz-glow"></div>\n      <div class="dz-top"><h1>Sfide</h1>'.concat(cr ? '<span class="dz-crowns">'.concat(crownSVG(), "<b>").concat(cr, "</b></span>") : "", '</div>\n      <p class="dz-sub">Uno contro uno in videochiamata: la fotocamera conta le ripetizioni di entrambi</p>\n      ').concat(offline() ? '<p class="dz-off">Sei offline: per sfidare qualcuno serve internet.</p>' : "", "\n      ").concat(SITE ? '<div class="dz-arena"><img class="dz-m" src="'.concat(imgDir(), 'chars/vs-m.webp" alt="" draggable="false"><em class="dz-vs">VS</em><img class="dz-f" src="').concat(imgDir(), 'chars/vs-f.webp" alt="" draggable="false"></div>') : '<div class="dz-arena"><em class="dz-vs">VS</em></div>', '\n      <button class="dz-cta" id="duelRandom" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg><span><b>Sfida casuale</b><small>Ti abbino a chi sta cercando una sfida in questo momento</small></span></button>\n    </section>\n    <div class="dz-tiles">\n      <button class="dz-tile t1" id="duelNew" type="button"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v12H5.5L4 17.5z"/><path d="M8 9h8M8 12h5"/></svg></span><b>Invita un amico</b><small>Crea la sfida e mandagli il link o l\'invito</small></button>\n      <button class="dz-tile t2" id="duelJoin" type="button"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="10" rx="2"/><path d="M7 12h.01M11 12h.01M15 12h.01"/></svg></span><b>Ho un codice</b><small>Entra nella sfida di un amico</small></button>\n    </div>\n    <label class="dz-switch"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 21h4"/></svg></span><span>Avvisami quando qualcuno cerca una sfida casuale</span><input type="checkbox" id="rndT" ').concat(RW.on ? "checked" : "", '><i></i></label>\n    <div class="section"><div class="label">I tuoi amici</div>\n      ').concat(fl.length ? '<ol class="dz-friends">'.concat(fl.map((f) => "<li>".concat(av(f.name), '<span class="who"><b>').concat(esc(f.name), "</b>").concat(rankBadge(Math.min(RANKS.length - 1, Math.max(0, f.rank | 0)), !!f.gold, f.crowns), '</span><button class="btn primary small inv" type="button" data-inv="').concat(esc(f.fcode), '">Sfida</button></li>')).join(""), "</ol>") : '<p class="note">Aggiungi un amico con il suo codice, oppure sfidalo con un link: comparir\xE0 qui e potrai invitarlo con un tocco.</p>', '\n    </div>\n    <div class="dz-ticket">\n      <div class="dz-ticket-top">\n        <div class="label">Il tuo codice amico</div>\n        <div class="code">').concat(myFcode, '</div>\n        <p class="meta">Dallo ai tuoi amici: con questo codice ti aggiungono e ti invitano alle sfide quando hai l\'app aperta.</p>\n        <button class="btn ghost small" id="shareMe" type="button">Invia il mio codice</button>\n      </div>\n      <div class="dz-ticket-bot">\n        <label class="label" for="addCode">Aggiungi un amico</label>\n        <div class="dz-add"><input id="addCode" maxlength="6" autocapitalize="characters" autocomplete="off" placeholder="Codice amico"><button class="btn primary small" id="addBtn" type="button">Aggiungi</button></div>\n        <p class="note" id="addNote" hidden></p>\n      </div>\n    </div>\n  </div>');
   $("duelRandom").onclick = () => go({ name: "duel-new", mode: "random" });
   $("rndT").onchange = (e) => {
     RW.on = e.target.checked;
@@ -6238,6 +6305,8 @@ if ("serviceWorker" in navigator) {
   });
 }
 loadEngine().catch(() => {
+});
+if (SITE) (_e = navigator.serviceWorker) == null ? void 0 : _e.ready.then(() => setTimeout(warmOffline, 4e3)).catch(() => {
 });
 setTimeout(() => presenceStart().catch(() => {
 }), 2500);
