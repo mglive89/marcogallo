@@ -1888,10 +1888,13 @@ function picFrame(imgs, now) {
   const n = imgs.length, period = 1300 * n;
   const ph = now % period / period, p = ph < 0.5 ? ph * 2 : 2 - ph * 2;
   const x = p * (n - 1), i = Math.min(n - 2, Math.floor(x));
-  let f = Math.max(0, Math.min(1, (x - i - 0.41) / 0.18));
-  f = f * f * (3 - 2 * f);
+  const sm = (v) => {
+    v = Math.max(0, Math.min(1, v));
+    return v * v * (3 - 2 * v);
+  };
+  const out = 1 - sm((x - i - 0.42) / 0.08), inn = sm((x - i - 0.5) / 0.08);
   for (let k = 0; k < n; k++) {
-    const o = k === i ? 1 : k === i + 1 ? f : 0;
+    const o = k === i ? +out.toFixed(3) : k === i + 1 ? +inn.toFixed(3) : 0;
     if (imgs[k]._o !== o) {
       imgs[k].style.opacity = o;
       imgs[k]._o = o;
