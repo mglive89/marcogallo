@@ -620,6 +620,100 @@ body.landing-on:has(.fq) { background: #15223f; }
 .dz-add input { font: inherit; font-size: 18px; padding: 10px 14px; border-radius: 12px; border: 1.5px solid var(--line); background: var(--bg); color: var(--fg); min-width: 0; letter-spacing: .2em; text-transform: uppercase; }
 .dz-add input:focus-visible { outline: 3px solid var(--brass); outline-offset: 1px; }
 @media (prefers-reduced-motion: reduce) { .dz-glow, .dz-arena img, .dz-vs, .dz-cta::after { animation: none !important; } }
+.lbz { gap: 16px; }
+.lbz-hero { position: relative; overflow: hidden; border-radius: 26px; padding: 20px 18px 18px; color: #fff; background: radial-gradient(120% 80% at 50% 0%, #2a4a9a 0%, #141d3d 55%, #0b1024 100%); box-shadow: 0 18px 40px rgba(20,30,80,.35), inset 0 0 0 1px rgba(255,255,255,.08); display: grid; gap: 16px; }
+.lbz-top { position: relative; display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+.lbz-top h1 { margin: 0; font-family: var(--f-display); font-weight: 800; font-size: 40px; line-height: 1; text-transform: uppercase; color: #fff; }
+.lbz-month { color: #c9d4f2; font-size: 15px; margin-top: 4px; text-transform: capitalize; }
+.lbz-clock { --p: 50; position: relative; width: 74px; height: 74px; border-radius: 50%; display: grid; place-items: center; align-content: center; background: radial-gradient(closest-side, #141d3d 78%, transparent 80% 100%), conic-gradient(#ffd36b calc(var(--p) * 1%), rgba(255,255,255,.14) 0); text-align: center; }
+.lbz-clock b { font-family: var(--f-display); font-size: 26px; line-height: 1; color: #fff; }
+.lbz-clock small { font-size: 9px; line-height: 1.1; color: #c9d4f2; text-transform: uppercase; letter-spacing: .04em; max-width: 54px; }
+.lbz-me { position: relative; display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 14px; }
+.lbz-me .lbz-av { width: 64px; height: 64px; font-size: 30px; box-shadow: 0 0 0 3px #141d3d, 0 0 0 5px hsl(var(--h) 80% 65% / .8), 0 0 20px hsl(var(--h) 80% 60% / .6); }
+.lbz-label { font-family: var(--f-cond); font-weight: 800; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: #9fb3e6; }
+.lbz-pts { display: flex; align-items: baseline; gap: 6px; font-family: var(--f-display); font-weight: 800; font-size: 54px; line-height: 1; background: linear-gradient(90deg, #7cc4ff, #b9a6ff 55%, #ff9ad5); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.lbz-pts small { font-size: 20px; }
+.lbz-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; color: #dfe6fb; font-size: 14px; margin-top: 4px; }
+.lbz-pos { padding: 2px 9px; border-radius: 999px; background: linear-gradient(120deg, #ffd36b, #ff9f43); color: #2a1a00; font-family: var(--f-cond); font-weight: 800; font-size: 13px; letter-spacing: .04em; text-transform: uppercase; }
+.lbz-lv { position: relative; display: grid; gap: 6px; }
+.lbz-lv-row { display: flex; justify-content: space-between; gap: 10px; font-size: 13px; color: #c9d4f2; }
+.lbz-lv-bar { display: block; height: 10px; border-radius: 999px; background: rgba(255,255,255,.12); overflow: hidden; }
+.lbz-lv-bar i { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #3b8cff, #8a6bff 55%, #ff5e9a); box-shadow: 0 0 12px rgba(138,107,255,.8); animation: lbzGrow 1.2s cubic-bezier(.2,.8,.2,1) both; transform-origin: left; }
+@keyframes lbzGrow { from { transform: scaleX(0); } }
+.lbz-prize { display: grid; grid-template-columns: 52px 1fr; gap: 12px; padding: 16px; border-radius: 22px; color: #2a1a00; background: linear-gradient(135deg, #fff1c4, #ffd36b 55%, #ffb347); box-shadow: 0 10px 26px rgba(255,170,60,.35); position: relative; overflow: hidden; }
+.lbz-prize::after { content: ""; position: absolute; inset: 0; background: linear-gradient(105deg, transparent 35%, rgba(255,255,255,.55) 50%, transparent 65%) no-repeat; background-size: 250% 100%; animation: dzShine 4s ease-in-out infinite; pointer-events: none; }
+.lbz-trophy { width: 52px; height: 52px; border-radius: 16px; display: grid; place-items: center; background: rgba(255,255,255,.55); color: #a86d06; }
+.lbz-trophy svg { width: 30px; height: 30px; }
+.lbz-prize b { font-family: var(--f-cond); font-weight: 800; font-size: 20px; text-transform: uppercase; }
+.lbz-prize p { margin: 2px 0 8px; font-size: 14px; color: #5a3d00; }
+.lbz-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.lbz-chips span { padding: 4px 10px; border-radius: 999px; background: rgba(255,255,255,.7); font-size: 13px; font-weight: 700; color: #6b4300; }
+.podium { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: end; gap: 8px; margin: 18px 0 10px; }
+.pd { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 4px; min-width: 0; animation: pdIn .7s cubic-bezier(.2,1.2,.4,1) both; }
+.pd1 { animation-delay: .25s; } .pd2 { animation-delay: .1s; } .pd3 { animation-delay: .4s; }
+@keyframes pdIn { from { opacity: 0; transform: translateY(30px); } }
+.pd .pd-av { width: 58px; height: 58px; font-size: 26px; }
+.pd1 .pd-av { width: 76px; height: 76px; font-size: 34px; box-shadow: 0 0 0 3px var(--panel), 0 0 0 6px #ffd36b, 0 0 24px rgba(255,200,60,.7); }
+.pd2 .pd-av { box-shadow: 0 0 0 3px var(--panel), 0 0 0 5px #c9d2e0; }
+.pd3 .pd-av { box-shadow: 0 0 0 3px var(--panel), 0 0 0 5px #e0a070; }
+.pd-crown { height: 30px; margin-bottom: -4px; }
+.pd-crown svg { width: 40px; height: 30px; filter: drop-shadow(0 0 6px rgba(255,210,70,.9)); animation: cwFloat 2.6s ease-in-out infinite; }
+.pd-name { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 16px; }
+.pd.me .pd-name { color: var(--brass); }
+.pd-badge { min-height: 20px; }
+.pd-pts { font-family: var(--f-display); font-weight: 800; font-size: 18px; color: var(--brass); }
+.pd-step { width: 100%; border-radius: 16px 16px 8px 8px; display: grid; place-items: start center; padding-top: 8px; margin-top: 4px; box-shadow: inset 0 1px 0 rgba(255,255,255,.5), 0 8px 18px rgba(0,0,0,.12); position: relative; overflow: hidden; }
+.pd-step em { font-style: normal; font-family: var(--f-display); font-weight: 800; font-size: 30px; color: rgba(255,255,255,.95); text-shadow: 0 2px 6px rgba(0,0,0,.25); }
+.pd1 .pd-step { height: 110px; background: linear-gradient(180deg, #ffe07a, #f0b429 60%, #c98a06); }
+.pd2 .pd-step { height: 82px; background: linear-gradient(180deg, #eef2f8, #c3ccd9 60%, #8f9bb0); }
+.pd3 .pd-step { height: 64px; background: linear-gradient(180deg, #ffd0a8, #e0905a 60%, #a85a2a); }
+.pd1 .pd-step::after { content: ""; position: absolute; inset: 0; background: linear-gradient(105deg, transparent 35%, rgba(255,255,255,.6) 50%, transparent 65%) no-repeat; background-size: 250% 100%; animation: dzShine 3s ease-in-out infinite; }
+.pd-step { transform-origin: bottom; animation: pdRise .8s cubic-bezier(.2,1,.3,1) both; }
+.pd1 .pd-step { animation-delay: .25s; } .pd2 .pd-step { animation-delay: .1s; } .pd3 .pd-step { animation-delay: .4s; }
+@keyframes pdRise { from { transform: scaleY(0); } }
+.lbz-list { gap: 8px; }
+.lbz-list li.lbx { grid-template-columns: 26px 44px minmax(0, 1fr) auto; gap: 10px; padding: 10px 12px; border-radius: 18px; animation: lbxIn .5s ease-out both; animation-delay: var(--d, 0ms); }
+@keyframes lbxIn { from { opacity: 0; transform: translateX(24px); } }
+.lbx .dz-av { width: 44px; height: 44px; font-size: 20px; }
+.lbx .pos { font-family: var(--f-display); font-weight: 800; font-size: 20px; color: var(--muted); text-align: center; }
+.lbx .who { min-width: 0; display: grid; grid-template-columns: auto auto 1fr; align-items: center; column-gap: 6px; row-gap: 4px; }
+.lbx .who b { grid-column: 1 / -1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 16px; }
+.lbx .who .crown { margin-left: 0; }
+.lbx .bar { grid-column: 1 / -1; display: block; height: 6px; border-radius: 999px; background: var(--panel-2); overflow: hidden; }
+.lbx .bar i { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #3b8cff, #8a6bff); animation: lbzGrow 1s cubic-bezier(.2,.8,.2,1) both; animation-delay: calc(var(--d, 0ms) + 200ms); transform-origin: left; }
+.lbx .pts { font-family: var(--f-display); font-weight: 800; font-size: 22px; color: var(--brass); }
+.lbx.me { border-color: transparent; background: linear-gradient(var(--panel), var(--panel)) padding-box, linear-gradient(120deg, #3b8cff, #8a6bff 55%, #ff5e9a) border-box; box-shadow: 0 8px 22px rgba(138,107,255,.25); }
+.lbx.me .bar i { background: linear-gradient(90deg, #3b8cff, #8a6bff 55%, #ff5e9a); }
+.lbz-rules { list-style: none; margin: 0; padding: 6px 14px; background: var(--panel); border-radius: 18px; box-shadow: var(--shadow); }
+.lbz-rules li { display: grid; grid-template-columns: 34px 1fr auto; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--line); font-size: 15px; }
+.lbz-rules li:last-child { border-bottom: 0; }
+.lbz-rules i { width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; font-style: normal; font-size: 17px; color: #fff; background: var(--c); box-shadow: 0 4px 10px color-mix(in srgb, var(--c) 40%, transparent); }
+.lbz-rules b { font-family: var(--f-cond); font-weight: 800; font-size: 16px; color: var(--brass); text-align: right; }
+@media (prefers-reduced-motion: reduce) { .pd, .pd-step, .lbx, .lbx .bar i, .lbz-lv-bar i, .lbz-prize::after, .pd1 .pd-step::after, .pd-crown svg { animation: none !important; } }
+.lbz-info .subopt-body { display: grid; gap: 10px; padding: 0 12px 14px; }
+.lbz-h { font-family: var(--f-cond); font-weight: 800; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-top: 6px; }
+.lbz-info .lbz-rules { box-shadow: none; background: var(--panel-2); }
+.lbz-info .lbz-rules span { font-size: 14px; line-height: 1.35; }
+.lbz-info .lbz-rules b.lbz-pn { font-family: var(--f-body); font-size: 15px; color: var(--fg); text-align: left; }
+body.dark .lbz-info .lbz-rules { background: rgba(255,255,255,.05); }
+.pf-name { font-family: var(--f-display); font-weight: 800; font-size: 32px; line-height: 1.05; color: #fff; }
+.pf-stats { position: relative; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.pf-stats div { display: grid; justify-items: center; gap: 2px; padding: 10px 6px; border-radius: 16px; background: rgba(255,255,255,.08); box-shadow: inset 0 0 0 1px rgba(255,255,255,.08); }
+.pf-stats b { font-family: var(--f-display); font-weight: 800; font-size: 26px; line-height: 1; background: linear-gradient(90deg, #7cc4ff, #b9a6ff 55%, #ff9ad5); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.pf-stats small { font-size: 11px; color: #c9d4f2; text-transform: uppercase; letter-spacing: .06em; text-align: center; }
+.set-menu > summary { gap: 12px; }
+.set-menu > summary > span:nth-child(2) { flex: 0 0 auto; font-size: 17px; }
+.set-menu > summary > b { flex: 1; text-align: right; font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.subopt > summary > .set-ico { flex: 0 0 38px; }
+.set-ico { width: 38px; height: 38px; border-radius: 12px; display: grid; place-items: center; color: #fff; background: linear-gradient(135deg, #3b8cff, #8a6bff); box-shadow: 0 6px 14px rgba(138,107,255,.35); }
+.set-ico svg { width: 22px; height: 22px; }
+.set-menu[open] .set-ico svg { animation: setSpin .6s ease; }
+@keyframes setSpin { from { transform: rotate(-120deg); } }
+.set-body { display: grid; gap: 14px; padding: 4px 14px 16px; }
+.set-body .subopt { margin: 0; box-shadow: none; background: var(--panel-2); }
+body.dark .set-body .subopt { background: rgba(255,255,255,.05); }
+.set-body .toggle { box-shadow: none; background: var(--panel-2); }
+body.dark .set-body .toggle { background: rgba(255,255,255,.05); }
 .subopt { margin: 0 0 16px; border-radius: 16px; background: var(--panel); box-shadow: var(--shadow); color: var(--fg); overflow: hidden; }
 .subopt > summary { list-style: none; display: flex; align-items: center; gap: 10px; padding: 14px 16px; cursor: pointer; font-weight: 700; }
 .subopt > summary::-webkit-details-marker { display: none; }
@@ -764,6 +858,7 @@ const I18N_RX = [
   [/(\d+) secondi/g, "$1 seconds", "$1 segundos", "$1 secondes", "$1 Sekunden", "$1 segundos"],
   [/\((\d+) volte\)/g, "($1 times)", "($1 veces)", "($1 fois)", "($1-mal)", "($1 vezes)"],
   [/ · serie (\d+)/g, " \xB7 set $1", " \xB7 serie $1", " \xB7 s\xE9rie $1", " \xB7 Satz $1", " \xB7 s\xE9rie $1"],
+  [/^(\d+)° posto$/g, "#$1", "$1.\xBA puesto", "$1e place", "Platz $1", "$1\xBA lugar"],
   [/(\d+) punti totali/g, "$1 total points", "$1 puntos totales", "$1 points au total", "$1 Punkte insgesamt", "$1 pontos no total"],
   [/(\d+) punti al livello /g, "$1 points to ", "$1 puntos para ", "$1 points avant ", "$1 Punkte bis ", "$1 pontos para "],
   [/(\d+) al livello /g, "$1 to ", "$1 para ", "$1 avant ", "$1 bis ", "$1 para "],
@@ -1119,6 +1214,23 @@ const I18N = [
   ["Fine mese", "Month ends", "Fin de mes", "Fin du mois", "Monatsende", "Fim do m\xEAs"],
   ["I tuoi punti questo mese", "Your points this month", "Tus puntos este mes", "Tes points ce mois-ci", "Deine Punkte diesen Monat", "Seus pontos este m\xEAs"],
   ["Premio del mese", "Monthly prize", "Premio del mes", "R\xE9compense du mois", "Monatspreis", "Pr\xEAmio do m\xEAs"],
+  ["Impostazioni", "Settings", "Ajustes", "R\xE9glages", "Einstellungen", "Configura\xE7\xF5es"],
+  ["Nome, lingua, voce, grafica", "Name, language, voice, graphics", "Nombre, idioma, voz, gr\xE1ficos", "Nom, langue, voix, graphismes", "Name, Sprache, Stimme, Grafik", "Nome, idioma, voz, gr\xE1ficos"],
+  ["Punti totali", "Total points", "Puntos totales", "Points au total", "Gesamtpunkte", "Pontos totais"],
+  ["Questo mese", "This month", "Este mes", "Ce mois-ci", "Diesen Monat", "Este m\xEAs"],
+  ["Corone", "Crowns", "Coronas", "Couronnes", "Kronen", "Coroas"],
+  ["giorni alla fine", "days left", "d\xEDas al final", "jours restants", "Tage \xFCbrig", "dias restantes"],
+  ["Regole, punti e premi", "Rules, points and prizes", "Reglas, puntos y premios", "R\xE8gles, points et prix", "Regeln, Punkte und Preise", "Regras, pontos e pr\xEAmios"],
+  ["Info", "Info", "Info", "Infos", "Info", "Info"],
+  ["Come funziona", "How it works", "C\xF3mo funciona", "Comment \xE7a marche", "So funktioniert's", "Como funciona"],
+  ["Premi", "Prizes", "Premios", "Prix", "Preise", "Pr\xEAmios"],
+  ["I primi 3 a fine mese sbloccano per tutto il mese successivo:", "The top 3 at the end of the month unlock for the whole next month:", "Los 3 primeros a final de mes desbloquean durante todo el mes siguiente:", "Les 3 premiers en fin de mois d\xE9bloquent pour tout le mois suivant :", "Die Top 3 am Monatsende schalten f\xFCr den ganzen n\xE4chsten Monat frei:", "Os 3 primeiros no fim do m\xEAs desbloqueiam durante todo o m\xEAs seguinte:"],
+  ["La classifica \xE8 mensile: il primo di ogni mese i punti del mese ripartono da zero. I punti totali e il livello restano.", "The leaderboard is monthly: on the 1st of each month the monthly points start again from zero. Total points and level stay.", "La clasificaci\xF3n es mensual: el d\xEDa 1 de cada mes los puntos del mes vuelven a cero. Los puntos totales y el nivel se mantienen.", "Le classement est mensuel : le 1er de chaque mois, les points du mois repartent de z\xE9ro. Les points totaux et le niveau restent.", "Die Rangliste ist monatlich: Am 1. jedes Monats starten die Monatspunkte wieder bei null. Gesamtpunkte und Level bleiben.", "A classifica\xE7\xE3o \xE9 mensal: no dia 1 de cada m\xEAs os pontos do m\xEAs voltam a zero. Os pontos totais e o n\xEDvel continuam."],
+  ["Ci sei tu e gli amici che hai sfidato: ogni sfida scambia nomi, livelli e punti.", "It's you and the friends you've challenged: every challenge swaps names, levels and points.", "Est\xE1s t\xFA y los amigos que has retado: cada reto intercambia nombres, niveles y puntos.", "Il y a toi et les amis que tu as d\xE9fi\xE9s : chaque d\xE9fi \xE9change noms, niveaux et points.", "Dabei sind du und die Freunde, die du herausgefordert hast: Jedes Duell tauscht Namen, Level und Punkte aus.", "Est\xE3o voc\xEA e os amigos que voc\xEA desafiou: cada desafio troca nomes, n\xEDveis e pontos."],
+  ["Nella classifica mondiale ci sono tutti; sotto vedi anche te e gli amici che hai sfidato.", "Everyone is in the world leaderboard; below you also see yourself and the friends you've challenged.", "En la clasificaci\xF3n mundial est\xE1n todos; abajo ves tambi\xE9n a ti y a los amigos que has retado.", "Tout le monde est dans le classement mondial ; en dessous tu vois aussi toi et les amis d\xE9fi\xE9s.", "In der Weltrangliste sind alle; darunter siehst du dich und die Freunde, die du herausgefordert hast.", "Na classifica\xE7\xE3o mundial est\xE3o todos; abaixo voc\xEA v\xEA tamb\xE9m voc\xEA e os amigos que desafiou."],
+  ["A fine mese i primi 3 vincono il premio (servono almeno 4 partecipanti).", "At the end of the month the top 3 win the prize (at least 4 players needed).", "A final de mes los 3 primeros ganan el premio (hacen falta al menos 4 participantes).", "En fin de mois, les 3 premiers gagnent le prix (il faut au moins 4 participants).", "Am Monatsende gewinnen die Top 3 den Preis (mindestens 4 Teilnehmer n\xF6tig).", "No fim do m\xEAs os 3 primeiros ganham o pr\xEAmio (s\xE3o necess\xE1rios pelo menos 4 participantes)."],
+  ["I primi 3 della classifica mondiale a fine mese vincono il premio.", "The top 3 of the world leaderboard at the end of the month win the prize.", "Los 3 primeros de la clasificaci\xF3n mundial a final de mes ganan el premio.", "Les 3 premiers du classement mondial en fin de mois gagnent le prix.", "Die Top 3 der Weltrangliste am Monatsende gewinnen den Preis.", "Os 3 primeiros da classifica\xE7\xE3o mundial no fim do m\xEAs ganham o pr\xEAmio."],
+  ["Chi vince 3 sfide di fila contro lo stesso avversario conquista una corona, che resta accanto al nome.", "Win 3 challenges in a row against the same opponent to earn a crown that stays next to your name.", "Quien gane 3 retos seguidos contra el mismo rival conquista una corona que queda junto a su nombre.", "Gagne 3 d\xE9fis d'affil\xE9e contre le m\xEAme adversaire pour conqu\xE9rir une couronne qui reste \xE0 c\xF4t\xE9 de ton nom.", "Wer 3 Duelle in Folge gegen denselben Gegner gewinnt, erobert eine Krone, die neben dem Namen bleibt.", "Quem vencer 3 desafios seguidos contra o mesmo advers\xE1rio conquista uma coroa que fica ao lado do nome."],
   ["I primi 3 a fine mese sbloccano per tutto il mese successivo:", "The top 3 at the end of the month unlock for the whole next month:", "Los 3 primeros a final de mes desbloquean durante todo el mes siguiente:", "Le top 3 en fin de mois d\xE9bloque pour tout le mois suivant :", "Die Top 3 am Monatsende schalten f\xFCr den ganzen n\xE4chsten Monat frei:", "Os 3 primeiros no fim do m\xEAs desbloqueiam durante todo o m\xEAs seguinte:"],
   ["Il tuo nome in classifica", "Your name on the leaderboard", "Tu nombre en la clasificaci\xF3n", "Ton nom dans le classement", "Dein Name in der Rangliste", "Seu nome no ranking"],
   ["Salva nome", "Save name", "Guardar nombre", "Enregistrer le nom", "Namen speichern", "Salvar nome"],
@@ -3139,9 +3251,9 @@ function renderOnboard() {
     go({ name: "home" });
   });
 }
-let profGOpen = false;
+let profGOpen = false, profSetOpen = false;
 function renderProfile() {
-  app.innerHTML = '\n  <div class="screen">\n    <header class="mast"><div><h1>Profilo</h1><div class="sub">'.concat(myName ? esc(myName) + " \xB7 " : "").concat(RANKS[rankIndex()][0], '</div></div></header>\n    <details class="subopt" id="gSub"').concat(profGOpen ? " open" : "", "><summary><span>Percorso</span><b>").concat(G() === "f" ? "Donna" : "Uomo", '</b></summary><div class="subopt-body">').concat(genderPick(G()), '</div></details>\n    <div class="field"><label class="label" for="nm">Il tuo nome</label><input id="nm" maxlength="20" autocomplete="nickname" placeholder="Es. Marco" value="').concat(esc(myName), '"></div>\n    <div class="field"><label class="label" for="pLang">Lingua</label>\n      <select id="pLang" class="sel">\n        <option value="">Automatica (').concat(LANGS[detectLang()].name, ")</option>\n        ").concat(LANG_ORDER.map((k) => '<option value="'.concat(k, '" ').concat(store.get("lang", "") === k ? "selected" : "", ">").concat(LANGS[k].name, "</option>")).join(""), '\n      </select></div>\n    <div class="section"><div class="label">Voce</div>\n      <label class="toggle"><input type="checkbox" id="voiceT" ').concat(voiceOn ? "checked" : "", '> Istruttore vocale</label>\n      <label class="toggle"><input type="checkbox" id="gritT" ').concat(gritOn ? "checked" : "", '> Voce del coach: incitamento durante l\'esercizio</label>\n      <button class="btn ghost" id="voiceSet" type="button">Personalizza la voce</button>\n    </div>\n    ').concat(fxSettings(), '\n    <p class="note">Il video resta sul tuo telefono: l\'analisi della postura avviene nel browser e nessuna immagine viene inviata.</p>\n  </div>');
+  app.innerHTML = '\n  <div class="screen">\n    <section class="lbz-hero pf-hero">\n      <div class="dz-glow"></div>\n      <div class="lbz-top"><h1>Profilo</h1>'.concat(crownN(stats.crowns) ? '<span class="dz-crowns">'.concat(crownSVG(), "<b>").concat(crownN(stats.crowns), "</b></span>") : "", '</div>\n      <div class="lbz-me">').concat(avatar(myName || "Tu", "lbz-av"), '<div><div class="pf-name">').concat(esc(myName || "Atleta"), '</div>\n        <div class="lbz-meta">').concat(myBadge(), " <span>").concat(RANKS[rankIndex()][0], "</span> \xB7 <span>").concat(G() === "f" ? "Donna" : "Uomo", '</span></div></div></div>\n      <div class="pf-stats"><div><b class="cu">').concat(stats.total, '</b><small>Punti totali</small></div><div><b class="cu">').concat(stats.month.pts, '</b><small>Questo mese</small></div><div><b class="cu">').concat(crownN(stats.crowns), '</b><small>Corone</small></div></div>\n    </section>\n    <details class="subopt set-menu" id="setSub"').concat(profSetOpen ? " open" : "", '><summary><span class="set-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></span><span>Impostazioni</span><b>Nome, lingua, voce, grafica</b></summary><div class="subopt-body set-body">\n    <details class="subopt" id="gSub"').concat(profGOpen ? " open" : "", "><summary><span>Percorso</span><b>").concat(G() === "f" ? "Donna" : "Uomo", '</b></summary><div class="subopt-body">').concat(genderPick(G()), '</div></details>\n    <div class="field"><label class="label" for="nm">Il tuo nome</label><input id="nm" maxlength="20" autocomplete="nickname" placeholder="Es. Marco" value="').concat(esc(myName), '"></div>\n    <div class="field"><label class="label" for="pLang">Lingua</label>\n      <select id="pLang" class="sel">\n        <option value="">Automatica (').concat(LANGS[detectLang()].name, ")</option>\n        ").concat(LANG_ORDER.map((k) => '<option value="'.concat(k, '" ').concat(store.get("lang", "") === k ? "selected" : "", ">").concat(LANGS[k].name, "</option>")).join(""), '\n      </select></div>\n    <div class="section"><div class="label">Voce</div>\n      <label class="toggle"><input type="checkbox" id="voiceT" ').concat(voiceOn ? "checked" : "", '> Istruttore vocale</label>\n      <label class="toggle"><input type="checkbox" id="gritT" ').concat(gritOn ? "checked" : "", '> Voce del coach: incitamento durante l\'esercizio</label>\n      <button class="btn ghost" id="voiceSet" type="button">Personalizza la voce</button>\n    </div>\n    ').concat(fxSettings(), '\n    </div></details>\n    <p class="note">Il video resta sul tuo telefono: l\'analisi della postura avviene nel browser e nessuna immagine viene inviata.</p>\n  </div>');
   fxSettingsWire();
   app.querySelectorAll(".pick > button").forEach((b) => b.onclick = () => {
     setGender(b.dataset.g);
@@ -3149,7 +3261,11 @@ function renderProfile() {
     renderProfile();
   });
   $("gSub").ontoggle = (e) => {
+    e.stopPropagation();
     profGOpen = e.target.open;
+  };
+  $("setSub").ontoggle = (e) => {
+    if (e.target === $("setSub")) profSetOpen = e.target.open;
   };
   $("nm").onchange = () => {
     const v = $("nm").value.trim();
@@ -3822,16 +3938,39 @@ async function lbTop() {
   const q = fs.query(fs.collection(db, "lb", monthKey(), "players"), fs.orderBy("pts", "desc"), fs.limit(50));
   return (await fs.getDocs(q)).docs.map((d) => ({ id: d.id, ...d.data() }));
 }
-function lbRows(rows, isMe) {
-  return rows.map((r, i) => '<li class="'.concat(isMe(r) ? "me" : "").concat(i < 3 ? " podium" : "", '"><span class="pos">').concat(i + 1, '</span><span class="who">').concat(esc(r.name || "Atleta"), " ").concat(rankBadge(Math.min(RANKS.length - 1, Math.max(0, r.rank | 0)), !!r.gold, r.crowns), '</span><span class="pts">').concat(r.pts, "</span></li>")).join("");
+function avatar(n, cls = "") {
+  const c = [...n || "?"][0].toUpperCase(), h = [...n || ""].reduce((a, ch) => (a * 31 + ch.charCodeAt(0)) % 360, 7);
+  return '<span class="dz-av '.concat(cls, '" style="--h:').concat(h, '">').concat(esc(c), "</span>");
 }
+const lbBadge = (r) => rankBadge(Math.min(RANKS.length - 1, Math.max(0, r.rank | 0)), !!r.gold, r.crowns);
+function lbRows(rows, isMe, from = 0) {
+  var _a;
+  const top = Math.max(1, ((_a = rows[0]) == null ? void 0 : _a.pts) || 1);
+  return rows.slice(from).map((r, k) => {
+    const i = k + from;
+    return '<li class="lbx'.concat(isMe(r) ? " me" : "", '" style="--d:').concat(k * 70, 'ms"><span class="pos">').concat(i + 1, "</span>").concat(avatar(r.name), '<span class="who"><b>').concat(esc(r.name || "Atleta"), "</b>").concat(lbBadge(r), '<i class="bar"><i style="width:').concat(Math.max(4, Math.round(r.pts / top * 100)), '%"></i></i></span><span class="pts">').concat(r.pts, "</span></li>");
+  }).join("");
+}
+function podium(rows, isMe) {
+  const p = rows.slice(0, 3);
+  if (!p.length) return "";
+  const order = [1, 0, 2].filter((i) => p[i]), medal = ["oro", "argento", "bronzo"];
+  return '<div class="podium">'.concat(order.map((i) => {
+    const r = p[i];
+    return '<div class="pd pd'.concat(i + 1).concat(isMe(r) ? " me" : "", '">').concat(i === 0 ? '<span class="pd-crown">'.concat(crownSVG(), "</span>") : "").concat(avatar(r.name, "pd-av"), '<b class="pd-name">').concat(esc(r.name || "Atleta"), '</b><span class="pd-badge">').concat(lbBadge(r), '</span><span class="pd-pts"><span class="cu">').concat(r.pts, '</span> pt</span><div class="pd-step" aria-label="').concat(medal[i], '"><em>').concat(i + 1, "</em></div></div>");
+  }).join(""), "</div>");
+}
+let lbInfoOpen = false;
 function renderRanking() {
-  const ri = rankIndex(), next = RANKS[ri + 1];
-  const left = (() => {
-    const n = /* @__PURE__ */ new Date(), e = new Date(Date.UTC(n.getUTCFullYear(), n.getUTCMonth() + 1, 1));
-    return Math.max(0, Math.ceil((e - n) / 864e5));
-  })();
-  app.innerHTML = '\n  <div class="screen">\n    <header class="mast"><div><h1>Classifica</h1><div class="sub">'.concat(monthName(monthKey()), '</div></div><div class="callsign">Fine mese<b>').concat(left, ' g</b></div></header>\n    <div class="order">\n      <div class="label">I tuoi punti questo mese</div>\n      <div class="code">').concat(stats.month.pts, '</div>\n      <p class="meta">').concat(esc(myName || "Tu"), " ").concat(myBadge(), " ").concat(RANKS[ri][0], " \xB7 ").concat(stats.total, " punti totali").concat(next ? " \xB7 ".concat(next[1] - stats.total, " al livello ").concat(next[0]) : "", '</p>\n    </div>\n    <div class="section">\n      <div class="label">Premio del mese</div>\n      <p class="meta">I primi 3 a fine mese sbloccano per tutto il mese successivo: ').concat(Object.values(ELITE).map((e) => e.name).join(", "), ".</p>\n    </div>\n    ").concat(!myName ? '<div class="field"><label class="label" for="nm">Il tuo nome in classifica</label><input id="nm" maxlength="20" autocomplete="nickname" placeholder="Es. Marco"></div><div class="row"><button class="btn ghost small" id="saveName" type="button">Salva nome</button></div>' : "", "\n    ").concat(FIREBASE_CONFIG ? '<div class="section"><div class="label">Mondiale \xB7 primi 50</div><ol class="lb" id="lb"><li class="lbmsg">Carico la classifica\u2026</li></ol></div>' : "", '\n    <div class="section"><div class="label">Tu e gli amici che hai sfidato</div><ol class="lb">').concat(lbRows(friendsBoard(monthKey()), (r) => r.me), "</ol>\n      ").concat(Object.keys(friends).length ? "" : '<p class="note">Sfida un amico: dopo la prima sfida compare qui con il suo livello e i suoi punti.</p>', "\n      ").concat(FIREBASE_CONFIG ? "" : '<p class="note">Finch\xE9 la classifica mondiale non \xE8 attiva, il premio va ai primi 3 tra te e gli amici sfidati (servono almeno 4 partecipanti).</p>', '</div>\n    <div class="section"><div class="label">Come si guadagnano i punti</div>\n      <ul class="log">\n        <li><span>Ogni ripetizione valida</span><span>1 pt (burpee 3)</span></li>\n        <li><span>Esercizi a tempo, ogni 2 secondi in posizione</span><span>1 pt</span></li>\n        <li><span>Sessione del programma completata</span><span>+50</span></li>\n        <li><span>Prova di efficienza completata</span><span>+20</span></li>\n        <li><span>Sfida: vittoria / pareggio / sconfitta</span><span>+30 / +15 / +10</span></li>\n      </ul>\n    </div>\n  </div>');
+  const ri = rankIndex(), next = RANKS[ri + 1], cur = RANKS[ri];
+  const now = /* @__PURE__ */ new Date(), end = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() + 1, 1)), start = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1));
+  const left = Math.max(0, Math.ceil((end - now) / 864e5)), monthPct = Math.round((now - start) / (end - start) * 100);
+  const lvPct = next ? Math.max(0, Math.min(100, Math.round((stats.total - cur[1]) / (next[1] - cur[1]) * 100))) : 100;
+  const board = friendsBoard(monthKey()), myPos = board.findIndex((r) => r.me) + 1;
+  app.innerHTML = '\n  <div class="screen lbz">\n    <section class="lbz-hero">\n      <div class="dz-glow"></div>\n      <div class="lbz-top"><div><h1>Classifica</h1><div class="lbz-month">'.concat(monthName(monthKey()), '</div></div>\n        <div class="lbz-clock" style="--p:').concat(monthPct, '"><b class="cu">').concat(left, '</b><small>giorni alla fine</small></div></div>\n      <div class="lbz-me">').concat(avatar(myName || "Tu", "lbz-av"), '<div><div class="lbz-label">I tuoi punti questo mese</div><div class="lbz-pts"><span class="cu">').concat(stats.month.pts, '</span><small>pt</small></div>\n        <div class="lbz-meta">').concat(myPos ? '<span class="lbz-pos">'.concat(myPos, "\xB0 posto</span>") : "").concat(myBadge(), " <span>").concat(cur[0], '</span></div></div></div>\n      <div class="lbz-lv"><div class="lbz-lv-row"><span>').concat(stats.total, " punti totali</span><span>").concat(next ? "".concat(next[1] - stats.total, " punti al livello ").concat(next[0]) : "Livello massimo raggiunto", '</span></div><i class="lbz-lv-bar"><i style="width:').concat(lvPct, '%"></i></i></div>\n    </section>\n    ').concat(!myName ? '<div class="field"><label class="label" for="nm">Il tuo nome in classifica</label><input id="nm" maxlength="20" autocomplete="nickname" placeholder="Es. Marco"></div><div class="row"><button class="btn ghost small" id="saveName" type="button">Salva nome</button></div>' : "", "\n    ").concat(FIREBASE_CONFIG ? '<div class="section"><div class="label">Mondiale \xB7 primi 50</div><ol class="lb lbz-list" id="lb"><li class="lbmsg">Carico la classifica\u2026</li></ol></div>' : "", '\n    <div class="section"><div class="label">Tu e gli amici che hai sfidato</div>\n      ').concat(podium(board, (r) => r.me), "\n      ").concat(board.length > 3 ? '<ol class="lb lbz-list">'.concat(lbRows(board, (r) => r.me, 3), "</ol>") : "", "\n      ").concat(Object.keys(friends).length ? "" : '<p class="note">Sfida un amico: dopo la prima sfida compare qui con il suo livello e i suoi punti.</p>', '\n    </div>\n    <details class="subopt lbz-info" id="lbInfo"').concat(lbInfoOpen ? " open" : "", '><summary><span>Regole, punti e premi</span><b>Info</b></summary><div class="subopt-body">\n      <div class="lbz-h">Come funziona</div>\n      <ul class="lbz-rules">\n        <li><i style="--c:#3b8cff">\u{1F4C5}</i><span>La classifica \xE8 mensile: il primo di ogni mese i punti del mese ripartono da zero. I punti totali e il livello restano.</span><b></b></li>\n        <li><i style="--c:#20b38a">\u{1F465}</i><span>').concat(FIREBASE_CONFIG ? "Nella classifica mondiale ci sono tutti; sotto vedi anche te e gli amici che hai sfidato." : "Ci sei tu e gli amici che hai sfidato: ogni sfida scambia nomi, livelli e punti.", '</span><b></b></li>\n        <li><i style="--c:#ff9f43">\u{1F3C6}</i><span>').concat(FIREBASE_CONFIG ? "I primi 3 della classifica mondiale a fine mese vincono il premio." : "A fine mese i primi 3 vincono il premio (servono almeno 4 partecipanti).", '</span><b></b></li>\n        <li><i style="--c:#c98a06">\u{1F451}</i><span>Chi vince ').concat(CROWN_WINS, ' sfide di fila contro lo stesso avversario conquista una corona, che resta accanto al nome.</span><b></b></li>\n      </ul>\n      <div class="lbz-h">Come si guadagnano i punti</div>\n      <ul class="lbz-rules">\n        <li><i style="--c:#3b8cff">\u26A1</i><span>Ogni ripetizione valida</span><b>1 pt (burpee 3)</b></li>\n        <li><i style="--c:#20b38a">\u23F1</i><span>Esercizi a tempo, ogni 2 secondi in posizione</span><b>1 pt</b></li>\n        <li><i style="--c:#8a6bff">\u2713</i><span>Sessione del programma completata</span><b>+50</b></li>\n        <li><i style="--c:#ff9f43">\u25CE</i><span>Prova di efficienza completata</span><b>+20</b></li>\n        <li><i style="--c:#ff5e8a">\u2694</i><span>Sfida: vittoria / pareggio / sconfitta</span><b>+30 / +15 / +10</b></li>\n      </ul>\n      <div class="lbz-h">Premi</div>\n    <section class="lbz-prize"><span class="lbz-trophy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/></svg></span><div><b>Premio del mese</b><p>I primi 3 a fine mese sbloccano per tutto il mese successivo:</p><div class="lbz-chips">').concat(Object.values(ELITE).map((e) => "<span>".concat(e.name, "</span>")).join(""), '</div></div></section>\n      <ul class="lbz-rules">').concat(Object.values(ELITE).map((e) => '<li><i style="--c:#f0b429">\u2605</i><span><b class="lbz-pn">'.concat(e.name, "</b><br>").concat(e.desc, "</span><b></b></li>")).join(""), "</ul>\n    </div></details>\n  </div>");
+  $("lbInfo").ontoggle = (e) => {
+    lbInfoOpen = e.target.open;
+  };
   if ($("saveName")) $("saveName").onclick = () => {
     const v = $("nm").value.trim();
     if (!v) return;
@@ -4669,10 +4808,7 @@ function renderRndJoin() {
 }
 function renderDuels() {
   const fl = invitable(), cr = crownN(stats.crowns);
-  const av = (n) => {
-    const c = [...n || "?"][0].toUpperCase(), h = [...n || ""].reduce((a, ch) => (a * 31 + ch.charCodeAt(0)) % 360, 7);
-    return '<span class="dz-av" style="--h:'.concat(h, '">').concat(esc(c), "</span>");
-  };
+  const av = (n) => avatar(n);
   app.innerHTML = '\n  <div class="screen dz">\n    <section class="dz-hero">\n      <div class="dz-glow"></div>\n      <div class="dz-top"><h1>Sfide</h1>'.concat(cr ? '<span class="dz-crowns">'.concat(crownSVG(), "<b>").concat(cr, "</b></span>") : "", '</div>\n      <p class="dz-sub">Uno contro uno in videochiamata: la fotocamera conta le ripetizioni di entrambi</p>\n      ').concat(SITE ? '<div class="dz-arena"><img class="dz-m" src="img/chars/vs-m.webp" alt="" draggable="false"><em class="dz-vs">VS</em><img class="dz-f" src="img/chars/vs-f.webp" alt="" draggable="false"></div>' : '<div class="dz-arena"><em class="dz-vs">VS</em></div>', '\n      <button class="dz-cta" id="duelRandom" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg><span><b>Sfida casuale</b><small>Ti abbino a chi sta cercando una sfida in questo momento</small></span></button>\n    </section>\n    <div class="dz-tiles">\n      <button class="dz-tile t1" id="duelNew" type="button"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v12H5.5L4 17.5z"/><path d="M8 9h8M8 12h5"/></svg></span><b>Invita un amico</b><small>Crea la sfida e mandagli il link o l\'invito</small></button>\n      <button class="dz-tile t2" id="duelJoin" type="button"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="10" rx="2"/><path d="M7 12h.01M11 12h.01M15 12h.01"/></svg></span><b>Ho un codice</b><small>Entra nella sfida di un amico</small></button>\n    </div>\n    <label class="dz-switch"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 21h4"/></svg></span><span>Avvisami quando qualcuno cerca una sfida casuale</span><input type="checkbox" id="rndT" ').concat(RW.on ? "checked" : "", '><i></i></label>\n    <div class="section"><div class="label">I tuoi amici</div>\n      ').concat(fl.length ? '<ol class="dz-friends">'.concat(fl.map((f) => "<li>".concat(av(f.name), '<span class="who"><b>').concat(esc(f.name), "</b>").concat(rankBadge(Math.min(RANKS.length - 1, Math.max(0, f.rank | 0)), !!f.gold, f.crowns), '</span><button class="btn primary small inv" type="button" data-inv="').concat(esc(f.fcode), '">Sfida</button></li>')).join(""), "</ol>") : '<p class="note">Aggiungi un amico con il suo codice, oppure sfidalo con un link: comparir\xE0 qui e potrai invitarlo con un tocco.</p>', '\n    </div>\n    <div class="dz-ticket">\n      <div class="dz-ticket-top">\n        <div class="label">Il tuo codice amico</div>\n        <div class="code">').concat(myFcode, '</div>\n        <p class="meta">Dallo ai tuoi amici: con questo codice ti aggiungono e ti invitano alle sfide quando hai l\'app aperta.</p>\n        <button class="btn ghost small" id="shareMe" type="button">Invia il mio codice</button>\n      </div>\n      <div class="dz-ticket-bot">\n        <label class="label" for="addCode">Aggiungi un amico</label>\n        <div class="dz-add"><input id="addCode" maxlength="6" autocapitalize="characters" autocomplete="off" placeholder="Codice amico"><button class="btn primary small" id="addBtn" type="button">Aggiungi</button></div>\n        <p class="note" id="addNote" hidden></p>\n      </div>\n    </div>\n  </div>');
   $("duelRandom").onclick = () => go({ name: "duel-new", mode: "random" });
   $("rndT").onchange = (e) => {
@@ -5214,7 +5350,7 @@ function fxEnter(force) {
 }
 function countUp() {
   if (fx.level === "off") return;
-  app.querySelectorAll(".stat b, .pts, .hero .ring b, .callsign b").forEach((el) => {
+  app.querySelectorAll(".stat b, .pts, .hero .ring b, .callsign b, .cu").forEach((el) => {
     const tn = el.firstChild;
     if (!tn || tn.nodeType !== 3) return;
     const m = /^(\+?)(\d+)(.*)$/.exec(tn.nodeValue.trim());
