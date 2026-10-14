@@ -764,6 +764,16 @@ body.dark .lbz-info .lbz-rules { background: rgba(255,255,255,.05); }
 .pk.done b { font-family: var(--f-display); font-weight: 800; font-size: 22px; text-transform: uppercase; line-height: 1.05; }
 .btn.glow { animation: glowPulse 1.6s ease-in-out infinite; }
 @keyframes glowPulse { 50% { box-shadow: 0 0 0 6px color-mix(in srgb, var(--brass) 25%, transparent); } }
+.tones { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.tones button { position: relative; display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 10px 6px 12px; border-radius: 20px; border: 2px solid var(--line); background: var(--panel); color: var(--fg); transition: border-color .2s, transform .15s, box-shadow .2s; }
+.tones button:active { transform: scale(.96); }
+.tones .tone-fig { width: 100%; height: 150px; display: grid; place-items: end center; overflow: hidden; border-radius: 14px; background: linear-gradient(180deg, var(--panel-2), transparent); }
+.tones .tone-fig img { height: 140px; width: auto; }
+.tones i, .tone-dot { width: 20px; height: 20px; border-radius: 50%; background: var(--c); box-shadow: inset 0 -2px 4px rgba(0,0,0,.25), 0 0 0 2px var(--panel); display: inline-block; }
+.tone-dot { width: 14px; height: 14px; vertical-align: -2px; margin-right: 6px; }
+.tones b { font-family: var(--f-cond); font-weight: 800; font-size: 15px; text-transform: uppercase; }
+.tones button[aria-pressed="true"] { border-color: var(--brass); box-shadow: 0 8px 20px color-mix(in srgb, var(--brass) 28%, transparent); }
+.tones button[aria-pressed="true"]::after { content: ""; position: absolute; top: 8px; right: 8px; width: 22px; height: 22px; border-radius: 50%; background: var(--brass) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12.5l4 4 8-9'/%3E%3C/svg%3E") center / 14px no-repeat; }
 .band-note { display: grid; gap: 2px; padding: 12px 14px; border-radius: 16px; background: color-mix(in srgb, #3ddc97 16%, var(--panel)); border: 1px solid color-mix(in srgb, #3ddc97 40%, transparent); font-size: 14px; color: var(--fg); }
 .band-note b { font-family: var(--f-cond); font-weight: 800; font-size: 16px; text-transform: uppercase; letter-spacing: .04em; color: #16936a; }
 body.dark .band-note b { color: #3ddc97; }
@@ -1197,6 +1207,15 @@ const I18N = [
   ["Gambe tese verso l'alto.", "Legs straight up.", "Piernas estiradas hacia arriba.", "Jambes tendues vers le haut.", "Beine gestreckt nach oben.", "Pernas esticadas para cima."],
   ["Abbassa una gamba alla volta contro l'elastico.", "Lower one leg at a time against the band.", "Baja una pierna cada vez contra la banda.", "Abaisse une jambe \xE0 la fois contre l'\xE9lastique.", "Senk ein Bein nach dem anderen gegen das Band.", "Abaixe uma perna de cada vez contra o el\xE1stico."],
   ["Alterna le gambe senza staccare la schiena da terra.", "Alternate legs without lifting your back off the floor.", "Alterna las piernas sin despegar la espalda del suelo.", "Alterne les jambes sans d\xE9coller le dos du sol.", "Wechsle die Beine, ohne den R\xFCcken anzuheben.", "Alterne as pernas sem tirar as costas do ch\xE3o."],
+  ["Scegli il tuo avatar", "Choose your avatar", "Elige tu avatar", "Choisis ton avatar", "W\xE4hle deinen Avatar", "Escolha seu avatar"],
+  ["Che colore di pelle vuoi per il personaggio che si allena con te?", "What skin colour do you want for the character who trains with you?", "\xBFQu\xE9 color de piel quieres para el personaje que entrena contigo?", "Quelle couleur de peau veux-tu pour le personnage qui s'entra\xEEne avec toi ?", "Welche Hautfarbe soll die Figur haben, die mit dir trainiert?", "Que cor de pele voc\xEA quer para o personagem que treina com voc\xEA?"],
+  ["Puoi cambiarlo quando vuoi dal Profilo.", "You can change it anytime from your Profile.", "Puedes cambiarlo cuando quieras desde el Perfil.", "Tu peux le changer quand tu veux depuis le Profil.", "Du kannst es jederzeit im Profil \xE4ndern.", "Voc\xEA pode mudar quando quiser no Perfil."],
+  ["Avatar", "Avatar", "Avatar", "Avatar", "Avatar", "Avatar"],
+  ["Chiara", "Light", "Clara", "Claire", "Hell", "Clara"],
+  ["Media", "Medium", "Media", "Moyenne", "Mittel", "M\xE9dia"],
+  ["Scura", "Dark", "Oscura", "Fonc\xE9e", "Dunkel", "Escura"],
+  ["Colore della pelle", "Skin colour", "Color de piel", "Couleur de peau", "Hautfarbe", "Cor da pele"],
+  ["Inizia", "Start", "Empezar", "Commencer", "Los geht's", "Come\xE7ar"],
   ["Gambe e glutei", "Legs and glutes", "Piernas y gl\xFAteos", "Jambes et fessiers", "Beine und Po", "Pernas e gl\xFAteos"],
   ["Petto, spalle, tricipiti", "Chest, shoulders, triceps", "Pecho, hombros, tr\xEDceps", "Pectoraux, \xE9paules, triceps", "Brust, Schultern, Trizeps", "Peito, ombros, tr\xEDceps"],
   ["Sit-up completi", "Full sit-ups", "Abdominales completos", "Abdos complets", "Komplette Sit-ups", "Abdominais completos"],
@@ -2116,7 +2135,7 @@ function figureSVG(ex, t = 1, g = "m", opts = {}) {
   if (box) s += '<rect x="'.concat(f1(box.x), '" y="').concat(f1(box.y), '" width="').concat(f1(box.w), '" height="').concat(f1(box.h), '" rx="1" fill="#c8a24a"/><rect x="').concat(f1(box.x), '" y="').concat(f1(box.y), '" width="').concat(f1(box.w), '" height="2.4" fill="#e2c26a"/><rect x="').concat(f1(box.x + box.w - 4), '" y="').concat(f1(box.y), '" width="4" height="').concat(f1(box.h), '" fill="#a8842f"/>');
   if (TOON) {
     headDefs();
-    const T = TOON_PAL[g] || TOON_PAL.m;
+    const T = toonPal(g);
     s += j.front ? drawFrontToon(j, g, T) : drawSideToon(j, g, T);
   } else s += j.front ? drawFront(j, g, C) : drawSide(j, g, C);
   if (def.band) s += bandSVG(def.band, j, t);
@@ -2138,6 +2157,15 @@ HEADS["side-m"] = HEADS["front-m"];
 HEADS["side-f"] = HEADS["front-f"];
 const HEAD_ANCHOR = { "front-m": [0.5, 0.97], "front-f": [0.62, 0.97], "side-m": [0.5, 0.97], "side-f": [0.62, 0.97] };
 const HEAD_H = { "front-m": 27, "front-f": 27, "side-m": 27, "side-f": 27 };
+const TONE_SKIN = {
+  1: { m: { skin: "#c68153", skin2: "#ab623c" }, f: { skin: "#ca8f63", skin2: "#b26f47" } },
+  2: { m: { skin: "#7c4c2f", skin2: "#6b3a22" }, f: { skin: "#7e5539", skin2: "#6f4229" } }
+};
+const toonPal = (g) => {
+  const T = TOON_PAL[g] || TOON_PAL.m;
+  return tone && TONE_SKIN[tone] ? { ...T, ...TONE_SKIN[tone][g === "f" ? "f" : "m"] } : T;
+};
+const imgDir = () => SITE && tone ? "img/t".concat(tone, "/") : "img/";
 const TOON_PAL = {
   m: { skin: "#f3a676", skin2: "#d27f55", top: "#a6a6aa", top2: "#7a7a7f", bot: "#4a4a50", bot2: "#323236", shoe: "#fb9539", shoe2: "#d9741f", sole: "#ffffff" },
   f: { skin: "#f8b98e", skin2: "#da8f66", top: "#ef6f8e", top2: "#c9506e", bot: "#ea6a84", bot2: "#c24d66", shoe: "#f59fb0", shoe2: "#d97c8f", sole: "#ffffff" }
@@ -2145,6 +2173,11 @@ const TOON_PAL = {
 function headDefs() {
   const d = fxDefs();
   if (!document.getElementById("hd-front-m")) d.insertAdjacentHTML("beforeend", Object.keys(HEADS).map((k) => '<image id="hd-'.concat(k, '" href="').concat(HEADS[k][2], '" width="').concat(HEADS[k][0], '" height="').concat(HEADS[k][1], '"/>')).join("") + '<linearGradient id="tvol" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#000" stop-opacity=".22"/><stop offset=".22" stop-color="#fff" stop-opacity=".2"/><stop offset=".4" stop-color="#fff" stop-opacity="0"/><stop offset=".72" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".3"/></linearGradient><filter id="tsoft" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation=".9"/></filter><filter id="tsoft2" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="1.8"/></filter>');
+  const dir = SITE && tone ? "img/t".concat(tone, "/heads/") : "";
+  for (const k of Object.keys(HEADS)) {
+    const el = document.getElementById("hd-" + k), href = dir ? dir + k.replace("side", "front") + ".png" : HEADS[k][2];
+    if (el && el.getAttribute("href") !== href) el.setAttribute("href", href);
+  }
 }
 function headUse(kind, at, rot = 0) {
   const [w, h] = HEADS[kind], [ax, ay] = HEAD_ANCHOR[kind], k = HEAD_H[kind] / h;
@@ -2256,7 +2289,7 @@ function drawFrontToon(j, g, C) {
   }
   return s + behind + headUse("front-" + g, [n[0], n[1] - 2]) + front;
 }
-const charImg = (ex, g) => SITE ? '<img class="char char-stand" src="img/chars/stand-'.concat(g === "f" ? "f" : "m", '.webp" alt="" draggable="false" decoding="async">') : "";
+const charImg = (ex, g) => SITE ? '<img class="char char-stand" src="'.concat(imgDir(), "chars/stand-").concat(g === "f" ? "f" : "m", '.webp" alt="" draggable="false" decoding="async">') : "";
 const PICS = { "stepup": { "m": { "w": 263, "h": 502, "n": 4 }, "f": { "w": 212, "h": 465, "n": 4 } }, "lunge": { "m": { "w": 248, "h": 509, "n": 2 }, "f": { "w": 231, "h": 460, "n": 2 } }, "squat": { "m": { "w": 369, "h": 560, "n": 2 }, "f": { "w": 358, "h": 560, "n": 2 } }, "jacks": { "m": { "w": 377, "h": 560, "n": 2 }, "f": { "w": 339, "h": 560, "n": 2 } }, "pushup": { "m": { "w": 783, "h": 560, "n": 2 }, "f": { "w": 725, "h": 560, "n": 2 } }, "plank": { "m": { "w": 900, "h": 468, "n": 2 }, "f": { "w": 900, "h": 494, "n": 2 } }, "abs": { "m": { "w": 900, "h": 443, "n": 2 }, "f": { "w": 900, "h": 381, "n": 2 } }, "sidelunge": { "m": { "w": 441, "h": 560, "n": 2 }, "f": { "w": 427, "h": 560, "n": 2 } }, "boxsquat": { "m": { "w": 392, "h": 560, "n": 2 }, "f": { "w": 339, "h": 560, "n": 2 } }, "jumpsquat": { "m": { "w": 472, "h": 560, "n": 2 }, "f": { "w": 471, "h": 560, "n": 2 } }, "climber": { "m": { "w": 811, "h": 560, "n": 2 }, "f": { "w": 724, "h": 560, "n": 2 } }, "widepush": { "m": { "w": 802, "h": 560, "n": 2 }, "f": { "w": 752, "h": 560, "n": 2 } }, "scissor": { "m": { "w": 647, "h": 560, "n": 2 }, "f": { "w": 863, "h": 560, "n": 2 } }, "bridge": { "m": { "w": 900, "h": 381, "n": 2 }, "f": { "w": 900, "h": 358, "n": 2 } }, "burpee": { "m": { "w": 719, "h": 560, "n": 2 }, "f": { "w": 480, "h": 560, "n": 2 } }, "wallsit": { "m": { "w": 315, "h": 560, "n": 2 }, "f": { "w": 291, "h": 560, "n": 2 } }, "bandcrunch": { "m": { "w": 900, "h": 494, "n": 2 }, "f": { "w": 900, "h": 470, "n": 2 } }, "bandjacks": { "m": { "w": 348, "h": 560, "n": 2 }, "f": { "w": 321, "h": 560, "n": 2 } }, "bandpush": { "m": { "w": 688, "h": 560, "n": 2 }, "f": { "w": 762, "h": 560, "n": 2 } }, "bandsquat": { "m": { "w": 309, "h": 560, "n": 2 }, "f": { "w": 244, "h": 560, "n": 2 } }, "bandplank": { "m": { "w": 790, "h": 560, "n": 2 } }, "bandbridge": { "m": { "w": 900, "h": 375, "n": 2 } }, "bandburpee": { "m": { "w": 501, "h": 560, "n": 2 } }, "bandscissor": { "m": { "w": 721, "h": 560, "n": 2 } }, "bandwallsit": { "m": { "w": 317, "h": 560, "n": 2 } } };
 PICS.revlunge = PICS.lunge;
 PICS.situp = PICS.crunch = PICS.abs;
@@ -2269,7 +2302,7 @@ function picHTML(ex, g) {
   if (!p) return "";
   const base = ex === "revlunge" ? "lunge" : ex === "situp" || ex === "crunch" ? "abs" : ex;
   let s = '<div class="pics" style="aspect-ratio:'.concat(p.w, " / ").concat(p.h, '">');
-  for (let i = 0; i < p.n; i++) s += '<img src="img/ex/'.concat(base, "-").concat(g === "f" ? "f" : "m", "-").concat(i, '.webp" alt="" draggable="false" decoding="async"').concat(i ? ' style="opacity:0"' : "", ">");
+  for (let i = 0; i < p.n; i++) s += '<img src="'.concat(imgDir(), "ex/").concat(base, "-").concat(g === "f" ? "f" : "m", "-").concat(i, '.webp" alt="" draggable="false" decoding="async"').concat(i ? ' style="opacity:0"' : "", ">");
   return s + "</div>";
 }
 const fxFull = () => {
@@ -2714,6 +2747,14 @@ const EX = {
     faults: ["Gamba non distesa abbastanza (non conta)"]
   }
 };
+let tone = (() => {
+  try {
+    const v = JSON.parse(localStorage.getItem("recluta:tone"));
+    return v === 1 || v === 2 ? v : 0;
+  } catch (e) {
+    return 0;
+  }
+})();
 let gender = (() => {
   try {
     const v = JSON.parse(localStorage.getItem("recluta:gender"));
@@ -3611,6 +3652,14 @@ function setGender(g) {
   store.set("gender", g);
   applyTheme();
 }
+const TONE_NAMES = ["Chiara", "Media", "Scura"], TONE_DOT = ["#f6c29b", "#c68153", "#7c4c2f"];
+function tonePick(sel, g) {
+  return '<div class="tones" role="group" aria-label="Colore della pelle">'.concat(TONE_NAMES.map((n, t) => '<button type="button" data-tone="'.concat(t, '" aria-pressed="').concat(sel === t, '"><span class="tone-fig">').concat(SITE ? '<img src="'.concat(t ? "img/t".concat(t, "/") : "img/", "chars/stand-").concat(g === "f" ? "f" : "m", '.webp" alt="" draggable="false" decoding="async">') : "", '</span><i style="--c:').concat(TONE_DOT[t], '"></i><b>').concat(n, "</b></button>")).join(""), "</div>");
+}
+function setTone(t) {
+  tone = t === 1 || t === 2 ? t : 0;
+  store.set("tone", tone);
+}
 function renderOnboard() {
   const ico = {
     reps: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.6 2.6L16 9.5"/></svg>',
@@ -3618,8 +3667,8 @@ function renderOnboard() {
     duel: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="14" height="12" rx="2"/><path d="M16 10l6-3v10l-6-3"/></svg>'
   };
   const brand = '<div class="fq-top"><div class="fq-logo" data-notr>'.concat(SITE ? '<img class="fq-mark" src="img/logo.webp" alt="" draggable="false">' : "<i>F</i>", 'FitQuest</div><span class="fq-beta">Beta</span></div>');
-  if (route.step !== "setup") {
-    app.innerHTML = '\n    <div class="screen landing fq">\n      '.concat(brand, '\n      <div class="fq-hero">').concat(SITE ? '<img src="img/fitquest-hero.jpg" alt="" width="1130" height="678" decoding="async">' : '<div class="land-figs"><div class="figbox" data-fig="jacks" data-g="m" data-anim></div><div class="figbox" data-fig="jacks" data-g="f" data-anim></div></div>', '</div>\n      <h1 class="fq-h">Pronto a iniziare?<br><span>Entra in beta</span></h1>\n      <p class="fq-p">Un piccolo passo oggi, una versione pi\xF9 forte di te domani. Allenati al tuo ritmo: noi facciamo il tifo per te! \u{1F499}</p>\n      <button class="fq-cta" id="beta" type="button">Entra in beta <span aria-hidden="true">\u2192</span></button>\n      <div class="fq-or"><span>Oppure accedi con</span></div>\n      <div class="fq-sso">\n        <button class="sso apple" type="button" data-sso="Apple"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16.4 12.6c0-2.4 2-3.6 2.1-3.7-1.1-1.7-2.9-1.9-3.5-1.9-1.5-.2-2.9.9-3.7.9-.8 0-1.9-.9-3.2-.8-1.6 0-3.1 1-4 2.4-1.7 3-.4 7.4 1.2 9.8.8 1.2 1.8 2.5 3 2.4 1.2 0 1.7-.8 3.1-.8s1.9.8 3.2.8c1.3 0 2.1-1.2 2.9-2.4.9-1.4 1.3-2.7 1.3-2.8 0 0-2.4-1-2.4-3.9zM14 5.5c.7-.8 1.1-1.9 1-3-1 0-2.1.7-2.8 1.5-.6.7-1.2 1.8-1 2.9 1.1.1 2.1-.6 2.8-1.4z"/></svg><span>Apple</span></button>\n        <button class="sso google" type="button" data-sso="Google"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M22.6 12.3c0-.8-.1-1.6-.2-2.3H12v4.4h5.9c-.3 1.4-1 2.5-2.2 3.3v2.7h3.6c2.1-1.9 3.3-4.8 3.3-8.1z"/><path fill="#34A853" d="M12 23c3 0 5.5-1 7.3-2.7l-3.6-2.7c-1 .7-2.2 1.1-3.7 1.1-2.9 0-5.3-1.9-6.2-4.5H2.1v2.8C3.9 20.6 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.8 14.2c-.2-.7-.4-1.4-.4-2.2s.1-1.5.4-2.2V7H2.1C1.4 8.5 1 10.2 1 12s.4 3.5 1.1 5l3.7-2.8z"/><path fill="#EA4335" d="M12 5.4c1.6 0 3.1.6 4.2 1.7l3.2-3.2C17.5 2.1 15 1 12 1 7.7 1 3.9 3.4 2.1 7l3.7 2.8C6.7 7.3 9.1 5.4 12 5.4z"/></svg><span>Google</span></button>\n      </div>\n      <p class="sso-note" id="ssoNote" role="status" hidden></p>\n      <p class="fq-note">Unisciti alla beta e comincia con calma: ogni percorso parte da un primo passo.</p>\n      <p class="fq-note2">La motivazione si allena. E oggi hai gi\xE0 cominciato \u2728</p>\n    </div>');
+  if (route.step !== "setup" && route.step !== "tone") {
+    app.innerHTML = '\n    <div class="screen landing fq">\n      '.concat(brand, '\n      <div class="fq-hero">').concat(SITE ? '<img src="'.concat(imgDir(), 'fitquest-hero.jpg" alt="" width="1130" height="678" decoding="async">') : '<div class="land-figs"><div class="figbox" data-fig="jacks" data-g="m" data-anim></div><div class="figbox" data-fig="jacks" data-g="f" data-anim></div></div>', '</div>\n      <h1 class="fq-h">Pronto a iniziare?<br><span>Entra in beta</span></h1>\n      <p class="fq-p">Un piccolo passo oggi, una versione pi\xF9 forte di te domani. Allenati al tuo ritmo: noi facciamo il tifo per te! \u{1F499}</p>\n      <button class="fq-cta" id="beta" type="button">Entra in beta <span aria-hidden="true">\u2192</span></button>\n      <div class="fq-or"><span>Oppure accedi con</span></div>\n      <div class="fq-sso">\n        <button class="sso apple" type="button" data-sso="Apple"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16.4 12.6c0-2.4 2-3.6 2.1-3.7-1.1-1.7-2.9-1.9-3.5-1.9-1.5-.2-2.9.9-3.7.9-.8 0-1.9-.9-3.2-.8-1.6 0-3.1 1-4 2.4-1.7 3-.4 7.4 1.2 9.8.8 1.2 1.8 2.5 3 2.4 1.2 0 1.7-.8 3.1-.8s1.9.8 3.2.8c1.3 0 2.1-1.2 2.9-2.4.9-1.4 1.3-2.7 1.3-2.8 0 0-2.4-1-2.4-3.9zM14 5.5c.7-.8 1.1-1.9 1-3-1 0-2.1.7-2.8 1.5-.6.7-1.2 1.8-1 2.9 1.1.1 2.1-.6 2.8-1.4z"/></svg><span>Apple</span></button>\n        <button class="sso google" type="button" data-sso="Google"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M22.6 12.3c0-.8-.1-1.6-.2-2.3H12v4.4h5.9c-.3 1.4-1 2.5-2.2 3.3v2.7h3.6c2.1-1.9 3.3-4.8 3.3-8.1z"/><path fill="#34A853" d="M12 23c3 0 5.5-1 7.3-2.7l-3.6-2.7c-1 .7-2.2 1.1-3.7 1.1-2.9 0-5.3-1.9-6.2-4.5H2.1v2.8C3.9 20.6 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.8 14.2c-.2-.7-.4-1.4-.4-2.2s.1-1.5.4-2.2V7H2.1C1.4 8.5 1 10.2 1 12s.4 3.5 1.1 5l3.7-2.8z"/><path fill="#EA4335" d="M12 5.4c1.6 0 3.1.6 4.2 1.7l3.2-3.2C17.5 2.1 15 1 12 1 7.7 1 3.9 3.4 2.1 7l3.7 2.8C6.7 7.3 9.1 5.4 12 5.4z"/></svg><span>Google</span></button>\n      </div>\n      <p class="sso-note" id="ssoNote" role="status" hidden></p>\n      <p class="fq-note">Unisciti alla beta e comincia con calma: ogni percorso parte da un primo passo.</p>\n      <p class="fq-note2">La motivazione si allena. E oggi hai gi\xE0 cominciato \u2728</p>\n    </div>');
     $("beta").onclick = () => {
       store.set("started", true);
       go(gender ? { name: "home" } : { name: "onboard", step: "setup" });
@@ -3635,6 +3684,16 @@ function renderOnboard() {
     });
     return;
   }
+  if (route.step === "tone") {
+    app.innerHTML = '\n    <div class="screen landing fq">\n      <button class="back" id="back" type="button">\u2039 Indietro</button>\n      '.concat(brand, '\n      <h1 class="land-h" style="font-size:30px">Scegli il tuo avatar</h1>\n      <p class="land-p">Che colore di pelle vuoi per il personaggio che si allena con te?</p>\n      ').concat(tonePick(tone, G()), '\n      <button class="fq-cta" id="toneGo" type="button">Inizia <span aria-hidden="true">\u2192</span></button>\n      <p class="land-note">Puoi cambiarlo quando vuoi dal Profilo.</p>\n    </div>');
+    $("back").onclick = () => go({ name: "onboard", step: "setup" });
+    app.querySelectorAll("[data-tone]").forEach((b) => b.onclick = () => {
+      setTone(+b.dataset.tone);
+      app.querySelectorAll("[data-tone]").forEach((x) => x.setAttribute("aria-pressed", x === b));
+    });
+    $("toneGo").onclick = () => go({ name: "home" });
+    return;
+  }
   app.innerHTML = '\n  <div class="screen landing fq">\n    <button class="back" id="back" type="button">\u2039 Indietro</button>\n    '.concat(brand, '\n    <h1 class="land-h" style="font-size:34px">Benvenuti nella Beta!</h1>\n    <p class="land-p">Due cose veloci e si parte.</p>\n    <div class="field"><label class="label" for="nm">Il tuo nome</label><input id="nm" maxlength="20" autocomplete="nickname" placeholder="Es. Marco" value="').concat(esc(myName), '"></div>\n    <div class="h2">Chi si allena?</div>\n    ').concat(genderPick(null), '\n    <p class="land-note">Puoi cambiare percorso quando vuoi dal Profilo.</p>\n  </div>');
   $("back").onclick = () => go({ name: "onboard" });
   app.querySelectorAll(".pick > button").forEach((b) => b.insertAdjacentHTML("beforeend", '<span class="go-pill">Inizia \u203A</span>'));
@@ -3645,12 +3704,12 @@ function renderOnboard() {
       store.set("name", v);
     }
     setGender(b.dataset.g);
-    go({ name: "home" });
+    go({ name: "onboard", step: "tone" });
   });
 }
-let profGOpen = false, profSetOpen = false;
+let profGOpen = false, profSetOpen = false, profTOpen = false;
 function renderProfile() {
-  app.innerHTML = '\n  <div class="screen">\n    <section class="lbz-hero pf-hero">\n      <div class="dz-glow"></div>\n      <div class="lbz-top"><h1>Profilo</h1>'.concat(crownN(stats.crowns) ? '<span class="dz-crowns">'.concat(crownSVG(), "<b>").concat(crownN(stats.crowns), "</b></span>") : "", '</div>\n      <div class="lbz-me">').concat(avatar(myName || "Tu", "lbz-av"), '<div><div class="pf-name">').concat(esc(myName || "Atleta"), '</div>\n        <div class="lbz-meta">').concat(myBadge(), " <span>").concat(RANKS[rankIndex()][0], "</span> \xB7 <span>").concat(G() === "f" ? "Donna" : "Uomo", '</span></div></div></div>\n      <div class="pf-stats"><div><b class="cu">').concat(stats.total, '</b><small>Punti totali</small></div><div><b class="cu">').concat(stats.month.pts, '</b><small>Questo mese</small></div><div><b class="cu">').concat(crownN(stats.crowns), '</b><small>Corone</small></div></div>\n    </section>\n    <details class="subopt set-menu" id="setSub"').concat(profSetOpen ? " open" : "", '><summary><span class="set-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></span><span>Impostazioni</span><b>Nome, lingua, voce, grafica</b></summary><div class="subopt-body set-body">\n    <details class="subopt" id="gSub"').concat(profGOpen ? " open" : "", "><summary><span>Percorso</span><b>").concat(G() === "f" ? "Donna" : "Uomo", '</b></summary><div class="subopt-body">').concat(genderPick(G()), '</div></details>\n    <div class="field"><label class="label" for="nm">Il tuo nome</label><input id="nm" maxlength="20" autocomplete="nickname" placeholder="Es. Marco" value="').concat(esc(myName), '"></div>\n    <div class="field"><label class="label" for="pLang">Lingua</label>\n      <select id="pLang" class="sel">\n        <option value="">Automatica (').concat(LANGS[detectLang()].name, ")</option>\n        ").concat(LANG_ORDER.map((k) => '<option value="'.concat(k, '" ').concat(store.get("lang", "") === k ? "selected" : "", ">").concat(LANGS[k].name, "</option>")).join(""), '\n      </select></div>\n    <div class="section"><div class="label">Voce</div>\n      <label class="toggle"><input type="checkbox" id="voiceT" ').concat(voiceOn ? "checked" : "", '> Istruttore vocale</label>\n      <label class="toggle"><input type="checkbox" id="gritT" ').concat(gritOn ? "checked" : "", '> Voce del coach: incitamento durante l\'esercizio</label>\n      <button class="btn ghost" id="voiceSet" type="button">Personalizza la voce</button>\n    </div>\n    ').concat(fxSettings(), '\n    </div></details>\n    <p class="note">Il video resta sul tuo telefono: l\'analisi della postura avviene nel browser e nessuna immagine viene inviata.</p>\n  </div>');
+  app.innerHTML = '\n  <div class="screen">\n    <section class="lbz-hero pf-hero">\n      <div class="dz-glow"></div>\n      <div class="lbz-top"><h1>Profilo</h1>'.concat(crownN(stats.crowns) ? '<span class="dz-crowns">'.concat(crownSVG(), "<b>").concat(crownN(stats.crowns), "</b></span>") : "", '</div>\n      <div class="lbz-me">').concat(avatar(myName || "Tu", "lbz-av"), '<div><div class="pf-name">').concat(esc(myName || "Atleta"), '</div>\n        <div class="lbz-meta">').concat(myBadge(), " <span>").concat(RANKS[rankIndex()][0], "</span> \xB7 <span>").concat(G() === "f" ? "Donna" : "Uomo", '</span></div></div></div>\n      <div class="pf-stats"><div><b class="cu">').concat(stats.total, '</b><small>Punti totali</small></div><div><b class="cu">').concat(stats.month.pts, '</b><small>Questo mese</small></div><div><b class="cu">').concat(crownN(stats.crowns), '</b><small>Corone</small></div></div>\n    </section>\n    <details class="subopt set-menu" id="setSub"').concat(profSetOpen ? " open" : "", '><summary><span class="set-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></span><span>Impostazioni</span><b>Nome, lingua, voce, grafica</b></summary><div class="subopt-body set-body">\n    <details class="subopt" id="gSub"').concat(profGOpen ? " open" : "", "><summary><span>Percorso</span><b>").concat(G() === "f" ? "Donna" : "Uomo", '</b></summary><div class="subopt-body">').concat(genderPick(G()), '</div></details>\n    <details class="subopt" id="tSub"').concat(profTOpen ? " open" : "", '><summary><span>Avatar</span><b><i class="tone-dot" style="--c:').concat(TONE_DOT[tone], '"></i>').concat(TONE_NAMES[tone], '</b></summary><div class="subopt-body">').concat(tonePick(tone, G()), '</div></details>\n    <div class="field"><label class="label" for="nm">Il tuo nome</label><input id="nm" maxlength="20" autocomplete="nickname" placeholder="Es. Marco" value="').concat(esc(myName), '"></div>\n    <div class="field"><label class="label" for="pLang">Lingua</label>\n      <select id="pLang" class="sel">\n        <option value="">Automatica (').concat(LANGS[detectLang()].name, ")</option>\n        ").concat(LANG_ORDER.map((k) => '<option value="'.concat(k, '" ').concat(store.get("lang", "") === k ? "selected" : "", ">").concat(LANGS[k].name, "</option>")).join(""), '\n      </select></div>\n    <div class="section"><div class="label">Voce</div>\n      <label class="toggle"><input type="checkbox" id="voiceT" ').concat(voiceOn ? "checked" : "", '> Istruttore vocale</label>\n      <label class="toggle"><input type="checkbox" id="gritT" ').concat(gritOn ? "checked" : "", '> Voce del coach: incitamento durante l\'esercizio</label>\n      <button class="btn ghost" id="voiceSet" type="button">Personalizza la voce</button>\n    </div>\n    ').concat(fxSettings(), '\n    </div></details>\n    <p class="note">Il video resta sul tuo telefono: l\'analisi della postura avviene nel browser e nessuna immagine viene inviata.</p>\n  </div>');
   fxSettingsWire();
   app.querySelectorAll(".pick > button").forEach((b) => b.onclick = () => {
     setGender(b.dataset.g);
@@ -3661,6 +3720,16 @@ function renderProfile() {
     e.stopPropagation();
     profGOpen = e.target.open;
   };
+  $("tSub").ontoggle = (e) => {
+    e.stopPropagation();
+    profTOpen = e.target.open;
+  };
+  app.querySelectorAll("[data-tone]").forEach((b) => b.onclick = () => {
+    setTone(+b.dataset.tone);
+    profTOpen = false;
+    renderProfile();
+    animateFigs(app);
+  });
   $("setSub").ontoggle = (e) => {
     if (e.target === $("setSub")) profSetOpen = e.target.open;
   };
@@ -5218,7 +5287,7 @@ function renderRndJoin() {
 function renderDuels() {
   const fl = invitable(), cr = crownN(stats.crowns);
   const av = (n) => avatar(n);
-  app.innerHTML = '\n  <div class="screen dz">\n    <section class="dz-hero">\n      <div class="dz-glow"></div>\n      <div class="dz-top"><h1>Sfide</h1>'.concat(cr ? '<span class="dz-crowns">'.concat(crownSVG(), "<b>").concat(cr, "</b></span>") : "", '</div>\n      <p class="dz-sub">Uno contro uno in videochiamata: la fotocamera conta le ripetizioni di entrambi</p>\n      ').concat(SITE ? '<div class="dz-arena"><img class="dz-m" src="img/chars/vs-m.webp" alt="" draggable="false"><em class="dz-vs">VS</em><img class="dz-f" src="img/chars/vs-f.webp" alt="" draggable="false"></div>' : '<div class="dz-arena"><em class="dz-vs">VS</em></div>', '\n      <button class="dz-cta" id="duelRandom" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg><span><b>Sfida casuale</b><small>Ti abbino a chi sta cercando una sfida in questo momento</small></span></button>\n    </section>\n    <div class="dz-tiles">\n      <button class="dz-tile t1" id="duelNew" type="button"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v12H5.5L4 17.5z"/><path d="M8 9h8M8 12h5"/></svg></span><b>Invita un amico</b><small>Crea la sfida e mandagli il link o l\'invito</small></button>\n      <button class="dz-tile t2" id="duelJoin" type="button"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="10" rx="2"/><path d="M7 12h.01M11 12h.01M15 12h.01"/></svg></span><b>Ho un codice</b><small>Entra nella sfida di un amico</small></button>\n    </div>\n    <label class="dz-switch"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 21h4"/></svg></span><span>Avvisami quando qualcuno cerca una sfida casuale</span><input type="checkbox" id="rndT" ').concat(RW.on ? "checked" : "", '><i></i></label>\n    <div class="section"><div class="label">I tuoi amici</div>\n      ').concat(fl.length ? '<ol class="dz-friends">'.concat(fl.map((f) => "<li>".concat(av(f.name), '<span class="who"><b>').concat(esc(f.name), "</b>").concat(rankBadge(Math.min(RANKS.length - 1, Math.max(0, f.rank | 0)), !!f.gold, f.crowns), '</span><button class="btn primary small inv" type="button" data-inv="').concat(esc(f.fcode), '">Sfida</button></li>')).join(""), "</ol>") : '<p class="note">Aggiungi un amico con il suo codice, oppure sfidalo con un link: comparir\xE0 qui e potrai invitarlo con un tocco.</p>', '\n    </div>\n    <div class="dz-ticket">\n      <div class="dz-ticket-top">\n        <div class="label">Il tuo codice amico</div>\n        <div class="code">').concat(myFcode, '</div>\n        <p class="meta">Dallo ai tuoi amici: con questo codice ti aggiungono e ti invitano alle sfide quando hai l\'app aperta.</p>\n        <button class="btn ghost small" id="shareMe" type="button">Invia il mio codice</button>\n      </div>\n      <div class="dz-ticket-bot">\n        <label class="label" for="addCode">Aggiungi un amico</label>\n        <div class="dz-add"><input id="addCode" maxlength="6" autocapitalize="characters" autocomplete="off" placeholder="Codice amico"><button class="btn primary small" id="addBtn" type="button">Aggiungi</button></div>\n        <p class="note" id="addNote" hidden></p>\n      </div>\n    </div>\n  </div>');
+  app.innerHTML = '\n  <div class="screen dz">\n    <section class="dz-hero">\n      <div class="dz-glow"></div>\n      <div class="dz-top"><h1>Sfide</h1>'.concat(cr ? '<span class="dz-crowns">'.concat(crownSVG(), "<b>").concat(cr, "</b></span>") : "", '</div>\n      <p class="dz-sub">Uno contro uno in videochiamata: la fotocamera conta le ripetizioni di entrambi</p>\n      ').concat(SITE ? '<div class="dz-arena"><img class="dz-m" src="'.concat(imgDir(), 'chars/vs-m.webp" alt="" draggable="false"><em class="dz-vs">VS</em><img class="dz-f" src="').concat(imgDir(), 'chars/vs-f.webp" alt="" draggable="false"></div>') : '<div class="dz-arena"><em class="dz-vs">VS</em></div>', '\n      <button class="dz-cta" id="duelRandom" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg><span><b>Sfida casuale</b><small>Ti abbino a chi sta cercando una sfida in questo momento</small></span></button>\n    </section>\n    <div class="dz-tiles">\n      <button class="dz-tile t1" id="duelNew" type="button"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v12H5.5L4 17.5z"/><path d="M8 9h8M8 12h5"/></svg></span><b>Invita un amico</b><small>Crea la sfida e mandagli il link o l\'invito</small></button>\n      <button class="dz-tile t2" id="duelJoin" type="button"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="10" rx="2"/><path d="M7 12h.01M11 12h.01M15 12h.01"/></svg></span><b>Ho un codice</b><small>Entra nella sfida di un amico</small></button>\n    </div>\n    <label class="dz-switch"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 21h4"/></svg></span><span>Avvisami quando qualcuno cerca una sfida casuale</span><input type="checkbox" id="rndT" ').concat(RW.on ? "checked" : "", '><i></i></label>\n    <div class="section"><div class="label">I tuoi amici</div>\n      ').concat(fl.length ? '<ol class="dz-friends">'.concat(fl.map((f) => "<li>".concat(av(f.name), '<span class="who"><b>').concat(esc(f.name), "</b>").concat(rankBadge(Math.min(RANKS.length - 1, Math.max(0, f.rank | 0)), !!f.gold, f.crowns), '</span><button class="btn primary small inv" type="button" data-inv="').concat(esc(f.fcode), '">Sfida</button></li>')).join(""), "</ol>") : '<p class="note">Aggiungi un amico con il suo codice, oppure sfidalo con un link: comparir\xE0 qui e potrai invitarlo con un tocco.</p>', '\n    </div>\n    <div class="dz-ticket">\n      <div class="dz-ticket-top">\n        <div class="label">Il tuo codice amico</div>\n        <div class="code">').concat(myFcode, '</div>\n        <p class="meta">Dallo ai tuoi amici: con questo codice ti aggiungono e ti invitano alle sfide quando hai l\'app aperta.</p>\n        <button class="btn ghost small" id="shareMe" type="button">Invia il mio codice</button>\n      </div>\n      <div class="dz-ticket-bot">\n        <label class="label" for="addCode">Aggiungi un amico</label>\n        <div class="dz-add"><input id="addCode" maxlength="6" autocapitalize="characters" autocomplete="off" placeholder="Codice amico"><button class="btn primary small" id="addBtn" type="button">Aggiungi</button></div>\n        <p class="note" id="addNote" hidden></p>\n      </div>\n    </div>\n  </div>');
   $("duelRandom").onclick = () => go({ name: "duel-new", mode: "random" });
   $("rndT").onchange = (e) => {
     RW.on = e.target.checked;
