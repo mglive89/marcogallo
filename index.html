@@ -528,6 +528,29 @@ body.fx-full .btn.beta::after { content: ""; position: absolute; top: 0; bottom:
 body.landing-on:has(.fq) { background: #15223f; }
 .fq { text-align: center; }
 .fq-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.crown { display: inline-flex; align-items: center; gap: 1px; margin-left: 4px; vertical-align: middle; position: relative; }
+.crown svg { width: 20px; height: 15px; filter: drop-shadow(0 0 3px rgba(255,200,40,.75)); animation: crownGlow 2.4s ease-in-out infinite; }
+.crown i { font-style: normal; font-family: var(--f-cond); font-weight: 800; font-size: 12px; color: #c98a06; }
+.crown .cr-sh, .cw-crown .cr-sh { animation: crownShine 2.8s ease-in-out infinite; }
+@keyframes crownGlow { 0%, 100% { filter: drop-shadow(0 0 2px rgba(255,200,40,.55)); } 50% { filter: drop-shadow(0 0 6px rgba(255,215,80,1)); } }
+@keyframes crownShine { 0%, 50% { transform: translateX(0); } 100% { transform: translateX(110px); } }
+.crown-hint { display: flex; align-items: center; gap: 8px; justify-content: center; }
+.crown-hint svg { width: 22px; height: 17px; opacity: .8; }
+.crown-win { position: relative; display: grid; justify-items: center; text-align: center; gap: 6px; padding: 26px 16px 18px; margin: 4px 0 14px; border-radius: 22px; overflow: hidden; color: #fff; background: radial-gradient(120% 90% at 50% 20%, #3a2a05 0%, #160f02 70%); box-shadow: 0 10px 30px rgba(120,80,0,.35), inset 0 0 0 1px rgba(255,215,90,.35); }
+.crown-win b { font-family: var(--f-display); font-size: 26px; letter-spacing: .02em; text-transform: uppercase; color: #ffe17a; text-shadow: 0 0 14px rgba(255,200,60,.6); position: relative; }
+.crown-win small { color: #f3e3b0; font-size: 14px; position: relative; }
+.cw-rays { position: absolute; left: 50%; top: 70px; width: 420px; height: 420px; margin: -210px 0 0 -210px; background: repeating-conic-gradient(rgba(255,214,90,.22) 0 8deg, transparent 8deg 22deg); -webkit-mask: radial-gradient(circle, #000 0, transparent 65%); mask: radial-gradient(circle, #000 0, transparent 65%); animation: cwSpin 14s linear infinite; }
+.cw-crown { position: relative; width: 132px; height: 99px; animation: cwDrop .9s cubic-bezier(.2,1.5,.4,1) both, cwFloat 3s ease-in-out .9s infinite; }
+.cw-crown svg { width: 100%; height: 100%; filter: drop-shadow(0 0 10px rgba(255,210,70,.95)) drop-shadow(0 6px 10px rgba(0,0,0,.5)); }
+.cw-crown .sp { position: absolute; width: 16px; height: 16px; background: radial-gradient(circle, #fff 0 18%, transparent 20%), linear-gradient(#fff, #fff) center / 2px 100% no-repeat, linear-gradient(#fff, #fff) center / 100% 2px no-repeat; filter: drop-shadow(0 0 4px #ffe58a); opacity: 0; animation: cwTwinkle 1.8s ease-in-out infinite; }
+.cw-crown .s1 { left: 6px; top: 8px; animation-delay: .9s; } .cw-crown .s2 { right: 2px; top: 22px; animation-delay: 1.3s; }
+.cw-crown .s3 { left: 52px; top: -10px; animation-delay: 1.7s; } .cw-crown .s4 { right: 30px; bottom: 6px; animation-delay: 2.2s; }
+.crown-win:not(.mine) .cw-crown svg { filter: drop-shadow(0 0 6px rgba(255,210,70,.6)) saturate(.8); }
+@keyframes cwDrop { from { transform: translateY(-80px) scale(.4) rotate(-20deg); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes cwFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+@keyframes cwSpin { to { transform: rotate(360deg); } }
+@keyframes cwTwinkle { 0%, 100% { opacity: 0; transform: scale(.3) rotate(0); } 45% { opacity: 1; transform: scale(1) rotate(45deg); } }
+@media (prefers-reduced-motion: reduce) { .crown svg, .cr-sh, .cw-rays, .cw-crown, .cw-crown .sp { animation: none !important; } .cw-crown .sp { opacity: 1; } }
 .subopt { margin: 0 0 16px; border-radius: 16px; background: var(--panel); box-shadow: var(--shadow); color: var(--fg); overflow: hidden; }
 .subopt > summary { list-style: none; display: flex; align-items: center; gap: 10px; padding: 14px 16px; cursor: pointer; font-weight: 700; }
 .subopt > summary::-webkit-details-marker { display: none; }
@@ -677,6 +700,7 @@ const I18N_RX = [
   [/(\d+) al livello /g, "$1 to ", "$1 para ", "$1 avant ", "$1 bis ", "$1 para "],
   [/Sei tra i primi 3 di (.+?): queste opzioni restano attive per tutto il mese\./g, "You finished in the top 3 of $1: these options stay active all month.", "Est\xE1s entre los 3 primeros de $1: estas opciones siguen activas todo el mes.", "Tu es dans le top 3 de $1 : ces options restent actives tout le mois.", "Du bist unter den Top 3 von $1: Diese Optionen bleiben den ganzen Monat aktiv.", "Voc\xEA ficou entre os 3 primeiros de $1: estas op\xE7\xF5es ficam ativas o m\xEAs inteiro."],
   [/Nuovo record: (\d+) /g, "New record: $1 ", "Nuevo r\xE9cord: $1 ", "Nouveau record : $1 ", "Neuer Rekord: $1 ", "Novo recorde: $1 "],
+  [/^(.+) conquista la Corona$/g, "$1 wins the Crown", "$1 conquista la Corona", "$1 conquiert la Couronne", "$1 erobert die Krone", "$1 conquista a Coroa"],
   [/^Ha vinto (.+)$/g, "$1 wins", "Gana $1", "$1 a gagn\xE9", "$1 hat gewonnen", "$1 venceu"],
   [/Ha vinto (.+?)\. Alla prossima!/g, "$1 wins. Next time!", "Gana $1. \xA1A la pr\xF3xima!", "$1 a gagn\xE9. \xC0 la prochaine !", "$1 hat gewonnen. Bis zum n\xE4chsten Mal!", "$1 venceu. At\xE9 a pr\xF3xima!"],
   [/Ti sfido a (.+?) su FitQuest! Codice (\w+)/g, "I challenge you to $1 on FitQuest! Code $2", "\xA1Te reto a $1 en FitQuest! C\xF3digo $2", "Je te d\xE9fie : $1 sur FitQuest ! Code $2", "Ich fordere dich heraus: $1 bei FitQuest! Code $2", "Te desafio para $1 no FitQuest! C\xF3digo $2"],
@@ -1092,6 +1116,10 @@ const I18N = [
   ["Il tuo avversario si \xE8 disconnesso", "Your opponent disconnected", "Tu rival se ha desconectado", "Ton adversaire s'est d\xE9connect\xE9", "Dein Gegner hat die Verbindung getrennt", "Seu advers\xE1rio desconectou"],
   ["Hai vinto! Ottimo lavoro!", "You won! Great work!", "\xA1Has ganado! \xA1Buen trabajo!", "Tu as gagn\xE9 ! Excellent travail !", "Du hast gewonnen! Starke Arbeit!", "Voc\xEA venceu! \xD3timo trabalho!"],
   ["Hai vinto!", "You won!", "\xA1Has ganado!", "Tu as gagn\xE9 !", "Du hast gewonnen!", "Voc\xEA venceu!"],
+  ["Hai conquistato la Corona!", "You won the Crown!", "\xA1Has conquistado la Corona!", "Tu as conquis la Couronne !", "Du hast die Krone erobert!", "Voc\xEA conquistou a Coroa!"],
+  ["3 vittorie: la corona brilla accanto al tuo nome.", "3 wins: the crown now shines next to your name.", "3 victorias: la corona brilla junto a tu nombre.", "3 victoires : la couronne brille \xE0 c\xF4t\xE9 de ton nom.", "3 Siege: Die Krone gl\xE4nzt jetzt neben deinem Namen.", "3 vit\xF3rias: a coroa brilha ao lado do seu nome."],
+  ["Ha vinto 3 sfide. Prenditi la rivincita!", "3 challenges won. Go get your revenge!", "Ha ganado 3 retos. \xA1Toma la revancha!", "3 d\xE9fis gagn\xE9s. Prends ta revanche !", "3 Duelle gewonnen. Hol dir die Revanche!", "Venceu 3 desafios. Busque a revanche!"],
+  ["Chi vince 3 sfide conquista la Corona", "Win 3 challenges to earn the Crown", "Quien gane 3 retos conquista la Corona", "Gagne 3 d\xE9fis pour conqu\xE9rir la Couronne", "Wer 3 Duelle gewinnt, erobert die Krone", "Quem vencer 3 desafios conquista a Coroa"],
   ["Pareggio!", "It's a draw!", "\xA1Empate!", "Match nul !", "Unentschieden!", "Empate!"],
   ["Pareggio", "Draw", "Empate", "Match nul", "Unentschieden", "Empate"],
   ["Vittorie", "Wins", "Victorias", "Victoires", "Siege", "Vit\xF3rias"],
@@ -3599,11 +3627,21 @@ function rankIndex(total = stats.total) {
 }
 const levelOf = (i) => i + 1;
 const isElite = () => stats.elite === prevMonthKey();
-function rankBadge(i, gold) {
-  return '<span class="rk'.concat(gold ? " gold" : "", '" title="').concat(RANKS[i][0], '">Lv ').concat(levelOf(i), "</span>");
+let crownSeq = 0;
+function crownSVG() {
+  const k = "cr" + ++crownSeq, body = "M6 16 L18 30 L32 6 L46 30 L58 16 L53 40 H11 Z";
+  return '<svg viewBox="0 0 64 48" aria-hidden="true"><defs><linearGradient id="'.concat(k, 'g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff6c2"/><stop offset=".35" stop-color="#ffd54a"/><stop offset=".75" stop-color="#e0a116"/><stop offset="1" stop-color="#a86d06"/></linearGradient><linearGradient id="').concat(k, 'b" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#b8790a"/><stop offset=".5" stop-color="#ffe27a"/><stop offset="1" stop-color="#b8790a"/></linearGradient><clipPath id="').concat(k, 'c"><path d="').concat(body, '"/><rect x="10" y="38" width="44" height="7" rx="2.5"/></clipPath></defs><path d="').concat(body, '" fill="url(#').concat(k, 'g)" stroke="#8a5a04" stroke-width="1.6" stroke-linejoin="round"/><rect x="10" y="38" width="44" height="7" rx="2.5" fill="url(#').concat(k, 'b)" stroke="#8a5a04" stroke-width="1.4"/><circle cx="32" cy="6" r="3.6" fill="#ff4d6d" stroke="#8a5a04" stroke-width="1"/><circle cx="6" cy="16" r="3" fill="#4dc3ff" stroke="#8a5a04" stroke-width="1"/><circle cx="58" cy="16" r="3" fill="#4dc3ff" stroke="#8a5a04" stroke-width="1"/><circle cx="32" cy="27" r="4" fill="#3ee08f" stroke="#8a5a04" stroke-width="1"/><path d="M15 22 L20 30" stroke="#fff" stroke-opacity=".7" stroke-width="2" stroke-linecap="round"/><g clip-path="url(#').concat(k, 'c)"><path class="cr-sh" d="M-22 0 H-10 L-22 48 H-34 Z" fill="#fff" fill-opacity=".85"/></g></svg>');
+}
+const crownN = (c) => Math.min(999, Math.max(0, c | 0));
+function crownMark(c) {
+  c = crownN(c);
+  return c ? '<span class="crown" title="Corone: '.concat(c, '">').concat(crownSVG()).concat(c > 1 ? "<i>\xD7".concat(c, "</i>") : "", "</span>") : "";
+}
+function rankBadge(i, gold, crowns) {
+  return '<span class="rk'.concat(gold ? " gold" : "", '" title="').concat(RANKS[i][0], '">Lv ').concat(levelOf(i), "</span>").concat(crownMark(crowns));
 }
 function myBadge() {
-  return rankBadge(rankIndex(), isElite() && stats.gold);
+  return rankBadge(rankIndex(), isElite() && stats.gold, stats.crowns);
 }
 function isUnlocked(exId) {
   const need = G() === "f" && exId === "lunge" ? null : EX[exId].lock;
@@ -3699,6 +3737,7 @@ async function lbSync() {
       total: stats.total,
       rank: rankIndex(),
       gold: isElite() && !!stats.gold,
+      crowns: crownN(stats.crowns),
       updated: fs.serverTimestamp()
     });
     LB.sent = capped;
@@ -3715,7 +3754,7 @@ async function lbTop() {
   return (await fs.getDocs(q)).docs.map((d) => ({ id: d.id, ...d.data() }));
 }
 function lbRows(rows, isMe) {
-  return rows.map((r, i) => '<li class="'.concat(isMe(r) ? "me" : "").concat(i < 3 ? " podium" : "", '"><span class="pos">').concat(i + 1, '</span><span class="who">').concat(esc(r.name || "Atleta"), " ").concat(rankBadge(Math.min(RANKS.length - 1, Math.max(0, r.rank | 0)), !!r.gold), '</span><span class="pts">').concat(r.pts, "</span></li>")).join("");
+  return rows.map((r, i) => '<li class="'.concat(isMe(r) ? "me" : "").concat(i < 3 ? " podium" : "", '"><span class="pos">').concat(i + 1, '</span><span class="who">').concat(esc(r.name || "Atleta"), " ").concat(rankBadge(Math.min(RANKS.length - 1, Math.max(0, r.rank | 0)), !!r.gold, r.crowns), '</span><span class="pts">').concat(r.pts, "</span></li>")).join("");
 }
 function renderRanking() {
   const ri = rankIndex(), next = RANKS[ri + 1];
@@ -3763,7 +3802,7 @@ const meId = (() => {
 let friends = store.get("friends", {});
 function myCard() {
   rollMonth();
-  return { id: meId, fcode: typeof myFcode === "string" ? myFcode : void 0, name: (myName || "Atleta").slice(0, 20), rank: rankIndex(), total: stats.total, gold: isElite() && !!stats.gold, months: { [stats.month.key]: stats.month.pts, ...stats.prev ? { [stats.prev.key]: stats.prev.pts } : {} } };
+  return { id: meId, fcode: typeof myFcode === "string" ? myFcode : void 0, name: (myName || "Atleta").slice(0, 20), rank: rankIndex(), total: stats.total, gold: isElite() && !!stats.gold, crowns: crownN(stats.crowns), months: { [stats.month.key]: stats.month.pts, ...stats.prev ? { [stats.prev.key]: stats.prev.pts } : {} } };
 }
 function saveFriend(c) {
   if (!c || typeof c !== "object" || typeof c.id !== "string" || !/^[a-z0-9]{4,40}$/.test(c.id) || c.id === meId || c.id === "__proto__") return;
@@ -3772,14 +3811,14 @@ function saveFriend(c) {
   for (const [k, v] of Object.entries(c.months && typeof c.months === "object" ? c.months : {}).slice(0, 24)) if (/^\d{4}-\d{2}$/.test(k)) months[k] = Math.max(months[k] || 0, Math.min(1e6, Math.max(0, v | 0)));
   const fcode = typeof c.fcode === "string" && /^[A-Z2-9]{6}$/.test(c.fcode) ? c.fcode : old.fcode;
   if (fcode) delete friends["code:" + fcode];
-  friends[c.id] = { name: cleanName(c.name, "Amico"), rank: Math.min(RANKS.length - 1, Math.max(0, c.rank | 0)), total: Math.min(1e7, Math.max(0, c.total | 0)), gold: !!c.gold, months, ...fcode ? { fcode } : {} };
+  friends[c.id] = { name: cleanName(c.name, "Amico"), rank: Math.min(RANKS.length - 1, Math.max(0, c.rank | 0)), total: Math.min(1e7, Math.max(0, c.total | 0)), gold: !!c.gold, crowns: crownN(c.crowns), months, ...fcode ? { fcode } : {} };
   store.set("friends", friends);
 }
 function friendsBoard(key) {
   var _a;
-  const rows = Object.entries(friends).map(([id, f]) => ({ id, name: f.name, rank: f.rank, gold: f.gold, pts: f.months[key] || 0 }));
+  const rows = Object.entries(friends).map(([id, f]) => ({ id, name: f.name, rank: f.rank, gold: f.gold, crowns: f.crowns, pts: f.months[key] || 0 }));
   const mine = key === stats.month.key ? stats.month.pts : ((_a = stats.prev) == null ? void 0 : _a.key) === key ? stats.prev.pts : 0;
-  rows.push({ id: meId, name: myName || "Tu", rank: rankIndex(), gold: isElite() && !!stats.gold, pts: mine, me: true });
+  rows.push({ id: meId, name: myName || "Tu", rank: rankIndex(), gold: isElite() && !!stats.gold, crowns: stats.crowns, pts: mine, me: true });
   return rows.sort((a, b) => b.pts - a.pts);
 }
 function checkFriendsElite() {
@@ -3819,6 +3858,7 @@ const DUEL_FMT = {
   time: { label: "Pi\xF9 ripetizioni in 60 s", short: "60 secondi", n: 60 },
   first: { label: "Primo a 20", short: "primo a 20", n: 20 }
 };
+const CROWN_WINS = 3;
 const CH = { peer: null, conn: null, call: null, stream: null, remote: null, role: null, code: "", oppName: "", oppReps: 0, cfg: { ex: "pushup", fmt: "time" }, connected: false, myFinal: null, oppFinal: null, wins: { me: 0, opp: 0 } };
 let myName = store.get("name", "");
 function loadScript(src) {
@@ -4149,7 +4189,7 @@ function hostHandlers(peer) {
       if (!okMsg(m)) return bye(0);
       if (m.t === "peek") {
         if (CH.random && CH.searching && !busy()) try {
-          c.send({ t: "offer", sid: CH.sid, name: myName || "Atleta", cfg: CH.cfg, rank: rankIndex(), gold: isElite() && !!stats.gold });
+          c.send({ t: "offer", sid: CH.sid, name: myName || "Atleta", cfg: CH.cfg, rank: rankIndex(), gold: isElite() && !!stats.gold, crowns: crownN(stats.crowns) });
         } catch (e) {
         }
         return bye(800);
@@ -4448,7 +4488,7 @@ function peekSlot(p, n) {
       } catch (e) {
       }
     });
-    c.on("data", (m) => fin(okMsg(m) && m.t === "offer" && typeof m.sid === "string" && /^[a-z0-9]{6,20}$/.test(m.sid) ? { n, sid: m.sid, name: cleanName(m.name, "Un atleta"), cfg: okCfg(m.cfg) ? { ex: m.cfg.ex, fmt: m.cfg.fmt } : null, rank: Math.min(RANKS.length - 1, Math.max(0, m.rank | 0)), gold: !!m.gold } : null));
+    c.on("data", (m) => fin(okMsg(m) && m.t === "offer" && typeof m.sid === "string" && /^[a-z0-9]{6,20}$/.test(m.sid) ? { n, sid: m.sid, name: cleanName(m.name, "Un atleta"), cfg: okCfg(m.cfg) ? { ex: m.cfg.ex, fmt: m.cfg.fmt } : null, rank: Math.min(RANKS.length - 1, Math.max(0, m.rank | 0)), gold: !!m.gold, crowns: crownN(m.crowns) } : null));
     c.on("error", () => fin(null));
     c.on("close", () => fin(null));
   });
@@ -4482,7 +4522,7 @@ function showRndInvite(o) {
   d.className = "invite rnd";
   d.id = "inviteToast";
   d.setAttribute("role", "alertdialog");
-  d.innerHTML = '<div class="rnd-h"><span class="rnd-ico">'.concat(TAB_ICO.duels, "</span><div><small>Sfida casuale</small><b>Vuoi sfidare ").concat(esc(o.name), "?</b></div>").concat(rankBadge(o.rank, o.gold), "</div>").concat(o.cfg ? '<p class="meta">'.concat(esc(fmtTxt(o.cfg)), "</p>") : "", '<p class="meta">Il primo che accetta entra nella sfida.</p><div class="row"><button class="btn primary small" id="invOk" type="button">Sfida!</button><button class="btn ghost small" id="invNo" type="button">No, grazie</button></div><i class="rnd-time"></i>');
+  d.innerHTML = '<div class="rnd-h"><span class="rnd-ico">'.concat(TAB_ICO.duels, "</span><div><small>Sfida casuale</small><b>Vuoi sfidare ").concat(esc(o.name), "?</b></div>").concat(rankBadge(o.rank, o.gold, o.crowns), "</div>").concat(o.cfg ? '<p class="meta">'.concat(esc(fmtTxt(o.cfg)), "</p>") : "", '<p class="meta">Il primo che accetta entra nella sfida.</p><div class="row"><button class="btn primary small" id="invOk" type="button">Sfida!</button><button class="btn ghost small" id="invNo" type="button">No, grazie</button></div><i class="rnd-time"></i>');
   document.body.append(d);
   say("Vuoi sfidare ".concat(o.name, "?"), { urgent: true });
   try {
@@ -4560,7 +4600,7 @@ function renderRndJoin() {
 }
 function renderDuels() {
   const fl = invitable();
-  app.innerHTML = '\n  <div class="screen">\n    <header class="mast"><div><h1>Sfide</h1><div class="sub">Uno contro uno in videochiamata: la fotocamera conta le ripetizioni di entrambi</div></div></header>\n    <div class="modes">\n      <button class="mode" id="duelRandom" type="button"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg></span><span><b>Sfida casuale</b><small>Ti abbino a chi sta cercando una sfida in questo momento</small></span><span class="go">\u203A</span></button>\n      <button class="mode" id="duelNew" type="button"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v12H5.5L4 17.5z"/><path d="M8 9h8M8 12h5"/></svg></span><span><b>Invita un amico</b><small>Crea la sfida e mandagli il link o l\'invito</small></span><span class="go">\u203A</span></button>\n      <button class="mode" id="duelJoin" type="button"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="10" rx="2"/><path d="M7 12h.01M11 12h.01M15 12h.01"/></svg></span><span><b>Ho un codice</b><small>Entra nella sfida di un amico</small></span><span class="go">\u203A</span></button>\n    </div>\n    <label class="toggle"><input type="checkbox" id="rndT" '.concat(RW.on ? "checked" : "", '> Avvisami quando qualcuno cerca una sfida casuale</label>\n    <div class="section"><div class="label">I tuoi amici</div>\n      ').concat(fl.length ? '<ol class="lb">'.concat(fl.map((f) => '<li><span class="pos">'.concat(rankBadge(Math.min(RANKS.length - 1, Math.max(0, f.rank | 0)), !!f.gold), '</span><span class="who">').concat(esc(f.name), '</span><button class="btn primary small inv" type="button" data-inv="').concat(esc(f.fcode), '">Sfida</button></li>')).join(""), "</ol>") : '<p class="note">Aggiungi un amico con il suo codice, oppure sfidalo con un link: comparir\xE0 qui e potrai invitarlo con un tocco.</p>', '\n    </div>\n    <div class="order">\n      <div class="label">Il tuo codice amico</div>\n      <div class="code">').concat(myFcode, '</div>\n      <p class="meta">Dallo ai tuoi amici: con questo codice ti aggiungono e ti invitano alle sfide quando hai l\'app aperta.</p>\n      <div class="field"><label class="label" for="addCode">Aggiungi un amico</label><input id="addCode" maxlength="6" autocapitalize="characters" autocomplete="off" placeholder="Codice amico" style="letter-spacing:.2em;text-transform:uppercase"></div>\n      <div class="row"><button class="btn ghost small" id="addBtn" type="button">Aggiungi</button><button class="btn ghost small" id="shareMe" type="button">Invia il mio codice</button></div>\n      <p class="note" id="addNote" hidden></p>\n    </div>\n  </div>');
+  app.innerHTML = '\n  <div class="screen">\n    <header class="mast"><div><h1>Sfide</h1><div class="sub">Uno contro uno in videochiamata: la fotocamera conta le ripetizioni di entrambi</div></div></header>\n    <div class="modes">\n      <button class="mode" id="duelRandom" type="button"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg></span><span><b>Sfida casuale</b><small>Ti abbino a chi sta cercando una sfida in questo momento</small></span><span class="go">\u203A</span></button>\n      <button class="mode" id="duelNew" type="button"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v12H5.5L4 17.5z"/><path d="M8 9h8M8 12h5"/></svg></span><span><b>Invita un amico</b><small>Crea la sfida e mandagli il link o l\'invito</small></span><span class="go">\u203A</span></button>\n      <button class="mode" id="duelJoin" type="button"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="10" rx="2"/><path d="M7 12h.01M11 12h.01M15 12h.01"/></svg></span><span><b>Ho un codice</b><small>Entra nella sfida di un amico</small></span><span class="go">\u203A</span></button>\n    </div>\n    <label class="toggle"><input type="checkbox" id="rndT" '.concat(RW.on ? "checked" : "", '> Avvisami quando qualcuno cerca una sfida casuale</label>\n    <div class="section"><div class="label">I tuoi amici</div>\n      ').concat(fl.length ? '<ol class="lb">'.concat(fl.map((f) => '<li><span class="pos">'.concat(rankBadge(Math.min(RANKS.length - 1, Math.max(0, f.rank | 0)), !!f.gold, f.crowns), '</span><span class="who">').concat(esc(f.name), '</span><button class="btn primary small inv" type="button" data-inv="').concat(esc(f.fcode), '">Sfida</button></li>')).join(""), "</ol>") : '<p class="note">Aggiungi un amico con il suo codice, oppure sfidalo con un link: comparir\xE0 qui e potrai invitarlo con un tocco.</p>', '\n    </div>\n    <div class="order">\n      <div class="label">Il tuo codice amico</div>\n      <div class="code">').concat(myFcode, '</div>\n      <p class="meta">Dallo ai tuoi amici: con questo codice ti aggiungono e ti invitano alle sfide quando hai l\'app aperta.</p>\n      <div class="field"><label class="label" for="addCode">Aggiungi un amico</label><input id="addCode" maxlength="6" autocapitalize="characters" autocomplete="off" placeholder="Codice amico" style="letter-spacing:.2em;text-transform:uppercase"></div>\n      <div class="row"><button class="btn ghost small" id="addBtn" type="button">Aggiungi</button><button class="btn ghost small" id="shareMe" type="button">Invia il mio codice</button></div>\n      <p class="note" id="addNote" hidden></p>\n    </div>\n  </div>');
   $("duelRandom").onclick = () => go({ name: "duel-new", mode: "random" });
   $("rndT").onchange = (e) => {
     RW.on = e.target.checked;
@@ -4728,7 +4768,7 @@ function renderDuelJoin() {
 }
 function renderLobby() {
   const host = CH.role === "host";
-  app.innerHTML = '\n  <div class="screen brief">\n    <div class="section"><div class="label">Sfida \xB7 '.concat(esc(fmtTxt(CH.cfg)), "</div><h2>").concat(CH.random ? "Avversario trovato" : host ? "Invita il tuo amico" : "Sala d'attesa", "</h2></div>\n    ").concat(host && !CH.random ? '<div class="order">\n      <div class="label">Codice sfida</div>\n      <div class="code">'.concat(CH.code, '</div>\n      <p class="meta">Mandagli il link: lo apre dal telefono ed entra subito.</p>\n      <div class="row"><button class="btn ghost small" id="share" type="button">Invia il link</button></div>\n      <p class="note" id="shareNote" hidden></p>\n      ').concat(invitable().length ? '<div class="label">Oppure invitalo direttamente</div><ol class="lb">'.concat(invitable().map((f) => '<li><span class="pos">'.concat(rankBadge(Math.min(RANKS.length - 1, Math.max(0, f.rank | 0)), !!f.gold), '</span><span class="who">').concat(esc(f.name), '</span><button class="btn ghost small inv" type="button" data-inv="').concat(esc(f.fcode), '">Invita</button></li>')).join(""), "</ol>") : "", "\n    </div>") : "", '\n    <div class="status" id="lobStatus"><i></i><span></span></div>\n    <div class="lobvids">\n      <div class="lobvid"><video id="lobMe" playsinline autoplay muted></video><span>').concat(esc(myName || "Tu"), " ").concat(myBadge(), '</span></div>\n      <div class="lobvid"><video id="lobOpp" playsinline autoplay></video><div class="empty" id="lobOppEmpty">In attesa della videochiamata\u2026</div><span id="lobOppName">Amico</span></div>\n    </div>\n    ').concat(CH.wins.me + CH.wins.opp > 0 ? '<p class="meta">Punteggio: '.concat(esc(myName), " ").concat(CH.wins.me, " \u2013 ").concat(CH.wins.opp, " ").concat(esc(CH.oppName), "</p>") : "", '\n    <div class="row">\n      ').concat(host ? '<button class="btn primary" id="go" type="button" disabled>Via!</button>' : "", '\n      <button class="btn ghost" id="leave" type="button">Esci dalla sfida</button>\n    </div>\n    ').concat(host ? '<details class="note"><summary>Cambia esercizio o formato</summary><div class="choices" style="margin-top:8px">'.concat(duelExList().map((id) => '<button class="choice" type="button" data-ex="'.concat(id, '" aria-pressed="').concat(CH.cfg.ex === id, '">').concat(EX[id].name, "</button>")).join("")).concat(Object.entries(DUEL_FMT).map(([k, f]) => '<button class="choice" type="button" data-fmt="'.concat(k, '" aria-pressed="').concat(CH.cfg.fmt === k, '">').concat(f.label, "</button>")).join(""), "</div></details>") : "", "\n  </div>");
+  app.innerHTML = '\n  <div class="screen brief">\n    <div class="section"><div class="label">Sfida \xB7 '.concat(esc(fmtTxt(CH.cfg)), "</div><h2>").concat(CH.random ? "Avversario trovato" : host ? "Invita il tuo amico" : "Sala d'attesa", "</h2></div>\n    ").concat(host && !CH.random ? '<div class="order">\n      <div class="label">Codice sfida</div>\n      <div class="code">'.concat(CH.code, '</div>\n      <p class="meta">Mandagli il link: lo apre dal telefono ed entra subito.</p>\n      <div class="row"><button class="btn ghost small" id="share" type="button">Invia il link</button></div>\n      <p class="note" id="shareNote" hidden></p>\n      ').concat(invitable().length ? '<div class="label">Oppure invitalo direttamente</div><ol class="lb">'.concat(invitable().map((f) => '<li><span class="pos">'.concat(rankBadge(Math.min(RANKS.length - 1, Math.max(0, f.rank | 0)), !!f.gold, f.crowns), '</span><span class="who">').concat(esc(f.name), '</span><button class="btn ghost small inv" type="button" data-inv="').concat(esc(f.fcode), '">Invita</button></li>')).join(""), "</ol>") : "", "\n    </div>") : "", '\n    <div class="status" id="lobStatus"><i></i><span></span></div>\n    <div class="lobvids">\n      <div class="lobvid"><video id="lobMe" playsinline autoplay muted></video><span>').concat(esc(myName || "Tu"), " ").concat(myBadge(), '</span></div>\n      <div class="lobvid"><video id="lobOpp" playsinline autoplay></video><div class="empty" id="lobOppEmpty">In attesa della videochiamata\u2026</div><span id="lobOppName">Amico</span></div>\n    </div>\n    ').concat(CH.wins.me + CH.wins.opp > 0 ? '<p class="meta">Punteggio: '.concat(esc(myName), " ").concat(CH.wins.me, " \u2013 ").concat(CH.wins.opp, " ").concat(esc(CH.oppName), "</p>") : "", '\n    <div class="row">\n      ').concat(host ? '<button class="btn primary" id="go" type="button" disabled>Via!</button>' : "", '\n      <button class="btn ghost" id="leave" type="button">Esci dalla sfida</button>\n    </div>\n    ').concat(host ? '<details class="note"><summary>Cambia esercizio o formato</summary><div class="choices" style="margin-top:8px">'.concat(duelExList().map((id) => '<button class="choice" type="button" data-ex="'.concat(id, '" aria-pressed="').concat(CH.cfg.ex === id, '">').concat(EX[id].name, "</button>")).join("")).concat(Object.entries(DUEL_FMT).map(([k, f]) => '<button class="choice" type="button" data-fmt="'.concat(k, '" aria-pressed="').concat(CH.cfg.fmt === k, '">').concat(f.label, "</button>")).join(""), "</div></details>") : "", "\n  </div>");
   attach($("lobMe"), localView(), true);
   if (host && $("share")) {
     $("share").onclick = async () => {
@@ -4820,7 +4860,7 @@ function refreshLobby() {
     const lab = document.querySelector(".brief .label");
     if (lab) lab.textContent = "Sfida \xB7 " + fmtTxt(CH.cfg);
   }
-  $("lobOppName").innerHTML = esc(CH.oppName || "Amico") + (CH.oppCard ? " " + rankBadge(Math.min(RANKS.length - 1, Math.max(0, CH.oppCard.rank | 0)), !!CH.oppCard.gold) : "");
+  $("lobOppName").innerHTML = esc(CH.oppName || "Amico") + (CH.oppCard ? " " + rankBadge(Math.min(RANKS.length - 1, Math.max(0, CH.oppCard.rank | 0)), !!CH.oppCard.gold, CH.oppCard.crowns) : "");
   if (CH.remote) {
     $("lobOppEmpty").hidden = true;
     attach($("lobOpp"), CH.remote, false);
@@ -4956,6 +4996,22 @@ function maybeDuelResult() {
   else outcome = me > opp ? "win" : me < opp ? "lose" : "tie";
   if (outcome === "win") CH.wins.me++;
   else if (outcome === "lose") CH.wins.opp++;
+  const score = [CH.wins.me, CH.wins.opp];
+  let crown = null;
+  if (CH.wins.me >= CROWN_WINS) {
+    crown = "me";
+    stats.crowns = crownN(stats.crowns) + 1;
+    store.set("stats", stats);
+    CH.wins = { me: 0, opp: 0 };
+    try {
+      lbSchedule();
+    } catch (e) {
+    }
+  } else if (CH.wins.opp >= CROWN_WINS) {
+    crown = "opp";
+    CH.wins = { me: 0, opp: 0 };
+    if (CH.oppCard) CH.oppCard.crowns = crownN(CH.oppCard.crowns) + 1;
+  }
   addPoints(outcome === "win" ? 30 : outcome === "tie" ? 15 : 10);
   duelSend({ t: "card", card: myCard() });
   $("rest").hidden = true;
@@ -4968,12 +5024,12 @@ function maybeDuelResult() {
   S.challenge = false;
   const who = CH.oppName || "il tuo amico";
   say(outcome === "win" ? "Hai vinto! Ottimo lavoro!" : outcome === "lose" ? "Ha vinto ".concat(who, ". Alla prossima!") : "Pareggio!", { urgent: true });
-  go({ name: "duel-result", outcome, me, opp });
+  go({ name: "duel-result", outcome, me, opp, crown, score });
 }
 function renderDuelResult() {
   const r = route, host = CH.role === "host";
   const verdict = r.outcome === "win" ? "Hai vinto!" : r.outcome === "lose" ? "Ha vinto ".concat(esc(CH.oppName || "l'amico")) : "Pareggio";
-  app.innerHTML = '\n  <div class="screen">\n    <header class="mast"><div><div class="sub">Sfida \xB7 '.concat(esc(fmtTxt(CH.cfg)), '</div></div><div class="callsign">Vittorie<b>').concat(CH.wins.me, "\u2013").concat(CH.wins.opp, '</b></div></header>\n    <div class="verdict">').concat(verdict, '</div>\n    <div class="vs">\n      <div class="').concat(r.outcome === "win" ? "win" : "", '"><b>').concat(r.me, "</b><span>").concat(esc(myName || "Tu"), " ").concat(myBadge(), '</span></div>\n      <em>VS</em>\n      <div class="').concat(r.outcome === "lose" ? "win" : "", '"><b>').concat(r.opp, "</b><span>").concat(esc(CH.oppName || "Amico"), '</span></div>\n    </div>\n    <p class="meta">Contano solo le ripetizioni complete e valide. Punti sfida: ').concat(r.outcome === "win" ? "+30" : r.outcome === "tie" ? "+15" : "+10", ', pi\xF9 1 punto per ripetizione.</p>\n    <div class="row">\n      ').concat(host ? '<button class="btn primary" id="again" type="button" '.concat(CH.connected ? "" : "disabled", ">Rivincita</button>") : '<p class="note">'.concat(CH.connected ? "Per la rivincita aspetta ".concat(esc(CH.oppName || "l'amico"), ".") : "La connessione con l'amico si \xE8 chiusa.", "</p>"), '\n      <button class="btn ghost" id="leave" type="button">Esci dalla sfida</button>\n    </div>\n  </div>');
+  app.innerHTML = '\n  <div class="screen">\n    <header class="mast"><div><div class="sub">Sfida \xB7 '.concat(esc(fmtTxt(CH.cfg)), '</div></div><div class="callsign">Vittorie<b>').concat((r.score || [CH.wins.me, CH.wins.opp]).join("\u2013"), "</b></div></header>\n    ").concat(r.crown ? '<div class="crown-win'.concat(r.crown === "me" ? " mine" : "", '"><div class="cw-rays"></div><div class="cw-crown">').concat(crownSVG(), '<i class="sp s1"></i><i class="sp s2"></i><i class="sp s3"></i><i class="sp s4"></i></div><b>').concat(r.crown === "me" ? "Hai conquistato la Corona!" : "".concat(esc(CH.oppName || "L'amico"), " conquista la Corona"), "</b><small>").concat(r.crown === "me" ? "".concat(CROWN_WINS, " vittorie: la corona brilla accanto al tuo nome.") : "Ha vinto ".concat(CROWN_WINS, " sfide. Prenditi la rivincita!"), "</small></div>") : '<p class="meta crown-hint">'.concat(crownSVG(), "<span>Chi vince ").concat(CROWN_WINS, " sfide conquista la Corona</span></p>"), '\n    <div class="verdict">').concat(verdict, '</div>\n    <div class="vs">\n      <div class="').concat(r.outcome === "win" ? "win" : "", '"><b>').concat(r.me, "</b><span>").concat(esc(myName || "Tu"), " ").concat(myBadge(), '</span></div>\n      <em>VS</em>\n      <div class="').concat(r.outcome === "lose" ? "win" : "", '"><b>').concat(r.opp, "</b><span>").concat(esc(CH.oppName || "Amico"), '</span></div>\n    </div>\n    <p class="meta">Contano solo le ripetizioni complete e valide. Punti sfida: ').concat(r.outcome === "win" ? "+30" : r.outcome === "tie" ? "+15" : "+10", ', pi\xF9 1 punto per ripetizione.</p>\n    <div class="row">\n      ').concat(host ? '<button class="btn primary" id="again" type="button" '.concat(CH.connected ? "" : "disabled", ">Rivincita</button>") : '<p class="note">'.concat(CH.connected ? "Per la rivincita aspetta ".concat(esc(CH.oppName || "l'amico"), ".") : "La connessione con l'amico si \xE8 chiusa.", "</p>"), '\n      <button class="btn ghost" id="leave" type="button">Esci dalla sfida</button>\n    </div>\n  </div>');
   if (host) $("again").onclick = () => {
     duelSend({ t: "lobby" });
     go({ name: "lobby" });
@@ -4998,7 +5054,7 @@ function dfxAdd(cls, html, ms) {
 function duelFxVs() {
   var _a;
   if (fx.level === "off") return 0;
-  dfxAdd("vsfx", '<div class="vs-side me"><b>'.concat(esc(myName || "Tu"), "</b>").concat(myBadge(), '</div><em>VS</em><div class="vs-side op"><b>').concat(esc(CH.oppName || "Amico"), "</b>").concat(CH.oppCard ? rankBadge(Math.min(RANKS.length - 1, Math.max(0, CH.oppCard.rank | 0)), !!CH.oppCard.gold) : "", "</div>"), 2300);
+  dfxAdd("vsfx", '<div class="vs-side me"><b>'.concat(esc(myName || "Tu"), "</b>").concat(myBadge(), '</div><em>VS</em><div class="vs-side op"><b>').concat(esc(CH.oppName || "Amico"), "</b>").concat(CH.oppCard ? rankBadge(Math.min(RANKS.length - 1, Math.max(0, CH.oppCard.rank | 0)), !!CH.oppCard.gold, CH.oppCard.crowns) : "", "</div>"), 2300);
   try {
     (_a = navigator.vibrate) == null ? void 0 : _a.call(navigator, 60);
   } catch (e) {
