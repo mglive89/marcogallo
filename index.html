@@ -556,6 +556,69 @@ body.landing-on:has(.fq) { background: #15223f; }
 @keyframes cwSpin { to { transform: rotate(360deg); } }
 @keyframes cwTwinkle { 0%, 100% { opacity: 0; transform: scale(.3) rotate(0); } 45% { opacity: 1; transform: scale(1) rotate(45deg); } }
 @media (prefers-reduced-motion: reduce) { .crown svg, .cr-sh, .cw-rays, .cw-crown, .cw-crown .sp { animation: none !important; } .cw-crown .sp { opacity: 1; } }
+.dz { gap: 16px; }
+.dz-hero { position: relative; overflow: hidden; border-radius: 26px; padding: 20px 18px 18px; color: #fff; background: radial-gradient(120% 80% at 50% 0%, #2a4a9a 0%, #141d3d 55%, #0b1024 100%); box-shadow: 0 18px 40px rgba(20,30,80,.35), inset 0 0 0 1px rgba(255,255,255,.08); }
+.dz-glow { position: absolute; inset: -40% -20% auto; height: 120%; background: radial-gradient(closest-side at 30% 60%, rgba(74,168,255,.45), transparent), radial-gradient(closest-side at 72% 60%, rgba(255,94,138,.4), transparent); filter: blur(10px); animation: dzGlow 6s ease-in-out infinite alternate; pointer-events: none; }
+@keyframes dzGlow { to { transform: translateX(6%) scale(1.05); } }
+.dz-top { position: relative; display: flex; align-items: center; justify-content: space-between; }
+.dz-top h1 { margin: 0; font-family: var(--f-display); font-weight: 800; font-size: 40px; line-height: 1; text-transform: uppercase; letter-spacing: .02em; color: #fff; }
+.dz-crowns { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px 4px 6px; border-radius: 999px; background: rgba(255,214,90,.14); box-shadow: inset 0 0 0 1px rgba(255,214,90,.45); }
+.dz-crowns svg { width: 28px; height: 21px; filter: drop-shadow(0 0 5px rgba(255,210,70,.9)); }
+.dz-crowns b { font-family: var(--f-display); font-size: 20px; color: #ffe17a; }
+.dz-sub { position: relative; margin: 6px 0 0; color: #c9d4f2; font-size: 14px; line-height: 1.35; }
+.dz-arena { position: relative; height: 170px; margin: 6px 0 12px; display: flex; align-items: flex-end; justify-content: center; gap: 4px; }
+.dz-arena::before { content: ""; position: absolute; left: 12%; right: 12%; bottom: -2px; height: 22px; border-radius: 50%; background: radial-gradient(closest-side, rgba(124,160,255,.55), transparent); }
+.dz-arena img { position: relative; height: 160px; width: auto; filter: drop-shadow(0 8px 12px rgba(0,0,0,.45)); animation: dzBob 2.6s ease-in-out infinite; }
+.dz-arena .dz-f { animation-delay: -1.3s; }
+.dz-arena .dz-m { transform-origin: bottom center; }
+@keyframes dzBob { 0%, 100% { translate: 0 0; } 50% { translate: 0 -4px; } }
+.dz-vs { position: relative; align-self: center; margin: 0 2px 30px; font-style: normal; font-family: var(--f-display); font-weight: 800; font-size: 44px; line-height: 1; letter-spacing: .02em; background: linear-gradient(180deg, #fff 10%, #ffd36b 55%, #ff7a3d 100%); -webkit-background-clip: text; background-clip: text; color: transparent; filter: drop-shadow(0 0 10px rgba(255,170,70,.7)); animation: dzVs 1.8s ease-in-out infinite; }
+@keyframes dzVs { 0%, 100% { transform: scale(1) rotate(-6deg); } 50% { transform: scale(1.12) rotate(-6deg); } }
+.dz-cta { position: relative; width: 100%; display: grid; grid-template-columns: 44px 1fr; align-items: center; gap: 12px; padding: 14px 16px; border: 0; border-radius: 18px; text-align: left; color: #fff; background: linear-gradient(120deg, #3b8cff, #8a6bff 55%, #ff5e9a); box-shadow: 0 10px 24px rgba(138,107,255,.45), inset 0 1px 0 rgba(255,255,255,.35); overflow: hidden; }
+.dz-cta::after { content: ""; position: absolute; inset: 0; background: linear-gradient(105deg, transparent 35%, rgba(255,255,255,.35) 50%, transparent 65%) no-repeat; background-size: 250% 100%; animation: dzShine 3.2s ease-in-out infinite; }
+@keyframes dzShine { 0%, 55% { background-position: 160% 0; } 100% { background-position: -60% 0; } }
+.dz-cta svg { width: 30px; height: 30px; justify-self: center; }
+.dz-cta b { display: block; font-family: var(--f-cond); font-weight: 800; font-size: 22px; text-transform: uppercase; line-height: 1.05; }
+.dz-cta small { display: block; font-size: 13px; opacity: .92; }
+.dz-cta:active { transform: scale(.98); }
+.dz-tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.dz-tile { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; padding: 14px; border: 0; border-radius: 20px; text-align: left; background: var(--panel); color: var(--fg); box-shadow: var(--shadow); min-height: 150px; }
+.dz-tile .ico { width: 46px; height: 46px; border-radius: 14px; display: grid; place-items: center; color: #fff; margin-bottom: 4px; }
+.dz-tile.t1 .ico { background: linear-gradient(135deg, #34c58b, #1f9fd6); box-shadow: 0 6px 14px rgba(31,159,214,.35); }
+.dz-tile.t2 .ico { background: linear-gradient(135deg, #ffb347, #ff6a5e); box-shadow: 0 6px 14px rgba(255,106,94,.35); }
+.dz-tile .ico svg { width: 26px; height: 26px; }
+.dz-tile b { font-family: var(--f-cond); font-weight: 800; font-size: 19px; text-transform: uppercase; line-height: 1.05; }
+.dz-tile small { color: var(--muted); font-size: 13px; line-height: 1.3; }
+.dz-tile:active { transform: scale(.97); }
+.dz-switch { display: grid; grid-template-columns: 40px 1fr 52px; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 18px; background: var(--panel); box-shadow: var(--shadow); font-size: 15px; cursor: pointer; }
+.dz-switch .ico { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; background: var(--soft); color: var(--brass); }
+.dz-switch .ico svg { width: 22px; height: 22px; }
+.dz-switch input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.dz-switch i { position: relative; width: 52px; height: 30px; border-radius: 999px; background: var(--line); transition: background .2s; }
+.dz-switch i::after { content: ""; position: absolute; left: 3px; top: 3px; width: 24px; height: 24px; border-radius: 50%; background: #fff; box-shadow: 0 2px 6px rgba(0,0,0,.25); transition: transform .2s; }
+.dz-switch input:checked + i { background: linear-gradient(120deg, #3b8cff, #8a6bff); }
+.dz-switch input:checked + i::after { transform: translateX(22px); }
+.dz-switch input:focus-visible + i { outline: 2px solid var(--brass); outline-offset: 2px; }
+.dz-friends { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.dz-friends li { display: grid; grid-template-columns: 48px minmax(0, 1fr) auto; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 18px; background: var(--panel); box-shadow: var(--shadow); }
+.dz-av { width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; font-family: var(--f-display); font-weight: 800; font-size: 22px; color: #fff; background: linear-gradient(135deg, hsl(var(--h) 80% 60%), hsl(calc(var(--h) + 50) 75% 50%)); box-shadow: 0 0 0 3px var(--panel), 0 0 0 5px hsl(var(--h) 70% 65% / .5); }
+.dz-friends .who { min-width: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 3px; }
+.dz-friends .who b { font-size: 17px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100%; }
+.dz-friends .who .crown { margin-left: 0; }
+.dz-friends .who > span.rk + .crown { margin-top: -2px; }
+.dz-friends .who { display: grid; grid-template-columns: auto auto; justify-content: start; column-gap: 6px; }
+.dz-friends .who b { grid-column: 1 / -1; }
+.dz-ticket { border-radius: 22px; background: var(--panel); box-shadow: var(--shadow); overflow: hidden; }
+.dz-ticket-top { position: relative; padding: 18px 16px 16px; display: grid; gap: 8px; justify-items: start; background: linear-gradient(135deg, color-mix(in srgb, var(--brass) 14%, transparent), transparent 70%); }
+.dz-ticket-top .code { background: linear-gradient(90deg, #3b8cff, #8a6bff 55%, #ff5e9a); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.dz-ticket-top .meta { margin: 0; }
+.dz-ticket-bot { position: relative; padding: 16px; display: grid; gap: 8px; border-top: 2px dashed var(--line); }
+.dz-ticket-bot::before, .dz-ticket-bot::after { content: ""; position: absolute; top: -12px; width: 22px; height: 22px; border-radius: 50%; background: var(--bg); }
+.dz-ticket-bot::before { left: -11px; } .dz-ticket-bot::after { right: -11px; }
+.dz-add { display: grid; grid-template-columns: 1fr auto; gap: 8px; }
+.dz-add input { font: inherit; font-size: 18px; padding: 10px 14px; border-radius: 12px; border: 1.5px solid var(--line); background: var(--bg); color: var(--fg); min-width: 0; letter-spacing: .2em; text-transform: uppercase; }
+.dz-add input:focus-visible { outline: 3px solid var(--brass); outline-offset: 1px; }
+@media (prefers-reduced-motion: reduce) { .dz-glow, .dz-arena img, .dz-vs, .dz-cta::after { animation: none !important; } }
 .subopt { margin: 0 0 16px; border-radius: 16px; background: var(--panel); box-shadow: var(--shadow); color: var(--fg); overflow: hidden; }
 .subopt > summary { list-style: none; display: flex; align-items: center; gap: 10px; padding: 14px 16px; cursor: pointer; font-weight: 700; }
 .subopt > summary::-webkit-details-marker { display: none; }
@@ -4604,8 +4667,12 @@ function renderRndJoin() {
   })();
 }
 function renderDuels() {
-  const fl = invitable();
-  app.innerHTML = '\n  <div class="screen">\n    <header class="mast"><div><h1>Sfide</h1><div class="sub">Uno contro uno in videochiamata: la fotocamera conta le ripetizioni di entrambi</div></div></header>\n    <div class="modes">\n      <button class="mode" id="duelRandom" type="button"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg></span><span><b>Sfida casuale</b><small>Ti abbino a chi sta cercando una sfida in questo momento</small></span><span class="go">\u203A</span></button>\n      <button class="mode" id="duelNew" type="button"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v12H5.5L4 17.5z"/><path d="M8 9h8M8 12h5"/></svg></span><span><b>Invita un amico</b><small>Crea la sfida e mandagli il link o l\'invito</small></span><span class="go">\u203A</span></button>\n      <button class="mode" id="duelJoin" type="button"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="10" rx="2"/><path d="M7 12h.01M11 12h.01M15 12h.01"/></svg></span><span><b>Ho un codice</b><small>Entra nella sfida di un amico</small></span><span class="go">\u203A</span></button>\n    </div>\n    <label class="toggle"><input type="checkbox" id="rndT" '.concat(RW.on ? "checked" : "", '> Avvisami quando qualcuno cerca una sfida casuale</label>\n    <div class="section"><div class="label">I tuoi amici</div>\n      ').concat(fl.length ? '<ol class="lb">'.concat(fl.map((f) => '<li><span class="pos">'.concat(rankBadge(Math.min(RANKS.length - 1, Math.max(0, f.rank | 0)), !!f.gold, f.crowns), '</span><span class="who">').concat(esc(f.name), '</span><button class="btn primary small inv" type="button" data-inv="').concat(esc(f.fcode), '">Sfida</button></li>')).join(""), "</ol>") : '<p class="note">Aggiungi un amico con il suo codice, oppure sfidalo con un link: comparir\xE0 qui e potrai invitarlo con un tocco.</p>', '\n    </div>\n    <div class="order">\n      <div class="label">Il tuo codice amico</div>\n      <div class="code">').concat(myFcode, '</div>\n      <p class="meta">Dallo ai tuoi amici: con questo codice ti aggiungono e ti invitano alle sfide quando hai l\'app aperta.</p>\n      <div class="field"><label class="label" for="addCode">Aggiungi un amico</label><input id="addCode" maxlength="6" autocapitalize="characters" autocomplete="off" placeholder="Codice amico" style="letter-spacing:.2em;text-transform:uppercase"></div>\n      <div class="row"><button class="btn ghost small" id="addBtn" type="button">Aggiungi</button><button class="btn ghost small" id="shareMe" type="button">Invia il mio codice</button></div>\n      <p class="note" id="addNote" hidden></p>\n    </div>\n  </div>');
+  const fl = invitable(), cr = crownN(stats.crowns);
+  const av = (n) => {
+    const c = [...n || "?"][0].toUpperCase(), h = [...n || ""].reduce((a, ch) => (a * 31 + ch.charCodeAt(0)) % 360, 7);
+    return '<span class="dz-av" style="--h:'.concat(h, '">').concat(esc(c), "</span>");
+  };
+  app.innerHTML = '\n  <div class="screen dz">\n    <section class="dz-hero">\n      <div class="dz-glow"></div>\n      <div class="dz-top"><h1>Sfide</h1>'.concat(cr ? '<span class="dz-crowns">'.concat(crownSVG(), "<b>").concat(cr, "</b></span>") : "", '</div>\n      <p class="dz-sub">Uno contro uno in videochiamata: la fotocamera conta le ripetizioni di entrambi</p>\n      ').concat(SITE ? '<div class="dz-arena"><img class="dz-m" src="img/chars/stand-m.webp" alt="" draggable="false"><em class="dz-vs">VS</em><img class="dz-f" src="img/chars/stand-f.webp" alt="" draggable="false"></div>' : '<div class="dz-arena"><em class="dz-vs">VS</em></div>', '\n      <button class="dz-cta" id="duelRandom" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg><span><b>Sfida casuale</b><small>Ti abbino a chi sta cercando una sfida in questo momento</small></span></button>\n    </section>\n    <div class="dz-tiles">\n      <button class="dz-tile t1" id="duelNew" type="button"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v12H5.5L4 17.5z"/><path d="M8 9h8M8 12h5"/></svg></span><b>Invita un amico</b><small>Crea la sfida e mandagli il link o l\'invito</small></button>\n      <button class="dz-tile t2" id="duelJoin" type="button"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="10" rx="2"/><path d="M7 12h.01M11 12h.01M15 12h.01"/></svg></span><b>Ho un codice</b><small>Entra nella sfida di un amico</small></button>\n    </div>\n    <label class="dz-switch"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 21h4"/></svg></span><span>Avvisami quando qualcuno cerca una sfida casuale</span><input type="checkbox" id="rndT" ').concat(RW.on ? "checked" : "", '><i></i></label>\n    <div class="section"><div class="label">I tuoi amici</div>\n      ').concat(fl.length ? '<ol class="dz-friends">'.concat(fl.map((f) => "<li>".concat(av(f.name), '<span class="who"><b>').concat(esc(f.name), "</b>").concat(rankBadge(Math.min(RANKS.length - 1, Math.max(0, f.rank | 0)), !!f.gold, f.crowns), '</span><button class="btn primary small inv" type="button" data-inv="').concat(esc(f.fcode), '">Sfida</button></li>')).join(""), "</ol>") : '<p class="note">Aggiungi un amico con il suo codice, oppure sfidalo con un link: comparir\xE0 qui e potrai invitarlo con un tocco.</p>', '\n    </div>\n    <div class="dz-ticket">\n      <div class="dz-ticket-top">\n        <div class="label">Il tuo codice amico</div>\n        <div class="code">').concat(myFcode, '</div>\n        <p class="meta">Dallo ai tuoi amici: con questo codice ti aggiungono e ti invitano alle sfide quando hai l\'app aperta.</p>\n        <button class="btn ghost small" id="shareMe" type="button">Invia il mio codice</button>\n      </div>\n      <div class="dz-ticket-bot">\n        <label class="label" for="addCode">Aggiungi un amico</label>\n        <div class="dz-add"><input id="addCode" maxlength="6" autocapitalize="characters" autocomplete="off" placeholder="Codice amico"><button class="btn primary small" id="addBtn" type="button">Aggiungi</button></div>\n        <p class="note" id="addNote" hidden></p>\n      </div>\n    </div>\n  </div>');
   $("duelRandom").onclick = () => go({ name: "duel-new", mode: "random" });
   $("rndT").onchange = (e) => {
     RW.on = e.target.checked;
