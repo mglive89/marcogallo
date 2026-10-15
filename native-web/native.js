@@ -30,6 +30,16 @@
           return ((r && r.samples) || []).map(function (s) { return { day: dayKey(new Date(s.startDate)), steps: Math.round(Number(s.value) || 0) }; });
         });
     },
+    // passi per ora di un giorno ("AAAA-MM-GG") → array di 24 numeri
+    hourlySteps: function (day) {
+      var p = day.split("-").map(Number), start = new Date(p[0], p[1] - 1, p[2]), end = new Date(p[0], p[1] - 1, p[2] + 1);
+      return Health.queryAggregated({ dataType: "steps", startDate: start.toISOString(), endDate: end.toISOString(), bucket: "hour", aggregation: "sum" })
+        .then(function (r) {
+          var h = []; for (var i = 0; i < 24; i++) h.push(0);
+          ((r && r.samples) || []).forEach(function (s) { var d = new Date(s.startDate); if (dayKey(d) === day) h[d.getHours()] += Math.round(Number(s.value) || 0); });
+          return h;
+        });
+    },
     openSettings: function () { return Health.openHealthConnectSettings ? Health.openHealthConnectSettings() : Promise.resolve(); }
   };
 
