@@ -1,0 +1,11 @@
+{
+  "appId": "com.mglive89.fitquest",
+  "appName": "FitQuest",
+  "webDir": "www",
+  "backgroundColor": "#f3f5f9",
+  "android": { "allowMixedContent": false },
+  "ios": { "contentInset": "never", "limitsNavigationsToAppBoundDomains": false },
+  "plugins": {
+    "SplashScreen": { "launchShowDuration": 800, "backgroundColor": "#141d3d", "showSpinner": false }
+  }
+}

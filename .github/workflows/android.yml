@@ -1,0 +1,54 @@
+name: App Android (prova)
+
+on:
+  push:
+    branches: [app]
+  workflow_dispatch:
+
+concurrency:
+  group: android-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Sito pubblicato (gh-pages)
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: site
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Prepara l'app
+        run: |
+          npm ci
+          node scripts/make-www.mjs site
+          npx cap sync android
+
+      - name: Compila l'APK di prova
+        working-directory: android
+        run: ./gradlew assembleDebug --no-daemon
+
+      - name: Nome del file
+        run: |
+          V=$(grep -o 'APP_VER = "[^"]*"' www/index.html | cut -d'"' -f2)
+          cp android/app/build/outputs/apk/debug/app-debug.apk "FitQuest-${V:-app}-prova.apk"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: FitQuest-android-prova
+          path: FitQuest-*-prova.apk
+          retention-days: 30
