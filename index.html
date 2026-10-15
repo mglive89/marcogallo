@@ -189,7 +189,6 @@ body.g-f .counter .of { color: #f0a6dc; }
 .dock { flex: 0 0 auto; background: #0d1117; padding: 10px 12px calc(env(safe-area-inset-bottom, 0px) + 10px); display: flex; gap: 8px; align-items: center; }
 .dock .btn { flex: 1 1 auto; }
 .dock .btn.ghost { background: #1b222c; border-color: #2b3440; color: #fff; }
-.dock .adj { flex: 0 0 54px; padding: 0; font-size: 26px; }
 
 .rest { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; background: #f3f5f9; color: var(--fg); padding: 24px; text-align: center; }
 .rest .label { color: var(--muted); }
@@ -912,8 +911,6 @@ input, textarea, select, [contenteditable] { -webkit-user-select: text; user-sel
     </div>
   </div>
   <div class="dock">
-    <button class="btn ghost adj" id="minus" type="button" aria-label="Togli una ripetizione">−</button>
-    <button class="btn ghost adj" id="plus" type="button" aria-label="Aggiungi una ripetizione">+</button>
     <button class="btn ghost small" id="flip" type="button">Camera</button>
     <button class="btn primary small" id="stop" type="button">Fine serie</button>
   </div>
@@ -4226,7 +4223,6 @@ function beginSet() {
   $("hudSet").textContent = S.test ? "Prova \xB7 2:00" : q.sets > 1 || S.queue.length > 1 ? "Serie ".concat(q.set, " di ").concat(q.sets) : "Serie libera";
   $("count").textContent = EX[q.ex].unit === "secs" ? "0" : "0";
   $("countOf").textContent = EX[q.ex].unit === "secs" ? q.target ? "di ".concat(q.target, " s") : "secondi" : q.target ? "di ".concat(q.target) : q.max ? "MAX" : "ripetizioni";
-  $("minus").hidden = $("plus").hidden = EX[q.ex].unit === "secs" || !!S.challenge;
   $("stop").textContent = S.idx < S.queue.length - 1 ? "Fine serie" : "Termina";
   setBanner("In posizione!", "warn");
   say("".concat(EX[q.ex].name, ". ").concat(q.target ? EX[q.ex].unit === "secs" ? "Tieni per ".concat(q.target, " secondi") : "".concat(q.target, " ripetizioni") : q.timeLimit ? "Massimo in ".concat(q.timeLimit, " secondi") : q.max ? "Pi\xF9 ripetizioni che puoi" : "Massimo in due minuti", ". Via!"), { urgent: true });
@@ -4499,23 +4495,6 @@ $("stop").onclick = () => {
     return finish(false);
   }
   endSet(true);
-};
-$("plus").onclick = () => {
-  if (S.cur && !S.challenge) {
-    S.cur.count++;
-    $("count").textContent = S.cur.count;
-    if (S.challenge) {
-      duelSend({ t: "reps", n: S.cur.count });
-      if (S.cur.target && S.cur.count >= S.cur.target) endSet();
-    }
-  }
-};
-$("minus").onclick = () => {
-  if (S.cur && S.cur.count > 0) {
-    S.cur.count--;
-    $("count").textContent = S.cur.count;
-    if (S.challenge) duelSend({ t: "reps", n: S.cur.count });
-  }
 };
 $("flip").onclick = async () => {
   S.facing = S.facing === "user" ? "environment" : "user";
@@ -6038,7 +6017,6 @@ async function startDuelSession() {
   $("oppCount").textContent = "0";
   $("flip").hidden = true;
   $("rest").hidden = true;
-  $("minus").hidden = $("plus").hidden = true;
   $("stop").textContent = "Mi ritiro";
   $("loading").hidden = false;
   loadFx(CH.cfg && CH.cfg.ex);
@@ -6456,7 +6434,7 @@ function fxSettingsWire() {
 }
 const SB_URL = "https://maypmqnjkdrdqcssnvty.supabase.co";
 const SB_KEY = "sb_publishable_uorMl6G618tavZGF8MQpfQ_2Pg3AIlE";
-const APP_VER = "web-v45";
+const APP_VER = "web-v46";
 const SYNC_SKIP = ["lite", "vpack", "rndInv"];
 const ACC = { sb: null, user: null, loading: null, busy: false, msg: "", err: false, timer: null, mode: "login" };
 const syncInfo = () => {
