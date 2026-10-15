@@ -711,34 +711,48 @@ body.dark .lbz-info .lbz-rules { background: rgba(255,255,255,.05); }
 .pf-stats div { display: grid; justify-items: center; gap: 2px; padding: 10px 6px; border-radius: 16px; background: rgba(255,255,255,.08); box-shadow: inset 0 0 0 1px rgba(255,255,255,.08); }
 .pf-stats b { font-family: var(--f-display); font-weight: 800; font-size: 26px; line-height: 1; background: linear-gradient(90deg, #7cc4ff, #b9a6ff 55%, #ff9ad5); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .pf-stats small { font-size: 11px; color: #c9d4f2; text-transform: uppercase; letter-spacing: .06em; text-align: center; }
-/* Passi giornalieri (Profilo): cerchio attività, 30 giorni, punti da riscuotere */
-.st-card { gap: 14px; }
-.st-head { position: relative; display: flex; justify-content: space-between; align-items: center; gap: 10px; }
-.st-head h2 { margin: 0; font-family: var(--f-display); font-weight: 800; font-size: 24px; line-height: 1; text-transform: uppercase; color: #fff; }
-.st-src { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #c9d4f2; padding: 5px 10px; border-radius: 999px; background: rgba(255,255,255,.08); box-shadow: inset 0 0 0 1px rgba(255,255,255,.1); }
+/* Attività (Profilo): anelli come in Salute ma con i colori di FitQuest, passi e distanza per ora, 30 giorni e punti da riscuotere */
+.st-wrap { display: grid; gap: 10px; position: relative; --c1a: #5fd0ff; --c1b: #7a6bff; --c2a: #ff9f43; --c2b: #ffd36b; --c3a: #ff4f8b; --c3b: #ff9ad5; }
+.st-panel { position: relative; overflow: hidden; border-radius: 24px; padding: 16px; color: #fff; background: radial-gradient(120% 90% at 20% 0%, #24366f 0%, #141d3d 55%, #0b1024 100%); box-shadow: 0 14px 32px rgba(20,30,80,.28), inset 0 0 0 1px rgba(255,255,255,.07); }
+.st-head { position: relative; display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 8px; }
+.st-head h2 { margin: 0; font-family: var(--f-display); font-weight: 800; font-size: 23px; line-height: 1; color: #fff; }
+.st-src { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; font-size: 10.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #c9d4f2; padding: 5px 10px; border-radius: 999px; background: rgba(255,255,255,.08); box-shadow: inset 0 0 0 1px rgba(255,255,255,.1); }
 .st-src i { width: 7px; height: 7px; border-radius: 50%; background: #5b6b95; }
 .st-src.on i { background: #4ade80; box-shadow: 0 0 8px #4ade80; animation: stBlink 1.6s ease-in-out infinite; }
-.st-main { position: relative; display: grid; grid-template-columns: 150px 1fr; gap: 14px; align-items: center; }
-.st-ring { position: relative; width: 150px; height: 150px; }
-.st-ring > svg { width: 100%; height: 100%; transform: rotate(-90deg); overflow: visible; }
-.st-track { fill: none; stroke: rgba(255,255,255,.1); stroke-width: 11; }
-.st-prog { fill: none; stroke: url(#stg); stroke-width: 11; stroke-linecap: round; transition: stroke-dashoffset 1s cubic-bezier(.2,.8,.2,1); filter: drop-shadow(0 0 6px rgba(185,166,255,.65)); }
-.st-ring-in { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; text-align: center; gap: 3px; }
-.st-shoe { width: 22px; height: 22px; color: #7cc4ff; }
-.st-ring-in b { font-family: var(--f-display); font-weight: 800; font-size: 32px; line-height: 1; color: #fff; font-variant-numeric: tabular-nums; }
-.st-ring-in small { font-size: 10.5px; color: #c9d4f2; text-transform: uppercase; letter-spacing: .06em; }
-.st-side { display: grid; gap: 8px; }
-.st-side div { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; padding: 9px 12px; border-radius: 14px; background: rgba(255,255,255,.08); box-shadow: inset 0 0 0 1px rgba(255,255,255,.08); }
-.st-side b { font-family: var(--f-display); font-weight: 800; font-size: 22px; line-height: 1; font-variant-numeric: tabular-nums; background: linear-gradient(90deg, #7cc4ff, #b9a6ff 55%, #ff9ad5); -webkit-background-clip: text; background-clip: text; color: transparent; }
-.st-side small { font-size: 11px; color: #c9d4f2; text-transform: uppercase; letter-spacing: .06em; }
-.st-hist { position: relative; display: grid; gap: 8px; padding: 12px; border-radius: 18px; background: rgba(5,10,30,.35); box-shadow: inset 0 0 0 1px rgba(255,255,255,.08); }
+.st-main { display: grid; grid-template-columns: 158px 1fr; gap: 16px; align-items: center; }
+.st-ring { width: 158px; height: 158px; }
+.st-ring svg { width: 100%; height: 100%; overflow: visible; }
+.st-ring .trk { fill: none; stroke-width: 15; opacity: .2; }
+.st-ring .arc { fill: none; stroke-width: 15; stroke-linecap: round; transition: stroke-dashoffset 1.1s cubic-bezier(.2,.8,.2,1); }
+.st-ring .r1 { stroke: url(#stg1); } .st-ring .t1 { stroke: var(--c1b); }
+.st-ring .r2 { stroke: url(#stg2); } .st-ring .t2 { stroke: var(--c2a); }
+.st-ring .r3 { stroke: url(#stg3); } .st-ring .t3 { stroke: var(--c3a); }
+.st-ring .ico { fill: none; stroke: #0b1024; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.st-leg { display: grid; gap: 10px; }
+.st-leg div { display: grid; gap: 1px; }
+.st-leg small { font-size: 14px; font-weight: 600; color: #e6ecff; }
+.st-leg b { font-family: var(--f-display); font-weight: 800; font-size: 27px; line-height: 1; font-variant-numeric: tabular-nums; }
+.st-leg b i { font-style: normal; font-size: 17px; margin-left: 2px; }
+.st-leg .l1 b { color: var(--c1a); } .st-leg .l2 b { color: var(--c2b); } .st-leg .l3 b { color: var(--c3b); }
+.st-duo { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.st-mini { padding: 14px 14px 12px; display: grid; gap: 2px; }
+.st-mini h3 { margin: 0 0 6px; font-family: var(--f-display); font-weight: 800; font-size: 19px; line-height: 1.05; color: #fff; }
+.st-mini small { font-size: 13px; color: #c9d4f2; }
+.st-mini b { font-family: var(--f-display); font-weight: 800; font-size: 34px; line-height: 1.05; font-variant-numeric: tabular-nums; }
+.st-mini b i { font-style: normal; font-size: 18px; margin-left: 2px; }
+.st-mini.m1 b { color: #9b8cff; } .st-mini.m2 b { color: var(--c1a); }
+.st-hours { position: relative; display: grid; grid-template-columns: repeat(24, 1fr); gap: 2px; align-items: end; height: 70px; margin-top: 8px; padding-bottom: 16px; background: repeating-linear-gradient(90deg, rgba(255,255,255,.12) 0 1px, transparent 1px calc(100% / 24)); background-size: 100% calc(100% - 16px); background-repeat: no-repeat; }
+.st-hours i { display: block; width: 100%; height: calc(var(--h) * (100%)); border-radius: 2px; background: currentColor; min-height: 0; transition: height .5s; }
+.st-mini.m1 .st-hours { color: #9b8cff; } .st-mini.m2 .st-hours { color: var(--c1a); }
+.st-hours .ax { position: absolute; left: 0; right: 0; bottom: 0; display: flex; justify-content: space-between; font-size: 9px; color: #8f9cc4; text-transform: uppercase; }
+.st-hist-card { display: grid; gap: 10px; }
 .st-hist-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
-.st-hist .label { color: #c9d4f2; }
+.st-hist-top h3 { margin: 0; font-family: var(--f-display); font-weight: 800; font-size: 19px; color: #fff; }
 .st-due { font-size: 12px; font-weight: 700; color: #ffd36b; }
 .st-bars { display: grid; grid-template-columns: repeat(30, 1fr); gap: 3px; align-items: end; height: 84px; padding-top: 8px; }
 .st-bars button { position: relative; height: 100%; display: flex; align-items: flex-end; padding: 0; border: 0; background: none; cursor: pointer; border-radius: 4px; min-width: 0; }
-.st-bars i { display: block; width: 100%; height: calc(var(--h) * 100%); min-height: 3px; border-radius: 4px 4px 2px 2px; background: rgba(124,196,255,.38); transition: height .6s cubic-bezier(.2,.8,.2,1); }
-.st-bars .goal i { background: linear-gradient(0deg, #7cc4ff, #b9a6ff 55%, #ff9ad5); }
+.st-bars i { display: block; width: 100%; height: calc(var(--h) * 100%); min-height: 3px; border-radius: 4px 4px 2px 2px; background: rgba(155,140,255,.4); transition: height .6s cubic-bezier(.2,.8,.2,1); }
+.st-bars .goal i { background: linear-gradient(0deg, var(--c1a), var(--c1b)); }
 .st-bars .due::after { content: ""; position: absolute; top: -6px; left: 50%; width: 5px; height: 5px; margin-left: -2.5px; border-radius: 50%; background: #ffd36b; box-shadow: 0 0 6px #ffd36b; }
 .st-bars .sel i { box-shadow: 0 0 0 2px #fff, 0 0 10px rgba(255,255,255,.5); }
 .st-bars button:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
@@ -749,18 +763,18 @@ body.dark .lbz-info .lbz-rules { background: rgba(255,255,255,.05); }
 .st-chip { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; padding: 5px 10px; border-radius: 999px; background: rgba(255,255,255,.1); color: #c9d4f2; }
 .st-chip.ok { background: rgba(74,222,128,.15); color: #86efac; }
 .st-chip.due { background: rgba(255,211,107,.15); color: #ffd36b; }
-.st-act { position: relative; display: grid; gap: 8px; }
-.st-btn { border: 0; border-radius: 16px; min-height: 50px; padding: 0 16px; display: flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; font-family: var(--f-cond); font-weight: 800; font-size: 18px; letter-spacing: .04em; text-transform: uppercase; color: #1b1440; background: linear-gradient(90deg, #7cc4ff, #b9a6ff 55%, #ff9ad5); box-shadow: 0 8px 22px rgba(185,166,255,.4); }
+.st-act { display: grid; gap: 8px; }
+.st-btn { border: 0; border-radius: 16px; min-height: 50px; padding: 0 16px; display: flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; font-family: var(--f-cond); font-weight: 800; font-size: 18px; letter-spacing: .04em; text-transform: uppercase; color: #1b1440; background: linear-gradient(90deg, var(--c2b), var(--c2a)); box-shadow: 0 8px 22px rgba(255,159,67,.35); }
 .st-btn.ghost { color: #fff; background: rgba(255,255,255,.1); box-shadow: inset 0 0 0 1px rgba(255,255,255,.2); }
 .st-btn.sm { min-height: 34px; padding: 0 12px; border-radius: 12px; font-size: 14px; }
 .st-btn:active { transform: scale(.98); }
 .st-note { margin: 0; font-size: 12.5px; line-height: 1.4; color: #c9d4f2; text-align: center; }
 .st-rule { margin: 0; font-size: 11.5px; color: #8f9cc4; text-align: center; }
-.st-pop { position: absolute; left: 50%; top: 42%; z-index: 3; pointer-events: none; font-family: var(--f-display); font-weight: 800; font-size: 44px; color: #ffd36b; text-shadow: 0 0 18px rgba(255,211,107,.7); transform: translateX(-50%); animation: stPop 1.5s ease-out forwards; }
+.st-pop { position: absolute; left: 50%; top: 30%; z-index: 3; pointer-events: none; font-family: var(--f-display); font-weight: 800; font-size: 44px; color: #ffd36b; text-shadow: 0 0 18px rgba(255,211,107,.7); transform: translateX(-50%); animation: stPop 1.5s ease-out forwards; }
 @keyframes stBlink { 50% { opacity: .35; } }
 @keyframes stPop { 0% { opacity: 0; transform: translate(-50%, 14px) scale(.7); } 20% { opacity: 1; transform: translate(-50%, 0) scale(1.1); } 100% { opacity: 0; transform: translate(-50%, -50px) scale(1); } }
-@media (max-width: 370px) { .st-main { grid-template-columns: 1fr; justify-items: center; } .st-side { width: 100%; } }
-@media (prefers-reduced-motion: reduce) { .st-prog, .st-bars i { transition: none; } .st-src.on i, .st-pop { animation: none; } }
+@media (max-width: 370px) { .st-main { grid-template-columns: 1fr; justify-items: center; } .st-leg { grid-template-columns: repeat(3, 1fr); width: 100%; text-align: center; } .st-mini b { font-size: 28px; } .st-leg b { font-size: 22px; } }
+@media (prefers-reduced-motion: reduce) { .st-ring .arc, .st-bars i, .st-hours i { transition: none; } .st-src.on i, .st-pop { animation: none; } }
 .set-menu > summary { gap: 12px; }
 .set-menu > summary > span:nth-child(2) { flex: 0 0 auto; font-size: 17px; }
 .set-menu > summary > b { flex: 1; text-align: right; font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -1862,6 +1876,11 @@ const I18N = [
   ["FitQuest legge solo i tuoi passi, anche quelli dei 30 giorni passati. Il telefono li conta tutto il giorno, anche con l'app chiusa.", "FitQuest only reads your steps, including the past 30 days. Your phone counts them all day, even with the app closed.", "FitQuest solo lee tus pasos, tambi\xE9n los de los \xFAltimos 30 d\xEDas. El m\xF3vil los cuenta todo el d\xEDa, incluso con la app cerrada.", "FitQuest lit seulement tes pas, y compris ceux des 30 derniers jours. Ton t\xE9l\xE9phone les compte toute la journ\xE9e, m\xEAme app ferm\xE9e.", "FitQuest liest nur deine Schritte, auch die der letzten 30 Tage. Dein Handy z\xE4hlt sie den ganzen Tag, auch wenn die App geschlossen ist.", "O FitQuest s\xF3 l\xEA seus passos, inclusive os dos \xFAltimos 30 dias. O celular conta o dia todo, mesmo com o app fechado."],
   ["Apple Salute non \xE8 disponibile su questo dispositivo.", "Apple Health isn't available on this device.", "Salud de Apple no est\xE1 disponible en este dispositivo.", "Sant\xE9 d'Apple n'est pas disponible sur cet appareil.", "Apple Health ist auf diesem Ger\xE4t nicht verf\xFCgbar.", "A Sa\xFAde da Apple n\xE3o est\xE1 dispon\xEDvel neste dispositivo."],
   ["Installa Health Connect dal Play Store per contare i passi di tutta la giornata.", "Install Health Connect from the Play Store to count your steps all day.", "Instala Health Connect desde Play Store para contar tus pasos todo el d\xEDa.", "Installe Health Connect depuis le Play Store pour compter tes pas toute la journ\xE9e.", "Installiere Health Connect aus dem Play Store, um den ganzen Tag Schritte zu z\xE4hlen.", "Instale o Health Connect na Play Store para contar seus passos o dia todo."],
+  ["Anelli attivit\xE0", "Activity rings", "Anillos de actividad", "Anneaux d'activit\xE9", "Aktivit\xE4tsringe", "An\xE9is de atividade"],
+  ["Allenamento", "Workout", "Entrenamiento", "Entra\xEEnement", "Training", "Treino"],
+  ["Distanza", "Distance", "Distancia", "Distance", "Distanz", "Dist\xE2ncia"],
+  ["Passi", "Steps", "Pasos", "Pas", "Schritte", "Passos"],
+  ["Punti", "Points", "Puntos", "Points", "Punkte", "Pontos"],
   ["Attivit\xE0 di oggi", "Today's activity", "Actividad de hoy", "Activit\xE9 du jour", "Heutige Aktivit\xE4t", "Atividade de hoje"],
   ["Salute del telefono", "Phone health", "Salud del m\xF3vil", "Sant\xE9 du t\xE9l\xE9phone", "Handy-Gesundheit", "Sa\xFAde do celular"],
   ["Contapassi attivo", "Step counter on", "Pod\xF3metro activo", "Podom\xE8tre actif", "Schrittz\xE4hler an", "Contador de passos ativo"],
@@ -4065,9 +4084,10 @@ function renderOnboard() {
     go({ name: "onboard", step: "tone" });
   });
 }
-const STEP_GOAL = 8e3, STEP_PER_PT = 250, STEP_MAX_PTS = 60, STEP_DAYS = 30;
+const STEP_GOAL = 8e3, STEP_PER_PT = 250, STEP_MAX_PTS = 60, STEP_DAYS = 30, MIN_GOAL = 20, PTS_GOAL = 100;
 const dayKey = (d = /* @__PURE__ */ new Date()) => "".concat(d.getFullYear(), "-").concat(String(d.getMonth() + 1).padStart(2, "0"), "-").concat(String(d.getDate()).padStart(2, "0"));
 const stepPts = (n) => Math.min(STEP_MAX_PTS, Math.floor((n | 0) / STEP_PER_PT));
+const stepKm = (n) => (n * 762e-6).toLocaleString(LANGS[lang] ? LANGS[lang].tts : "it-IT", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
 const stepFmt = (n) => Number(n || 0).toLocaleString(LANGS[lang] ? LANGS[lang].tts : "it-IT");
 let steps = store.get("steps", null);
 if (!steps || typeof steps !== "object" || !steps.days) steps = { days: {}, claimed: {} };
@@ -4075,6 +4095,22 @@ if (!steps.claimed) steps.claimed = {};
 if (steps.v !== 2) {
   steps.days = {};
   steps.v = 2;
+}
+let oggi = store.get("oggi", null);
+function oggiGet() {
+  const k = dayKey();
+  if (!oggi || oggi.d !== k) oggi = { d: k, min: 0, pts: 0 };
+  return oggi;
+}
+function oggiAdd(f, n) {
+  const o = oggiGet();
+  o[f] = Math.round(((o[f] || 0) + n) * 10) / 10;
+  store.set("oggi", o);
+}
+function stepsHours() {
+  const k = dayKey();
+  if (!steps.hours || steps.hours.d !== k || !Array.isArray(steps.hours.h)) steps.hours = { d: k, h: Array(24).fill(0) };
+  return steps.hours.h;
 }
 const STEP = { on: store.get("stepsOn", false), live: false, seen: false, nosensor: false, native: false, app: false, needLink: false, noHealth: false, saveT: 0, paintQ: false, sel: null };
 function stepsDays() {
@@ -4126,6 +4162,14 @@ async function stepsNative() {
     STEP.needLink = false;
     const days = stepsDays(), rows = await h.dailySteps(days[0], days[days.length - 1]);
     for (const r of rows || []) if (r && days.includes(r.day)) steps.days[r.day] = Math.max(0, Math.min(15e4, r.steps | 0));
+    if (h.hourlySteps) try {
+      const hs = await h.hourlySteps(dayKey());
+      const arr = stepsHours();
+      hs.forEach((v, i) => {
+        if (i < 24) arr[i] = Math.max(0, v | 0);
+      });
+    } catch (e) {
+    }
     STEP.native = true;
     stepsSave(true);
     stepsPaint();
@@ -4149,6 +4193,7 @@ async function stepsLink() {
 function stepsAdd(n) {
   const k = dayKey();
   steps.days[k] = (steps.days[k] | 0) + n;
+  stepsHours()[(/* @__PURE__ */ new Date()).getHours()] += n;
   stepsSave();
   stepsPaint();
 }
@@ -4263,7 +4308,6 @@ function stepsBoot() {
     }
   });
 }
-const SHOE = '<svg class="st-shoe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 16v-5.5C4 8 5.5 6 7.5 6S10 7.5 10 9v2.5l3.5 1.5c2 .8 6.5 1.3 6.5 4V18H4z"/><path d="M4 18v1h16v-1M10 14l1.5-1M13 15l1.5-1"/></svg>';
 function stepsDayLabel(k) {
   if (k === dayKey()) return "<span>Oggi</span>";
   try {
@@ -4277,8 +4321,25 @@ function stepsSelHtml(k) {
   const right = !n ? '<span class="st-chip">Nessun passo</span>' : due && ACC.user ? '<button type="button" class="st-btn sm" data-claim="'.concat(k, '"><span>Riscuoti</span> +').concat(due, "</button>") : due ? '<span class="st-chip due">+'.concat(due, " <span>da riscuotere</span></span>") : '<span class="st-chip ok">+'.concat(got, " <span>riscossi</span></span>");
   return '<span class="st-day">'.concat(stepsDayLabel(k), "</span><span><b>").concat(stepFmt(n), "</b> <span>passi</span></span>").concat(right);
 }
+const RINGS = [{ r: 70, c: "1" }, { r: 52, c: "2" }, { r: 34, c: "3" }];
+const ringIco = [
+  '<path d="M-4 0h7M0-3.5l3.5 3.5L0 3.5"/>',
+  // freccia: passi
+  '<path d="M-5 0h10M-3.5-3v6M3.5-3v6"/>',
+  // manubrio: allenamento
+  '<path d="M0-4.5l1.4 2.9 3.1.4-2.3 2.2.6 3.1L0 2.6l-2.8 1.5.6-3.1-2.3-2.2 3.1-.4z"/>'
+  // stella: punti
+];
+function stepsVals() {
+  const n = steps.days[dayKey()] | 0, o = oggiGet();
+  return [Math.min(1, n / STEP_GOAL), Math.min(1, (o.min || 0) / MIN_GOAL), Math.min(1, (o.pts || 0) / PTS_GOAL)];
+}
+function stepsHoursHtml() {
+  const h = stepsHours(), m = Math.max(1, ...h);
+  return h.map((v) => '<i style="--h:'.concat((v / m).toFixed(3), '"></i>')).join("") + '<span class="ax"><span>0</span><span>6</span><span>12</span><span>18</span><span></span></span>';
+}
 function stepsCard() {
-  const today = dayKey(), n = steps.days[today] | 0, days = stepsDays();
+  const today = dayKey(), n = steps.days[today] | 0, days = stepsDays(), o = oggiGet();
   const max = Math.max(STEP_GOAL, ...days.map((k) => steps.days[k] | 0));
   const due = stepsDueAll(), sel = STEP.sel && days.includes(STEP.sel) ? STEP.sel : today;
   const live = STEP.native || STEP.live && STEP.seen;
@@ -4295,21 +4356,28 @@ function stepsCard() {
     else if (!STEP.on) act += '<button type="button" class="st-btn ghost" data-st="on">Attiva il contapassi</button><p class="st-note">Conta i passi mentre FitQuest \xE8 aperta. Con l\'app di FitQuest dagli store li conta tutto il giorno, anche in background.</p>';
     else act += '<p class="st-note">Sul sito i passi si contano mentre FitQuest \xE8 aperta. Con l\'app di FitQuest dagli store li conta tutto il giorno, anche in background.</p>';
   }
-  const C = 2 * Math.PI * 52;
-  return '<section class="lbz-hero st-card" id="stCard" data-day="'.concat(today, '" data-due="').concat(due, '" data-max="').concat(max, '">\n    <div class="dz-glow"></div>\n    <div class="st-head"><h2>Attivit\xE0 di oggi</h2><span class="st-src').concat(live ? " on" : "", '"><i></i><span>').concat(src, '</span></span></div>\n    <div class="st-main">\n      <div class="st-ring">\n        <svg viewBox="0 0 120 120" aria-hidden="true"><defs><linearGradient id="stg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7cc4ff"/><stop offset=".55" stop-color="#b9a6ff"/><stop offset="1" stop-color="#ff9ad5"/></linearGradient></defs>\n          <circle cx="60" cy="60" r="52" class="st-track"/><circle cx="60" cy="60" r="52" class="st-prog" id="stProg" stroke-dasharray="').concat(C.toFixed(1), '" stroke-dashoffset="').concat(C.toFixed(1), '" data-c="').concat(C, '"/></svg>\n        <div class="st-ring-in">').concat(SHOE, '<b id="stN">').concat(stepFmt(n), "</b><small><span>obiettivo</span> ").concat(stepFmt(STEP_GOAL), '</small></div>\n      </div>\n      <div class="st-side">\n        <div><small>Km</small><b id="stKm">').concat((n * 762e-6).toFixed(1), '</b></div>\n        <div><small>Kcal</small><b id="stKcal">').concat(Math.round(n * 0.04), '</b></div>\n        <div><small>Punti oggi</small><b id="stPts">').concat(stepPts(n), '</b></div>\n      </div>\n    </div>\n    <div class="st-hist">\n      <div class="st-hist-top"><span class="label">Ultimi 30 giorni</span>').concat(due ? '<span class="st-due">+'.concat(due, " <span>da riscuotere</span></span>") : "", '</div>\n      <div class="st-bars" role="group" aria-label="Passi degli ultimi 30 giorni">').concat(days.map((k) => {
+  const grad = (id, a, b) => '<linearGradient id="'.concat(id, '" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="').concat(a, '"/><stop offset="1" stop-color="').concat(b, '"/></linearGradient>');
+  const rings = RINGS.map((g, i) => {
+    const C = 2 * Math.PI * g.r;
+    return '<circle class="trk t'.concat(g.c, '" cx="80" cy="80" r="').concat(g.r, '"/><circle class="arc r').concat(g.c, '" cx="80" cy="80" r="').concat(g.r, '" stroke-dasharray="').concat(C.toFixed(1), '" stroke-dashoffset="').concat(C.toFixed(1), '" data-c="').concat(C, '" transform="rotate(-90 80 80)"/><g class="ico" transform="translate(80 ').concat(80 - g.r, ')">').concat(ringIco[i], "</g>");
+  }).join("");
+  return '<div class="st-wrap" id="stCard" data-day="'.concat(today, '" data-due="').concat(due, '" data-max="').concat(max, '">\n    <section class="st-panel">\n      <div class="st-head"><h2>Anelli attivit\xE0</h2><span class="st-src').concat(live ? " on" : "", '"><i></i><span>').concat(src, '</span></span></div>\n      <div class="st-main">\n        <div class="st-ring"><svg viewBox="0 0 160 160" role="img" aria-label="Anelli attivit\xE0"><defs>').concat(grad("stg1", "#5fd0ff", "#7a6bff")).concat(grad("stg2", "#ffd36b", "#ff9f43")).concat(grad("stg3", "#ff9ad5", "#ff4f8b"), "</defs>").concat(rings, '</svg></div>\n        <div class="st-leg">\n          <div class="l1"><small>Passi</small><b><span id="stN">').concat(stepFmt(n), "</span><i>/").concat(stepFmt(STEP_GOAL), '</i></b></div>\n          <div class="l2"><small>Allenamento</small><b><span id="stMin">').concat(Math.round(o.min || 0), "</span><i>/").concat(MIN_GOAL, ' MIN</i></b></div>\n          <div class="l3"><small>Punti</small><b><span id="stPts">').concat(Math.round(o.pts || 0), "</span><i>/").concat(PTS_GOAL, '</i></b></div>\n        </div>\n      </div>\n    </section>\n    <div class="st-duo">\n      <section class="st-panel st-mini m1"><h3>Passi</h3><small>Oggi</small><b id="stN2">').concat(stepFmt(n), '</b><div class="st-hours" id="stH1" aria-hidden="true">').concat(stepsHoursHtml(), '</div></section>\n      <section class="st-panel st-mini m2"><h3>Distanza</h3><small>Oggi</small><b><span id="stKm">').concat(stepKm(n), '</span><i>KM</i></b><div class="st-hours" id="stH2" aria-hidden="true">').concat(stepsHoursHtml(), '</div></section>\n    </div>\n    <section class="st-panel st-hist-card">\n      <div class="st-hist-top"><h3>Ultimi 30 giorni</h3>').concat(due ? '<span class="st-due">+'.concat(due, " <span>da riscuotere</span></span>") : "", '</div>\n      <div class="st-bars" role="group" aria-label="Passi degli ultimi 30 giorni">').concat(days.map((k) => {
     const v = steps.days[k] | 0, cls = [v >= STEP_GOAL ? "goal" : "", stepsDue(k) ? "due" : "", k === sel ? "sel" : ""].filter(Boolean).join(" ");
     return '<button type="button" data-day="'.concat(k, '" class="').concat(cls, '" style="--h:').concat((v / max).toFixed(3), '" aria-label="').concat(k, ": ").concat(v, '"><i></i></button>');
-  }).join(""), '</div>\n      <div class="st-axis"><span data-notr>').concat(esc(stepsDayLabel(days[0]).replace(/<[^>]+>/g, "")), '</span><span>Oggi</span></div>\n      <div class="st-sel" id="stSel">').concat(stepsSelHtml(sel), '</div>\n    </div>\n    <div class="st-act">').concat(act, '</div>\n    <p class="st-rule"><span>1 punto ogni</span> ').concat(STEP_PER_PT, " <span>passi</span> \xB7 <span>massimo</span> ").concat(STEP_MAX_PTS, " <span>al giorno</span></p>\n  </section>");
+  }).join(""), '</div>\n      <div class="st-axis"><span data-notr>').concat(esc(stepsDayLabel(days[0]).replace(/<[^>]+>/g, "")), '</span><span>Oggi</span></div>\n      <div class="st-sel" id="stSel">').concat(stepsSelHtml(sel), '</div>\n      <div class="st-act">').concat(act, '</div>\n      <p class="st-rule"><span>1 punto ogni</span> ').concat(STEP_PER_PT, " <span>passi</span> \xB7 <span>massimo</span> ").concat(STEP_MAX_PTS, " <span>al giorno</span></p>\n    </section>\n  </div>");
 }
 function stepsRing(animate) {
-  const p = $("stProg");
-  if (!p) return;
-  const C = +p.dataset.c, n = steps.days[dayKey()] | 0, off = (C * (1 - Math.min(1, n / STEP_GOAL))).toFixed(1);
-  if (animate) requestAnimationFrame(() => requestAnimationFrame(() => p.setAttribute("stroke-dashoffset", off)));
-  else {
-    p.style.transition = "none";
-    p.setAttribute("stroke-dashoffset", off);
-  }
+  const c = $("stCard");
+  if (!c) return;
+  const v = stepsVals();
+  c.querySelectorAll(".st-ring .arc").forEach((p, i) => {
+    const off = (+p.dataset.c * (1 - v[i])).toFixed(1);
+    if (animate) requestAnimationFrame(() => requestAnimationFrame(() => p.setAttribute("stroke-dashoffset", off)));
+    else {
+      p.style.transition = animate === null ? "" : "none";
+      p.setAttribute("stroke-dashoffset", off);
+    }
+  });
 }
 function stepsWire(animate) {
   const c = $("stCard");
@@ -4326,6 +4394,7 @@ function stepsWire(animate) {
       const n = stepsClaim(b.dataset.claim || null);
       if (!n) return;
       stepsRefresh();
+      stepsRing(null);
       const pop = document.createElement("div");
       pop.className = "st-pop";
       pop.textContent = "+" + n;
@@ -4358,12 +4427,11 @@ function stepsPaint() {
     const k = dayKey(), n = steps.days[k] | 0;
     if (c.dataset.day !== k || +c.dataset.due !== stepsDueAll() || n > +c.dataset.max) return stepsRefresh();
     $("stN").textContent = stepFmt(n);
-    $("stKm").textContent = (n * 762e-6).toFixed(1);
-    $("stKcal").textContent = Math.round(n * 0.04);
-    $("stPts").textContent = stepPts(n);
-    const p = $("stProg");
-    p.style.transition = "";
-    p.setAttribute("stroke-dashoffset", (+p.dataset.c * (1 - Math.min(1, n / STEP_GOAL))).toFixed(1));
+    $("stN2").textContent = stepFmt(n);
+    $("stKm").textContent = stepKm(n);
+    stepsRing(null);
+    $("stH1").innerHTML = stepsHoursHtml();
+    $("stH2").innerHTML = stepsHoursHtml();
     const bar = c.querySelector('.st-bars [data-day="'.concat(k, '"]'));
     if (bar) {
       bar.style.setProperty("--h", (n / +c.dataset.max).toFixed(3));
@@ -4825,6 +4893,10 @@ function startRest(secs) {
 }
 function finish(all) {
   const secs = (performance.now() - S.startT) / 1e3;
+  try {
+    oggiAdd("min", Math.min(180, secs / 60));
+  } catch (e) {
+  }
   let newRecord = null;
   if (S.test && S.log[0]) {
     const n = S.log[0].done;
@@ -4968,6 +5040,10 @@ function addPoints(n, why) {
   stats.month.pts += n;
   store.set("stats", stats);
   if (S) S.points = (S.points || 0) + n;
+  try {
+    oggiAdd("pts", n);
+  } catch (e) {
+  }
   const after = rankIndex();
   if (after > before) {
     const unlocked = Object.entries(EX).filter(([, e]) => e.lock === after).map(([, e]) => e.name);
@@ -6823,7 +6899,7 @@ function fxSettingsWire() {
 }
 const SB_URL = "https://maypmqnjkdrdqcssnvty.supabase.co";
 const SB_KEY = "sb_publishable_uorMl6G618tavZGF8MQpfQ_2Pg3AIlE";
-const APP_VER = "web-v49";
+const APP_VER = "web-v50";
 const SYNC_SKIP = ["lite", "vpack", "rndInv"];
 const ACC = { sb: null, user: null, loading: null, busy: false, msg: "", err: false, timer: null, mode: "login" };
 const syncInfo = () => {
