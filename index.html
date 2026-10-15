@@ -1856,6 +1856,12 @@ const I18N = [
   ["Vuoi recuperarlo? Se scegli Annulla, il backup verr\xE0 sostituito con i dati di questo telefono.", "Restore it? If you choose Cancel, the backup will be replaced with this phone's data.", "\xBFRecuperarla? Si eliges Cancelar, la copia se sustituir\xE1 por los datos de este m\xF3vil.", "La r\xE9cup\xE9rer ? Si tu choisis Annuler, la sauvegarde sera remplac\xE9e par les donn\xE9es de ce t\xE9l\xE9phone.", "Wiederherstellen? Wenn du Abbrechen w\xE4hlst, wird das Backup durch die Daten dieses Handys ersetzt.", "Recuperar? Se escolher Cancelar, o backup ser\xE1 substitu\xEDdo pelos dados deste celular."],
   ["Backup online", "Online backup", "Copia online", "Sauvegarde en ligne", "Online-Backup", "Backup online"],
   ["Questo telefono", "This phone", "Este m\xF3vil", "Ce t\xE9l\xE9phone", "Dieses Handy", "Este celular"],
+  ["Salute da collegare", "Health not linked", "Salud sin conectar", "Sant\xE9 \xE0 connecter", "Gesundheit nicht verbunden", "Sa\xFAde n\xE3o conectada"],
+  ["Collega Apple Salute", "Connect Apple Health", "Conectar Salud de Apple", "Connecter Sant\xE9 d'Apple", "Apple Health verbinden", "Conectar Sa\xFAde da Apple"],
+  ["Collega Health Connect", "Connect Health Connect", "Conectar Health Connect", "Connecter Health Connect", "Health Connect verbinden", "Conectar Health Connect"],
+  ["FitQuest legge solo i tuoi passi, anche quelli dei 30 giorni passati. Il telefono li conta tutto il giorno, anche con l'app chiusa.", "FitQuest only reads your steps, including the past 30 days. Your phone counts them all day, even with the app closed.", "FitQuest solo lee tus pasos, tambi\xE9n los de los \xFAltimos 30 d\xEDas. El m\xF3vil los cuenta todo el d\xEDa, incluso con la app cerrada.", "FitQuest lit seulement tes pas, y compris ceux des 30 derniers jours. Ton t\xE9l\xE9phone les compte toute la journ\xE9e, m\xEAme app ferm\xE9e.", "FitQuest liest nur deine Schritte, auch die der letzten 30 Tage. Dein Handy z\xE4hlt sie den ganzen Tag, auch wenn die App geschlossen ist.", "O FitQuest s\xF3 l\xEA seus passos, inclusive os dos \xFAltimos 30 dias. O celular conta o dia todo, mesmo com o app fechado."],
+  ["Apple Salute non \xE8 disponibile su questo dispositivo.", "Apple Health isn't available on this device.", "Salud de Apple no est\xE1 disponible en este dispositivo.", "Sant\xE9 d'Apple n'est pas disponible sur cet appareil.", "Apple Health ist auf diesem Ger\xE4t nicht verf\xFCgbar.", "A Sa\xFAde da Apple n\xE3o est\xE1 dispon\xEDvel neste dispositivo."],
+  ["Installa Health Connect dal Play Store per contare i passi di tutta la giornata.", "Install Health Connect from the Play Store to count your steps all day.", "Instala Health Connect desde Play Store para contar tus pasos todo el d\xEDa.", "Installe Health Connect depuis le Play Store pour compter tes pas toute la journ\xE9e.", "Installiere Health Connect aus dem Play Store, um den ganzen Tag Schritte zu z\xE4hlen.", "Instale o Health Connect na Play Store para contar seus passos o dia todo."],
   ["Attivit\xE0 di oggi", "Today's activity", "Actividad de hoy", "Activit\xE9 du jour", "Heutige Aktivit\xE4t", "Atividade de hoje"],
   ["Salute del telefono", "Phone health", "Salud del m\xF3vil", "Sant\xE9 du t\xE9l\xE9phone", "Handy-Gesundheit", "Sa\xFAde do celular"],
   ["Contapassi attivo", "Step counter on", "Pod\xF3metro activo", "Podom\xE8tre actif", "Schrittz\xE4hler an", "Contador de passos ativo"],
@@ -3682,6 +3688,7 @@ function makeTracker(exId) {
   return { st, step: T[exId] };
 }
 const SITE = true;
+const NATIVE = !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
 let landmarker = null, enginePromise = null;
 async function loadEngine() {
   if (landmarker) return landmarker;
@@ -4065,7 +4072,11 @@ const stepFmt = (n) => Number(n || 0).toLocaleString(LANGS[lang] ? LANGS[lang].t
 let steps = store.get("steps", null);
 if (!steps || typeof steps !== "object" || !steps.days) steps = { days: {}, claimed: {} };
 if (!steps.claimed) steps.claimed = {};
-const STEP = { on: store.get("stepsOn", false), live: false, seen: false, nosensor: false, native: false, saveT: 0, paintQ: false, sel: null };
+if (steps.v !== 2) {
+  steps.days = {};
+  steps.v = 2;
+}
+const STEP = { on: store.get("stepsOn", false), live: false, seen: false, nosensor: false, native: false, app: false, needLink: false, noHealth: false, saveT: 0, paintQ: false, sel: null };
 function stepsDays() {
   const out = [], d = /* @__PURE__ */ new Date();
   for (let i = STEP_DAYS - 1; i >= 0; i--) out.push(dayKey(new Date(d.getFullYear(), d.getMonth(), d.getDate() - i)));
@@ -4100,7 +4111,19 @@ function stepsClaim(day) {
 async function stepsNative() {
   const h = window.FitQuestHealth;
   if (!h || typeof h.dailySteps !== "function") return false;
+  STEP.app = true;
   try {
+    if (h.available && !await h.available()) {
+      STEP.noHealth = true;
+      stepsRefresh();
+      return true;
+    }
+    if (h.connected && !h.connected()) {
+      STEP.needLink = true;
+      stepsRefresh();
+      return true;
+    }
+    STEP.needLink = false;
     const days = stepsDays(), rows = await h.dailySteps(days[0], days[days.length - 1]);
     for (const r of rows || []) if (r && days.includes(r.day)) steps.days[r.day] = Math.max(0, Math.min(15e4, r.steps | 0));
     STEP.native = true;
@@ -4109,8 +4132,19 @@ async function stepsNative() {
     return true;
   } catch (e) {
     reportBug("altro", "warning", "steps_native_failed", { m: String(e && e.message || e).slice(0, 120) });
-    return false;
+    return STEP.app;
   }
+}
+async function stepsLink() {
+  const h = window.FitQuestHealth;
+  if (!h) return;
+  try {
+    await h.connect();
+  } catch (e) {
+    reportBug("altro", "warning", "steps_link_failed", { m: String(e && e.message || e).slice(0, 120) });
+  }
+  await stepsNative();
+  stepsRefresh();
 }
 function stepsAdd(n) {
   const k = dayKey();
@@ -4119,21 +4153,70 @@ function stepsAdd(n) {
   stepsPaint();
 }
 function stepsMotionStart() {
-  if (STEP.live || STEP.native || typeof DeviceMotionEvent === "undefined") return;
-  let g = 9.81, last = 0, armed = true;
+  if (STEP.live || STEP.native || STEP.app || typeof DeviceMotionEvent === "undefined") return;
+  let g = 9.81, f = 0, armed = true, last = 0, run = [], walking = false, winT = 0, winN = 0;
+  const reset = (t) => {
+    run = t ? [t] : [];
+    walking = false;
+  };
+  const add = (n) => {
+    const t = performance.now();
+    if (t - winT > 6e4) {
+      winT = t;
+      winN = 0;
+    }
+    n = Math.min(n, 190 - winN);
+    if (n <= 0) return;
+    winN += n;
+    stepsAdd(n);
+  };
   window.addEventListener("devicemotion", (e) => {
     const a = e.accelerationIncludingGravity;
     if (!a || a.x == null) return;
     STEP.seen = true;
-    if (S && S.running) return;
-    const m = Math.hypot(a.x, a.y, a.z), d = m - g;
-    g = g * 0.92 + m * 0.08;
     const t = performance.now();
-    if (armed && d > 1.3 && t - last > 300) {
+    if (S && S.running) {
+      reset();
+      return;
+    }
+    const m = Math.hypot(a.x, a.y, a.z);
+    g = g * 0.97 + m * 0.03;
+    f = f * 0.6 + (m - g) * 0.4;
+    if (Math.abs(m - g) > 8) {
+      reset();
       armed = false;
-      if (t - last < 2e3) stepsAdd(1);
       last = t;
-    } else if (d < 0.2) armed = true;
+      return;
+    }
+    if (walking && t - last > 2e3) reset();
+    if (armed && f > 1.1) {
+      armed = false;
+      if (f > 5.5) {
+        reset();
+        last = t;
+        return;
+      }
+      const dt = t - last;
+      last = t;
+      if (dt < 330 || dt > 1100) {
+        reset(t);
+        return;
+      }
+      if (run.length > 1) {
+        const prev = run[run.length - 1] - run[run.length - 2];
+        if (Math.abs(dt - prev) > prev * 0.3) {
+          reset(t);
+          return;
+        }
+      }
+      run.push(t);
+      if (run.length > 12) run.shift();
+      if (walking) add(1);
+      else if (run.length >= 8) {
+        walking = true;
+        add(run.length);
+      }
+    } else if (f < 0.3) armed = true;
   });
   STEP.live = true;
   setTimeout(() => {
@@ -4199,11 +4282,14 @@ function stepsCard() {
   const max = Math.max(STEP_GOAL, ...days.map((k) => steps.days[k] | 0));
   const due = stepsDueAll(), sel = STEP.sel && days.includes(STEP.sel) ? STEP.sel : today;
   const live = STEP.native || STEP.live && STEP.seen;
-  const src = STEP.native ? "Salute del telefono" : live ? "Contapassi attivo" : "Contapassi spento";
+  const src = STEP.native ? "Salute del telefono" : STEP.app ? "Salute da collegare" : live ? "Contapassi attivo" : "Contapassi spento";
   let act = "";
   if (!ACC.user) act += '<p class="st-note">Accedi con Google per trasformare i passi in punti. Li tieni da parte per 30 giorni.</p>'.concat(SITE ? '<button type="button" class="st-btn ghost" data-st="login">Accedi per riscuotere</button>' : "");
   else if (due) act += '<button type="button" class="st-btn" data-claim=""><span>Riscuoti</span> +'.concat(due, " <span>punti</span></button>");
-  if (!STEP.native) {
+  if (STEP.app) {
+    if (STEP.noHealth) act += '<p class="st-note">'.concat(/iPhone|iPad/.test(navigator.userAgent) ? "Apple Salute non \xE8 disponibile su questo dispositivo." : "Installa Health Connect dal Play Store per contare i passi di tutta la giornata.", "</p>");
+    else if (STEP.needLink) act += '<button type="button" class="st-btn ghost" data-st="link">'.concat(/iPhone|iPad/.test(navigator.userAgent) ? "Collega Apple Salute" : "Collega Health Connect", '</button><p class="st-note">FitQuest legge solo i tuoi passi, anche quelli dei 30 giorni passati. Il telefono li conta tutto il giorno, anche con l\'app chiusa.</p>');
+  } else if (!STEP.native) {
     if (STEP.nosensor) act += '<p class="st-note">Questo dispositivo non ha un contapassi. Usa FitQuest dal telefono.</p>';
     else if (STEP.denied) act += '<p class="st-note">Permesso del contapassi negato. Puoi riattivarlo dalle impostazioni del browser.</p>';
     else if (!STEP.on) act += '<button type="button" class="st-btn ghost" data-st="on">Attiva il contapassi</button><p class="st-note">Conta i passi mentre FitQuest \xE8 aperta. Con l\'app di FitQuest dagli store li conta tutto il giorno, anche in background.</p>';
@@ -4249,6 +4335,7 @@ function stepsWire(animate) {
       if (hs[0]) hs[0].textContent = stats.total;
       if (hs[1]) hs[1].textContent = stats.month.pts;
     } else if (b.dataset.st === "on") stepsEnable().then(stepsRefresh);
+    else if (b.dataset.st === "link") stepsLink();
     else if (b.dataset.st === "login") {
       const a = $("acc");
       if (a) a.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -6736,7 +6823,7 @@ function fxSettingsWire() {
 }
 const SB_URL = "https://maypmqnjkdrdqcssnvty.supabase.co";
 const SB_KEY = "sb_publishable_uorMl6G618tavZGF8MQpfQ_2Pg3AIlE";
-const APP_VER = "web-v47";
+const APP_VER = "web-v49";
 const SYNC_SKIP = ["lite", "vpack", "rndInv"];
 const ACC = { sb: null, user: null, loading: null, busy: false, msg: "", err: false, timer: null, mode: "login" };
 const syncInfo = () => {
@@ -6890,7 +6977,8 @@ async function accRun(fn) {
   ACC.busy = false;
   accRefresh();
 }
-const redirectTo = () => location.origin + location.pathname;
+const redirectTo = () => NATIVE ? "https://mglive89.github.io/marcogallo/" : location.origin + location.pathname;
+const NATIVE_AUTH = "com.mglive89.fitquest://auth";
 function accountWire() {
   const el = $("acc");
   if (!el) return;
@@ -7029,9 +7117,46 @@ async function ssoStart(p, from) {
     localStorage.setItem("fq:ssoFrom", from);
   } catch (e) {
   }
+  if (NATIVE && window.FitQuestNative) {
+    const { data, error: error2 } = await sb.auth.signInWithOAuth({ provider: p, options: { redirectTo: NATIVE_AUTH, skipBrowserRedirect: true } });
+    if (error2) throw error2;
+    await window.FitQuestNative.openAuth(data.url);
+    return;
+  }
   const { error } = await sb.auth.signInWithOAuth({ provider: p, options: { redirectTo: redirectTo() } });
   if (error) throw error;
 }
+window.fqAuthReturn = async (url) => {
+  let code = null, err = null;
+  try {
+    const u = new URL(url);
+    code = u.searchParams.get("code");
+    err = u.searchParams.get("error_description") || (u.hash.match(/error_description=([^&]+)/) || [])[1];
+  } catch (e) {
+  }
+  let from = null;
+  try {
+    from = localStorage.getItem("fq:ssoFrom");
+    localStorage.removeItem("fq:ssoFrom");
+  } catch (e) {
+  }
+  try {
+    const sb = await sbClient();
+    if (code) {
+      const { data, error } = await sb.auth.exchangeCodeForSession(code);
+      if (error) throw error;
+      ACC.user = data && data.user || ACC.user;
+    }
+  } catch (e) {
+    err = err || String(e && e.message || e);
+  }
+  if (ACC.user && from === "welcome") accWelcomeDone();
+  else if (ACC.user) go({ name: "profile" });
+  else {
+    reportBug("login", "warning", "sso_return_error", { native: true, m: String(err || "").slice(0, 120) });
+    go(from === "welcome" ? { name: "onboard" } : { name: "profile" });
+  }
+};
 function accRefresh() {
   const el = $("acc");
   if (!el || route.name !== "profile") return;
@@ -7082,7 +7207,7 @@ function bugDevice() {
   const m = ios ? ua.match(/OS (\d+)[_.](\d+)/) : ua.match(/Android (\d+(?:\.\d+)?)/);
   const model = ios ? /iPad/.test(ua) ? "iPad" : "iPhone" : (ua.match(/Android [^;]+; ([^;)]+)/) || [])[1] || (/Android/.test(ua) ? "Android" : "desktop");
   const br = /CriOS|Chrome/.test(ua) ? "chrome" : /FxiOS|Firefox/.test(ua) ? "firefox" : /Safari/.test(ua) ? "safari" : "web";
-  return { platform: "web", os_fam: ios ? "ios" : "android", os_version: m ? (ios ? m[1] + "." + m[2] : m[1]).slice(0, 20) : null, device_model: (model.trim() + " \xB7 " + br + (navigator.standalone || matchMedia("(display-mode: standalone)").matches ? " app" : "")).slice(0, 60) };
+  return { platform: NATIVE ? ios ? "ios" : "android" : "web", os_fam: ios ? "ios" : "android", os_version: m ? (ios ? m[1] + "." + m[2] : m[1]).slice(0, 20) : null, device_model: (model.trim() + " \xB7 " + br + (NATIVE ? " native" : navigator.standalone || matchMedia("(display-mode: standalone)").matches ? " app" : "")).slice(0, 60) };
 }
 function bugQueue(q) {
   try {
