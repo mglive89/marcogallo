@@ -711,6 +711,56 @@ body.dark .lbz-info .lbz-rules { background: rgba(255,255,255,.05); }
 .pf-stats div { display: grid; justify-items: center; gap: 2px; padding: 10px 6px; border-radius: 16px; background: rgba(255,255,255,.08); box-shadow: inset 0 0 0 1px rgba(255,255,255,.08); }
 .pf-stats b { font-family: var(--f-display); font-weight: 800; font-size: 26px; line-height: 1; background: linear-gradient(90deg, #7cc4ff, #b9a6ff 55%, #ff9ad5); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .pf-stats small { font-size: 11px; color: #c9d4f2; text-transform: uppercase; letter-spacing: .06em; text-align: center; }
+/* Passi giornalieri (Profilo): cerchio attività, 30 giorni, punti da riscuotere */
+.st-card { gap: 14px; }
+.st-head { position: relative; display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.st-head h2 { margin: 0; font-family: var(--f-display); font-weight: 800; font-size: 24px; line-height: 1; text-transform: uppercase; color: #fff; }
+.st-src { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #c9d4f2; padding: 5px 10px; border-radius: 999px; background: rgba(255,255,255,.08); box-shadow: inset 0 0 0 1px rgba(255,255,255,.1); }
+.st-src i { width: 7px; height: 7px; border-radius: 50%; background: #5b6b95; }
+.st-src.on i { background: #4ade80; box-shadow: 0 0 8px #4ade80; animation: stBlink 1.6s ease-in-out infinite; }
+.st-main { position: relative; display: grid; grid-template-columns: 150px 1fr; gap: 14px; align-items: center; }
+.st-ring { position: relative; width: 150px; height: 150px; }
+.st-ring > svg { width: 100%; height: 100%; transform: rotate(-90deg); overflow: visible; }
+.st-track { fill: none; stroke: rgba(255,255,255,.1); stroke-width: 11; }
+.st-prog { fill: none; stroke: url(#stg); stroke-width: 11; stroke-linecap: round; transition: stroke-dashoffset 1s cubic-bezier(.2,.8,.2,1); filter: drop-shadow(0 0 6px rgba(185,166,255,.65)); }
+.st-ring-in { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; text-align: center; gap: 3px; }
+.st-shoe { width: 22px; height: 22px; color: #7cc4ff; }
+.st-ring-in b { font-family: var(--f-display); font-weight: 800; font-size: 32px; line-height: 1; color: #fff; font-variant-numeric: tabular-nums; }
+.st-ring-in small { font-size: 10.5px; color: #c9d4f2; text-transform: uppercase; letter-spacing: .06em; }
+.st-side { display: grid; gap: 8px; }
+.st-side div { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; padding: 9px 12px; border-radius: 14px; background: rgba(255,255,255,.08); box-shadow: inset 0 0 0 1px rgba(255,255,255,.08); }
+.st-side b { font-family: var(--f-display); font-weight: 800; font-size: 22px; line-height: 1; font-variant-numeric: tabular-nums; background: linear-gradient(90deg, #7cc4ff, #b9a6ff 55%, #ff9ad5); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.st-side small { font-size: 11px; color: #c9d4f2; text-transform: uppercase; letter-spacing: .06em; }
+.st-hist { position: relative; display: grid; gap: 8px; padding: 12px; border-radius: 18px; background: rgba(5,10,30,.35); box-shadow: inset 0 0 0 1px rgba(255,255,255,.08); }
+.st-hist-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.st-hist .label { color: #c9d4f2; }
+.st-due { font-size: 12px; font-weight: 700; color: #ffd36b; }
+.st-bars { display: grid; grid-template-columns: repeat(30, 1fr); gap: 3px; align-items: end; height: 84px; padding-top: 8px; }
+.st-bars button { position: relative; height: 100%; display: flex; align-items: flex-end; padding: 0; border: 0; background: none; cursor: pointer; border-radius: 4px; min-width: 0; }
+.st-bars i { display: block; width: 100%; height: calc(var(--h) * 100%); min-height: 3px; border-radius: 4px 4px 2px 2px; background: rgba(124,196,255,.38); transition: height .6s cubic-bezier(.2,.8,.2,1); }
+.st-bars .goal i { background: linear-gradient(0deg, #7cc4ff, #b9a6ff 55%, #ff9ad5); }
+.st-bars .due::after { content: ""; position: absolute; top: -6px; left: 50%; width: 5px; height: 5px; margin-left: -2.5px; border-radius: 50%; background: #ffd36b; box-shadow: 0 0 6px #ffd36b; }
+.st-bars .sel i { box-shadow: 0 0 0 2px #fff, 0 0 10px rgba(255,255,255,.5); }
+.st-bars button:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.st-axis { display: flex; justify-content: space-between; font-size: 10px; color: #8f9cc4; text-transform: uppercase; letter-spacing: .06em; }
+.st-sel { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; min-height: 34px; font-size: 13.5px; color: #e6ecff; }
+.st-sel .st-day { font-weight: 700; text-transform: capitalize; }
+.st-sel b { font-variant-numeric: tabular-nums; }
+.st-chip { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; padding: 5px 10px; border-radius: 999px; background: rgba(255,255,255,.1); color: #c9d4f2; }
+.st-chip.ok { background: rgba(74,222,128,.15); color: #86efac; }
+.st-chip.due { background: rgba(255,211,107,.15); color: #ffd36b; }
+.st-act { position: relative; display: grid; gap: 8px; }
+.st-btn { border: 0; border-radius: 16px; min-height: 50px; padding: 0 16px; display: flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; font-family: var(--f-cond); font-weight: 800; font-size: 18px; letter-spacing: .04em; text-transform: uppercase; color: #1b1440; background: linear-gradient(90deg, #7cc4ff, #b9a6ff 55%, #ff9ad5); box-shadow: 0 8px 22px rgba(185,166,255,.4); }
+.st-btn.ghost { color: #fff; background: rgba(255,255,255,.1); box-shadow: inset 0 0 0 1px rgba(255,255,255,.2); }
+.st-btn.sm { min-height: 34px; padding: 0 12px; border-radius: 12px; font-size: 14px; }
+.st-btn:active { transform: scale(.98); }
+.st-note { margin: 0; font-size: 12.5px; line-height: 1.4; color: #c9d4f2; text-align: center; }
+.st-rule { margin: 0; font-size: 11.5px; color: #8f9cc4; text-align: center; }
+.st-pop { position: absolute; left: 50%; top: 42%; z-index: 3; pointer-events: none; font-family: var(--f-display); font-weight: 800; font-size: 44px; color: #ffd36b; text-shadow: 0 0 18px rgba(255,211,107,.7); transform: translateX(-50%); animation: stPop 1.5s ease-out forwards; }
+@keyframes stBlink { 50% { opacity: .35; } }
+@keyframes stPop { 0% { opacity: 0; transform: translate(-50%, 14px) scale(.7); } 20% { opacity: 1; transform: translate(-50%, 0) scale(1.1); } 100% { opacity: 0; transform: translate(-50%, -50px) scale(1); } }
+@media (max-width: 370px) { .st-main { grid-template-columns: 1fr; justify-items: center; } .st-side { width: 100%; } }
+@media (prefers-reduced-motion: reduce) { .st-prog, .st-bars i { transition: none; } .st-src.on i, .st-pop { animation: none; } }
 .set-menu > summary { gap: 12px; }
 .set-menu > summary > span:nth-child(2) { flex: 0 0 auto; font-size: 17px; }
 .set-menu > summary > b { flex: 1; text-align: right; font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -1806,6 +1856,30 @@ const I18N = [
   ["Vuoi recuperarlo? Se scegli Annulla, il backup verr\xE0 sostituito con i dati di questo telefono.", "Restore it? If you choose Cancel, the backup will be replaced with this phone's data.", "\xBFRecuperarla? Si eliges Cancelar, la copia se sustituir\xE1 por los datos de este m\xF3vil.", "La r\xE9cup\xE9rer ? Si tu choisis Annuler, la sauvegarde sera remplac\xE9e par les donn\xE9es de ce t\xE9l\xE9phone.", "Wiederherstellen? Wenn du Abbrechen w\xE4hlst, wird das Backup durch die Daten dieses Handys ersetzt.", "Recuperar? Se escolher Cancelar, o backup ser\xE1 substitu\xEDdo pelos dados deste celular."],
   ["Backup online", "Online backup", "Copia online", "Sauvegarde en ligne", "Online-Backup", "Backup online"],
   ["Questo telefono", "This phone", "Este m\xF3vil", "Ce t\xE9l\xE9phone", "Dieses Handy", "Este celular"],
+  ["Attivit\xE0 di oggi", "Today's activity", "Actividad de hoy", "Activit\xE9 du jour", "Heutige Aktivit\xE4t", "Atividade de hoje"],
+  ["Salute del telefono", "Phone health", "Salud del m\xF3vil", "Sant\xE9 du t\xE9l\xE9phone", "Handy-Gesundheit", "Sa\xFAde do celular"],
+  ["Contapassi attivo", "Step counter on", "Pod\xF3metro activo", "Podom\xE8tre actif", "Schrittz\xE4hler an", "Contador de passos ativo"],
+  ["Contapassi spento", "Step counter off", "Pod\xF3metro apagado", "Podom\xE8tre \xE9teint", "Schrittz\xE4hler aus", "Contador de passos desligado"],
+  ["Accedi con Google per trasformare i passi in punti. Li tieni da parte per 30 giorni.", "Sign in with Google to turn your steps into points. They're kept for 30 days.", "Inicia sesi\xF3n con Google para convertir tus pasos en puntos. Se guardan 30 d\xEDas.", "Connecte-toi avec Google pour transformer tes pas en points. Ils sont gard\xE9s 30 jours.", "Melde dich mit Google an, um Schritte in Punkte zu verwandeln. Sie bleiben 30 Tage erhalten.", "Entre com o Google para transformar seus passos em pontos. Eles ficam guardados por 30 dias."],
+  ["Accedi per riscuotere", "Sign in to collect", "Inicia sesi\xF3n para cobrar", "Connecte-toi pour r\xE9cup\xE9rer", "Anmelden zum Einl\xF6sen", "Entre para resgatar"],
+  ["Riscuoti", "Collect", "Cobrar", "R\xE9cup\xE9rer", "Einl\xF6sen", "Resgatar"],
+  ["Questo dispositivo non ha un contapassi. Usa FitQuest dal telefono.", "This device has no step counter. Use FitQuest on your phone.", "Este dispositivo no tiene pod\xF3metro. Usa FitQuest en el m\xF3vil.", "Cet appareil n'a pas de podom\xE8tre. Utilise FitQuest sur ton t\xE9l\xE9phone.", "Dieses Ger\xE4t hat keinen Schrittz\xE4hler. Nutze FitQuest auf dem Handy.", "Este dispositivo n\xE3o tem contador de passos. Use o FitQuest no celular."],
+  ["Permesso del contapassi negato. Puoi riattivarlo dalle impostazioni del browser.", "Step counter permission denied. You can turn it back on in your browser settings.", "Permiso del pod\xF3metro denegado. Puedes activarlo en los ajustes del navegador.", "Autorisation du podom\xE8tre refus\xE9e. Tu peux la r\xE9activer dans les r\xE9glages du navigateur.", "Schrittz\xE4hler-Berechtigung verweigert. Du kannst sie in den Browser-Einstellungen wieder erlauben.", "Permiss\xE3o do contador de passos negada. Voc\xEA pode reativ\xE1-la nas configura\xE7\xF5es do navegador."],
+  ["Attiva il contapassi", "Turn on step counter", "Activar pod\xF3metro", "Activer le podom\xE8tre", "Schrittz\xE4hler einschalten", "Ativar contador de passos"],
+  ["Conta i passi mentre FitQuest \xE8 aperta. Con l'app di FitQuest dagli store li conta tutto il giorno, anche in background.", "Counts steps while FitQuest is open. The FitQuest app from the stores counts them all day, even in the background.", "Cuenta los pasos mientras FitQuest est\xE1 abierta. La app de FitQuest de las tiendas los cuenta todo el d\xEDa, tambi\xE9n en segundo plano.", "Compte les pas tant que FitQuest est ouverte. L'app FitQuest des stores les compte toute la journ\xE9e, m\xEAme en arri\xE8re-plan.", "Z\xE4hlt Schritte, solange FitQuest offen ist. Die FitQuest-App aus den Stores z\xE4hlt sie den ganzen Tag, auch im Hintergrund.", "Conta os passos enquanto o FitQuest est\xE1 aberto. O app FitQuest das lojas conta o dia todo, at\xE9 em segundo plano."],
+  ["Sul sito i passi si contano mentre FitQuest \xE8 aperta. Con l'app di FitQuest dagli store li conta tutto il giorno, anche in background.", "On the website steps are counted while FitQuest is open. The FitQuest app from the stores counts them all day, even in the background.", "En la web los pasos se cuentan mientras FitQuest est\xE1 abierta. La app de FitQuest de las tiendas los cuenta todo el d\xEDa, tambi\xE9n en segundo plano.", "Sur le site, les pas sont compt\xE9s tant que FitQuest est ouverte. L'app FitQuest des stores les compte toute la journ\xE9e, m\xEAme en arri\xE8re-plan.", "Auf der Website werden Schritte gez\xE4hlt, solange FitQuest offen ist. Die FitQuest-App aus den Stores z\xE4hlt sie den ganzen Tag, auch im Hintergrund.", "No site os passos s\xE3o contados enquanto o FitQuest est\xE1 aberto. O app FitQuest das lojas conta o dia todo, at\xE9 em segundo plano."],
+  ["Ultimi 30 giorni", "Last 30 days", "\xDAltimos 30 d\xEDas", "30 derniers jours", "Letzte 30 Tage", "\xDAltimos 30 dias"],
+  ["Passi degli ultimi 30 giorni", "Steps in the last 30 days", "Pasos de los \xFAltimos 30 d\xEDas", "Pas des 30 derniers jours", "Schritte der letzten 30 Tage", "Passos dos \xFAltimos 30 dias"],
+  ["da riscuotere", "to collect", "por cobrar", "\xE0 r\xE9cup\xE9rer", "einzul\xF6sen", "para resgatar"],
+  ["riscossi", "collected", "cobrados", "r\xE9cup\xE9r\xE9s", "eingel\xF6st", "resgatados"],
+  ["Nessun passo", "No steps", "Sin pasos", "Aucun pas", "Keine Schritte", "Nenhum passo"],
+  ["obiettivo", "goal", "objetivo", "objectif", "Ziel", "meta"],
+  ["Punti oggi", "Points today", "Puntos hoy", "Points aujourd'hui", "Punkte heute", "Pontos hoje"],
+  ["1 punto ogni", "1 point every", "1 punto cada", "1 point tous les", "1 Punkt pro", "1 ponto a cada"],
+  ["passi", "steps", "pasos", "pas", "Schritte", "passos"],
+  ["massimo", "max", "m\xE1ximo", "maximum", "maximal", "m\xE1ximo"],
+  ["al giorno", "per day", "al d\xEDa", "par jour", "pro Tag", "por dia"],
+  ["Oggi", "Today", "Hoy", "Aujourd'hui", "Heute", "Hoje"],
   ["punti", "points", "puntos", "points", "Punkte", "pontos"]
 ];
 const LANG_IDX = { en: 1, es: 2, fr: 3, de: 4, pt: 5 };
@@ -2899,8 +2973,8 @@ const BAND_OF = {
   bandwallsit: ["wallsit", "Wall sit con elastico", ["Schiena al muro, mini band sopra le ginocchia.", "Scivola gi\xF9 finch\xE9 le cosce sono parallele al suolo.", "Spingi le ginocchia in fuori contro l'elastico.", "Tieni la posizione respirando con calma."]],
   bandscissor: ["scissor", "Sforbiciate con elastico", ["Supino, mini band attorno ai piedi, mani a terra.", "Gambe tese verso l'alto.", "Abbassa una gamba alla volta contro l'elastico.", "Alterna le gambe senza staccare la schiena da terra."]]
 };
-for (const [id, [base, name, steps]] of Object.entries(BAND_OF)) {
-  EX[id] = { ...EX[base], name, steps, band: 1, lock: null };
+for (const [id, [base, name, steps2]] of Object.entries(BAND_OF)) {
+  EX[id] = { ...EX[base], name, steps: steps2, band: 1, lock: null };
   POSES[id] = { ...POSES[base] };
 }
 const MAX = 0;
@@ -3984,11 +4058,239 @@ function renderOnboard() {
     go({ name: "onboard", step: "tone" });
   });
 }
+const STEP_GOAL = 8e3, STEP_PER_PT = 250, STEP_MAX_PTS = 60, STEP_DAYS = 30;
+const dayKey = (d = /* @__PURE__ */ new Date()) => "".concat(d.getFullYear(), "-").concat(String(d.getMonth() + 1).padStart(2, "0"), "-").concat(String(d.getDate()).padStart(2, "0"));
+const stepPts = (n) => Math.min(STEP_MAX_PTS, Math.floor((n | 0) / STEP_PER_PT));
+const stepFmt = (n) => Number(n || 0).toLocaleString(LANGS[lang] ? LANGS[lang].tts : "it-IT");
+let steps = store.get("steps", null);
+if (!steps || typeof steps !== "object" || !steps.days) steps = { days: {}, claimed: {} };
+if (!steps.claimed) steps.claimed = {};
+const STEP = { on: store.get("stepsOn", false), live: false, seen: false, nosensor: false, native: false, saveT: 0, paintQ: false, sel: null };
+function stepsDays() {
+  const out = [], d = /* @__PURE__ */ new Date();
+  for (let i = STEP_DAYS - 1; i >= 0; i--) out.push(dayKey(new Date(d.getFullYear(), d.getMonth(), d.getDate() - i)));
+  return out;
+}
+function stepsSave(now) {
+  clearTimeout(STEP.saveT);
+  STEP.saveT = setTimeout(() => {
+    const keep = new Set(stepsDays());
+    for (const o of [steps.days, steps.claimed]) for (const k of Object.keys(o)) if (!keep.has(k)) delete o[k];
+    store.set("steps", steps);
+  }, now ? 0 : 1e4);
+}
+const stepsDue = (k) => Math.max(0, stepPts(steps.days[k]) - (steps.claimed[k] | 0));
+const stepsDueAll = () => stepsDays().reduce((a, k) => a + stepsDue(k), 0);
+function stepsClaim(day) {
+  if (!ACC.user) return 0;
+  let tot = 0;
+  for (const k of day ? [day] : stepsDays()) {
+    const n = stepsDue(k);
+    if (n) {
+      steps.claimed[k] = (steps.claimed[k] | 0) + n;
+      tot += n;
+    }
+  }
+  if (tot) {
+    stepsSave(true);
+    addPoints(tot, "passi");
+  }
+  return tot;
+}
+async function stepsNative() {
+  const h = window.FitQuestHealth;
+  if (!h || typeof h.dailySteps !== "function") return false;
+  try {
+    const days = stepsDays(), rows = await h.dailySteps(days[0], days[days.length - 1]);
+    for (const r of rows || []) if (r && days.includes(r.day)) steps.days[r.day] = Math.max(0, Math.min(15e4, r.steps | 0));
+    STEP.native = true;
+    stepsSave(true);
+    stepsPaint();
+    return true;
+  } catch (e) {
+    reportBug("altro", "warning", "steps_native_failed", { m: String(e && e.message || e).slice(0, 120) });
+    return false;
+  }
+}
+function stepsAdd(n) {
+  const k = dayKey();
+  steps.days[k] = (steps.days[k] | 0) + n;
+  stepsSave();
+  stepsPaint();
+}
+function stepsMotionStart() {
+  if (STEP.live || STEP.native || typeof DeviceMotionEvent === "undefined") return;
+  let g = 9.81, last = 0, armed = true;
+  window.addEventListener("devicemotion", (e) => {
+    const a = e.accelerationIncludingGravity;
+    if (!a || a.x == null) return;
+    STEP.seen = true;
+    if (S && S.running) return;
+    const m = Math.hypot(a.x, a.y, a.z), d = m - g;
+    g = g * 0.92 + m * 0.08;
+    const t = performance.now();
+    if (armed && d > 1.3 && t - last > 300) {
+      armed = false;
+      if (t - last < 2e3) stepsAdd(1);
+      last = t;
+    } else if (d < 0.2) armed = true;
+  });
+  STEP.live = true;
+  setTimeout(() => {
+    if (!STEP.seen) {
+      STEP.nosensor = true;
+      stepsRefresh();
+    }
+  }, 2500);
+}
+const stepsNeedsAsk = () => typeof DeviceMotionEvent !== "undefined" && typeof DeviceMotionEvent.requestPermission === "function";
+async function stepsEnable() {
+  if (typeof DeviceMotionEvent === "undefined") {
+    STEP.nosensor = true;
+    return false;
+  }
+  if (stepsNeedsAsk()) {
+    let r = "denied";
+    try {
+      r = await DeviceMotionEvent.requestPermission();
+    } catch (e) {
+    }
+    if (r !== "granted") {
+      STEP.denied = true;
+      return false;
+    }
+  }
+  STEP.on = true;
+  store.set("stepsOn", true);
+  stepsMotionStart();
+  return true;
+}
+function stepsBoot() {
+  stepsNative().then((ok) => {
+    if (ok || !STEP.on) return;
+    if (!stepsNeedsAsk()) stepsMotionStart();
+    else document.addEventListener("click", () => {
+      stepsEnable().then(stepsRefresh);
+    }, { once: true });
+  });
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) {
+      stepsNative();
+      stepsPaint();
+    }
+  });
+}
+const SHOE = '<svg class="st-shoe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 16v-5.5C4 8 5.5 6 7.5 6S10 7.5 10 9v2.5l3.5 1.5c2 .8 6.5 1.3 6.5 4V18H4z"/><path d="M4 18v1h16v-1M10 14l1.5-1M13 15l1.5-1"/></svg>';
+function stepsDayLabel(k) {
+  if (k === dayKey()) return "<span>Oggi</span>";
+  try {
+    return "<span data-notr>".concat(esc((/* @__PURE__ */ new Date(k + "T12:00:00")).toLocaleDateString(LANGS[lang] ? LANGS[lang].tts : "it-IT", { weekday: "short", day: "numeric", month: "short" })), "</span>");
+  } catch (e) {
+    return esc(k);
+  }
+}
+function stepsSelHtml(k) {
+  const n = steps.days[k] | 0, due = stepsDue(k), got = steps.claimed[k] | 0;
+  const right = !n ? '<span class="st-chip">Nessun passo</span>' : due && ACC.user ? '<button type="button" class="st-btn sm" data-claim="'.concat(k, '"><span>Riscuoti</span> +').concat(due, "</button>") : due ? '<span class="st-chip due">+'.concat(due, " <span>da riscuotere</span></span>") : '<span class="st-chip ok">+'.concat(got, " <span>riscossi</span></span>");
+  return '<span class="st-day">'.concat(stepsDayLabel(k), "</span><span><b>").concat(stepFmt(n), "</b> <span>passi</span></span>").concat(right);
+}
+function stepsCard() {
+  const today = dayKey(), n = steps.days[today] | 0, days = stepsDays();
+  const max = Math.max(STEP_GOAL, ...days.map((k) => steps.days[k] | 0));
+  const due = stepsDueAll(), sel = STEP.sel && days.includes(STEP.sel) ? STEP.sel : today;
+  const live = STEP.native || STEP.live && STEP.seen;
+  const src = STEP.native ? "Salute del telefono" : live ? "Contapassi attivo" : "Contapassi spento";
+  let act = "";
+  if (!ACC.user) act += '<p class="st-note">Accedi con Google per trasformare i passi in punti. Li tieni da parte per 30 giorni.</p>'.concat(SITE ? '<button type="button" class="st-btn ghost" data-st="login">Accedi per riscuotere</button>' : "");
+  else if (due) act += '<button type="button" class="st-btn" data-claim=""><span>Riscuoti</span> +'.concat(due, " <span>punti</span></button>");
+  if (!STEP.native) {
+    if (STEP.nosensor) act += '<p class="st-note">Questo dispositivo non ha un contapassi. Usa FitQuest dal telefono.</p>';
+    else if (STEP.denied) act += '<p class="st-note">Permesso del contapassi negato. Puoi riattivarlo dalle impostazioni del browser.</p>';
+    else if (!STEP.on) act += '<button type="button" class="st-btn ghost" data-st="on">Attiva il contapassi</button><p class="st-note">Conta i passi mentre FitQuest \xE8 aperta. Con l\'app di FitQuest dagli store li conta tutto il giorno, anche in background.</p>';
+    else act += '<p class="st-note">Sul sito i passi si contano mentre FitQuest \xE8 aperta. Con l\'app di FitQuest dagli store li conta tutto il giorno, anche in background.</p>';
+  }
+  const C = 2 * Math.PI * 52;
+  return '<section class="lbz-hero st-card" id="stCard" data-day="'.concat(today, '" data-due="').concat(due, '" data-max="').concat(max, '">\n    <div class="dz-glow"></div>\n    <div class="st-head"><h2>Attivit\xE0 di oggi</h2><span class="st-src').concat(live ? " on" : "", '"><i></i><span>').concat(src, '</span></span></div>\n    <div class="st-main">\n      <div class="st-ring">\n        <svg viewBox="0 0 120 120" aria-hidden="true"><defs><linearGradient id="stg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7cc4ff"/><stop offset=".55" stop-color="#b9a6ff"/><stop offset="1" stop-color="#ff9ad5"/></linearGradient></defs>\n          <circle cx="60" cy="60" r="52" class="st-track"/><circle cx="60" cy="60" r="52" class="st-prog" id="stProg" stroke-dasharray="').concat(C.toFixed(1), '" stroke-dashoffset="').concat(C.toFixed(1), '" data-c="').concat(C, '"/></svg>\n        <div class="st-ring-in">').concat(SHOE, '<b id="stN">').concat(stepFmt(n), "</b><small><span>obiettivo</span> ").concat(stepFmt(STEP_GOAL), '</small></div>\n      </div>\n      <div class="st-side">\n        <div><small>Km</small><b id="stKm">').concat((n * 762e-6).toFixed(1), '</b></div>\n        <div><small>Kcal</small><b id="stKcal">').concat(Math.round(n * 0.04), '</b></div>\n        <div><small>Punti oggi</small><b id="stPts">').concat(stepPts(n), '</b></div>\n      </div>\n    </div>\n    <div class="st-hist">\n      <div class="st-hist-top"><span class="label">Ultimi 30 giorni</span>').concat(due ? '<span class="st-due">+'.concat(due, " <span>da riscuotere</span></span>") : "", '</div>\n      <div class="st-bars" role="group" aria-label="Passi degli ultimi 30 giorni">').concat(days.map((k) => {
+    const v = steps.days[k] | 0, cls = [v >= STEP_GOAL ? "goal" : "", stepsDue(k) ? "due" : "", k === sel ? "sel" : ""].filter(Boolean).join(" ");
+    return '<button type="button" data-day="'.concat(k, '" class="').concat(cls, '" style="--h:').concat((v / max).toFixed(3), '" aria-label="').concat(k, ": ").concat(v, '"><i></i></button>');
+  }).join(""), '</div>\n      <div class="st-axis"><span data-notr>').concat(esc(stepsDayLabel(days[0]).replace(/<[^>]+>/g, "")), '</span><span>Oggi</span></div>\n      <div class="st-sel" id="stSel">').concat(stepsSelHtml(sel), '</div>\n    </div>\n    <div class="st-act">').concat(act, '</div>\n    <p class="st-rule"><span>1 punto ogni</span> ').concat(STEP_PER_PT, " <span>passi</span> \xB7 <span>massimo</span> ").concat(STEP_MAX_PTS, " <span>al giorno</span></p>\n  </section>");
+}
+function stepsRing(animate) {
+  const p = $("stProg");
+  if (!p) return;
+  const C = +p.dataset.c, n = steps.days[dayKey()] | 0, off = (C * (1 - Math.min(1, n / STEP_GOAL))).toFixed(1);
+  if (animate) requestAnimationFrame(() => requestAnimationFrame(() => p.setAttribute("stroke-dashoffset", off)));
+  else {
+    p.style.transition = "none";
+    p.setAttribute("stroke-dashoffset", off);
+  }
+}
+function stepsWire(animate) {
+  const c = $("stCard");
+  if (!c) return;
+  stepsRing(animate);
+  c.onclick = (e) => {
+    const b = e.target.closest("button");
+    if (!b || !c.contains(b)) return;
+    if (b.dataset.day) {
+      STEP.sel = b.dataset.day;
+      c.querySelectorAll(".st-bars button").forEach((x) => x.classList.toggle("sel", x === b));
+      $("stSel").innerHTML = stepsSelHtml(STEP.sel);
+    } else if (b.dataset.claim != null) {
+      const n = stepsClaim(b.dataset.claim || null);
+      if (!n) return;
+      stepsRefresh();
+      const pop = document.createElement("div");
+      pop.className = "st-pop";
+      pop.textContent = "+" + n;
+      $("stCard").append(pop);
+      setTimeout(() => pop.remove(), 1600);
+      const hs = app.querySelectorAll(".pf-stats b");
+      if (hs[0]) hs[0].textContent = stats.total;
+      if (hs[1]) hs[1].textContent = stats.month.pts;
+    } else if (b.dataset.st === "on") stepsEnable().then(stepsRefresh);
+    else if (b.dataset.st === "login") {
+      const a = $("acc");
+      if (a) a.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  };
+}
+function stepsRefresh() {
+  const c = $("stCard");
+  if (!c || route.name !== "profile") return;
+  c.outerHTML = stepsCard();
+  stepsWire(false);
+}
+function stepsPaint() {
+  if (STEP.paintQ) return;
+  STEP.paintQ = true;
+  requestAnimationFrame(() => {
+    STEP.paintQ = false;
+    const c = $("stCard");
+    if (!c || route.name !== "profile") return;
+    const k = dayKey(), n = steps.days[k] | 0;
+    if (c.dataset.day !== k || +c.dataset.due !== stepsDueAll() || n > +c.dataset.max) return stepsRefresh();
+    $("stN").textContent = stepFmt(n);
+    $("stKm").textContent = (n * 762e-6).toFixed(1);
+    $("stKcal").textContent = Math.round(n * 0.04);
+    $("stPts").textContent = stepPts(n);
+    const p = $("stProg");
+    p.style.transition = "";
+    p.setAttribute("stroke-dashoffset", (+p.dataset.c * (1 - Math.min(1, n / STEP_GOAL))).toFixed(1));
+    const bar = c.querySelector('.st-bars [data-day="'.concat(k, '"]'));
+    if (bar) {
+      bar.style.setProperty("--h", (n / +c.dataset.max).toFixed(3));
+      bar.classList.toggle("goal", n >= STEP_GOAL);
+    }
+    if ((STEP.sel || k) === k) $("stSel").innerHTML = stepsSelHtml(k);
+  });
+}
 let profGOpen = false, profSetOpen = false, profTOpen = false;
 function renderProfile() {
-  app.innerHTML = '\n  <div class="screen">\n    <section class="lbz-hero pf-hero">\n      <div class="dz-glow"></div>\n      <div class="lbz-top"><h1>Profilo</h1>'.concat(crownN(stats.crowns) ? '<span class="dz-crowns">'.concat(crownSVG(), "<b>").concat(crownN(stats.crowns), "</b></span>") : "", '</div>\n      <div class="lbz-me">').concat(avatar(myName || "Tu", "lbz-av"), '<div><div class="pf-name">').concat(esc(myName || "Atleta"), '</div>\n        <div class="lbz-meta">').concat(myBadge(), " <span>").concat(RANKS[rankIndex()][0], "</span> \xB7 <span>").concat(G() === "f" ? "Donna" : "Uomo", '</span></div></div></div>\n      <div class="pf-stats"><div><b class="cu">').concat(stats.total, '</b><small>Punti totali</small></div><div><b class="cu">').concat(stats.month.pts, '</b><small>Questo mese</small></div><div><b class="cu">').concat(crownN(stats.crowns), "</b><small>Corone</small></div></div>\n    </section>\n    ").concat(SITE ? accountCard() : "", '\n    <details class="subopt set-menu" id="setSub"').concat(profSetOpen ? " open" : "", '><summary><span class="set-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></span><span>Impostazioni</span><b>Nome, lingua, voce, grafica</b></summary><div class="subopt-body set-body">\n    <details class="subopt" id="gSub"').concat(profGOpen ? " open" : "", "><summary><span>Percorso</span><b>").concat(G() === "f" ? "Donna" : "Uomo", '</b></summary><div class="subopt-body">').concat(genderPick(G()), '</div></details>\n    <details class="subopt" id="tSub"').concat(profTOpen ? " open" : "", '><summary><span>Avatar</span><b><i class="tone-dot" style="--c:').concat(TONE_DOT[tone], '"></i>').concat(TONE_NAMES[tone], '</b></summary><div class="subopt-body">').concat(tonePick(tone, G()), '</div></details>\n    <div class="field"><label class="label" for="nm">Il tuo nome</label><input id="nm" maxlength="20" autocomplete="nickname" placeholder="Es. Marco" value="').concat(esc(myName), '"></div>\n    <div class="field"><label class="label" for="pLang">Lingua</label>\n      <select id="pLang" class="sel">\n        <option value="">Automatica (').concat(LANGS[detectLang()].name, ")</option>\n        ").concat(LANG_ORDER.map((k) => '<option value="'.concat(k, '" ').concat(store.get("lang", "") === k ? "selected" : "", ">").concat(LANGS[k].name, "</option>")).join(""), '\n      </select></div>\n    <div class="section"><div class="label">Voce</div>\n      <label class="toggle"><input type="checkbox" id="voiceT" ').concat(voiceOn ? "checked" : "", '> Istruttore vocale</label>\n      <label class="toggle"><input type="checkbox" id="gritT" ').concat(gritOn ? "checked" : "", '> Voce del coach: incitamento durante l\'esercizio</label>\n      <button class="btn ghost" id="voiceSet" type="button">Personalizza la voce</button>\n    </div>\n    ').concat(fxSettings(), '\n    </div></details>\n    <p class="note">Il video resta sul tuo telefono: l\'analisi della postura avviene nel browser e nessuna immagine viene inviata.</p>\n  </div>');
+  app.innerHTML = '\n  <div class="screen">\n    <section class="lbz-hero pf-hero">\n      <div class="dz-glow"></div>\n      <div class="lbz-top"><h1>Profilo</h1>'.concat(crownN(stats.crowns) ? '<span class="dz-crowns">'.concat(crownSVG(), "<b>").concat(crownN(stats.crowns), "</b></span>") : "", '</div>\n      <div class="lbz-me">').concat(avatar(myName || "Tu", "lbz-av"), '<div><div class="pf-name">').concat(esc(myName || "Atleta"), '</div>\n        <div class="lbz-meta">').concat(myBadge(), " <span>").concat(RANKS[rankIndex()][0], "</span> \xB7 <span>").concat(G() === "f" ? "Donna" : "Uomo", '</span></div></div></div>\n      <div class="pf-stats"><div><b class="cu">').concat(stats.total, '</b><small>Punti totali</small></div><div><b class="cu">').concat(stats.month.pts, '</b><small>Questo mese</small></div><div><b class="cu">').concat(crownN(stats.crowns), "</b><small>Corone</small></div></div>\n    </section>\n    ").concat(stepsCard(), "\n    ").concat(SITE ? accountCard() : "", '\n    <details class="subopt set-menu" id="setSub"').concat(profSetOpen ? " open" : "", '><summary><span class="set-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></span><span>Impostazioni</span><b>Nome, lingua, voce, grafica</b></summary><div class="subopt-body set-body">\n    <details class="subopt" id="gSub"').concat(profGOpen ? " open" : "", "><summary><span>Percorso</span><b>").concat(G() === "f" ? "Donna" : "Uomo", '</b></summary><div class="subopt-body">').concat(genderPick(G()), '</div></details>\n    <details class="subopt" id="tSub"').concat(profTOpen ? " open" : "", '><summary><span>Avatar</span><b><i class="tone-dot" style="--c:').concat(TONE_DOT[tone], '"></i>').concat(TONE_NAMES[tone], '</b></summary><div class="subopt-body">').concat(tonePick(tone, G()), '</div></details>\n    <div class="field"><label class="label" for="nm">Il tuo nome</label><input id="nm" maxlength="20" autocomplete="nickname" placeholder="Es. Marco" value="').concat(esc(myName), '"></div>\n    <div class="field"><label class="label" for="pLang">Lingua</label>\n      <select id="pLang" class="sel">\n        <option value="">Automatica (').concat(LANGS[detectLang()].name, ")</option>\n        ").concat(LANG_ORDER.map((k) => '<option value="'.concat(k, '" ').concat(store.get("lang", "") === k ? "selected" : "", ">").concat(LANGS[k].name, "</option>")).join(""), '\n      </select></div>\n    <div class="section"><div class="label">Voce</div>\n      <label class="toggle"><input type="checkbox" id="voiceT" ').concat(voiceOn ? "checked" : "", '> Istruttore vocale</label>\n      <label class="toggle"><input type="checkbox" id="gritT" ').concat(gritOn ? "checked" : "", '> Voce del coach: incitamento durante l\'esercizio</label>\n      <button class="btn ghost" id="voiceSet" type="button">Personalizza la voce</button>\n    </div>\n    ').concat(fxSettings(), '\n    </div></details>\n    <p class="note">Il video resta sul tuo telefono: l\'analisi della postura avviene nel browser e nessuna immagine viene inviata.</p>\n  </div>');
   fxSettingsWire();
   accountWire();
+  stepsWire(true);
   app.querySelectorAll(".pick > button").forEach((b) => b.onclick = () => {
     setGender(b.dataset.g);
     profGOpen = false;
@@ -4583,7 +4885,7 @@ function addPoints(n, why) {
   if (after > before) {
     const unlocked = Object.entries(EX).filter(([, e]) => e.lock === after).map(([, e]) => e.name);
     say("Promosso a ".concat(RANKS[after][0], "!").concat(unlocked.length ? " Hai sbloccato " + unlocked.join(" e ") : ""), { urgent: true });
-    S.promoted = after;
+    if (S) S.promoted = after;
   }
   lbSchedule();
 }
@@ -6434,7 +6736,7 @@ function fxSettingsWire() {
 }
 const SB_URL = "https://maypmqnjkdrdqcssnvty.supabase.co";
 const SB_KEY = "sb_publishable_uorMl6G618tavZGF8MQpfQ_2Pg3AIlE";
-const APP_VER = "web-v46";
+const APP_VER = "web-v47";
 const SYNC_SKIP = ["lite", "vpack", "rndInv"];
 const ACC = { sb: null, user: null, loading: null, busy: false, msg: "", err: false, timer: null, mode: "login" };
 const syncInfo = () => {
@@ -6735,6 +7037,7 @@ function accRefresh() {
   if (!el || route.name !== "profile") return;
   el.outerHTML = accountCard();
   accountWire();
+  stepsRefresh();
 }
 function accInit() {
   const back = /[?&](code|error_description)=/.test(location.search) || /access_token=|error_description=/.test(location.hash);
@@ -6916,6 +7219,7 @@ setTimeout(() => presenceStart().catch(() => {
 rwStart();
 loadVoicePack();
 accInit();
+stepsBoot();
 function camFit() {
   const st = $("stage"), v = $("vid");
   if (!st || !v || !v.videoWidth) return;

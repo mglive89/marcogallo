@@ -1,6 +1,6 @@
 // Offline: the app shell is cached per version; heavy assets (photos, vision engine, model, fonts) live in a
 // separate cache kept across updates, where only files whose hash changed in assets.json are dropped.
-const CACHE = "recluta-v46";
+const CACHE = "recluta-v47";
 const ASSETS = "fq-assets";
 const CORE = ["./", "index.html", "manifest.webmanifest", "vision_bundle.mjs", "peerjs.min.js", "icons/icon-192.png"];
 const isAsset = p => /\/(img|wasm|icons)\/|pose_landmarker_lite\.task$/.test(p);
