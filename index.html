@@ -1767,8 +1767,6 @@ const I18N = [
   ["Usa la voce registrata", "Use the recorded voice", "Usar la voz grabada", "Utiliser la voix enregistr\xE9e", "Aufgenommene Stimme verwenden", "Usar a voz gravada"],
   ["Account e backup", "Account and backup", "Cuenta y copia de seguridad", "Compte et sauvegarde", "Konto und Backup", "Conta e backup"],
   ["Accedi per salvare punti e progressi: se cambi telefono li ritrovi.", "Sign in to save your points and progress: if you change phone, you'll get them back.", "Inicia sesi\xF3n para guardar tus puntos y progresos: si cambias de m\xF3vil, los recuperas.", "Connecte-toi pour sauvegarder tes points et progr\xE8s : si tu changes de t\xE9l\xE9phone, tu les retrouves.", "Melde dich an, um Punkte und Fortschritt zu sichern: Bei einem neuen Handy bekommst du sie zur\xFCck.", "Entre para salvar pontos e progresso: se trocar de celular, voc\xEA os recupera."],
-  ["Continua con Google", "Continue with Google", "Continuar con Google", "Continuer avec Google", "Weiter mit Google", "Continuar com Google"],
-  ["Continua con Apple", "Continue with Apple", "Continuar con Apple", "Continuer avec Apple", "Weiter mit Apple", "Continuar com Apple"],
   ["oppure con email", "or with email", "o con email", "ou par e-mail", "oder mit E-Mail", "ou com e-mail"],
   ["Password (almeno 8 caratteri)", "Password (at least 8 characters)", "Contrase\xF1a (m\xEDnimo 8 caracteres)", "Mot de passe (8 caract\xE8res minimum)", "Passwort (mindestens 8 Zeichen)", "Senha (m\xEDnimo 8 caracteres)"],
   ["Crea account", "Create account", "Crear cuenta", "Cr\xE9er un compte", "Konto erstellen", "Criar conta"],
@@ -3853,14 +3851,38 @@ function renderOnboard() {
       store.set("started", true);
       go(gender ? { name: "home" } : { name: "onboard", step: "setup" });
     };
-    app.querySelectorAll("[data-sso]").forEach((b) => b.onclick = () => {
-      const n = $("ssoNote");
-      n.hidden = false;
-      n.textContent = b.dataset.sso === "Apple" ? "L'accesso con Apple arriva al lancio. Intanto entra in beta: i tuoi progressi restano su questo telefono." : "L'accesso con Google arriva al lancio. Intanto entra in beta: i tuoi progressi restano su questo telefono.";
-      const bt = $("beta");
-      bt.classList.remove("nudge");
-      void bt.offsetWidth;
-      bt.classList.add("nudge");
+    app.querySelectorAll("[data-sso]").forEach((b) => b.onclick = async () => {
+      const n = $("ssoNote"), name = b.dataset.sso;
+      const say2 = (t) => {
+        n.hidden = false;
+        n.textContent = t;
+      };
+      const nudge = () => {
+        const bt = $("beta");
+        bt.classList.remove("nudge");
+        void bt.offsetWidth;
+        bt.classList.add("nudge");
+      };
+      if (b.disabled) return;
+      if (offline()) {
+        say2("Serve internet per accedere.");
+        return;
+      }
+      b.disabled = true;
+      try {
+        const on = await ssoEnabled(name.toLowerCase());
+        if (on === false) {
+          say2(name === "Apple" ? "L'accesso con Apple arriva al lancio. Intanto entra in beta: i tuoi progressi restano su questo telefono." : "L'accesso con Google arriva al lancio. Intanto entra in beta: i tuoi progressi restano su questo telefono.");
+          nudge();
+          return;
+        }
+        await ssoStart(name.toLowerCase(), "welcome");
+      } catch (e) {
+        say2(authErr(e));
+        reportBug("login", "warning", "sso_start_failed", { p: name, m: String(e && e.message || e).slice(0, 120) });
+      } finally {
+        b.disabled = false;
+      }
     });
     return;
   }
@@ -6356,7 +6378,7 @@ function fxSettingsWire() {
 }
 const SB_URL = "https://maypmqnjkdrdqcssnvty.supabase.co";
 const SB_KEY = "sb_publishable_uorMl6G618tavZGF8MQpfQ_2Pg3AIlE";
-const APP_VER = "web-v43";
+const APP_VER = "web-v44";
 const SYNC_SKIP = ["lite", "vpack", "rndInv"];
 const ACC = { sb: null, user: null, loading: null, busy: false, msg: "", err: false, timer: null, mode: "login" };
 const syncInfo = () => {
@@ -6527,8 +6549,7 @@ function accountWire() {
   ["Google", "Apple"].forEach((p) => on("acc" + p, () => accRun(async () => {
     if (offline()) throw new Error("network");
     const sb = await sbClient();
-    const { error } = await sb.auth.signInWithOAuth({ provider: p.toLowerCase(), options: { redirectTo: redirectTo() } });
-    if (error) throw error;
+    await ssoStart(p.toLowerCase(), "profile");
   })));
   on("accForgot", () => {
     const mail = $("accMail").value.trim();
@@ -6623,6 +6644,26 @@ function accProviders() {
     ACC.provLoading = false;
   });
 }
+async function ssoEnabled(p) {
+  if (!ACC.prov) {
+    try {
+      const r = await fetch(SB_URL + "/auth/v1/settings", { headers: { apikey: SB_KEY } });
+      const j = r.ok ? await r.json() : null;
+      if (j && j.external) ACC.prov = { google: !!j.external.google, apple: !!j.external.apple };
+    } catch (e) {
+    }
+  }
+  return ACC.prov ? ACC.prov[p] : null;
+}
+async function ssoStart(p, from) {
+  const sb = await sbClient();
+  try {
+    localStorage.setItem("fq:ssoFrom", from);
+  } catch (e) {
+  }
+  const { error } = await sb.auth.signInWithOAuth({ provider: p, options: { redirectTo: redirectTo() } });
+  if (error) throw error;
+}
 function accRefresh() {
   const el = $("acc");
   if (!el || route.name !== "profile") return;
@@ -6632,13 +6673,32 @@ function accRefresh() {
 function accInit() {
   const back = /[?&](code|error_description)=/.test(location.search) || /access_token=|error_description=/.test(location.hash);
   if (!back && !hasSbSession()) return;
+  const backErr = /error_description=/.test(location.search + location.hash);
   sbClient().then(() => {
     if (back) {
       try {
         history.replaceState(null, "", location.pathname);
       } catch (e) {
       }
-      if (ACC.user) go({ name: "profile" });
+      let from = null;
+      try {
+        from = localStorage.getItem("fq:ssoFrom");
+        localStorage.removeItem("fq:ssoFrom");
+      } catch (e) {
+      }
+      if (ACC.user && from === "welcome") {
+        const nm = String((ACC.user.user_metadata || {}).full_name || (ACC.user.user_metadata || {}).name || "").trim().split(/\s+/)[0];
+        if (!myName && nm) {
+          myName = nm.slice(0, 20);
+          store.set("name", myName);
+        }
+        store.set("started", true);
+        go(gender ? { name: "home" } : { name: "onboard", step: "setup" });
+      } else if (ACC.user) go({ name: "profile" });
+      else if (backErr) {
+        reportBug("login", "warning", "sso_return_error", {});
+        go(from === "welcome" ? { name: "onboard" } : { name: "profile" });
+      }
     }
     if (syncInfo().dirty) syncFlush();
   }).catch(() => {
