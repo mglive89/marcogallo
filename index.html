@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font-size:14px}img{max-width:100%}</style>
 <title>FitQuest</title>
 <meta name="theme-color" content="#f3f5f9">
@@ -14,7 +14,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="FitQuest">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' data: blob:; connect-src 'self' https://*.peerjs.com wss://*.peerjs.com https://*.googleapis.com wss://*.googleapis.com https://www.gstatic.com ws://localhost:* http://localhost:* ws://127.0.0.1:* http://127.0.0.1:*; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' data: blob:; connect-src 'self' https://maypmqnjkdrdqcssnvty.supabase.co wss://maypmqnjkdrdqcssnvty.supabase.co https://*.peerjs.com wss://*.peerjs.com https://*.googleapis.com wss://*.googleapis.com https://www.gstatic.com ws://localhost:* http://localhost:* ws://127.0.0.1:* http://127.0.0.1:*; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'">
 <meta name="referrer" content="no-referrer">
 <script>if (window.top !== window.self) { try { window.top.location.replace(window.self.location.href); } catch (e) { document.documentElement.style.display = "none"; } }</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -846,6 +846,28 @@ body.fx-off .char-stand { animation: none; }
 .land-figs .char, .hero-fig .char { filter: drop-shadow(0 14px 18px rgba(0,0,0,.45)); }
 .hero-fig .figbox.charbox { transform: none; width: 100%; }
 #splash .sp-fig.charbox { height: 250px; width: 210px; aspect-ratio: auto; }
+/* Account e backup (Profilo) */
+.acc { background: var(--panel); border: 1.5px solid var(--line); border-radius: 18px; padding: 14px; margin: 14px 0; display: flex; flex-direction: column; gap: 10px; }
+.acc-h { display: flex; gap: 12px; align-items: center; }
+.acc-h b { display: block; font-family: var(--f-cond); font-size: 20px; letter-spacing: .03em; }
+.acc-h small { display: block; color: var(--muted); font-size: 13px; line-height: 1.3; word-break: break-word; }
+.acc-ico { width: 40px; height: 40px; flex: 0 0 40px; border-radius: 12px; background: var(--soft); color: var(--brass); display: grid; place-items: center; font-size: 22px; }
+.acc .row { display: flex; gap: 8px; }
+.acc .row .btn, .acc-soc .btn, .acc-form .btn { flex: 1 1 0; min-height: 46px; font-size: 16px; padding: 10px 12px; }
+.acc-soc { display: flex; flex-direction: column; gap: 8px; }
+.acc-or { display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: 12px; }
+.acc-or::before, .acc-or::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+.acc-form { display: flex; flex-direction: column; gap: 8px; }
+.acc-form input { font: inherit; font-size: 17px; padding: 12px 14px; border-radius: 12px; border: 1.5px solid var(--line); background: var(--panel); color: var(--fg); min-width: 0; -webkit-user-select: text; user-select: text; }
+.acc-links { display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+.acc-links button, .acc-del { background: none; border: 0; padding: 4px 0; color: var(--brass); font: inherit; font-size: 14px; font-weight: 600; }
+.acc-del { color: #d64545; align-self: flex-start; font-size: 13px; }
+.acc-last { margin: 0; font-size: 14px; color: var(--muted); }
+.acc-msg { margin: 0; font-size: 14px; color: var(--ok); }
+.acc-msg.bad { color: #d64545; }
+/* niente selezione, copia o menu a pressione lunga fuori dai campi di testo */
+body { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; touch-action: manipulation; }
+input, textarea, select, [contenteditable] { -webkit-user-select: text; user-select: text; -webkit-touch-callout: default; }
 </style>
 
 </head>
@@ -1742,7 +1764,46 @@ const I18N = [
   ["Amico aggiunto. Il suo nome comparir\xE0 dopo la prima sfida.", "Friend added. Their name will show after your first challenge.", "Amigo a\xF1adido. Su nombre aparecer\xE1 tras el primer reto.", "Ami ajout\xE9. Son nom appara\xEEtra apr\xE8s le premier d\xE9fi.", "Freund hinzugef\xFCgt. Sein Name erscheint nach dem ersten Duell.", "Amigo adicionado. O nome aparece depois do primeiro desafio."],
   ["Copiato: incollalo in chat ai tuoi amici.", "Copied: paste it in a chat with your friends.", "Copiado: p\xE9galo en el chat con tus amigos.", "Copi\xE9 : colle-le dans une discussion avec tes amis.", "Kopiert: F\xFCge es im Chat mit deinen Freunden ein.", "Copiado: cole no chat com seus amigos."],
   ["Uno contro uno in videochiamata: la fotocamera conta le ripetizioni di entrambi", "One on one on a video call: the camera counts both players' reps", "Uno contra uno en videollamada: la c\xE1mara cuenta las repeticiones de ambos", "Un contre un en appel vid\xE9o : la cam\xE9ra compte les r\xE9p\xE9titions des deux", "Eins gegen eins per Videoanruf: Die Kamera z\xE4hlt die Wiederholungen von beiden", "Um contra um por videochamada: a c\xE2mera conta as repeti\xE7\xF5es dos dois"],
-  ["Usa la voce registrata", "Use the recorded voice", "Usar la voz grabada", "Utiliser la voix enregistr\xE9e", "Aufgenommene Stimme verwenden", "Usar a voz gravada"]
+  ["Usa la voce registrata", "Use the recorded voice", "Usar la voz grabada", "Utiliser la voix enregistr\xE9e", "Aufgenommene Stimme verwenden", "Usar a voz gravada"],
+  ["Account e backup", "Account and backup", "Cuenta y copia de seguridad", "Compte et sauvegarde", "Konto und Backup", "Conta e backup"],
+  ["Accedi per salvare punti e progressi: se cambi telefono li ritrovi.", "Sign in to save your points and progress: if you change phone, you'll get them back.", "Inicia sesi\xF3n para guardar tus puntos y progresos: si cambias de m\xF3vil, los recuperas.", "Connecte-toi pour sauvegarder tes points et progr\xE8s : si tu changes de t\xE9l\xE9phone, tu les retrouves.", "Melde dich an, um Punkte und Fortschritt zu sichern: Bei einem neuen Handy bekommst du sie zur\xFCck.", "Entre para salvar pontos e progresso: se trocar de celular, voc\xEA os recupera."],
+  ["Continua con Google", "Continue with Google", "Continuar con Google", "Continuer avec Google", "Weiter mit Google", "Continuar com Google"],
+  ["Continua con Apple", "Continue with Apple", "Continuar con Apple", "Continuer avec Apple", "Weiter mit Apple", "Continuar com Apple"],
+  ["oppure con email", "or with email", "o con email", "ou par e-mail", "oder mit E-Mail", "ou com e-mail"],
+  ["Password (almeno 8 caratteri)", "Password (at least 8 characters)", "Contrase\xF1a (m\xEDnimo 8 caracteres)", "Mot de passe (8 caract\xE8res minimum)", "Passwort (mindestens 8 Zeichen)", "Senha (m\xEDnimo 8 caracteres)"],
+  ["Crea account", "Create account", "Crear cuenta", "Cr\xE9er un compte", "Konto erstellen", "Criar conta"],
+  ["Accedi", "Sign in", "Entrar", "Se connecter", "Anmelden", "Entrar"],
+  ["Hai gi\xE0 un account? Accedi", "Already have an account? Sign in", "\xBFYa tienes cuenta? Entra", "D\xE9j\xE0 un compte ? Connecte-toi", "Schon ein Konto? Anmelden", "J\xE1 tem conta? Entre"],
+  ["Nuovo? Crea un account", "New here? Create an account", "\xBFNuevo? Crea una cuenta", "Nouveau ? Cr\xE9e un compte", "Neu hier? Konto erstellen", "Novo? Crie uma conta"],
+  ["Password dimenticata?", "Forgot password?", "\xBFOlvidaste la contrase\xF1a?", "Mot de passe oubli\xE9 ?", "Passwort vergessen?", "Esqueceu a senha?"],
+  ["Ultimo backup", "Last backup", "\xDAltima copia", "Derni\xE8re sauvegarde", "Letztes Backup", "\xDAltimo backup"],
+  ["Nessun backup ancora", "No backup yet", "A\xFAn no hay copia", "Pas encore de sauvegarde", "Noch kein Backup", "Nenhum backup ainda"],
+  ["da salvare", "to be saved", "pendiente", "\xE0 sauvegarder", "noch zu sichern", "a salvar"],
+  ["Backup ora", "Back up now", "Copia ahora", "Sauvegarder", "Jetzt sichern", "Backup agora"],
+  ["Esci", "Sign out", "Salir", "Se d\xE9connecter", "Abmelden", "Sair"],
+  ["Elimina account", "Delete account", "Eliminar cuenta", "Supprimer le compte", "Konto l\xF6schen", "Excluir conta"],
+  ["Backup fatto.", "Backup done.", "Copia hecha.", "Sauvegarde faite.", "Backup erledigt.", "Backup feito."],
+  ["Email o password sbagliate.", "Wrong email or password.", "Email o contrase\xF1a incorrectos.", "E-mail ou mot de passe incorrect.", "E-Mail oder Passwort falsch.", "E-mail ou senha incorretos."],
+  ["Conferma prima l'email: apri il link che ti abbiamo mandato.", "Confirm your email first: open the link we sent you.", "Confirma primero el email: abre el enlace que te enviamos.", "Confirme d'abord ton e-mail : ouvre le lien qu'on t'a envoy\xE9.", "Best\xE4tige zuerst deine E-Mail: \xD6ffne den Link, den wir dir geschickt haben.", "Confirme primeiro o e-mail: abra o link que enviamos."],
+  ["Questa email ha gi\xE0 un account: tocca Accedi.", "This email already has an account: tap Sign in.", "Este email ya tiene cuenta: toca Entrar.", "Cet e-mail a d\xE9j\xE0 un compte : touche Se connecter.", "Diese E-Mail hat schon ein Konto: Tippe auf Anmelden.", "Este e-mail j\xE1 tem conta: toque em Entrar."],
+  ["Questo accesso non \xE8 ancora attivo. Per ora usa l'email.", "This sign-in isn't active yet. Use email for now.", "Este acceso a\xFAn no est\xE1 activo. Por ahora usa el email.", "Cette connexion n'est pas encore active. Utilise l'e-mail pour l'instant.", "Diese Anmeldung ist noch nicht aktiv. Nutze vorerst die E-Mail.", "Este acesso ainda n\xE3o est\xE1 ativo. Por enquanto use o e-mail."],
+  ["Scegli una password pi\xF9 sicura (almeno 8 caratteri, non troppo comune).", "Choose a stronger password (at least 8 characters, not too common).", "Elige una contrase\xF1a m\xE1s segura (m\xEDnimo 8 caracteres, poco com\xFAn).", "Choisis un mot de passe plus s\xFBr (8 caract\xE8res minimum, pas trop courant).", "W\xE4hle ein sichereres Passwort (mindestens 8 Zeichen, nicht zu g\xE4ngig).", "Escolha uma senha mais segura (m\xEDnimo 8 caracteres, pouco comum)."],
+  ["Troppi tentativi: riprova tra qualche minuto.", "Too many attempts: try again in a few minutes.", "Demasiados intentos: int\xE9ntalo en unos minutos.", "Trop de tentatives : r\xE9essaie dans quelques minutes.", "Zu viele Versuche: Versuche es in ein paar Minuten erneut.", "Tentativas demais: tente de novo em alguns minutos."],
+  ["Serve internet per accedere.", "You need internet to sign in.", "Necesitas internet para entrar.", "Il faut internet pour se connecter.", "Zum Anmelden brauchst du Internet.", "\xC9 preciso internet para entrar."],
+  ["Qualcosa non ha funzionato. Riprova.", "Something went wrong. Try again.", "Algo no ha funcionado. Int\xE9ntalo de nuevo.", "Quelque chose n'a pas march\xE9. R\xE9essaie.", "Etwas hat nicht geklappt. Versuche es erneut.", "Algo deu errado. Tente de novo."],
+  ["Scrivi prima la tua email.", "Enter your email first.", "Escribe primero tu email.", "\xC9cris d'abord ton e-mail.", "Gib zuerst deine E-Mail ein.", "Escreva primeiro seu e-mail."],
+  ["Ti abbiamo mandato un'email per cambiare la password.", "We sent you an email to change your password.", "Te enviamos un email para cambiar la contrase\xF1a.", "On t'a envoy\xE9 un e-mail pour changer ton mot de passe.", "Wir haben dir eine E-Mail zum \xC4ndern des Passworts geschickt.", "Enviamos um e-mail para trocar a senha."],
+  ["Controlla l'email.", "Check the email address.", "Revisa el email.", "V\xE9rifie l'e-mail.", "Pr\xFCfe die E-Mail-Adresse.", "Confira o e-mail."],
+  ["La password deve avere almeno 8 caratteri.", "The password must have at least 8 characters.", "La contrase\xF1a debe tener al menos 8 caracteres.", "Le mot de passe doit avoir au moins 8 caract\xE8res.", "Das Passwort braucht mindestens 8 Zeichen.", "A senha precisa ter pelo menos 8 caracteres."],
+  ["Ti abbiamo mandato un'email: apri il link per confermare, poi accedi qui.", "We sent you an email: open the link to confirm, then sign in here.", "Te enviamos un email: abre el enlace para confirmar y luego entra aqu\xED.", "On t'a envoy\xE9 un e-mail : ouvre le lien pour confirmer, puis connecte-toi ici.", "Wir haben dir eine E-Mail geschickt: \xD6ffne den Link zur Best\xE4tigung und melde dich dann hier an.", "Enviamos um e-mail: abra o link para confirmar e depois entre aqui."],
+  ["Sei uscito. I dati restano su questo telefono.", "You're signed out. Your data stays on this phone.", "Has salido. Los datos se quedan en este m\xF3vil.", "Tu es d\xE9connect\xE9. Les donn\xE9es restent sur ce t\xE9l\xE9phone.", "Du bist abgemeldet. Die Daten bleiben auf diesem Handy.", "Voc\xEA saiu. Os dados ficam neste celular."],
+  ["Account eliminato.", "Account deleted.", "Cuenta eliminada.", "Compte supprim\xE9.", "Konto gel\xF6scht.", "Conta exclu\xEDda."],
+  ["Eliminare l'account e il backup online? Non si pu\xF2 annullare. I dati su questo telefono restano.", "Delete your account and online backup? This can't be undone. The data on this phone stays.", "\xBFEliminar la cuenta y la copia online? No se puede deshacer. Los datos de este m\xF3vil se quedan.", "Supprimer le compte et la sauvegarde en ligne ? C'est d\xE9finitif. Les donn\xE9es de ce t\xE9l\xE9phone restent.", "Konto und Online-Backup l\xF6schen? Das l\xE4sst sich nicht r\xFCckg\xE4ngig machen. Die Daten auf diesem Handy bleiben.", "Excluir a conta e o backup online? N\xE3o d\xE1 para desfazer. Os dados deste celular ficam."],
+  ["Sul tuo account c'\xE8 un backup con pi\xF9 punti di questo telefono.", "Your account has a backup with more points than this phone.", "Tu cuenta tiene una copia con m\xE1s puntos que este m\xF3vil.", "Ton compte a une sauvegarde avec plus de points que ce t\xE9l\xE9phone.", "Dein Konto hat ein Backup mit mehr Punkten als dieses Handy.", "Sua conta tem um backup com mais pontos que este celular."],
+  ["Vuoi recuperarlo? Se scegli Annulla, il backup verr\xE0 sostituito con i dati di questo telefono.", "Restore it? If you choose Cancel, the backup will be replaced with this phone's data.", "\xBFRecuperarla? Si eliges Cancelar, la copia se sustituir\xE1 por los datos de este m\xF3vil.", "La r\xE9cup\xE9rer ? Si tu choisis Annuler, la sauvegarde sera remplac\xE9e par les donn\xE9es de ce t\xE9l\xE9phone.", "Wiederherstellen? Wenn du Abbrechen w\xE4hlst, wird das Backup durch die Daten dieses Handys ersetzt.", "Recuperar? Se escolher Cancelar, o backup ser\xE1 substitu\xEDdo pelos dados deste celular."],
+  ["Backup online", "Online backup", "Copia online", "Sauvegarde en ligne", "Online-Backup", "Backup online"],
+  ["Questo telefono", "This phone", "Este m\xF3vil", "Ce t\xE9l\xE9phone", "Dieses Handy", "Este celular"],
+  ["punti", "points", "puntos", "points", "Punkte", "pontos"]
 ];
 const LANG_IDX = { en: 1, es: 2, fr: 3, de: 4, pt: 5 };
 let trRx = null, trMap = null, trCache = /* @__PURE__ */ new Map(), trOut = /* @__PURE__ */ new Set();
@@ -2879,6 +2940,10 @@ const store = {
       localStorage.setItem("recluta:" + k, JSON.stringify(v));
     } catch (e) {
     }
+    try {
+      syncMark(k);
+    } catch (e) {
+    }
   }
 };
 let progress = store.get("progress", {});
@@ -3824,8 +3889,9 @@ function renderOnboard() {
 }
 let profGOpen = false, profSetOpen = false, profTOpen = false;
 function renderProfile() {
-  app.innerHTML = '\n  <div class="screen">\n    <section class="lbz-hero pf-hero">\n      <div class="dz-glow"></div>\n      <div class="lbz-top"><h1>Profilo</h1>'.concat(crownN(stats.crowns) ? '<span class="dz-crowns">'.concat(crownSVG(), "<b>").concat(crownN(stats.crowns), "</b></span>") : "", '</div>\n      <div class="lbz-me">').concat(avatar(myName || "Tu", "lbz-av"), '<div><div class="pf-name">').concat(esc(myName || "Atleta"), '</div>\n        <div class="lbz-meta">').concat(myBadge(), " <span>").concat(RANKS[rankIndex()][0], "</span> \xB7 <span>").concat(G() === "f" ? "Donna" : "Uomo", '</span></div></div></div>\n      <div class="pf-stats"><div><b class="cu">').concat(stats.total, '</b><small>Punti totali</small></div><div><b class="cu">').concat(stats.month.pts, '</b><small>Questo mese</small></div><div><b class="cu">').concat(crownN(stats.crowns), '</b><small>Corone</small></div></div>\n    </section>\n    <details class="subopt set-menu" id="setSub"').concat(profSetOpen ? " open" : "", '><summary><span class="set-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></span><span>Impostazioni</span><b>Nome, lingua, voce, grafica</b></summary><div class="subopt-body set-body">\n    <details class="subopt" id="gSub"').concat(profGOpen ? " open" : "", "><summary><span>Percorso</span><b>").concat(G() === "f" ? "Donna" : "Uomo", '</b></summary><div class="subopt-body">').concat(genderPick(G()), '</div></details>\n    <details class="subopt" id="tSub"').concat(profTOpen ? " open" : "", '><summary><span>Avatar</span><b><i class="tone-dot" style="--c:').concat(TONE_DOT[tone], '"></i>').concat(TONE_NAMES[tone], '</b></summary><div class="subopt-body">').concat(tonePick(tone, G()), '</div></details>\n    <div class="field"><label class="label" for="nm">Il tuo nome</label><input id="nm" maxlength="20" autocomplete="nickname" placeholder="Es. Marco" value="').concat(esc(myName), '"></div>\n    <div class="field"><label class="label" for="pLang">Lingua</label>\n      <select id="pLang" class="sel">\n        <option value="">Automatica (').concat(LANGS[detectLang()].name, ")</option>\n        ").concat(LANG_ORDER.map((k) => '<option value="'.concat(k, '" ').concat(store.get("lang", "") === k ? "selected" : "", ">").concat(LANGS[k].name, "</option>")).join(""), '\n      </select></div>\n    <div class="section"><div class="label">Voce</div>\n      <label class="toggle"><input type="checkbox" id="voiceT" ').concat(voiceOn ? "checked" : "", '> Istruttore vocale</label>\n      <label class="toggle"><input type="checkbox" id="gritT" ').concat(gritOn ? "checked" : "", '> Voce del coach: incitamento durante l\'esercizio</label>\n      <button class="btn ghost" id="voiceSet" type="button">Personalizza la voce</button>\n    </div>\n    ').concat(fxSettings(), '\n    </div></details>\n    <p class="note">Il video resta sul tuo telefono: l\'analisi della postura avviene nel browser e nessuna immagine viene inviata.</p>\n  </div>');
+  app.innerHTML = '\n  <div class="screen">\n    <section class="lbz-hero pf-hero">\n      <div class="dz-glow"></div>\n      <div class="lbz-top"><h1>Profilo</h1>'.concat(crownN(stats.crowns) ? '<span class="dz-crowns">'.concat(crownSVG(), "<b>").concat(crownN(stats.crowns), "</b></span>") : "", '</div>\n      <div class="lbz-me">').concat(avatar(myName || "Tu", "lbz-av"), '<div><div class="pf-name">').concat(esc(myName || "Atleta"), '</div>\n        <div class="lbz-meta">').concat(myBadge(), " <span>").concat(RANKS[rankIndex()][0], "</span> \xB7 <span>").concat(G() === "f" ? "Donna" : "Uomo", '</span></div></div></div>\n      <div class="pf-stats"><div><b class="cu">').concat(stats.total, '</b><small>Punti totali</small></div><div><b class="cu">').concat(stats.month.pts, '</b><small>Questo mese</small></div><div><b class="cu">').concat(crownN(stats.crowns), "</b><small>Corone</small></div></div>\n    </section>\n    ").concat(SITE ? accountCard() : "", '\n    <details class="subopt set-menu" id="setSub"').concat(profSetOpen ? " open" : "", '><summary><span class="set-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></span><span>Impostazioni</span><b>Nome, lingua, voce, grafica</b></summary><div class="subopt-body set-body">\n    <details class="subopt" id="gSub"').concat(profGOpen ? " open" : "", "><summary><span>Percorso</span><b>").concat(G() === "f" ? "Donna" : "Uomo", '</b></summary><div class="subopt-body">').concat(genderPick(G()), '</div></details>\n    <details class="subopt" id="tSub"').concat(profTOpen ? " open" : "", '><summary><span>Avatar</span><b><i class="tone-dot" style="--c:').concat(TONE_DOT[tone], '"></i>').concat(TONE_NAMES[tone], '</b></summary><div class="subopt-body">').concat(tonePick(tone, G()), '</div></details>\n    <div class="field"><label class="label" for="nm">Il tuo nome</label><input id="nm" maxlength="20" autocomplete="nickname" placeholder="Es. Marco" value="').concat(esc(myName), '"></div>\n    <div class="field"><label class="label" for="pLang">Lingua</label>\n      <select id="pLang" class="sel">\n        <option value="">Automatica (').concat(LANGS[detectLang()].name, ")</option>\n        ").concat(LANG_ORDER.map((k) => '<option value="'.concat(k, '" ').concat(store.get("lang", "") === k ? "selected" : "", ">").concat(LANGS[k].name, "</option>")).join(""), '\n      </select></div>\n    <div class="section"><div class="label">Voce</div>\n      <label class="toggle"><input type="checkbox" id="voiceT" ').concat(voiceOn ? "checked" : "", '> Istruttore vocale</label>\n      <label class="toggle"><input type="checkbox" id="gritT" ').concat(gritOn ? "checked" : "", '> Voce del coach: incitamento durante l\'esercizio</label>\n      <button class="btn ghost" id="voiceSet" type="button">Personalizza la voce</button>\n    </div>\n    ').concat(fxSettings(), '\n    </div></details>\n    <p class="note">Il video resta sul tuo telefono: l\'analisi della postura avviene nel browser e nessuna immagine viene inviata.</p>\n  </div>');
   fxSettingsWire();
+  accountWire();
   app.querySelectorAll(".pick > button").forEach((b) => b.onclick = () => {
     setGender(b.dataset.g);
     profGOpen = false;
@@ -4003,6 +4069,7 @@ async function startSession(mode, file) {
   try {
     await loadEngine();
   } catch (e) {
+    reportBug("pt_agent", "error", "engine_load_failed", { name: e && e.name, m: String(e && e.message || e).slice(0, 160) });
     $("loadingMsg").textContent = "Il sistema di visione non si \xE8 caricato. Controlla la connessione e riprova.";
     return;
   }
@@ -4010,6 +4077,7 @@ async function startSession(mode, file) {
     if (mode === "live") await openCamera();
     else await openFile(file);
   } catch (e) {
+    reportBug("camera", e && e.name === "NotAllowedError" ? "warning" : "error", mode === "live" ? e && e.name === "NotAllowedError" ? "camera_permission_denied" : "camera_open_failed" : "video_file_failed", { name: e && e.name, m: String(e && e.message || "").slice(0, 160) });
     if (mode === "live") {
       $("loadingMsg").innerHTML = "Non riesco ad aprire la fotocamera.<br><br>Controlla di aver dato il permesso nelle impostazioni del browser, oppure registra un video della serie.";
       const b = document.createElement("button");
@@ -4099,9 +4167,14 @@ function loop() {
       if (!liteMode && S.detEma > 55 && (S.detN = (S.detN || 0) + 1) > 30) {
         liteMode = true;
         store.set("lite", true);
+        reportBug("pt_agent", "warning", "slow_detection_fps_below_18", { ms: Math.round(S.detEma), ex: S.cur && S.cur.ex });
       }
       process(res, ts);
     } catch (e) {
+      if (!S.detErr) {
+        S.detErr = true;
+        reportBug("pt_agent", "error", "detect_frame_failed", { m: String(e && e.message || e).slice(0, 160) });
+      }
     }
   }
   tickTimer();
@@ -4134,10 +4207,16 @@ function process(res, ts) {
   ctx.clearRect(0, 0, w, h);
   const lm = (_a2 = res == null ? void 0 : res.landmarks) == null ? void 0 : _a2[0];
   if (!lm) {
+    if (!S.noLmT) S.noLmT = performance.now();
+    else if (!S.noLmRep && S.mode === "live" && performance.now() - S.noLmT > 8e3) {
+      S.noLmRep = true;
+      reportBug("pt_agent", "warning", "no_pose_8s", { ex: S.cur && S.cur.ex, w: vid.videoWidth, h: vid.videoHeight });
+    }
     setBanner("Non ti vedo: entra nell'inquadratura", "warn");
     $("meterFill").style.height = "0%";
     return;
   }
+  S.noLmT = 0;
   const c = S.cur;
   const out = c.tracker.step(lm, ts) || {};
   drawSkeleton(lm, out.fault ? "bad" : out.lost ? "warn" : "ok");
@@ -4980,7 +5059,7 @@ async function duelJoin(code) {
     if ((e == null ? void 0 : e.type) === "peer-unavailable") {
       CH.notFound = true;
       refreshLobby();
-    }
+    } else reportBug("sfide", "error", "peer_error_" + String((e == null ? void 0 : e.type) || "unknown").slice(0, 40), {});
   });
   setupConn(CH.peer.connect(peerId(code), { reliable: true }));
   setupCall(CH.peer.call(peerId(code), CH.stream));
@@ -6275,6 +6354,411 @@ function fxSettingsWire() {
     if (k === "rep" && fx.level !== "off" && v !== "none") burst(app.querySelector('#fxSet [data-k="rep"][data-v="'.concat(v, '"]')), fx.level === "lite" ? "ring" : v);
   });
 }
+const SB_URL = "https://maypmqnjkdrdqcssnvty.supabase.co";
+const SB_KEY = "sb_publishable_uorMl6G618tavZGF8MQpfQ_2Pg3AIlE";
+const APP_VER = "web-v43";
+const SYNC_SKIP = ["lite", "vpack", "rndInv"];
+const ACC = { sb: null, user: null, loading: null, busy: false, msg: "", err: false, timer: null, mode: "login" };
+const syncInfo = () => {
+  try {
+    return JSON.parse(localStorage.getItem("fq:sync")) || {};
+  } catch (e) {
+    return {};
+  }
+};
+const setSyncInfo = (o) => {
+  try {
+    localStorage.setItem("fq:sync", JSON.stringify({ ...syncInfo(), ...o }));
+  } catch (e) {
+  }
+};
+const hasSbSession = () => {
+  try {
+    return Object.keys(localStorage).some((k) => /^sb-.*-auth-token$/.test(k));
+  } catch (e) {
+    return false;
+  }
+};
+async function sbClient() {
+  if (ACC.sb) return ACC.sb;
+  if (!ACC.loading) ACC.loading = (async () => {
+    if (!window.supabase) await loadScript("supabase.min.js");
+    const sb = window.supabase.createClient(SB_URL, SB_KEY, { auth: { flowType: "pkce", persistSession: true, autoRefreshToken: true, detectSessionInUrl: true } });
+    sb.auth.onAuthStateChange((ev, session2) => {
+      const was = ACC.user && ACC.user.id;
+      ACC.user = session2 ? session2.user : null;
+      if (ACC.user && ACC.user.id !== was) setTimeout(() => accFirstSync().catch((e) => reportBug("sync", "error", "first_sync_failed", { m: String(e && e.message || e).slice(0, 120) })), 0);
+      if (route.name === "profile") accRefresh();
+    });
+    const { data } = await sb.auth.getSession();
+    ACC.user = data && data.session ? data.session.user : null;
+    ACC.sb = sb;
+    return sb;
+  })().catch((e) => {
+    ACC.loading = null;
+    throw e;
+  });
+  return ACC.loading;
+}
+function syncSnapshot() {
+  const data = {};
+  try {
+    for (const k of Object.keys(localStorage)) if (k.startsWith("recluta:") && !SYNC_SKIP.includes(k.slice(8))) data[k.slice(8)] = localStorage.getItem(k);
+  } catch (e) {
+  }
+  return data;
+}
+const doneSessions = () => Object.values(progress || {}).filter(Boolean).length;
+const localEmpty = () => !stats.total && !doneSessions() && !Object.keys(records || {}).length;
+async function syncUpload() {
+  const sb = await sbClient();
+  if (!ACC.user) return false;
+  rollMonth();
+  const row = { user_id: ACC.user.id, data: syncSnapshot(), level: rankIndex(), points: Math.max(0, stats.total | 0), streak: 0, workouts: doneSessions(), crowns: Math.min(999, crownN(stats.crowns)), path: G() === "f" ? "f" : "m", app_version: APP_VER, client_updated_at: (/* @__PURE__ */ new Date()).toISOString() };
+  const { error } = await sb.from("user_progress").upsert(row, { onConflict: "user_id" });
+  if (error) throw error;
+  setSyncInfo({ dirty: false, last: Date.now(), uid: ACC.user.id });
+  return true;
+}
+function syncMark(k) {
+  if (SYNC_SKIP.includes(k)) return;
+  if (!hasSbSession() && !ACC.user) return;
+  setSyncInfo({ dirty: true });
+  clearTimeout(ACC.timer);
+  ACC.timer = setTimeout(syncFlush, 5e3);
+}
+async function syncFlush() {
+  if (offline() || !syncInfo().dirty || S && S.running) return;
+  try {
+    await sbClient();
+    if (ACC.user) await syncUpload();
+    if (route.name === "profile") accRefresh();
+  } catch (e) {
+    reportBug("sync", "warning", "backup_failed", { m: String(e && e.message || e).slice(0, 120) });
+  }
+}
+function syncRestore(row) {
+  const data = row && row.data;
+  if (!data || typeof data !== "object") return false;
+  try {
+    for (const k of Object.keys(localStorage)) if (k.startsWith("recluta:") && !SYNC_SKIP.includes(k.slice(8))) localStorage.removeItem(k);
+    for (const [k, v] of Object.entries(data)) if (typeof v === "string" && !SYNC_SKIP.includes(k) && /^[a-zA-Z0-9_]{1,40}$/.test(k)) localStorage.setItem("recluta:" + k, v);
+  } catch (e) {
+    return false;
+  }
+  setSyncInfo({ dirty: false, last: Date.now(), uid: ACC.user && ACC.user.id });
+  location.reload();
+  return true;
+}
+async function accFirstSync() {
+  const sb = await sbClient();
+  if (!ACC.user) return;
+  const { data: row, error } = await sb.from("user_progress").select("data, points, updated_at").eq("user_id", ACC.user.id).maybeSingle();
+  if (error) throw error;
+  const info = syncInfo();
+  if (row && info.uid !== ACC.user.id) {
+    if (localEmpty()) return syncRestore(row);
+    if ((row.points | 0) > (stats.total | 0)) {
+      const when = new Date(row.updated_at).toLocaleDateString();
+      if (confirm("".concat(tr("Sul tuo account c'\xE8 un backup con pi\xF9 punti di questo telefono."), "\n\n").concat(tr("Backup online"), ": ").concat(row.points, " ").concat(tr("punti"), " (").concat(when, ")\n").concat(tr("Questo telefono"), ": ").concat(stats.total, " ").concat(tr("punti"), "\n\n").concat(tr("Vuoi recuperarlo? Se scegli Annulla, il backup verr\xE0 sostituito con i dati di questo telefono.")))) return syncRestore(row);
+    }
+  }
+  if (!row || info.uid !== ACC.user.id || info.dirty) await syncUpload();
+  if (route.name === "profile") accRefresh();
+}
+const providerLabel = (u) => {
+  const p = u && u.app_metadata && u.app_metadata.provider;
+  return p === "google" ? "Google" : p === "apple" ? "Apple" : "email";
+};
+function accountCard() {
+  const u = ACC.user;
+  if (u) {
+    const last = syncInfo().last;
+    return '<section class="acc" id="acc"><div class="acc-h"><span class="acc-ico" aria-hidden="true">\u2601</span><div><b>Account e backup</b><small>'.concat(esc(u.email || "Account"), " \xB7 ").concat(providerLabel(u), '</small></div></div>\n      <p class="acc-last">').concat(last ? "Ultimo backup: ".concat(new Date(last).toLocaleString([], { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })) : "Nessun backup ancora").concat(syncInfo().dirty ? " \xB7 da salvare" : "", '</p>\n      <div class="row"><button class="btn primary small" id="accSync" type="button"').concat(ACC.busy ? " disabled" : "", '>Backup ora</button><button class="btn ghost small" id="accOut" type="button">Esci</button></div>\n      ').concat(ACC.msg ? '<p class="acc-msg'.concat(ACC.err ? " bad" : "", '" role="status">').concat(esc(ACC.msg), "</p>") : "", '\n      <button class="acc-del" id="accDel" type="button">Elimina account</button></section>');
+  }
+  const reg = ACC.mode === "signup";
+  return '<section class="acc" id="acc"><div class="acc-h"><span class="acc-ico" aria-hidden="true">\u2601</span><div><b>Account e backup</b><small>Accedi per salvare punti e progressi: se cambi telefono li ritrovi.</small></div></div>\n    '.concat(ACC.prov && (ACC.prov.google || ACC.prov.apple) ? '<div class="acc-soc">'.concat(ACC.prov.google ? '<button class="btn ghost small" id="accGoogle" type="button">Continua con Google</button>' : "").concat(ACC.prov.apple ? '<button class="btn ghost small" id="accApple" type="button">Continua con Apple</button>' : "", '</div>\n    <div class="acc-or"><span>oppure con email</span></div>') : "", '\n    <form id="accForm" class="acc-form" novalidate>\n      <input id="accMail" type="email" autocomplete="email" inputmode="email" placeholder="Email" maxlength="120" required value="').concat(esc(ACC.mail || ""), '">\n      <input id="accPw" type="password" autocomplete="').concat(reg ? "new-password" : "current-password", '" placeholder="Password (almeno 8 caratteri)" minlength="8" maxlength="72" required>\n      <button class="btn primary small" type="submit"').concat(ACC.busy ? " disabled" : "", ">").concat(reg ? "Crea account" : "Accedi", '</button>\n    </form>\n    <div class="acc-links"><button type="button" id="accMode">').concat(reg ? "Hai gi\xE0 un account? Accedi" : "Nuovo? Crea un account", "</button>").concat(reg ? "" : '<button type="button" id="accForgot">Password dimenticata?</button>', "</div>\n    ").concat(ACC.msg ? '<p class="acc-msg'.concat(ACC.err ? " bad" : "", '" role="status">').concat(esc(ACC.msg), "</p>") : "", "</section>");
+}
+const accSay = (m, err = false) => {
+  ACC.msg = m;
+  ACC.err = err;
+  accRefresh();
+};
+const authErr = (e) => {
+  const m = String(e && e.message || e || "");
+  if (/invalid login/i.test(m)) return "Email o password sbagliate.";
+  if (/not confirmed/i.test(m)) return "Conferma prima l'email: apri il link che ti abbiamo mandato.";
+  if (/already registered/i.test(m)) return "Questa email ha gi\xE0 un account: tocca Accedi.";
+  if (/provider is not enabled|unsupported provider/i.test(m)) return "Questo accesso non \xE8 ancora attivo. Per ora usa l'email.";
+  if (/password/i.test(m) && /(short|least|weak|pwned|leaked)/i.test(m)) return "Scegli una password pi\xF9 sicura (almeno 8 caratteri, non troppo comune).";
+  if (/rate|too many/i.test(m)) return "Troppi tentativi: riprova tra qualche minuto.";
+  if (/fetch|network|load failed/i.test(m)) return "Serve internet per accedere.";
+  return "Qualcosa non ha funzionato. Riprova.";
+};
+async function accRun(fn) {
+  if (ACC.busy) return;
+  ACC.busy = true;
+  ACC.msg = "";
+  accRefresh();
+  try {
+    await fn();
+  } catch (e) {
+    ACC.msg = authErr(e);
+    ACC.err = true;
+    if (!/invalid login|already registered|not confirmed/i.test(String(e && e.message))) reportBug("login", "warning", "auth_failed", { m: String(e && e.message || e).slice(0, 120) });
+  }
+  ACC.busy = false;
+  accRefresh();
+}
+const redirectTo = () => location.origin + location.pathname;
+function accountWire() {
+  const el = $("acc");
+  if (!el) return;
+  if (!ACC.user) accProviders();
+  const on = (id, f2) => {
+    const b = $(id);
+    if (b) b.onclick = f2;
+  };
+  on("accMode", () => {
+    ACC.mode = ACC.mode === "signup" ? "login" : "signup";
+    ACC.msg = "";
+    accRefresh();
+  });
+  ["Google", "Apple"].forEach((p) => on("acc" + p, () => accRun(async () => {
+    if (offline()) throw new Error("network");
+    const sb = await sbClient();
+    const { error } = await sb.auth.signInWithOAuth({ provider: p.toLowerCase(), options: { redirectTo: redirectTo() } });
+    if (error) throw error;
+  })));
+  on("accForgot", () => {
+    const mail = $("accMail").value.trim();
+    ACC.mail = mail;
+    accRun(async () => {
+      if (!mail) {
+        ACC.msg = "Scrivi prima la tua email.";
+        ACC.err = true;
+        return;
+      }
+      const sb = await sbClient();
+      const { error } = await sb.auth.resetPasswordForEmail(mail, { redirectTo: redirectTo() });
+      if (error) throw error;
+      ACC.msg = "Ti abbiamo mandato un'email per cambiare la password.";
+      ACC.err = false;
+    });
+  });
+  const f = $("accForm");
+  if (f) f.onsubmit = (e) => {
+    e.preventDefault();
+    const email = $("accMail").value.trim(), password = $("accPw").value;
+    ACC.mail = email;
+    accRun(async () => {
+      if (!/^\S+@\S+\.\S+$/.test(email)) {
+        ACC.msg = "Controlla l'email.";
+        ACC.err = true;
+        return;
+      }
+      if (password.length < 8) {
+        ACC.msg = "La password deve avere almeno 8 caratteri.";
+        ACC.err = true;
+        return;
+      }
+      if (offline()) throw new Error("network");
+      const sb = await sbClient();
+      if (ACC.mode === "signup") {
+        const { data, error } = await sb.auth.signUp({ email, password, options: { emailRedirectTo: redirectTo(), data: { full_name: (myName || "").slice(0, 40) } } });
+        if (error) throw error;
+        if (!data.session) {
+          ACC.msg = "Ti abbiamo mandato un'email: apri il link per confermare, poi accedi qui.";
+          ACC.err = false;
+          ACC.mode = "login";
+        }
+      } else {
+        const { error } = await sb.auth.signInWithPassword({ email, password });
+        if (error) throw error;
+      }
+    });
+  };
+  on("accSync", () => accRun(async () => {
+    if (offline()) throw new Error("network");
+    await syncUpload();
+    ACC.msg = "Backup fatto.";
+    ACC.err = false;
+  }));
+  on("accOut", () => accRun(async () => {
+    if (syncInfo().dirty && !offline()) try {
+      await syncUpload();
+    } catch (e) {
+    }
+    const sb = await sbClient();
+    await sb.auth.signOut();
+    ACC.user = null;
+    setSyncInfo({ uid: null, last: null, dirty: false });
+    ACC.msg = "Sei uscito. I dati restano su questo telefono.";
+  }));
+  on("accDel", () => {
+    if (!confirm(tr("Eliminare l'account e il backup online? Non si pu\xF2 annullare. I dati su questo telefono restano."))) return;
+    accRun(async () => {
+      if (offline()) throw new Error("network");
+      const sb = await sbClient();
+      const { error } = await sb.rpc("delete_my_account");
+      if (error) throw error;
+      await sb.auth.signOut().catch(() => {
+      });
+      ACC.user = null;
+      setSyncInfo({ uid: null, last: null, dirty: false });
+      ACC.msg = "Account eliminato.";
+    });
+  });
+}
+function accProviders() {
+  if (ACC.prov || ACC.provLoading || offline()) return;
+  ACC.provLoading = true;
+  fetch(SB_URL + "/auth/v1/settings", { headers: { apikey: SB_KEY } }).then((r) => r.ok ? r.json() : null).then((j) => {
+    if (j && j.external) {
+      ACC.prov = { google: !!j.external.google, apple: !!j.external.apple };
+      if (!ACC.user) accRefresh();
+    }
+  }).catch(() => {
+  }).finally(() => {
+    ACC.provLoading = false;
+  });
+}
+function accRefresh() {
+  const el = $("acc");
+  if (!el || route.name !== "profile") return;
+  el.outerHTML = accountCard();
+  accountWire();
+}
+function accInit() {
+  const back = /[?&](code|error_description)=/.test(location.search) || /access_token=|error_description=/.test(location.hash);
+  if (!back && !hasSbSession()) return;
+  sbClient().then(() => {
+    if (back) {
+      try {
+        history.replaceState(null, "", location.pathname);
+      } catch (e) {
+      }
+      if (ACC.user) go({ name: "profile" });
+    }
+    if (syncInfo().dirty) syncFlush();
+  }).catch(() => {
+  });
+}
+addEventListener("online", () => {
+  if (syncInfo().dirty) syncFlush();
+});
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden && syncInfo().dirty && ACC.user) {
+    clearTimeout(ACC.timer);
+    syncFlush();
+  }
+});
+const BUG = { n: 0, seen: /* @__PURE__ */ new Set() };
+function bugDevice() {
+  const ua = navigator.userAgent || "";
+  const ios = /iPhone|iPad|iPod/.test(ua) || /Macintosh/.test(ua) && navigator.maxTouchPoints > 1;
+  const m = ios ? ua.match(/OS (\d+)[_.](\d+)/) : ua.match(/Android (\d+(?:\.\d+)?)/);
+  const model = ios ? /iPad/.test(ua) ? "iPad" : "iPhone" : (ua.match(/Android [^;]+; ([^;)]+)/) || [])[1] || (/Android/.test(ua) ? "Android" : "desktop");
+  const br = /CriOS|Chrome/.test(ua) ? "chrome" : /FxiOS|Firefox/.test(ua) ? "firefox" : /Safari/.test(ua) ? "safari" : "web";
+  return { platform: "web", os_fam: ios ? "ios" : "android", os_version: m ? (ios ? m[1] + "." + m[2] : m[1]).slice(0, 20) : null, device_model: (model.trim() + " \xB7 " + br + (navigator.standalone || matchMedia("(display-mode: standalone)").matches ? " app" : "")).slice(0, 60) };
+}
+function bugQueue(q) {
+  try {
+    if (q) localStorage.setItem("fq:bugs", JSON.stringify(q.slice(-10)));
+    return JSON.parse(localStorage.getItem("fq:bugs")) || [];
+  } catch (e) {
+    return [];
+  }
+}
+async function bugSend(row) {
+  const h = { apikey: SB_KEY, "Content-Type": "application/json", Prefer: "return=minimal" };
+  try {
+    if (ACC.sb && ACC.user) {
+      const { data } = await ACC.sb.auth.getSession();
+      if (data.session) h.Authorization = "Bearer " + data.session.access_token;
+    }
+  } catch (e) {
+  }
+  if (!h.Authorization) row = { ...row, user_id: null };
+  const { os_fam, ...base } = row;
+  const post = (b) => fetch(SB_URL + "/rest/v1/app_errors", { method: "POST", headers: h, body: JSON.stringify(b), keepalive: true });
+  let r = await post(base);
+  if (r.status === 400 && os_fam) r = await post({ ...base, platform: os_fam });
+  if (!r.ok && r.status >= 500) throw new Error("server");
+}
+function reportBug(area, kind, message, context) {
+  try {
+    if (!SITE) return;
+    const key = area + "|" + message;
+    if (BUG.seen.has(key) || BUG.n >= 15) return;
+    BUG.seen.add(key);
+    BUG.n++;
+    let ctx2 = null;
+    try {
+      ctx2 = context ? JSON.parse(JSON.stringify(context).slice(0, 1500)) : null;
+    } catch (e) {
+    }
+    const row = { app_version: APP_VER, ...bugDevice(), area, kind, message: String(message).slice(0, 500), stack: context && context.stack ? String(context.stack).slice(0, 4e3) : null, context: ctx2 && { ...ctx2, stack: void 0, route: route && route.name, online: !offline() } };
+    if (offline()) {
+      bugQueue([...bugQueue(), row]);
+      return;
+    }
+    bugSend(row).catch(() => bugQueue([...bugQueue(), row]));
+  } catch (e) {
+  }
+}
+function installBugReporter() {
+  addEventListener("error", (e) => {
+    if (!e.error && !e.message) return;
+    reportBug("altro", "crash", String(e.message || e.error).slice(0, 300), { src: String(e.filename || "").split("/").pop().slice(0, 40), line: e.lineno, stack: e.error && e.error.stack });
+  });
+  addEventListener("unhandledrejection", (e) => {
+    const r = e.reason;
+    reportBug("altro", "error", "unhandled: " + String(r && r.message || r).slice(0, 280), { stack: r && r.stack });
+  });
+  const flush = () => {
+    const q = bugQueue();
+    if (!q.length || offline()) return;
+    bugQueue([]);
+    q.forEach((r) => bugSend(r).catch(() => {
+    }));
+  };
+  addEventListener("online", flush);
+  setTimeout(flush, 6e3);
+}
+function installLockdown() {
+  const field = (t) => t && t.closest && t.closest("input, textarea, select, [contenteditable]");
+  ["gesturestart", "gesturechange", "gestureend"].forEach((ev) => document.addEventListener(ev, (e) => e.preventDefault(), { passive: false }));
+  document.addEventListener("touchmove", (e) => {
+    if (e.touches && e.touches.length > 1) e.preventDefault();
+  }, { passive: false });
+  let lastEnd = 0;
+  document.addEventListener("touchend", (e) => {
+    const t = Date.now();
+    if (t - lastEnd < 320 && !field(e.target)) e.preventDefault();
+    lastEnd = t;
+  }, { passive: false });
+  document.addEventListener("dblclick", (e) => {
+    if (!field(e.target)) e.preventDefault();
+  }, { passive: false });
+  document.addEventListener("wheel", (e) => {
+    if (e.ctrlKey) e.preventDefault();
+  }, { passive: false });
+  document.addEventListener("keydown", (e) => {
+    if ((e.ctrlKey || e.metaKey) && ["+", "-", "=", "0"].includes(e.key)) e.preventDefault();
+  });
+  ["copy", "cut", "paste"].forEach((ev) => document.addEventListener(ev, (e) => {
+    if (!field(e.target)) e.preventDefault();
+  }));
+  document.addEventListener("contextmenu", (e) => {
+    if (!field(e.target)) e.preventDefault();
+  });
+  document.addEventListener("selectstart", (e) => {
+    if (!field(e.target)) e.preventDefault();
+  });
+}
+installLockdown();
+installBugReporter();
 let forceStart = false;
 try {
   forceStart = new URLSearchParams(location.search).has("start");
@@ -6312,6 +6796,7 @@ setTimeout(() => presenceStart().catch(() => {
 }), 2500);
 rwStart();
 loadVoicePack();
+accInit();
 function camFit() {
   const st = $("stage"), v = $("vid");
   if (!st || !v || !v.videoWidth) return;
