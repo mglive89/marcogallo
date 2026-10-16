@@ -24,4 +24,13 @@ fs.writeFileSync(path.join(www, "index.html"), html);
 fs.copyFileSync(path.join(root, "node_modules/@capacitor/core/dist/capacitor.js"), path.join(www, "capacitor.js"));
 fs.copyFileSync(path.join(root, "native-web/native.js"), path.join(www, "native.js"));
 fs.copyFileSync(path.join(root, "native-web/privacy.html"), path.join(www, "privacy.html"));
-console.log("www pronta:", www);
+// il WebView di Android e iOS legge le WebP: le copie PNG (riserva per browser vecchi) non servono e pesano ~60 MB
+let tolte = 0;
+(function prune(dir) {
+  for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+    const f = path.join(dir, e.name);
+    if (e.isDirectory()) prune(f);
+    else if (f.endsWith(".png") && fs.existsSync(f.slice(0, -4) + ".webp")) { fs.rmSync(f); tolte++; }
+  }
+})(path.join(www, "img"));
+console.log("www pronta:", www, "- PNG doppie tolte:", tolte);
