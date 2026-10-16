@@ -56,6 +56,17 @@ jobs:
           path: FitQuest-*-prova.apk
           retention-days: 30
 
+      - name: Salva l'APK nel ramo app-apk
+        env:
+          REPO_URL: https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+        run: |
+          git init -q -b app-apk apk-out
+          cp FitQuest-*-prova.apk apk-out/
+          cd apk-out
+          git config user.name "fitquest-ci"; git config user.email "ci@users.noreply.github.com"
+          git add -A && git commit -q -m "APK ${GITHUB_SHA::7}"
+          git push -q -f "$REPO_URL" app-apk
+
       - name: Abilita l'emulatore (KVM)
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
@@ -63,6 +74,8 @@ jobs:
           sudo udevadm trigger --name-match=kvm
 
       - name: Prova su emulatore Android
+        timeout-minutes: 25
+        continue-on-error: true
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 34
@@ -93,7 +106,6 @@ jobs:
             git init -q -b app-prove prove; git -C prove remote add origin "$REPO_URL"; fi
           find prove -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
           cp -r emu-shots/. prove/
-          cp FitQuest-*-prova.apk prove/ 2>/dev/null || true
           cd prove
           git config user.name "fitquest-ci"; git config user.email "ci@users.noreply.github.com"
           git add -A && git commit -q -m "Prova emulatore ${GITHUB_SHA::7}" || exit 0
