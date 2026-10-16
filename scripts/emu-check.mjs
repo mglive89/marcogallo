@@ -21,14 +21,15 @@ ws.onmessage = (m) => {
   if (d.method === "Runtime.exceptionThrown") problems.push("ERRORE JS: " + (d.params.exceptionDetails.exception?.description || d.params.exceptionDetails.text));
   if (d.method === "Runtime.consoleAPICalled" && d.params.type === "error") problems.push("console.error: " + d.params.args.map((a) => a.value ?? a.description).join(" "));
 };
-const send = (method, params = {}) => new Promise((r) => { const n = ++id; wait.set(n, r); ws.send(JSON.stringify({ id: n, method, params })); });
+const send = (method, params = {}) => new Promise((r) => { const n = ++id; wait.set(n, r); ws.send(JSON.stringify({ id: n, method, params })); setTimeout(() => { if (wait.has(n)) { wait.delete(n); problems.push("nessuna risposta: " + method); r({}); } }, 25000); });
 const ev = async (expr) => { const r = await send("Runtime.evaluate", { expression: expr, awaitPromise: true, returnByValue: true }); return r.result?.result?.value ?? r.result?.exceptionDetails?.exception?.description; };
-const shot = async (name) => { const r = await send("Page.captureScreenshot", { format: "png" }); fs.writeFileSync(`${out}/${name}.png`, Buffer.from(r.result.data, "base64")); };
+const shot = async (name) => { const r = await send("Page.captureScreenshot", { format: "png" }); if (r.result?.data) fs.writeFileSync(`${out}/${name}.png`, Buffer.from(r.result.data, "base64")); };
+const save = () => fs.writeFileSync(`${out}/report.json`, JSON.stringify(report, null, 2));
 await send("Runtime.enable"); await send("Page.enable");
 
-const report = {};
+const report = {}; const problemsRef = problems;
 report.prima_apertura = await ev("document.title");
-await shot("01-benvenuto");
+await shot("01-benvenuto"); save();
 // un utente già iscritto: Uomo, nome Marco
 await ev(`(()=>{ for (const [k,v] of Object.entries({gender:'m',started:true,name:'Marco',lang:'it'})) localStorage.setItem('recluta:'+k, JSON.stringify(v)); location.reload(); return 1 })()`);
 await sleep(9000);
@@ -37,7 +38,7 @@ report.salute_disponibile = await ev("FitQuestHealth.available().then(String)");
 report.fotocamera = await ev("navigator.mediaDevices.getUserMedia({video:true}).then(s=>{const n=s.getVideoTracks().length; s.getTracks().forEach(t=>t.stop()); return 'ok, tracce video: '+n}).catch(e=>'NO: '+e.name+' '+e.message)");
 report.voce = await ev("new Promise(r=>{ const u=new SpeechSynthesisUtterance('Prova voce'); u.onend=()=>r('ok'); u.onerror=e=>r('errore: '+(e&&e.message||e)); speechSynthesis.speak(u); setTimeout(()=>r('nessuna risposta in 8 s'),8000); })");
 report.schermo_acceso = await ev("navigator.wakeLock.request('screen').then(l=>l.release().then(()=>'ok'))");
-report.link_condivisione = await ev("siteUrl()");
+report.link_condivisione = await ev("siteUrl()"); report.problemi = problems; save();
 for (const [i, t] of ["home", "exercises", "duels", "ranking", "profile"].entries()) {
   await ev(`document.querySelector('#tabbar [data-tab="${t}"]').click()`);
   await sleep(2500);
@@ -51,3 +52,4 @@ report.problemi = problems;
 fs.writeFileSync(`${out}/report.json`, JSON.stringify(report, null, 2));
 console.log(JSON.stringify(report, null, 2));
 ws.close();
+process.exit(0);

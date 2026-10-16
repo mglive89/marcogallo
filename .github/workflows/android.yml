@@ -9,10 +9,13 @@ concurrency:
   group: android-${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: write
+
 jobs:
   apk:
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
 
@@ -72,12 +75,28 @@ jobs:
             adb install -r android/app/build/outputs/apk/debug/app-debug.apk
             adb shell pm grant com.mglive89.fitquest android.permission.CAMERA
             adb shell pm grant com.mglive89.fitquest android.permission.RECORD_AUDIO
+            mkdir -p emu-shots
             adb shell am start -n com.mglive89.fitquest/.MainActivity
-            sleep 25
+            sleep 30
             adb forward tcp:9222 localabstract:webview_devtools_remote_$(adb shell pidof com.mglive89.fitquest | tr -d '\r')
-            node scripts/emu-check.mjs || true
+            timeout 420 node scripts/emu-check.mjs > emu-shots/console.txt 2>&1 || echo "emu-check uscito con $?" >> emu-shots/console.txt
             adb exec-out screencap -p > emu-shots/00-telefono.png || true
             adb logcat -d | grep -iE "Capacitor|chromium|AndroidRuntime|FATAL" | tail -300 > emu-shots/logcat.txt || true
+
+      - name: Salva i risultati della prova nel ramo app-prove
+        if: always()
+        env:
+          REPO_URL: https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+        run: |
+          mkdir -p emu-shots
+          if git clone -q --depth 1 -b app-prove "$REPO_URL" prove 2>/dev/null; then :; else
+            git init -q -b app-prove prove; git -C prove remote add origin "$REPO_URL"; fi
+          find prove -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
+          cp -r emu-shots/. prove/
+          cd prove
+          git config user.name "fitquest-ci"; git config user.email "ci@users.noreply.github.com"
+          git add -A && git commit -q -m "Prova emulatore ${GITHUB_SHA::7}" || exit 0
+          git push -q origin app-prove
 
       - uses: actions/upload-artifact@v4
         if: always()
