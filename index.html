@@ -5301,7 +5301,7 @@ function peerOpts() {
 const CODE_CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 const newCode = () => Array.from({ length: 6 }, () => CODE_CHARS[Math.floor(Math.random() * CODE_CHARS.length)]).join("");
 const peerId = (code) => "istruttore-recluta-" + code;
-const duelLink = () => location.origin + location.pathname + "?sfida=" + CH.code;
+const duelLink = () => siteUrl() + "?sfida=" + CH.code;
 const PICKS = ["me", "together", "rand"];
 const normCfg = (c) => {
   const pick2 = PICKS.includes(c.pick) ? c.pick : "me";
@@ -6113,7 +6113,7 @@ function renderDuels() {
     n2.textContent = name ? "".concat(name, " aggiunto ai tuoi amici.") : "Amico aggiunto. Il suo nome comparir\xE0 dopo la prima sfida.";
   };
   $("shareMe").onclick = async () => {
-    const text = tr("Aggiungimi su FitQuest: il mio codice amico \xE8 ".concat(myFcode)), url = location.origin + location.pathname;
+    const text = tr("Aggiungimi su FitQuest: il mio codice amico \xE8 ".concat(myFcode)), url = siteUrl();
     try {
       if (navigator.share) {
         await navigator.share({ title: "FitQuest", text, url });
@@ -6899,7 +6899,7 @@ function fxSettingsWire() {
 }
 const SB_URL = "https://maypmqnjkdrdqcssnvty.supabase.co";
 const SB_KEY = "sb_publishable_uorMl6G618tavZGF8MQpfQ_2Pg3AIlE";
-const APP_VER = "web-v50";
+const APP_VER = "web-v51";
 const SYNC_SKIP = ["lite", "vpack", "rndInv"];
 const ACC = { sb: null, user: null, loading: null, busy: false, msg: "", err: false, timer: null, mode: "login" };
 const syncInfo = () => {
@@ -7055,6 +7055,26 @@ async function accRun(fn) {
 }
 const redirectTo = () => NATIVE ? "https://mglive89.github.io/marcogallo/" : location.origin + location.pathname;
 const NATIVE_AUTH = "com.mglive89.fitquest://auth";
+function siteUrl() {
+  return NATIVE ? "https://mglive89.github.io/marcogallo/" : location.origin + location.pathname;
+}
+window.fqBack = () => {
+  const ses = $("session");
+  if (ses && !ses.hidden) {
+    $("stop").click();
+    return true;
+  }
+  const b = $("back");
+  if (b && b.offsetParent) {
+    b.click();
+    return true;
+  }
+  if (route.name !== "home" && route.name !== "onboard") {
+    go({ name: "home" });
+    return true;
+  }
+  return false;
+};
 function accountWire() {
   const el = $("acc");
   if (!el) return;
