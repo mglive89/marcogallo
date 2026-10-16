@@ -1,0 +1,20 @@
+{
+  "prima_apertura": "FitQuest",
+  "nativa": "{\"native\":true,\"piattaforma\":\"android\",\"salute\":\"object\",\"ponte\":\"object\",\"voce\":\"function\",\"wakeLock\":\"function\",\"share\":\"function\",\"vibra\":\"function\"}",
+  "salute_disponibile": "true",
+  "fotocamera": "ok, tracce video: 1",
+  "voce": "ok",
+  "schermo_acceso": "ok",
+  "link_condivisione": "ReferenceError: siteUrl is not defined\n    at <anonymous>:1:1",
+  "problemi": [
+    "console.error: Error injecting safe area CSS: TypeError: Cannot read properties of null (reading 'style')\n    at <anonymous>:2:28",
+    "console.error: Error injecting safe area CSS: TypeError: Cannot read properties of null (reading 'style')\n    at <anonymous>:2:28",
+    "nessuna risposta: Page.captureScreenshot",
+    "nessuna risposta: Runtime.evaluate",
+    "nessuna risposta: Page.captureScreenshot",
+    "nessuna risposta: Runtime.evaluate",
+    "nessuna risposta: Page.captureScreenshot",
+    "nessuna risposta: Runtime.evaluate",
+    "nessuna risposta: Runtime.evaluate"
+  ]
+}
