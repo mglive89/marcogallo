@@ -55,5 +55,57 @@
     var go = function () { if (window.fqAuthReturn) window.fqAuthReturn(url); else setTimeout(go, 300); };
     go();
   });
-  App.addListener("backButton", function (ev) { if (ev && ev.canGoBack) history.back(); else App.minimizeApp(); });
+  // tasto Indietro: lo gestisce FitQuest (chiude la serie, torna alla schermata prima); sulla Home l'app va in secondo piano
+  App.addListener("backButton", function () { if (!(window.fqBack && window.fqBack())) App.minimizeApp(); });
+
+  // --- Quello che il browser ha e la WebView di Android no ---
+
+  // voce dell'istruttore: speechSynthesis → sintesi vocale del telefono
+  var TTS = C.registerPlugin("TextToSpeech");
+  function Utterance(text) { this.text = String(text || ""); this.lang = "it-IT"; this.rate = 1; this.pitch = 1; this.volume = 1; this.voice = null; this.onstart = this.onend = this.onerror = null; }
+  var synth = {
+    speaking: false, pending: false, paused: false, onvoiceschanged: null,
+    getVoices: function () { return []; },
+    speak: function (u) {
+      synth.speaking = true;
+      if (u.onstart) try { u.onstart({}); } catch (e) {}
+      TTS.speak({ text: u.text, lang: u.lang || "it-IT", rate: Math.max(0.1, Math.min(2, u.rate || 1)), pitch: Math.max(0.5, Math.min(2, u.pitch || 1)), volume: u.volume == null ? 1 : u.volume, category: "playback", queueStrategy: 1 })
+        .then(function () { synth.speaking = false; if (u.onend) try { u.onend({}); } catch (e) {} })
+        .catch(function (err) { synth.speaking = false; if (u.onerror) try { u.onerror(err); } catch (e) {} });
+    },
+    cancel: function () { synth.speaking = false; TTS.stop().catch(function () {}); },
+    pause: function () {}, resume: function () {},
+    addEventListener: function () {}, removeEventListener: function () {}
+  };
+  if (C.getPlatform() === "android") {
+    try { Object.defineProperty(window, "speechSynthesis", { value: synth, configurable: true, writable: true }); } catch (e) { window.speechSynthesis = synth; }
+    window.SpeechSynthesisUtterance = Utterance;
+  }
+
+  // schermo sempre acceso durante l'allenamento: navigator.wakeLock → KeepAwake
+  var KeepAwake = C.registerPlugin("KeepAwake");
+  if (!("wakeLock" in navigator)) {
+    var wakeLock = {
+      request: function () {
+        return KeepAwake.keepAwake().then(function () {
+          var lock = { released: false, type: "screen", onrelease: null, addEventListener: function () {}, removeEventListener: function () {},
+            release: function () { lock.released = true; return KeepAwake.allowSleep().catch(function () {}); } };
+          return lock;
+        });
+      }
+    };
+    try { Object.defineProperty(navigator, "wakeLock", { value: wakeLock, configurable: true }); } catch (e) {}
+  }
+
+  // condividi il codice amico o la sfida: navigator.share → menu Condividi del telefono
+  var Share = C.registerPlugin("Share");
+  var share = function (d) {
+    d = d || {};
+    return Share.share({ title: d.title, text: d.text, url: d.url, dialogTitle: d.title }).then(function () {}).catch(function (err) {
+      var msg = String(err && err.message || err);
+      if (/cancel/i.test(msg)) { var ab = new Error("Condivisione annullata"); ab.name = "AbortError"; throw ab; }
+      throw err;
+    });
+  };
+  try { Object.defineProperty(navigator, "share", { value: share, configurable: true }); } catch (e) { navigator.share = share; }
 })();

@@ -52,6 +52,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.VIBRATE" />
     <uses-feature android:name="android.hardware.camera" android:required="false" />
 
     <!-- Health Connect: FitQuest legge solo i passi; i permessi che il plugin aggiunge per altri dati vengono tolti -->
@@ -102,4 +103,9 @@
     <uses-permission android:name="android.permission.health.READ_NUTRITION" tools:node="remove" />
     <uses-permission android:name="android.permission.health.WRITE_NUTRITION" tools:node="remove" />
     <uses-permission android:name="android.permission.health.READ_EXERCISE" tools:node="remove" />
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.TTS_SERVICE" />
+        </intent>
+    </queries>
 </manifest>
