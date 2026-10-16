@@ -5,6 +5,7 @@
   var C = window.Capacitor;
   if (!C || !C.isNativePlatform || !C.isNativePlatform()) return;
   var Health = C.registerPlugin("Health"), App = C.registerPlugin("App"), Browser = C.registerPlugin("Browser");
+  var Haptics = C.registerPlugin("Haptics"), lastTap = 0;
   var pad = function (n) { return String(n).padStart(2, "0"); };
   var dayKey = function (d) { return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate()); };
   var LINKED = "fq:healthLinked";
@@ -45,7 +46,9 @@
 
   window.FitQuestNative = {
     platform: C.getPlatform(),
-    openAuth: function (url) { return Browser.open({ url: url, presentationStyle: "popover" }); }
+    openAuth: function (url) { return Browser.open({ url: url, presentationStyle: "popover" }); },
+    // tocco leggero sui pulsanti (rispetta le impostazioni di vibrazione del telefono)
+    tap: function () { var t = Date.now(); if (t - lastTap < 60) return; lastTap = t; Haptics.impact({ style: "LIGHT" }).catch(function () {}); }
   };
 
   App.addListener("appUrlOpen", function (ev) {
