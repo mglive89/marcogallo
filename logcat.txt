@@ -1,0 +1,300 @@
+10-16 07:20:34.497  3589  4476 W chromium: [WARNING:stun_port.cc(485)] Port[2148300:0:1:0:local:Net[any:0.0.0.x/0:Wildcard:id=0]]: StunPort: stun host lookup received error -1
+10-16 07:20:34.497  3589  4476 W chromium: [WARNING:stun_port.cc(485)] Port[2147e00:0:1:0:local:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: StunPort: stun host lookup received error -1
+10-16 07:20:34.503  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for us-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:34.503  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for us-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:34.503  3589  4476 W chromium: [WARNING:stun_port.cc(485)] Port[33d000:0:1:0:local:Net[any:0.0.0.x/0:Wildcard:id=0]]: StunPort: stun host lookup received error -1
+10-16 07:20:34.503  3589  4476 W chromium: [WARNING:stun_port.cc(485)] Port[213f200:0:1:0:local:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: StunPort: stun host lookup received error -1
+10-16 07:20:34.507  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:34.507  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:34.507  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:34.507  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:34.507  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:34.507  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:34.507  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:34.507  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:34.507  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:34.507  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:34.507  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:34.507  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:34.507  3589  4476 W chromium: [WARNING:stun_port.cc(485)] Port[2141f00:0:1:0:local:Net[any:0.0.0.x/0:Wildcard:id=0]]: StunPort: stun host lookup received error -1
+10-16 07:20:34.508  3589  4476 W chromium: [WARNING:stun_port.cc(485)] Port[2143d00:0:1:0:local:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: StunPort: stun host lookup received error -1
+10-16 07:20:34.508  3589  4476 W chromium: [WARNING:stun_port.cc(485)] Port[2142e00:0:1:0:local:Net[any:0.0.0.x/0:Wildcard:id=0]]: StunPort: stun host lookup received error -1
+10-16 07:20:34.508  3589  4476 W chromium: [WARNING:stun_port.cc(485)] Port[213f700:0:1:0:local:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: StunPort: stun host lookup received error -1
+10-16 07:20:34.508  3589  4476 W chromium: [WARNING:stun_port.cc(485)] Port[2146f00:0:1:0:local:Net[any:0.0.0.x/0:Wildcard:id=0]]: StunPort: stun host lookup received error -1
+10-16 07:20:34.508  3589  4476 W chromium: [WARNING:stun_port.cc(485)] Port[2149c00:0:1:0:local:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: StunPort: stun host lookup received error -1
+10-16 07:20:34.508  3589  4476 W chromium: [WARNING:stun_port.cc(485)] Port[2140b00:0:1:0:local:Net[any:0.0.0.x/0:Wildcard:id=0]]: StunPort: stun host lookup received error -1
+10-16 07:20:34.508  3589  4476 W chromium: [WARNING:stun_port.cc(485)] Port[2149700:0:1:0:local:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: StunPort: stun host lookup received error -1
+10-16 07:20:34.508  3589  4476 W chromium: [WARNING:stun_port.cc(485)] Port[2148300:0:1:0:local:Net[any:0.0.0.x/0:Wildcard:id=0]]: StunPort: stun host lookup received error -1
+10-16 07:20:34.508  3589  4476 W chromium: [WARNING:stun_port.cc(485)] Port[2147e00:0:1:0:local:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: StunPort: stun host lookup received error -1
+10-16 07:20:34.508  3589  4476 W chromium: [WARNING:stun_port.cc(485)] Port[33d000:0:1:0:local:Net[any:0.0.0.x/0:Wildcard:id=0]]: StunPort: stun host lookup received error -1
+10-16 07:20:34.508  3589  4476 W chromium: [WARNING:stun_port.cc(485)] Port[213f200:0:1:0:local:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: StunPort: stun host lookup received error -1
+10-16 07:20:34.560  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:34.561  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:34.561  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:34.561  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:34.561  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:34.561  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:34.561  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:34.561  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:34.561  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:34.561  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:34.561  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:34.561  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:34.561  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[2159200:0:1:0:relay:Net[any:0.0.0.x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:34.561  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[2162200:0:1:0:relay:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:34.561  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[2160a00:0:1:0:relay:Net[any:0.0.0.x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:34.561  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[288b800:0:1:0:relay:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:34.561  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[288e200:0:1:0:relay:Net[any:0.0.0.x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:34.561  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[288ee00:0:1:0:relay:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:34.561  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[2884c00:0:1:0:relay:Net[any:0.0.0.x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:34.561  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[2884600:0:1:0:relay:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:34.561  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for us-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:34.561  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for us-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:34.561  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for us-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:34.561  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for us-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:34.561  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for us-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:34.561  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for us-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:34.561  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for us-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:34.561  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for us-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:34.561  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for us-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:34.561  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for us-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:34.561  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for us-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:34.561  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for us-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:34.562  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[2885e00:0:1:0:relay:Net[any:0.0.0.x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:34.562  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[288a600:0:1:0:relay:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:34.562  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[288d000:0:1:0:relay:Net[any:0.0.0.x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:34.562  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[2887c00:0:1:0:relay:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:34.562  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[2161600:0:1:0:relay:Net[any:0.0.0.x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:34.563  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[215f800:0:1:0:relay:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:34.563  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[215fe00:0:1:0:relay:Net[any:0.0.0.x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:34.563  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[2887000:0:1:0:relay:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:34.563  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[2884000:0:1:0:relay:Net[any:0.0.0.x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:34.563  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[288b200:0:1:0:relay:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:34.563  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[288a000:0:1:0:relay:Net[any:0.0.0.x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:34.563  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[2886a00:0:1:0:relay:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:34.563  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[2886400:0:1:0:relay:Net[any:0.0.0.x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:34.563  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[2888200:0:1:0:relay:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:34.563  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[2888800:0:1:0:relay:Net[any:0.0.0.x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:34.563  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[2889400:0:1:0:relay:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:36.528  3422  3562 D Capacitor: Handling local request: https://localhost/img/chars/vs-m.webp
+10-16 07:20:36.538  3422  3562 D Capacitor: Handling local request: https://localhost/img/chars/vs-f.webp
+10-16 07:20:43.445  3589  4475 W chromium: [WARNING:codec.cc(466)] Explicitly added H264 constrained baseline to list of supported formats.
+10-16 07:20:43.448  3589  4475 W chromium: [WARNING:media_session.cc(949)] RED codec red is missing an associated payload type.
+10-16 07:20:43.451  3589  4475 W chromium: [WARNING:codec.cc(466)] Explicitly added H264 constrained baseline to list of supported formats.
+10-16 07:20:43.454  3589  4475 W chromium: [WARNING:media_session.cc(949)] RED codec red is missing an associated payload type.
+10-16 07:20:43.455  3589  4475 W chromium: [WARNING:codec.cc(466)] Explicitly added H264 constrained baseline to list of supported formats.
+10-16 07:20:43.457  3589  4475 W chromium: [WARNING:media_session.cc(949)] RED codec red is missing an associated payload type.
+10-16 07:20:43.461  3589  4475 W chromium: [WARNING:codec.cc(466)] Explicitly added H264 constrained baseline to list of supported formats.
+10-16 07:20:43.470  3589  4475 W chromium: [WARNING:media_session.cc(949)] RED codec red is missing an associated payload type.
+10-16 07:20:43.475  3589  4475 W chromium: [WARNING:codec.cc(466)] Explicitly added H264 constrained baseline to list of supported formats.
+10-16 07:20:43.486  3589  4475 W chromium: [WARNING:media_session.cc(949)] RED codec red is missing an associated payload type.
+10-16 07:20:43.492  3589  4475 W chromium: [WARNING:codec.cc(466)] Explicitly added H264 constrained baseline to list of supported formats.
+10-16 07:20:43.497  3589  4475 W chromium: [WARNING:media_session.cc(949)] RED codec red is missing an associated payload type.
+10-16 07:20:43.952  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:43.954  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:43.955  3589  4476 W chromium: [WARNING:stun_port.cc(485)] Port[345200:0:1:0:local:Net[any:0.0.0.x/0:Wildcard:id=0]]: StunPort: stun host lookup received error -1
+10-16 07:20:43.956  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:43.957  3589  4476 W chromium: [WARNING:stun_port.cc(485)] Port[2146f00:0:1:0:local:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: StunPort: stun host lookup received error -1
+10-16 07:20:43.957  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:43.957  3589  4476 W chromium: [WARNING:stun_port.cc(485)] Port[33d000:0:1:0:local:Net[any:0.0.0.x/0:Wildcard:id=0]]: StunPort: stun host lookup received error -1
+10-16 07:20:43.957  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:43.957  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:43.958  3589  4476 W chromium: [WARNING:stun_port.cc(485)] Port[2140b00:0:1:0:local:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: StunPort: stun host lookup received error -1
+10-16 07:20:43.959  3589  4476 W chromium: [WARNING:stun_port.cc(485)] Port[213d900:0:1:0:local:Net[any:0.0.0.x/0:Wildcard:id=0]]: StunPort: stun host lookup received error -1
+10-16 07:20:43.960  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:43.960  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:43.961  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:43.961  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:43.962  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:43.962  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:43.962  3589  4476 W chromium: [WARNING:stun_port.cc(485)] Port[2140600:0:1:0:local:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: StunPort: stun host lookup received error -1
+10-16 07:20:43.962  3589  4476 W chromium: [WARNING:stun_port.cc(485)] Port[2149700:0:1:0:local:Net[any:0.0.0.x/0:Wildcard:id=0]]: StunPort: stun host lookup received error -1
+10-16 07:20:43.962  3589  4476 W chromium: [WARNING:stun_port.cc(485)] Port[2143d00:0:1:0:local:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: StunPort: stun host lookup received error -1
+10-16 07:20:43.963  3589  4476 W chromium: [WARNING:stun_port.cc(485)] Port[2141f00:0:1:0:local:Net[any:0.0.0.x/0:Wildcard:id=0]]: StunPort: stun host lookup received error -1
+10-16 07:20:43.963  3589  4476 W chromium: [WARNING:stun_port.cc(485)] Port[213e800:0:1:0:local:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: StunPort: stun host lookup received error -1
+10-16 07:20:43.963  3589  4476 W chromium: [WARNING:stun_port.cc(485)] Port[214a600:0:1:0:local:Net[any:0.0.0.x/0:Wildcard:id=0]]: StunPort: stun host lookup received error -1
+10-16 07:20:43.963  3589  4476 W chromium: [WARNING:stun_port.cc(485)] Port[213f700:0:1:0:local:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: StunPort: stun host lookup received error -1
+10-16 07:20:43.963  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:43.963  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:43.963  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:43.963  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:43.963  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:43.963  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:43.964  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:43.964  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:43.964  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:43.964  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:43.965  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:43.965  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:43.965  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for us-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:43.965  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for us-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:43.965  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for us-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:43.967  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for us-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:43.967  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for us-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:43.967  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for us-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:43.969  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[2886a00:0:1:0:relay:Net[any:0.0.0.x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:43.969  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[2888200:0:1:0:relay:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:43.969  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[2888800:0:1:0:relay:Net[any:0.0.0.x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:43.969  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[2889400:0:1:0:relay:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:43.969  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[215a400:0:1:0:relay:Net[any:0.0.0.x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:43.969  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[2159200:0:1:0:relay:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:43.969  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[2162200:0:1:0:relay:Net[any:0.0.0.x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:43.969  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[2160a00:0:1:0:relay:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:43.969  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[2161000:0:1:0:relay:Net[any:0.0.0.x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:43.969  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[7839a00:0:1:0:relay:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:43.969  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[783a000:0:1:0:relay:Net[any:0.0.0.x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:43.969  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[783b200:0:1:0:relay:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:43.969  3589  4476 W chromium: [WARNING:stun_port.cc(485)] Port[345200:0:1:0:local:Net[any:0.0.0.x/0:Wildcard:id=0]]: StunPort: stun host lookup received error -1
+10-16 07:20:43.969  3589  4476 W chromium: [WARNING:stun_port.cc(485)] Port[2146f00:0:1:0:local:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: StunPort: stun host lookup received error -1
+10-16 07:20:43.969  3589  4476 W chromium: [WARNING:stun_port.cc(485)] Port[33d000:0:1:0:local:Net[any:0.0.0.x/0:Wildcard:id=0]]: StunPort: stun host lookup received error -1
+10-16 07:20:43.969  3589  4476 W chromium: [WARNING:stun_port.cc(485)] Port[2140b00:0:1:0:local:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: StunPort: stun host lookup received error -1
+10-16 07:20:43.969  3589  4476 W chromium: [WARNING:stun_port.cc(485)] Port[213d900:0:1:0:local:Net[any:0.0.0.x/0:Wildcard:id=0]]: StunPort: stun host lookup received error -1
+10-16 07:20:43.969  3589  4476 W chromium: [WARNING:stun_port.cc(485)] Port[2140600:0:1:0:local:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: StunPort: stun host lookup received error -1
+10-16 07:20:43.969  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for us-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:43.970  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for us-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:43.970  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for us-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:43.970  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for us-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:43.970  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for us-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:43.970  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for us-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:43.971  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for us-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:43.971  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for us-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:43.971  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for us-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:43.971  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for us-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:43.972  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for us-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:43.973  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for us-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:43.973  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for us-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:43.973  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for us-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:43.973  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for us-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:43.973  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for us-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:43.973  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for us-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:43.973  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for us-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:43.978  3589  4476 W chromium: [WARNING:stun_port.cc(485)] Port[2149700:0:1:0:local:Net[any:0.0.0.x/0:Wildcard:id=0]]: StunPort: stun host lookup received error -1
+10-16 07:20:43.983  3589  4476 W chromium: [WARNING:stun_port.cc(485)] Port[2143d00:0:1:0:local:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: StunPort: stun host lookup received error -1
+10-16 07:20:43.985  3589  4476 W chromium: [WARNING:stun_port.cc(485)] Port[2141f00:0:1:0:local:Net[any:0.0.0.x/0:Wildcard:id=0]]: StunPort: stun host lookup received error -1
+10-16 07:20:43.985  3589  4476 W chromium: [WARNING:stun_port.cc(485)] Port[213e800:0:1:0:local:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: StunPort: stun host lookup received error -1
+10-16 07:20:43.985  3589  4476 W chromium: [WARNING:stun_port.cc(485)] Port[214a600:0:1:0:local:Net[any:0.0.0.x/0:Wildcard:id=0]]: StunPort: stun host lookup received error -1
+10-16 07:20:43.987  3589  4476 W chromium: [WARNING:stun_port.cc(485)] Port[213f700:0:1:0:local:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: StunPort: stun host lookup received error -1
+10-16 07:20:43.987  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[2885e00:0:1:0:relay:Net[any:0.0.0.x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:43.987  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[288a000:0:1:0:relay:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:43.987  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[288d000:0:1:0:relay:Net[any:0.0.0.x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:43.987  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[2887c00:0:1:0:relay:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:43.987  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[288e800:0:1:0:relay:Net[any:0.0.0.x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:43.992  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[2159e00:0:1:0:relay:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:43.992  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[2161600:0:1:0:relay:Net[any:0.0.0.x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:43.992  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[215f800:0:1:0:relay:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:43.992  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[215fe00:0:1:0:relay:Net[any:0.0.0.x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:43.992  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[7834c00:0:1:0:relay:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:43.992  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[7838800:0:1:0:relay:Net[any:0.0.0.x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:43.992  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[783ac00:0:1:0:relay:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:44.084  3422  3565 D Capacitor: Handling local request: https://localhost/img/t1/chars/stand-m.webp
+10-16 07:20:44.091  3422  3565 D Capacitor: Handling local request: https://localhost/img/t2/chars/stand-m.webp
+10-16 07:20:44.097  3422  3565 D Capacitor: Handling local request: https://localhost/img/chars/stand-f.webp
+10-16 07:20:52.215  3422  3562 D Capacitor: Handling local request: https://localhost/icons/icon-192.png
+10-16 07:20:52.443  3589  4475 W chromium: [WARNING:codec.cc(466)] Explicitly added H264 constrained baseline to list of supported formats.
+10-16 07:20:52.444  3589  4475 W chromium: [WARNING:media_session.cc(949)] RED codec red is missing an associated payload type.
+10-16 07:20:52.445  3589  4475 W chromium: [WARNING:codec.cc(466)] Explicitly added H264 constrained baseline to list of supported formats.
+10-16 07:20:52.446  3589  4475 W chromium: [WARNING:media_session.cc(949)] RED codec red is missing an associated payload type.
+10-16 07:20:52.447  3589  4475 W chromium: [WARNING:codec.cc(466)] Explicitly added H264 constrained baseline to list of supported formats.
+10-16 07:20:52.448  3589  4475 W chromium: [WARNING:media_session.cc(949)] RED codec red is missing an associated payload type.
+10-16 07:20:52.448  3589  4475 W chromium: [WARNING:codec.cc(466)] Explicitly added H264 constrained baseline to list of supported formats.
+10-16 07:20:52.449  3589  4475 W chromium: [WARNING:media_session.cc(949)] RED codec red is missing an associated payload type.
+10-16 07:20:52.456  3589  4475 W chromium: [WARNING:codec.cc(466)] Explicitly added H264 constrained baseline to list of supported formats.
+10-16 07:20:52.457  3589  4475 W chromium: [WARNING:media_session.cc(949)] RED codec red is missing an associated payload type.
+10-16 07:20:52.458  3589  4475 W chromium: [WARNING:codec.cc(466)] Explicitly added H264 constrained baseline to list of supported formats.
+10-16 07:20:52.459  3589  4475 W chromium: [WARNING:media_session.cc(949)] RED codec red is missing an associated payload type.
+10-16 07:20:52.528  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for us-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:52.528  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for us-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:52.528  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for us-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:52.528  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for us-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:52.528  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for us-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:52.528  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for us-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:52.528  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for us-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:52.528  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for us-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:52.528  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for us-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:52.528  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for us-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:52.529  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for us-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:52.529  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for us-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:52.529  3589  4476 W chromium: [WARNING:stun_port.cc(485)] Port[2140b00:0:1:0:local:Net[any:0.0.0.x/0:Wildcard:id=0]]: StunPort: stun host lookup received error -1
+10-16 07:20:52.531  3589  4476 W chromium: [WARNING:stun_port.cc(485)] Port[213de00:0:1:0:local:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: StunPort: stun host lookup received error -1
+10-16 07:20:52.532  3589  4476 W chromium: [WARNING:stun_port.cc(485)] Port[2141a00:0:1:0:local:Net[any:0.0.0.x/0:Wildcard:id=0]]: StunPort: stun host lookup received error -1
+10-16 07:20:52.532  3589  4476 W chromium: [WARNING:stun_port.cc(485)] Port[2144700:0:1:0:local:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: StunPort: stun host lookup received error -1
+10-16 07:20:52.532  3589  4476 W chromium: [WARNING:stun_port.cc(485)] Port[643e000:0:1:0:local:Net[any:0.0.0.x/0:Wildcard:id=0]]: StunPort: stun host lookup received error -1
+10-16 07:20:52.532  3589  4476 W chromium: [WARNING:stun_port.cc(485)] Port[213c500:0:1:0:local:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: StunPort: stun host lookup received error -1
+10-16 07:20:52.532  3589  4476 W chromium: [WARNING:stun_port.cc(485)] Port[6438100:0:1:0:local:Net[any:0.0.0.x/0:Wildcard:id=0]]: StunPort: stun host lookup received error -1
+10-16 07:20:52.550  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:52.550  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:52.550  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:52.550  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:52.550  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:52.550  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:52.550  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:52.550  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:52.550  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:52.550  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:52.550  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:52.550  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:52.550  3589  4476 W chromium: [WARNING:stun_port.cc(485)] Port[6435400:0:1:0:local:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: StunPort: stun host lookup received error -1
+10-16 07:20:52.550  3589  4476 W chromium: [WARNING:stun_port.cc(485)] Port[6436300:0:1:0:local:Net[any:0.0.0.x/0:Wildcard:id=0]]: StunPort: stun host lookup received error -1
+10-16 07:20:52.552  3589  4476 W chromium: [WARNING:stun_port.cc(485)] Port[643b300:0:1:0:local:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: StunPort: stun host lookup received error -1
+10-16 07:20:52.552  3589  4476 W chromium: [WARNING:stun_port.cc(485)] Port[643f400:0:1:0:local:Net[any:0.0.0.x/0:Wildcard:id=0]]: StunPort: stun host lookup received error -1
+10-16 07:20:52.552  3589  4476 W chromium: [WARNING:stun_port.cc(485)] Port[643ea00:0:1:0:local:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: StunPort: stun host lookup received error -1
+10-16 07:20:52.568  3589  4476 W chromium: [WARNING:stun_port.cc(485)] Port[2140b00:0:1:0:local:Net[any:0.0.0.x/0:Wildcard:id=0]]: StunPort: stun host lookup received error -1
+10-16 07:20:52.568  3589  4476 W chromium: [WARNING:stun_port.cc(485)] Port[213de00:0:1:0:local:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: StunPort: stun host lookup received error -1
+10-16 07:20:52.568  3589  4476 W chromium: [WARNING:stun_port.cc(485)] Port[2141a00:0:1:0:local:Net[any:0.0.0.x/0:Wildcard:id=0]]: StunPort: stun host lookup received error -1
+10-16 07:20:52.568  3589  4476 W chromium: [WARNING:stun_port.cc(485)] Port[2144700:0:1:0:local:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: StunPort: stun host lookup received error -1
+10-16 07:20:52.569  3589  4476 W chromium: [WARNING:stun_port.cc(485)] Port[643e000:0:1:0:local:Net[any:0.0.0.x/0:Wildcard:id=0]]: StunPort: stun host lookup received error -1
+10-16 07:20:52.569  3589  4476 W chromium: [WARNING:stun_port.cc(485)] Port[213c500:0:1:0:local:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: StunPort: stun host lookup received error -1
+10-16 07:20:52.569  3589  4476 W chromium: [WARNING:stun_port.cc(485)] Port[6438100:0:1:0:local:Net[any:0.0.0.x/0:Wildcard:id=0]]: StunPort: stun host lookup received error -1
+10-16 07:20:52.569  3589  4476 W chromium: [WARNING:stun_port.cc(485)] Port[6435400:0:1:0:local:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: StunPort: stun host lookup received error -1
+10-16 07:20:52.569  3589  4476 W chromium: [WARNING:stun_port.cc(485)] Port[6436300:0:1:0:local:Net[any:0.0.0.x/0:Wildcard:id=0]]: StunPort: stun host lookup received error -1
+10-16 07:20:52.569  3589  4476 W chromium: [WARNING:stun_port.cc(485)] Port[643b300:0:1:0:local:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: StunPort: stun host lookup received error -1
+10-16 07:20:52.569  3589  4476 W chromium: [WARNING:stun_port.cc(485)] Port[643f400:0:1:0:local:Net[any:0.0.0.x/0:Wildcard:id=0]]: StunPort: stun host lookup received error -1
+10-16 07:20:52.570  3589  4476 W chromium: [WARNING:stun_port.cc(485)] Port[643ea00:0:1:0:local:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: StunPort: stun host lookup received error -1
+10-16 07:20:52.578  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for us-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:52.578  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for us-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:52.579  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for us-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:52.579  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for us-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:52.579  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for us-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:52.579  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for us-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:52.579  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for us-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:52.579  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for us-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:52.579  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for us-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:52.579  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for us-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:52.579  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for us-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:52.579  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for us-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:52.579  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[2159e00:0:1:0:relay:Net[any:0.0.0.x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:52.579  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[2161600:0:1:0:relay:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:52.580  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[215f800:0:1:0:relay:Net[any:0.0.0.x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:52.580  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[215fe00:0:1:0:relay:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:52.580  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[7834c00:0:1:0:relay:Net[any:0.0.0.x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:52.580  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:52.580  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:52.580  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:52.580  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:52.580  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:52.580  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:52.580  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:52.580  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:52.580  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:52.580  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:52.580  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:52.580  3422  3599 E chromium: [ERROR:socket_manager.cc(141)] Failed to resolve address for eu-0.turn.peerjs.com., errorcode: -105
+10-16 07:20:52.581  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[7838800:0:1:0:relay:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:52.581  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[783ac00:0:1:0:relay:Net[any:0.0.0.x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:52.581  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[3347600:0:1:0:relay:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:52.581  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[3348200:0:1:0:relay:Net[any:0.0.0.x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:52.584  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[3348e00:0:1:0:relay:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:52.584  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[3349a00:0:1:0:relay:Net[any:0.0.0.x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:52.584  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[334a600:0:1:0:relay:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:52.585  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[2162200:0:1:0:relay:Net[any:0.0.0.x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:52.585  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[2160a00:0:1:0:relay:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:52.585  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[2161000:0:1:0:relay:Net[any:0.0.0.x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:52.585  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[7839a00:0:1:0:relay:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:52.585  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[783a000:0:1:0:relay:Net[any:0.0.0.x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:52.586  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[783b200:0:1:0:relay:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:52.586  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[3347000:0:1:0:relay:Net[any:0.0.0.x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:52.586  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[3344600:0:1:0:relay:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:52.588  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[3348800:0:1:0:relay:Net[any:0.0.0.x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:52.588  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[3349400:0:1:0:relay:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:52.588  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[334a000:0:1:0:relay:Net[any:0.0.0.x/0:Wildcard:id=0]]: TURN host lookup received error -1
+10-16 07:20:52.588  3589  4476 W chromium: [WARNING:turn_port.cc(854)] Port[334ac00:0:1:0:relay:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: TURN host lookup received error -1
