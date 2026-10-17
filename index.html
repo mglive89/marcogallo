@@ -610,6 +610,15 @@ html.land #rotate svg { animation: rotPhone 1.8s ease-in-out infinite; }
 .dz-switch input:checked + i { background: linear-gradient(120deg, #3b8cff, #8a6bff); }
 .dz-switch input:checked + i::after { transform: translateX(22px); }
 .dz-switch input:focus-visible + i { outline: 2px solid var(--brass); outline-offset: 2px; }
+.fr-plus { flex: 0 0 auto; width: 28px; height: 28px; border-radius: 50%; border: 0; padding: 0; display: inline-grid; place-items: center; vertical-align: middle; margin-left: 6px; font: 800 20px/1 var(--f-body); color: #fff; background: linear-gradient(135deg, #3b8cff, #8a6bff); box-shadow: 0 0 0 2px rgba(255,255,255,.85), 0 4px 12px rgba(59,140,255,.5); cursor: pointer; animation: frPulse 2s ease-in-out 3; }
+.fr-plus.done { background: linear-gradient(135deg, #20b38a, #3bc98f); box-shadow: 0 0 0 2px rgba(255,255,255,.85); animation: none; cursor: default; }
+.fr-plus svg { width: 15px; height: 15px; }
+.fr-plus:active { transform: scale(.9); }
+.oppTag .fr-plus { width: 30px; height: 30px; margin: 0 auto 0 4px; align-self: center; }
+@keyframes frPulse { 50% { transform: scale(1.15); } }
+.fr-plus-i { font-size: 18px; font-weight: 800; margin-right: 4px; }
+.fr-tip { position: fixed; left: 50%; bottom: calc(96px + env(safe-area-inset-bottom)); transform: translate(-50%, 20px); max-width: min(92vw, 420px); padding: 12px 16px; border-radius: 14px; background: rgba(20,28,44,.94); color: #fff; font-size: 14px; line-height: 1.35; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,.3); opacity: 0; pointer-events: none; transition: opacity .25s, transform .25s; z-index: 9999; }
+.fr-tip.on { opacity: 1; transform: translate(-50%, 0); }
 .fr-add { display: grid; grid-template-columns: 40px minmax(0, 1fr); align-items: center; gap: 4px 12px; margin: 14px 0; padding: 14px; border-radius: 18px; background: var(--panel); box-shadow: var(--shadow); text-align: left; }
 .fr-add .fr-ico { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; color: #fff; background: linear-gradient(135deg, #3b8cff, #8a6bff); }
 .fr-add.done .fr-ico { background: linear-gradient(135deg, #20b38a, #3bc98f); }
@@ -976,7 +985,7 @@ input, textarea, select, [contenteditable] { -webkit-user-select: text; user-sel
     </div>
     <div class="banner" id="banner">Mettiti in posizione</div>
     <div class="meter" id="meter"><i id="meterFill"></i><b id="meterMark"></b></div>
-    <div class="opp" id="opp" hidden><video id="oppVid" playsinline autoplay muted></video><div class="oppTag"><span id="oppName">Amico</span><b id="oppCount">0</b></div></div>
+    <div class="opp" id="opp" hidden><video id="oppVid" playsinline autoplay muted></video><div class="oppTag"><span id="oppName">Amico</span><button class="fr-plus" id="oppPlus" type="button" data-frplus hidden aria-label="Aggiungi agli amici">+</button><b id="oppCount">0</b></div></div>
     <div class="counter"><div class="n" id="count">0</div><div class="of" id="countOf">ripetizioni</div></div>
     <div class="loading" id="loading"><div class="figbox ld-fig" id="ldFig"></div><div class="ld3d"><i></i><i></i><i></i></div><div id="loadingMsg">Carico il sistema di visione…</div><div class="ld-tip" id="ldTip"></div></div>
     <div class="rest" id="rest" hidden>
@@ -5266,6 +5275,7 @@ function saveFriend(c) {
 }
 function oppCardSeen(c) {
   if (!CH.random || c && typeof c.id === "string" && friends[c.id]) saveFriend(c);
+  plusSync();
 }
 const isFriend = (c) => !!(c && typeof c.id === "string" && friends[c.id]);
 function addOppFriend() {
@@ -5291,9 +5301,55 @@ function addFriendBox() {
   if (!CH.random || !c) return "";
   const name = esc(CH.oppName || cleanName(c.name, "Avversario"));
   if (isFriend(c)) return '<div class="fr-add done"><span class="fr-ico">'.concat(RULE_ICO.check, "</span><span><b>").concat(name, " \xE8 nei tuoi amici</b><small>Lo trovi in Sfide: potrai sfidarlo con un tocco</small></span></div>");
-  if (ACC.user) return '<div class="fr-add"><span class="fr-ico">'.concat(RULE_ICO.users, "</span><span><b>Ti \xE8 piaciuto sfidare ").concat(name, '?</b><small>Aggiungilo agli amici per sfidarlo di nuovo quando vuoi</small></span><button class="btn primary small" id="frAdd" type="button">Aggiungi agli amici</button></div>');
+  if (ACC.user) return '<div class="fr-add"><span class="fr-ico">'.concat(RULE_ICO.users, "</span><span><b>Ti \xE8 piaciuto sfidare ").concat(name, '?</b><small>Aggiungilo agli amici per sfidarlo di nuovo quando vuoi</small></span><button class="btn primary small" id="frAdd" type="button"><span class="fr-plus-i">+</span> Aggiungi agli amici</button></div>');
   return '<div class="fr-add"><span class="fr-ico">'.concat(RULE_ICO.users, "</span><span><b>Vuoi aggiungere ").concat(name, ' agli amici?</b><small>Serve un account (Google, Apple o email): accedi e lo aggiungiamo subito</small></span><button class="btn ghost small" id="frLogin" type="button">Accedi</button></div>');
 }
+function plusBtn() {
+  const c = CH.oppCard;
+  if (!CH.random || !c) return "";
+  return isFriend(c) ? '<span class="fr-plus done" title="Nei tuoi amici">'.concat(RULE_ICO.check, "</span>") : '<button class="fr-plus" type="button" data-frplus aria-label="Aggiungi agli amici">+</button>';
+}
+function plusSync() {
+  const b = $("oppPlus");
+  if (!b) return;
+  const c = CH.oppCard, show = !!(CH.random && c);
+  b.hidden = !show;
+  if (!show) return;
+  const f = isFriend(c);
+  b.classList.toggle("done", f);
+  b.disabled = f;
+  b.innerHTML = f ? RULE_ICO.check : "+";
+}
+let frTipT = 0;
+function frTip(t) {
+  let d = $("frTip");
+  if (!d) {
+    d = document.createElement("div");
+    d.id = "frTip";
+    d.className = "fr-tip";
+    d.setAttribute("role", "status");
+    document.body.append(d);
+  }
+  d.textContent = t;
+  d.classList.add("on");
+  clearTimeout(frTipT);
+  frTipT = setTimeout(() => d.classList.remove("on"), 3200);
+}
+document.addEventListener("click", (e) => {
+  const b = e.target.closest && e.target.closest("[data-frplus]");
+  if (!b || b.disabled) return;
+  const name = CH.oppName || "L'avversario";
+  if (addOppFriend()) {
+    frTip("".concat(name, " \xE8 nei tuoi amici"));
+    try {
+      navigator.vibrate && navigator.vibrate(30);
+    } catch (_) {
+    }
+    plusSync();
+    if (route.name === "lobby") refreshLobby();
+    else if (route.name === "duel-result") renderDuelResult();
+  } else frTip("Accedi con Google, Apple o email (Profilo \u203A Account): ".concat(name, " entrer\xE0 negli amici appena accedi"));
+});
 function wireAddFriend(again) {
   const a = $("frAdd");
   if (a) a.onclick = () => {
@@ -6528,7 +6584,7 @@ function refreshLobby() {
     const lab = document.querySelector(".brief .label");
     if (lab) lab.textContent = "Sfida \xB7 " + fmtTxt(CH.cfg);
   }
-  $("lobOppName").innerHTML = esc(CH.oppName || "Amico") + (CH.oppCard ? " " + rankBadge(Math.min(RANKS.length - 1, Math.max(0, CH.oppCard.rank | 0)), !!CH.oppCard.gold, CH.oppCard.crowns) : "");
+  $("lobOppName").innerHTML = esc(CH.oppName || "Amico") + (CH.oppCard ? " " + rankBadge(Math.min(RANKS.length - 1, Math.max(0, CH.oppCard.rank | 0)), !!CH.oppCard.gold, CH.oppCard.crowns) : "") + plusBtn();
   if (CH.remote) {
     $("lobOppEmpty").hidden = true;
     attach($("lobOpp"), CH.remote, true);
@@ -6570,6 +6626,7 @@ async function startDuelSession() {
   $("opp").hidden = false;
   $("oppName").textContent = CH.oppName || "Amico";
   $("oppCount").textContent = "0";
+  plusSync();
   $("flip").hidden = true;
   $("rest").hidden = true;
   $("stop").textContent = "Mi ritiro";
@@ -6990,7 +7047,7 @@ function fxSettingsWire() {
 }
 const SB_URL = "https://maypmqnjkdrdqcssnvty.supabase.co";
 const SB_KEY = "sb_publishable_uorMl6G618tavZGF8MQpfQ_2Pg3AIlE";
-const APP_VER = "web-v53";
+const APP_VER = "web-v54";
 const SYNC_SKIP = ["lite", "vpack", "rndInv"];
 const ACC = { sb: null, user: null, loading: null, busy: false, msg: "", err: false, timer: null, mode: "login" };
 const syncInfo = () => {
