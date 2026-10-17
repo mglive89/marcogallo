@@ -4534,10 +4534,7 @@ function renderHome() {
     const ri = rankIndex(), cur = RANKS[ri], nx = RANKS[ri + 1];
     const pct = nx ? Math.round((stats.total - cur[1]) / (nx[1] - cur[1]) * 100) : 100;
     return '<button class="rankcard" id="openRank" type="button" style="text-align:left;color:inherit">\n      <div><div class="label">Il tuo livello</div><div class="rname">'.concat(myBadge(), " <span>").concat(cur[0], '</span></div></div>\n      <div class="pts">').concat(stats.month.pts, '<small>punti del mese</small></div>\n      <div class="xp"><i style="width:').concat(pct, '%"></i></div>\n      <div class="meta">').concat(nx ? "".concat(nx[1] - stats.total, " punti al livello ").concat(nx[0]) : "Livello massimo raggiunto", " \xB7 Classifica \u203A</div>\n    </button>");
-  })(), "\n    ").concat(gmHomePlans(), "\n\n    ").concat(hubTiles(s, n), '\n    <section class="section" id="hubProgBox" ').concat(store.get("hubOpen", "") === "prog" ? "" : "hidden", '>\n      <div class="label">Programma di oggi \xB7 Settimana ').concat(n.wk, ", sessione ").concat(n.d + 1, '</div>\n      <div class="order">\n        <h2>').concat(esc(s.title), '</h2>\n        <div class="circuit">').concat(s.blocks.map(([ex, sets, t]) => '<button class="step" type="button" data-ex="'.concat(ex, '"><div class="figbox" data-fig="').concat(ex, '" data-g="').concat(G(), '"></div><b>').concat(EX[ex].name, "</b><span>").concat(sets, " \xD7 ").concat(targetTxt(ex, t), "</span>").concat(ARROW, "</button>")).join(""), '</div>\n        <p class="restnote">1 minuto di riposo tra ogni serie \xB7 la telecamera conta le ripetizioni e ti corregge a voce</p>\n        <div class="weeks">').concat(weeks, '</div>\n      </div>\n    </section>\n\n    <section class="section">\n      <div class="label">Prova di efficienza fisica</div>\n      <div class="exlist">\n        ').concat(tests.map((id) => {
-    var _a2;
-    return '<button class="ex wide" data-test="'.concat(id, '" type="button"><div class="figbox" data-fig="').concat(id, '" data-g="').concat(G(), '"></div><span><b>').concat(EX[id].name, " in 2 minuti</b><small>Record: ").concat((_a2 = records[id]) != null ? _a2 : "\u2014", '</small></span><span class="go">\u203A</span></button>');
-  }).join(""), "\n      </div>\n    </section>\n\n    ").concat(SITE ? '<section class="section">\n      <div class="label">Sfida</div>\n      <button class="mode" id="openDuels" type="button"><span class="ico">'.concat(TAB_ICO.duels, '</span><span><b>Sfida qualcuno in videochiamata</b><small>Avversario casuale, un amico invitato o un codice</small></span><span class="go">\u203A</span></button>\n    </section>') : "", "\n    ").concat(COMPAT_MSG ? '<p class="note" style="background:#fdecea">'.concat(COMPAT_MSG, "</p>") : "", "\n  </div>");
+  })(), "\n\n    ").concat(hubTiles(s, n), '\n    <section class="section" id="hubProgBox" ').concat(store.get("hubOpen", "") === "prog" ? "" : "hidden", '>\n      <div class="label">Programma di oggi \xB7 Settimana ').concat(n.wk, ", sessione ").concat(n.d + 1, '</div>\n      <div class="order">\n        <h2>').concat(esc(s.title), '</h2>\n        <div class="circuit">').concat(s.blocks.map(([ex, sets, t]) => '<button class="step" type="button" data-ex="'.concat(ex, '"><div class="figbox" data-fig="').concat(ex, '" data-g="').concat(G(), '"></div><b>').concat(EX[ex].name, "</b><span>").concat(sets, " \xD7 ").concat(targetTxt(ex, t), "</span>").concat(ARROW, "</button>")).join(""), '</div>\n        <p class="restnote">1 minuto di riposo tra ogni serie \xB7 la telecamera conta le ripetizioni e ti corregge a voce</p>\n        <div class="weeks">').concat(weeks, "</div>\n      </div>\n    </section>\n\n    ").concat(COMPAT_MSG ? '<p class="note" style="background:#fdecea">'.concat(COMPAT_MSG, "</p>") : "", "\n  </div>");
   $("startDay").onclick = () => go({ name: "brief", queue: blocksToQueue(s.blocks), day: n, title: s.title });
   app.querySelectorAll("[data-ex]").forEach((b) => b.onclick = () => openFree(b.dataset.ex));
   app.querySelectorAll("[data-test]").forEach((b) => b.onclick = () => {
@@ -4545,9 +4542,7 @@ function renderHome() {
     go({ name: "brief", queue: [{ ex: id, target: 0, set: 1, sets: 1, timeLimit: 120 }], title: EX[id].name + " in 2 minuti", test: id });
   });
   $("openRank").onclick = () => go({ name: "ranking" });
-  gmHomeWire();
   hubWire();
-  if (SITE) $("openDuels").onclick = () => go({ name: "duels" });
 }
 function openFree(id) {
   go({ name: "brief", queue: [{ ex: id, target: EX[id].unit === "secs" ? 45 : 15, set: 1, sets: 1 }], title: EX[id].name, free: true });
@@ -4558,11 +4553,18 @@ function renderExercises() {
   app.innerHTML = '\n  <div class="screen">\n    <header class="mast"><div><h1>Esercizi</h1><div class="sub">'.concat(G() === "f" ? "Percorso Donna" : "Percorso Uomo", ' \xB7 tocca per allenarti</div></div></header>\n    <div class="excat" role="tablist" aria-label="Categoria"><button type="button" role="tab" data-cat="free" aria-selected="').concat(!band, '">Corpo libero</button><button type="button" role="tab" data-cat="band" aria-selected="').concat(band, '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M4 7c5 0 5 10 8 10s3-10 8-10"/><circle cx="4" cy="7" r="2"/><circle cx="20" cy="7" r="2"/></svg>Con elastico</button><i></i></div>\n    ').concat(band ? '<div class="band-note"><b>Ti serve un elastico</b><span>Una fascia elastica o un elastico con maniglie. Scegli una resistenza con cui fai tutte le ripetizioni bene.</span></div>' : "", '\n    <div class="exlist">\n      ').concat(list.map((id) => {
     const e = EX[id];
     return isUnlocked(id) ? '<button class="ex" data-ex="'.concat(id, '" type="button"><div class="figbox" data-fig="').concat(id, '" data-g="').concat(G(), '"></div><b>').concat(e.name, "</b><small>").concat(e.tag, '</small><span class="go">\u203A</span></button>') : '<div class="ex locked"><div class="figbox" data-fig="'.concat(id, '" data-g="').concat(G(), '"></div><b>').concat(e.name, "</b><small>Si sblocca al livello ").concat(RANKS[e.lock][0], " (").concat(RANKS[e.lock][1], ' punti)</small><span class="go">').concat(lockIco, "</span></div>");
-  }).join(""), "\n    </div>\n    ").concat(band ? "" : '<section class="section elite">\n      <div class="label">Riservato ai primi 3 del mese</div>\n      <div class="exlist">\n        '.concat(Object.entries(ELITE).map(([id, e]) => {
+  }).join(""), "\n    </div>\n    ").concat(band ? "" : '<section class="section">\n      <div class="label">Prova di efficienza fisica</div>\n      <div class="exlist">\n        '.concat((G() === "f" ? ["squat", "crunch"] : ["pushup", "situp"]).map((id) => {
+    var _a2;
+    return '<button class="ex wide" data-test="'.concat(id, '" type="button"><div class="figbox" data-fig="').concat(id, '" data-g="').concat(G(), '"></div><span><b>').concat(EX[id].name, " in 2 minuti</b><small>Record: ").concat((_a2 = records[id]) != null ? _a2 : "\u2014", '</small></span><span class="go">\u203A</span></button>');
+  }).join(""), "\n      </div>\n    </section>"), "\n    ").concat(band ? "" : '<section class="section elite">\n      <div class="label">Riservato ai primi 3 del mese</div>\n      <div class="exlist">\n        '.concat(Object.entries(ELITE).map(([id, e]) => {
     const f = id === "gold" ? "jacks" : id === "hell" ? "burpee" : "climber";
     return isElite() ? '<button class="ex wide" data-elite="'.concat(id, '" type="button"><div class="figbox" data-fig="').concat(f, '" data-g="').concat(G(), '"></div><span><b>').concat(e.name, "</b><small>").concat(id === "gold" ? stats.gold ? "Attiva \xB7 tocca per disattivare" : "Disattivata \xB7 tocca per attivare" : e.desc, '</small></span><span class="go">\u203A</span></button>') : '<div class="ex wide locked"><div class="figbox" data-fig="'.concat(f, '" data-g="').concat(G(), '"></div><span><b>').concat(e.name, "</b><small>").concat(e.desc, '</small></span><span class="go">').concat(lockIco, "</span></div>");
   }).join(""), "\n      </div>\n      ").concat(isElite() ? '<p class="note">Sei tra i primi 3 di '.concat(monthName(prevMonthKey()), ": queste opzioni restano attive per tutto il mese.</p>") : '<p class="note">Chiudi il mese tra i primi 3 in classifica per sbloccarle per tutto il mese successivo.</p>', "\n    </section>"), "\n  </div>");
   app.querySelectorAll("[data-ex]").forEach((b) => b.onclick = () => openFree(b.dataset.ex));
+  app.querySelectorAll("[data-test]").forEach((b) => b.onclick = () => {
+    const id = b.dataset.test;
+    go({ name: "brief", queue: [{ ex: id, target: 0, set: 1, sets: 1, timeLimit: 120 }], title: EX[id].name + " in 2 minuti", test: id });
+  });
   app.querySelectorAll("[data-cat]").forEach((b) => b.onclick = () => {
     if (exCat === b.dataset.cat) return;
     exCat = b.dataset.cat;
@@ -5141,9 +5143,10 @@ function stepsPaint() {
 }
 let profGOpen = false, profSetOpen = false, profTOpen = false;
 function renderProfile() {
-  app.innerHTML = '\n  <div class="screen">\n    <section class="lbz-hero pf-hero">\n      <div class="dz-glow"></div>\n      <div class="lbz-top"><h1>Profilo</h1>'.concat(crownN(stats.crowns) ? '<span class="dz-crowns">'.concat(crownSVG(), "<b>").concat(crownN(stats.crowns), "</b></span>") : "", '</div>\n      <div class="lbz-me">').concat(avatar(myName || "Tu", "lbz-av"), '<div><div class="pf-name">').concat(esc(myName || "Atleta"), '</div>\n        <div class="lbz-meta">').concat(myBadge(), " <span>").concat(RANKS[rankIndex()][0], "</span> \xB7 <span>").concat(G() === "f" ? "Donna" : "Uomo", '</span></div></div></div>\n      <div class="pf-stats"><div><b class="cu">').concat(stats.total, '</b><small>Punti totali</small></div><div><b class="cu">').concat(stats.month.pts, '</b><small>Questo mese</small></div><div><b class="cu">').concat(crownN(stats.crowns), "</b><small>Corone</small></div></div>\n    </section>\n    ").concat(stepsCard(), "\n    ").concat(SITE ? accountCard() : "", '\n    <details class="subopt set-menu" id="setSub"').concat(profSetOpen ? " open" : "", '><summary><span class="set-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></span><span>Impostazioni</span><b>Nome, lingua, voce, grafica</b></summary><div class="subopt-body set-body">\n    <details class="subopt" id="gSub"').concat(profGOpen ? " open" : "", "><summary><span>Percorso</span><b>").concat(G() === "f" ? "Donna" : "Uomo", '</b></summary><div class="subopt-body">').concat(genderPick(G()), '</div></details>\n    <details class="subopt" id="tSub"').concat(profTOpen ? " open" : "", '><summary><span>Avatar</span><b><i class="tone-dot" style="--c:').concat(TONE_DOT[tone], '"></i>').concat(TONE_NAMES[tone], '</b></summary><div class="subopt-body">').concat(tonePick(tone, G()), '</div></details>\n    <div class="field"><label class="label" for="nm">Il tuo nome</label><input id="nm" maxlength="20" autocomplete="nickname" placeholder="Es. Marco" value="').concat(esc(myName), '"></div>\n    <div class="field"><label class="label" for="pLang">Lingua</label>\n      <select id="pLang" class="sel">\n        <option value="">Automatica (').concat(LANGS[detectLang()].name, ")</option>\n        ").concat(LANG_ORDER.map((k) => '<option value="'.concat(k, '" ').concat(store.get("lang", "") === k ? "selected" : "", ">").concat(LANGS[k].name, "</option>")).join(""), '\n      </select></div>\n    <div class="section"><div class="label">Voce</div>\n      <label class="toggle"><input type="checkbox" id="voiceT" ').concat(voiceOn ? "checked" : "", '> Istruttore vocale</label>\n      <label class="toggle"><input type="checkbox" id="gritT" ').concat(gritOn ? "checked" : "", '> Voce del coach: incitamento durante l\'esercizio</label>\n      <button class="btn ghost" id="voiceSet" type="button">Personalizza la voce</button>\n    </div>\n    ').concat(fxSettings(), '\n    </div></details>\n    <p class="note">Il video resta sul tuo telefono: l\'analisi della postura avviene sul telefono e nessuna immagine viene inviata.</p>\n  </div>');
+  app.innerHTML = '\n  <div class="screen">\n    <section class="lbz-hero pf-hero">\n      <div class="dz-glow"></div>\n      <div class="lbz-top"><h1>Profilo</h1>'.concat(crownN(stats.crowns) ? '<span class="dz-crowns">'.concat(crownSVG(), "<b>").concat(crownN(stats.crowns), "</b></span>") : "", '</div>\n      <div class="lbz-me">').concat(avatar(myName || "Tu", "lbz-av"), '<div><div class="pf-name">').concat(esc(myName || "Atleta"), '</div>\n        <div class="lbz-meta">').concat(myBadge(), " <span>").concat(RANKS[rankIndex()][0], "</span> \xB7 <span>").concat(G() === "f" ? "Donna" : "Uomo", '</span></div></div></div>\n      <div class="pf-stats"><div><b class="cu">').concat(stats.total, '</b><small>Punti totali</small></div><div><b class="cu">').concat(stats.month.pts, '</b><small>Questo mese</small></div><div><b class="cu">').concat(crownN(stats.crowns), "</b><small>Corone</small></div></div>\n    </section>\n    ").concat(stepsCard(), "\n    ").concat(SITE ? accountCard() : "", "\n    ").concat(gmHomePlans(), '\n    <details class="subopt set-menu" id="setSub"').concat(profSetOpen ? " open" : "", '><summary><span class="set-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></span><span>Impostazioni</span><b>Nome, lingua, voce, grafica</b></summary><div class="subopt-body set-body">\n    <details class="subopt" id="gSub"').concat(profGOpen ? " open" : "", "><summary><span>Percorso</span><b>").concat(G() === "f" ? "Donna" : "Uomo", '</b></summary><div class="subopt-body">').concat(genderPick(G()), '</div></details>\n    <details class="subopt" id="tSub"').concat(profTOpen ? " open" : "", '><summary><span>Avatar</span><b><i class="tone-dot" style="--c:').concat(TONE_DOT[tone], '"></i>').concat(TONE_NAMES[tone], '</b></summary><div class="subopt-body">').concat(tonePick(tone, G()), '</div></details>\n    <div class="field"><label class="label" for="nm">Il tuo nome</label><input id="nm" maxlength="20" autocomplete="nickname" placeholder="Es. Marco" value="').concat(esc(myName), '"></div>\n    <div class="field"><label class="label" for="pLang">Lingua</label>\n      <select id="pLang" class="sel">\n        <option value="">Automatica (').concat(LANGS[detectLang()].name, ")</option>\n        ").concat(LANG_ORDER.map((k) => '<option value="'.concat(k, '" ').concat(store.get("lang", "") === k ? "selected" : "", ">").concat(LANGS[k].name, "</option>")).join(""), '\n      </select></div>\n    <div class="section"><div class="label">Voce</div>\n      <label class="toggle"><input type="checkbox" id="voiceT" ').concat(voiceOn ? "checked" : "", '> Istruttore vocale</label>\n      <label class="toggle"><input type="checkbox" id="gritT" ').concat(gritOn ? "checked" : "", '> Voce del coach: incitamento durante l\'esercizio</label>\n      <button class="btn ghost" id="voiceSet" type="button">Personalizza la voce</button>\n    </div>\n    ').concat(fxSettings(), '\n    </div></details>\n    <p class="note">Il video resta sul tuo telefono: l\'analisi della postura avviene sul telefono e nessuna immagine viene inviata.</p>\n  </div>');
   fxSettingsWire();
   accountWire();
+  gmHomeWire();
   stepsWire(true);
   app.querySelectorAll(".pick > button").forEach((b) => b.onclick = () => {
     setGender(b.dataset.g);
@@ -9449,7 +9452,11 @@ function gmHomeWire() {
   const p = $("hpPro");
   if (p) p.onclick = gmProSheet;
   const f = $("hpFree");
-  if (f) f.onclick = () => gmNeedLogin();
+  if (f) f.onclick = () => {
+    const acc = $("acc");
+    if (acc) acc.scrollIntoView({ behavior: "smooth", block: "start" });
+    else gmNeedLogin();
+  };
   const uid = SITE && ACC.user && ACC.user.id;
   if (uid && GMX.homeFor !== uid) {
     GMX.homeFor = uid;
@@ -9457,10 +9464,17 @@ function gmHomeWire() {
       GMX.me = m;
       const was = gmIsPro();
       GMX.pro = !!(m && m.pro);
-      if (gmIsPro() !== was && route.name === "home") render();
+      if (gmIsPro() !== was) gmPlansRefresh();
     }).catch(() => {
       GMX.homeFor = null;
     });
+  }
+}
+function gmPlansRefresh() {
+  const el = document.querySelector(".hp");
+  if (el) {
+    el.outerHTML = gmHomePlans();
+    gmHomeWire();
   }
 }
 const GM_PLANS = [
@@ -10503,6 +10517,7 @@ function accRefresh() {
   if (!el || route.name !== "profile") return;
   el.outerHTML = accountCard();
   accountWire();
+  gmPlansRefresh();
   stepsRefresh();
 }
 function accInit() {
