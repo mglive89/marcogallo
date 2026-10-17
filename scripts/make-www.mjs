@@ -8,7 +8,7 @@ if (!src || !fs.existsSync(path.join(src, "index.html"))) { console.error("manca
 const root = path.dirname(path.dirname(new URL(import.meta.url).pathname));
 const www = path.join(root, "www");
 fs.rmSync(www, { recursive: true, force: true });
-const SKIP = new Set([".git", ".github", "sw.js", "README.md", "voce.html", ".nojekyll", "app", "prova"]);
+const SKIP = new Set([".git", ".github", "sw.js", "README.md", "voce.html", ".nojekyll", "app", "prova", "premi"]);
 fs.cpSync(src, www, { recursive: true, filter: (p) => !SKIP.has(path.basename(p)) || path.resolve(p) === path.resolve(src) });
 
 let html = fs.readFileSync(path.join(www, "index.html"), "utf8");
