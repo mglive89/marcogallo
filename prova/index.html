@@ -1134,6 +1134,69 @@ body.dark .ww-pts b { color: #7ee29b; }
 @keyframes gmSpin { to { transform: rotate(360deg); } }
 @keyframes gmPulse { 50% { transform: scale(.9); } }
 @keyframes gmBar { 0% { transform: translateX(-100%); } 100% { transform: translateX(290%); } }
+/* Free e Pro: versione, classifiche del mese, bacheca, pubblicità */
+.gm-tier { margin-top: 14px; padding: 14px; border-radius: 20px; background: var(--panel); box-shadow: var(--shadow); }
+.gm-tier.is-pro { background: linear-gradient(135deg, #fff7e0, #ffe7b0); }
+.gm-tier-h { display: flex; align-items: center; gap: 8px; }
+.gm-tier-h b { font-family: var(--f-cond); font-weight: 800; font-size: 20px; text-transform: uppercase; }
+.gm-tier p { margin: 6px 0 10px; color: var(--muted); font-size: 14px; line-height: 1.35; }
+.gm-tier.is-pro p { color: #6b4b00; }
+.gm-sim { margin-top: 10px; padding: 10px 0 0; border-top: 1px solid var(--line); box-shadow: none; background: none; }
+.gm-sim small { display: block; color: var(--muted); font-size: 12px; }
+.gm-sec { margin-top: 14px; padding: 14px; border-radius: 20px; background: var(--panel); box-shadow: var(--shadow); }
+.gm-sec-h { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.gm-sec-h h2, .gm-h2 { margin: 0; font-family: var(--f-cond); font-weight: 800; font-size: 21px; text-transform: uppercase; }
+.gm-h2 { margin: 22px 2px 4px; }
+.gm-ends { font-size: 13px; color: var(--muted); }
+.gm-tabs { margin: 10px 0; }
+.gm-board .meta { margin: 8px 0; }
+.gm-rows { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.gm-rows li { display: grid; grid-template-columns: 38px 1fr auto; align-items: center; gap: 8px; padding: 9px 12px; border-radius: 14px; background: var(--panel-2); }
+.gm-rows li.podium { background: linear-gradient(90deg, #fff4d6, var(--panel-2)); }
+.gm-rows li.me { box-shadow: inset 0 0 0 2px var(--brass); }
+.gm-rows .pos { font-size: 18px; text-align: center; }
+.gm-rows .who { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; }
+.gm-rows .pts { font-family: var(--f-display); font-size: 20px; }
+.gm-mine { margin: 10px 2px 0; font-size: 14px; }
+.gm-lock { display: flex; gap: 8px; align-items: center; margin: 0 0 10px; padding: 10px 12px; border-radius: 14px; background: #fff4d6; color: #6b4b00; font-size: 13px; }
+.gm-lock svg { flex: none; }
+.gm-rules { margin-top: 12px; font-size: 14px; color: var(--muted); }
+.gm-rules summary { cursor: pointer; font-weight: 600; color: var(--fg); }
+.gm-rules ul { margin: 8px 0 0; padding-left: 18px; display: grid; gap: 4px; }
+.gm-bach { display: grid; gap: 10px; margin-top: 10px; }
+.gm-prz { border-radius: 16px; padding: 12px; background: var(--panel-2); }
+.gm-prz.pro { background: linear-gradient(135deg, #fff7e0, #ffeec2); }
+.gm-prz.win { background: linear-gradient(135deg, #e8f7ee, #d6f1e1); }
+.gm-prz-h { display: flex; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+.gm-prz-h b { font-family: var(--f-cond); font-weight: 800; font-size: 16px; text-transform: uppercase; }
+.gm-prz-h span { color: var(--muted); font-size: 13px; text-transform: capitalize; }
+.gm-prz ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.gm-prz li { display: grid; grid-template-columns: 30px 1fr; gap: 6px; align-items: start; }
+.gm-prz li > b { font-size: 18px; }
+.gm-prz li small { display: block; color: var(--muted); font-size: 12px; }
+.gm-next { margin: 4px 2px 0; font-family: var(--f-cond); font-weight: 800; text-transform: uppercase; color: var(--brass); }
+.gm-rank { text-align: center; font-size: 15px; margin: 4px 0 14px; color: var(--muted); }
+.gm-rank b { color: var(--fg); font-family: var(--f-display); font-size: 20px; }
+.gm-sheet { position: fixed; inset: 0; z-index: 60; display: flex; align-items: flex-end; justify-content: center; background: rgba(8,14,30,.55); }
+.gm-sheet-in { width: min(520px, 100%); max-height: 88vh; overflow: auto; padding: 20px 18px calc(env(safe-area-inset-bottom, 0px) + 18px); border-radius: 26px 26px 0 0; background: var(--panel); color: var(--fg); display: grid; gap: 12px; }
+.gm-perks { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.gm-perks li { padding: 10px 12px; border-radius: 14px; background: var(--panel-2); display: grid; grid-template-columns: auto 1fr; gap: 4px 10px; }
+.gm-perks li > b:first-child { font-family: var(--f-cond); font-weight: 800; text-transform: uppercase; }
+.gm-perks li > span { grid-column: 1 / -1; color: var(--muted); font-size: 14px; }
+.gm-won { text-align: center; }
+.gm-won .gm-perks li { text-align: left; grid-template-columns: 34px 1fr; }
+.gm-won .gm-perks li > span { grid-column: auto; }
+.gm-trophy { font-size: 64px; line-height: 1; }
+.gm-won h2 { margin: 0; font-family: var(--f-cond); font-weight: 800; font-size: 30px; text-transform: uppercase; }
+.gm-ad { position: fixed; inset: 0; z-index: 70; display: flex; flex-direction: column; justify-content: center; gap: 14px; padding: calc(env(safe-area-inset-top, 0px) + 20px) 18px calc(env(safe-area-inset-bottom, 0px) + 20px); background: #0b1024; color: #fff; }
+.gm-ad-top { position: absolute; top: calc(env(safe-area-inset-top, 0px) + 28px); left: 18px; right: 18px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: #9fb0c8; }
+.gm-ad-top b { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; border: 2px solid #4aa8ff; color: #fff; font-family: var(--f-display); font-size: 16px; }
+.gm-ad-box { border-radius: 24px; padding: 22px 18px; text-align: center; background: radial-gradient(120% 90% at 50% 0%, #2a4a9a 0%, #141d3d 70%); box-shadow: 0 18px 40px rgba(0,0,0,.4); }
+.gm-ad-box .gm-hero-ico { justify-content: center; margin: 0 0 14px; }
+.gm-ad-box h2 { margin: 0 0 6px; font-family: var(--f-cond); font-weight: 800; font-size: 26px; text-transform: uppercase; }
+.gm-ad-box p { margin: 0 0 10px; color: #c8d3e0; }
+.gm-ad-box small { color: #8a97ad; font-size: 12px; }
+.gm-ad .btn.ghost { color: #fff; }
 </style>
 
 </head>
@@ -7122,6 +7185,7 @@ function maybeDuelResult() {
     if (CH.oppCard) CH.oppCard.crowns = crownN(CH.oppCard.crowns) + 1;
   }
   if (!EX[CH.cfg.ex].game) addPoints(outcome === "win" ? 30 : outcome === "tie" ? 15 : 10);
+  else gmSubmit(CH.cfg.ex, me, "duel");
   duelSend({ t: "card", card: myCard() });
   $("rest").hidden = true;
   $("restSkip").hidden = false;
@@ -7139,7 +7203,7 @@ function maybeDuelResult() {
 function renderDuelResult() {
   const r = route, host = CH.role === "host";
   const verdict = r.outcome === "win" ? "Hai vinto!" : r.outcome === "lose" ? "Ha vinto ".concat(esc(CH.oppName || "l'amico")) : "Pareggio";
-  app.innerHTML = '\n  <div class="screen">\n    <header class="mast"><div><div class="sub">Sfida \xB7 '.concat(esc(fmtTxt(CH.cfg)), '</div></div><div class="callsign">Vittorie<b>').concat((r.score || [CH.wins.me, CH.wins.opp]).join("\u2013"), "</b></div></header>\n    ").concat(r.crown ? '<div class="crown-win'.concat(r.crown === "me" ? " mine" : "", '"><div class="cw-rays"></div><div class="cw-crown">').concat(crownSVG(), '<i class="sp s1"></i><i class="sp s2"></i><i class="sp s3"></i><i class="sp s4"></i></div><b>').concat(r.crown === "me" ? "Hai conquistato la Corona!" : "".concat(esc(CH.oppName || "L'amico"), " conquista la Corona"), "</b><small>").concat(r.crown === "me" ? "".concat(CROWN_WINS, " vittorie: la corona brilla accanto al tuo nome.") : "Ha vinto ".concat(CROWN_WINS, " sfide. Prenditi la rivincita!"), "</small></div>") : '<p class="meta crown-hint">'.concat(crownSVG(), "<span>Chi vince ").concat(CROWN_WINS, " sfide conquista la Corona</span></p>"), '\n    <div class="verdict">').concat(verdict, '</div>\n    <div class="vs">\n      <div class="').concat(r.outcome === "win" ? "win" : "", '"><b>').concat(r.me, "</b><span>").concat(esc(myName || "Tu"), " ").concat(myBadge(), '</span></div>\n      <em>VS</em>\n      <div class="').concat(r.outcome === "lose" ? "win" : "", '"><b>').concat(r.opp, "</b><span>").concat(esc(CH.oppName || "Amico"), "</span></div>\n    </div>\n    ").concat(addFriendBox(), "\n    ").concat(EX[CH.cfg.ex].game ? '<p class="meta">Punti del gioco: vince chi ne fa di pi\xF9. Nella prova i giochi non danno punti alla classifica.</p>' : '<p class="meta">Contano solo le ripetizioni complete e valide. Punti sfida: '.concat(r.outcome === "win" ? "+30" : r.outcome === "tie" ? "+15" : "+10", ", pi\xF9 1 punto per ripetizione.</p>"), '\n    <div class="row">\n      ').concat(host ? '<button class="btn primary" id="again" type="button" '.concat(CH.connected ? "" : "disabled", ">Rivincita</button>") : '<p class="note">'.concat(CH.connected ? "Per la rivincita aspetta ".concat(esc(CH.oppName || "l'amico"), ".") : "La connessione con l'amico si \xE8 chiusa.", "</p>"), '\n      <button class="btn ghost" id="leave" type="button">Esci dalla sfida</button>\n    </div>\n  </div>');
+  app.innerHTML = '\n  <div class="screen">\n    <header class="mast"><div><div class="sub">Sfida \xB7 '.concat(esc(fmtTxt(CH.cfg)), '</div></div><div class="callsign">Vittorie<b>').concat((r.score || [CH.wins.me, CH.wins.opp]).join("\u2013"), "</b></div></header>\n    ").concat(r.crown ? '<div class="crown-win'.concat(r.crown === "me" ? " mine" : "", '"><div class="cw-rays"></div><div class="cw-crown">').concat(crownSVG(), '<i class="sp s1"></i><i class="sp s2"></i><i class="sp s3"></i><i class="sp s4"></i></div><b>').concat(r.crown === "me" ? "Hai conquistato la Corona!" : "".concat(esc(CH.oppName || "L'amico"), " conquista la Corona"), "</b><small>").concat(r.crown === "me" ? "".concat(CROWN_WINS, " vittorie: la corona brilla accanto al tuo nome.") : "Ha vinto ".concat(CROWN_WINS, " sfide. Prenditi la rivincita!"), "</small></div>") : '<p class="meta crown-hint">'.concat(crownSVG(), "<span>Chi vince ").concat(CROWN_WINS, " sfide conquista la Corona</span></p>"), '\n    <div class="verdict">').concat(verdict, '</div>\n    <div class="vs">\n      <div class="').concat(r.outcome === "win" ? "win" : "", '"><b>').concat(r.me, "</b><span>").concat(esc(myName || "Tu"), " ").concat(myBadge(), '</span></div>\n      <em>VS</em>\n      <div class="').concat(r.outcome === "lose" ? "win" : "", '"><b>').concat(r.opp, "</b><span>").concat(esc(CH.oppName || "Amico"), "</span></div>\n    </div>\n    ").concat(addFriendBox(), "\n    ").concat(EX[CH.cfg.ex].game ? '<p class="meta">Punti del gioco: vince chi ne fa di pi\xF9. Il punteggio entra nella classifica del mese dei giochi.</p>' : '<p class="meta">Contano solo le ripetizioni complete e valide. Punti sfida: '.concat(r.outcome === "win" ? "+30" : r.outcome === "tie" ? "+15" : "+10", ", pi\xF9 1 punto per ripetizione.</p>"), '\n    <div class="row">\n      ').concat(host ? '<button class="btn primary" id="again" type="button" '.concat(CH.connected ? "" : "disabled", ">Rivincita</button>") : '<p class="note">'.concat(CH.connected ? "Per la rivincita aspetta ".concat(esc(CH.oppName || "l'amico"), ".") : "La connessione con l'amico si \xE8 chiusa.", "</p>"), '\n      <button class="btn ghost" id="leave" type="button">Esci dalla sfida</button>\n    </div>\n  </div>');
   wireAddFriend(renderDuelResult);
   if (host) $("again").onclick = () => {
     duelSend({ t: "lobby" });
@@ -8515,6 +8579,9 @@ const GM_POSES = [
 ];
 const GM = { st: null };
 window.__gm = GM;
+setTimeout(() => {
+  window.__gmx = GMX;
+});
 const gmRand = (a, b) => a + Math.random() * (b - a);
 const gmClamp = (v, a, b) => Math.max(a, Math.min(b, v));
 function gmBody(lm, w, h) {
@@ -8970,26 +9037,48 @@ function gmFinish() {
   closeSession();
   say(isNew && score ? "Nuovo record!" : "Fine del gioco. Bravo!", { urgent: true });
   go({ name: "game-result", g, score, best, isNew });
+  gmSubmit(g, score, "solo");
 }
 function gmPlay(id) {
+  if (!gmIsPro() && GMX.played > 0) return gmAd(() => gmStart(id));
+  gmStart(id);
+}
+function gmStart(id) {
+  GMX.played++;
   route = { name: "games", queue: [{ ex: id, target: 0, timeLimit: 60, set: 1, sets: 1 }], title: GAMES[id].name };
   startSession("live");
 }
 function gmVs(id) {
+  if (!gmIsPro() && GMX.played > 0) return gmAd(() => {
+    GMX.played++;
+    gmVs2(id);
+  });
+  GMX.played++;
+  gmVs2(id);
+}
+function gmVs2(id) {
   CH.cfg = { ...CH.cfg, ex: id, pick: "me", fmt: "time", ok: true };
   go({ name: "duel-new", mode: "invite" });
 }
-const gmChoices = (sel) => '<div class="label">Giochi con la telecamera <i class="gm-pro">PRO</i></div><div class="choices gm-choices">'.concat(GAME_IDS.map((id) => '<button class="choice" type="button" data-ex="'.concat(id, '" aria-pressed="').concat(sel === id, '" style="--gc:').concat(GAMES[id].color, '"><span class="gm-ico">').concat(GM_ICO[id], "</span>").concat(GAMES[id].name, "</button>")).join(""), '</div><div class="label">Esercizi</div>');
-const gmEntry = () => '<button class="gm-entry" id="openGames" type="button"><span class="gm-entry-ico">'.concat(GM_ICO.g_stars, '</span><span><b>Giochi con la telecamera <i class="gm-pro">PRO</i></b><small>Stelle, boxe, meteoriti e altri giochi: da solo o con gli amici</small></span><span class="go">\u203A</span></button>');
+const gmChoices = (sel) => '<div class="label">Giochi con la telecamera</div><div class="choices gm-choices">'.concat(GAME_IDS.map((id) => '<button class="choice" type="button" data-ex="'.concat(id, '" aria-pressed="').concat(sel === id, '" style="--gc:').concat(GAMES[id].color, '"><span class="gm-ico">').concat(GM_ICO[id], "</span>").concat(GAMES[id].name, "</button>")).join(""), '</div><div class="label">Esercizi</div>');
+const gmEntry = () => '<button class="gm-entry" id="openGames" type="button"><span class="gm-entry-ico">'.concat(GM_ICO.g_stars, '</span><span><b>Giochi con la telecamera</b><small>Stelle, boxe, meteoriti e altri giochi: da solo o con gli amici</small></span><span class="go">\u203A</span></button>');
 function renderGames() {
   const rec = store.get("gameRec", {});
-  app.innerHTML = '\n  <div class="screen gm">\n    <section class="dz-hero gm-hero">\n      <div class="dz-glow"></div>\n      <div class="dz-top"><h1>Giochi</h1><span class="gm-pro big">PRO</span></div>\n      <p class="dz-sub">Giochi interattivi con la telecamera: muoviti davanti al telefono, da solo o sfidando un amico in videochiamata.</p>\n      <div class="gm-hero-ico">'.concat(GAME_IDS.map((id) => '<span style="--gc:'.concat(GAMES[id].color, '">').concat(GM_ICO[id], "</span>")).join(""), '</div>\n    </section>\n    <p class="gm-beta">Versione di prova: i giochi non danno ancora punti alla classifica.</p>\n    <div class="camtip">').concat(sideCam, "<span>").concat(GAME_CAM, '</span></div>\n    <div class="gm-list">').concat(GAME_IDS.map((id) => '\n      <div class="gm-card" style="--gc:'.concat(GAMES[id].color, '">\n        <div class="gm-head"><span class="gm-ico">').concat(GM_ICO[id], "</span><div><b>").concat(GAMES[id].name, "</b><small>").concat(GAMES[id].tag, '</small></div><em class="gm-rec"><span>Record</span> <b>').concat(rec[id] || 0, "</b></em></div>\n        <p>").concat(GAMES[id].desc, '</p>\n        <div class="gm-btns"><button class="btn primary small" type="button" data-solo="').concat(id, '">Da solo</button><button class="btn ghost small" type="button" data-vs="').concat(id, '">Con un amico</button></div>\n      </div>')).join(""), "\n    </div>\n  </div>");
+  app.innerHTML = '\n  <div class="screen gm">\n    <section class="dz-hero gm-hero">\n      <div class="dz-glow"></div>\n      <div class="dz-top"><h1>Giochi</h1>'.concat(gmIsPro() ? '<span class="gm-pro big">PRO</span>' : "", '</div>\n      <p class="dz-sub">Giochi interattivi con la telecamera: muoviti davanti al telefono, da solo o sfidando un amico in videochiamata.</p>\n      <div class="gm-hero-ico">').concat(GAME_IDS.map((id) => '<span style="--gc:'.concat(GAMES[id].color, '">').concat(GM_ICO[id], "</span>")).join(""), "</div>\n    </section>\n    ").concat(gmTierCard(), '\n    <section class="gm-sec"><div class="gm-sec-h"><h2>Classifica del mese</h2><span class="gm-ends" id="gmEnds"></span></div>\n      <div class="excat gm-tabs" role="tablist"><button type="button" role="tab" data-gtab="free" aria-selected="').concat(GMX.tab === "free", '">Generale</button><button type="button" role="tab" data-gtab="pro" aria-selected="').concat(GMX.tab === "pro", '">Pro <i class="gm-pro">PRO</i></button></div>\n      <div id="gmBoard" class="gm-board"><p class="meta">Carico la classifica\u2026</p></div>\n      <details class="gm-rules"><summary>Come funziona</summary><ul>\n        <li>Conta il tuo miglior punteggio di ogni gioco nel mese: la classifica \xE8 la somma dei cinque.</li>\n        <li>La classifica parte il primo del mese e si chiude l\'ultimo giorno.</li>\n        <li>Classifica generale: per tutti. I primi tre vincono punti per sbloccare nuovi esercizi.</li>\n        <li>Classifica Pro: solo per chi ha Pro. I primi tre vincono i premi della bacheca.</li>\n        <li>I premi del mese dopo sono in bacheca dal 26.</li>\n        <li>A parit\xE0 di punti \xE8 davanti chi li ha fatti prima.</li>\n      </ul></details>\n    </section>\n    <section class="gm-sec"><div class="gm-sec-h"><h2>Bacheca premi</h2></div><div id="gmBach" class="gm-bach"><p class="meta">Carico i premi\u2026</p></div></section>\n    <h2 class="gm-h2">I giochi</h2>\n    <div class="camtip">').concat(sideCam, "<span>").concat(GAME_CAM, '</span></div>\n    <div class="gm-list">').concat(GAME_IDS.map((id) => '\n      <div class="gm-card" style="--gc:'.concat(GAMES[id].color, '">\n        <div class="gm-head"><span class="gm-ico">').concat(GM_ICO[id], "</span><div><b>").concat(GAMES[id].name, "</b><small>").concat(GAMES[id].tag, '</small></div><em class="gm-rec"><span>Record</span> <b>').concat(rec[id] || 0, "</b></em></div>\n        <p>").concat(GAMES[id].desc, '</p>\n        <div class="gm-btns"><button class="btn primary small" type="button" data-solo="').concat(id, '">Da solo</button><button class="btn ghost small" type="button" data-vs="').concat(id, '">Con un amico</button></div>\n      </div>')).join(""), "\n    </div>\n  </div>");
   app.querySelectorAll("[data-solo]").forEach((b) => b.onclick = () => gmPlay(b.dataset.solo));
   app.querySelectorAll("[data-vs]").forEach((b) => b.onclick = () => gmVs(b.dataset.vs));
+  app.querySelectorAll("[data-gtab]").forEach((b) => b.onclick = () => {
+    GMX.tab = b.dataset.gtab;
+    app.querySelectorAll("[data-gtab]").forEach((x) => x.setAttribute("aria-selected", x === b));
+    gmPaintLive();
+  });
+  gmTierWire();
+  gmPaintLive();
+  gmRefresh();
 }
 function renderGameResult() {
   const r = route, gm = GAMES[r.g];
-  app.innerHTML = '\n  <div class="screen gm">\n    <section class="gm-res" style="--gc:'.concat(gm.color, '">\n      <span class="gm-ico big">').concat(GM_ICO[r.g], '</span>\n      <div class="label">').concat(gm.name, '</div>\n      <div class="gm-score">').concat(r.score, "</div><small>punti</small>\n      ").concat(r.isNew && r.score ? '<p class="gm-new">Nuovo record!</p>' : '<p class="meta"><span>Record</span> <b>'.concat(Math.max(r.best, r.score), "</b></p>"), '\n    </section>\n    <div class="row"><button class="btn primary" id="gmAgain" type="button">Gioca ancora</button><button class="btn ghost" id="gmVs" type="button">Sfida un amico</button></div>\n    <div class="row"><button class="btn ghost" id="gmMore" type="button">Altri giochi</button></div>\n  </div>');
+  app.innerHTML = '\n  <div class="screen gm">\n    <section class="gm-res" style="--gc:'.concat(gm.color, '">\n      <span class="gm-ico big">').concat(GM_ICO[r.g], '</span>\n      <div class="label">').concat(gm.name, '</div>\n      <div class="gm-score">').concat(r.score, "</div><small>punti</small>\n      ").concat(r.isNew && r.score ? '<p class="gm-new">Nuovo record!</p>' : '<p class="meta"><span>Record</span> <b>'.concat(Math.max(r.best, r.score), "</b></p>"), '\n    </section>\n    <p class="gm-rank" id="gmRank">').concat(gmRankLine(), '</p>\n    <div class="row"><button class="btn primary" id="gmAgain" type="button">Gioca ancora</button><button class="btn ghost" id="gmVs" type="button">Sfida un amico</button></div>\n    <div class="row"><button class="btn ghost" id="gmMore" type="button">Altri giochi</button></div>\n  </div>');
   if (r.isNew && r.score) try {
     confetti();
   } catch (e) {
@@ -8997,6 +9086,185 @@ function renderGameResult() {
   $("gmAgain").onclick = () => gmPlay(r.g);
   $("gmVs").onclick = () => gmVs(r.g);
   $("gmMore").onclick = () => go({ name: "games" });
+}
+const GMX = { pro: false, me: null, played: 0, board: { free: null, pro: null }, bacheca: null, tab: "free", claimed: false, loading: null, err: false };
+const gmSimPro = () => !!store.get("gmSimPro", false);
+const gmIsPro = () => GMX.pro || gmSimPro();
+const gmMonthName = (m) => {
+  try {
+    return (/* @__PURE__ */ new Date(m + "T12:00:00")).toLocaleDateString(lang, { month: "long" });
+  } catch (e) {
+    return m;
+  }
+};
+const gmDay = (t) => {
+  try {
+    return new Date(t).toLocaleDateString(lang, { day: "numeric", month: "long" });
+  } catch (e) {
+    return "";
+  }
+};
+const gmMedal = (n) => n === 1 ? "\u{1F947}" : n === 2 ? "\u{1F948}" : n === 3 ? "\u{1F949}" : "".concat(n);
+async function gmRefresh() {
+  if (GMX.loading) return GMX.loading;
+  const wasPro = gmIsPro();
+  GMX.loading = (async () => {
+    try {
+      await sbClient();
+      const jobs = [wwRpc("game_bacheca").then((b) => {
+        GMX.bacheca = b;
+      })];
+      if (ACC.user) {
+        jobs.push(wwRpc("game_me").then((m) => {
+          GMX.me = m;
+          GMX.pro = !!(m && m.pro);
+        }));
+        jobs.push(wwRpc("game_board", { p_tier: "free" }).then((b) => {
+          GMX.board.free = b;
+        }));
+        jobs.push(wwRpc("game_board", { p_tier: "pro" }).then((b) => {
+          GMX.board.pro = b;
+        }));
+        if (!GMX.claimed) jobs.push(wwRpc("game_claim").then((list) => {
+          GMX.claimed = true;
+          gmWon(list);
+        }));
+      }
+      const res = await Promise.allSettled(jobs);
+      GMX.err = res.some((r) => r.status === "rejected");
+    } catch (e) {
+      GMX.err = true;
+    }
+    GMX.loading = null;
+    if (route.name !== "games") return;
+    if (gmIsPro() !== wasPro) render();
+    else gmPaintLive();
+  })();
+  return GMX.loading;
+}
+async function gmSubmit(g, score, mode) {
+  if (!score || !ACC.user) return;
+  try {
+    GMX.me = await wwRpc("game_submit", { p_game: g, p_score: Math.min(150, Math.max(0, score | 0)), p_mode: mode, p_name: myName || null });
+    GMX.pro = !!GMX.me.pro;
+    GMX.board.free = GMX.board.pro = null;
+  } catch (e) {
+    GMX.lastErr = String(e && e.message || e);
+  }
+  const el = $("gmRank");
+  if (el) el.innerHTML = gmRankLine();
+}
+function gmRankLine() {
+  if (!SITE || !ACC.user) return "<span>Accedi dal Profilo per entrare nella classifica del mese.</span>";
+  if (GMX.lastErr && route.name === "game-result") return "<span>".concat(esc(tr(GMX.lastErr)), "</span>");
+  const m = GMX.me;
+  if (!m || !m.free) return "";
+  return "<span>Classifica generale</span> <b>".concat(m.free.rank, "\xB0</b> \xB7 <b>").concat(m.free.total, "</b> <span>punti</span>").concat(m.pro_rank ? " <br><span>Classifica Pro</span> <b>".concat(m.pro_rank.rank, "\xB0</b>") : "");
+}
+function gmTierCard() {
+  const pro = gmIsPro();
+  return '<section class="gm-tier'.concat(pro ? " is-pro" : "", '">\n    <div class="gm-tier-h"><b>').concat(pro ? "Versione Pro" : "Versione Free", "</b>").concat(pro ? '<i class="gm-pro">PRO</i>' : "", "</div>\n    <p>").concat(pro ? "Niente pubblicit\xE0, concorso del mese con premi veri per i primi tre." : "Gratis con pubblicit\xE0 prima di ogni nuovo gioco. Classifica generale: i primi tre vincono punti.", "</p>\n    ").concat(pro ? "" : '<button class="btn primary small" id="gmGoPro" type="button">Scopri Pro</button>', '\n    <label class="dz-switch gm-sim"><span>Simula Pro in questa prova<small>Solo per provare: toglie la pubblicit\xE0. La classifica Pro conta solo gli abbonati veri.</small></span><input type="checkbox" id="gmSim" ').concat(gmSimPro() ? "checked" : "", "><i></i></label>\n  </section>");
+}
+function gmTierWire() {
+  const b = $("gmGoPro");
+  if (b) b.onclick = gmProSheet;
+  const t = $("gmSim");
+  if (t) t.onchange = () => {
+    store.set("gmSimPro", t.checked);
+    const y = window.scrollY;
+    render();
+    window.scrollTo(0, y);
+  };
+}
+function gmProSheet() {
+  var _a2;
+  (_a2 = $("gmSheet")) == null ? void 0 : _a2.remove();
+  document.body.insertAdjacentHTML("beforeend", '<div class="gm-sheet" id="gmSheet" role="dialog" aria-modal="true"><div class="gm-sheet-in">\n    <div class="gm-tier-h"><b>FitQuest Pro</b><i class="gm-pro big">PRO</i></div>\n    <ul class="gm-perks"><li><b>Niente pubblicit\xE0</b><span>Passi da un gioco all\'altro senza aspettare.</span></li>\n      <li><b>Concorso del mese</b><span>Una classifica solo per gli abbonati Pro, dal primo all\'ultimo giorno del mese.</span></li>\n      <li><b>Premi per i primi tre</b><span>I premi sono in bacheca e cambiano ogni mese. Quelli del mese dopo li vedi dal 26.</span></li></ul>\n    <button class="btn primary" type="button" disabled>Abbonamento in arrivo</button>\n    <p class="meta">L\'abbonamento si attiva con l\'uscita dell\'app nei negozi. Per ora puoi provare Pro con l\'interruttore qui sotto.</p>\n    <button class="btn ghost" id="gmSheetX" type="button">Chiudi</button></div></div>');
+  $("gmSheetX").onclick = () => $("gmSheet").remove();
+  $("gmSheet").onclick = (e) => {
+    if (e.target.id === "gmSheet") $("gmSheet").remove();
+  };
+}
+function gmAd(next) {
+  var _a2;
+  (_a2 = $("gmAd")) == null ? void 0 : _a2.remove();
+  let n = 5;
+  document.body.insertAdjacentHTML("beforeend", '<div class="gm-ad" id="gmAd" role="dialog" aria-modal="true">\n    <div class="gm-ad-top"><span>Pubblicit\xE0</span><b id="gmAdN">'.concat(n, '</b></div>\n    <div class="gm-ad-box"><div class="gm-hero-ico">').concat(GAME_IDS.map((id) => '<span style="--gc:'.concat(GAMES[id].color, '">').concat(GM_ICO[id], "</span>")).join(""), '</div>\n      <h2>Gioca senza pause con FitQuest Pro</h2><p>Niente pubblicit\xE0 e premi veri ogni mese per i primi tre.</p>\n      <small>Spazio pubblicitario di prova: qui comparir\xE0 la pubblicit\xE0 vera.</small></div>\n    <button class="btn primary big" id="gmAdGo" type="button" disabled>Il gioco parte tra 5 s</button>\n    <button class="btn ghost" id="gmAdPro" type="button">Scopri Pro</button></div>'));
+  const go2 = $("gmAdGo");
+  const t = setInterval(() => {
+    n--;
+    const e = $("gmAdN");
+    if (!e) return clearInterval(t);
+    e.textContent = Math.max(0, n);
+    if (n > 0) go2.textContent = tr("Il gioco parte tra ".concat(n, " s"));
+    else {
+      clearInterval(t);
+      go2.disabled = false;
+      go2.textContent = tr("Chiudi e gioca");
+    }
+  }, 1e3);
+  go2.onclick = () => {
+    var _a3;
+    (_a3 = $("gmAd")) == null ? void 0 : _a3.remove();
+    next();
+  };
+  $("gmAdPro").onclick = () => {
+    var _a3;
+    clearInterval(t);
+    (_a3 = $("gmAd")) == null ? void 0 : _a3.remove();
+    gmProSheet();
+  };
+}
+function gmWon(list) {
+  var _a2;
+  if (!Array.isArray(list) || !list.length) return;
+  const rows = list.map((w) => {
+    const mon = gmMonthName(w.month);
+    if (w.tier === "free") {
+      addPoints(w.points || 0);
+      return "<li><b>".concat(gmMedal(w.place), "</b><span><span>Classifica generale</span> \xB7 <span data-notr>").concat(esc(mon), "</span><br><b>+").concat(w.points, "</b> <span>punti per sbloccare esercizi</span></span></li>");
+    }
+    return "<li><b>".concat(gmMedal(w.place), "</b><span><span>Classifica Pro</span> \xB7 <span data-notr>").concat(esc(mon), "</span><br><b data-notr>").concat(esc(w.prize || ""), "</b> <span>Ti contattiamo per consegnarti il premio.</span></span></li>");
+  }).join("");
+  (_a2 = $("gmSheet")) == null ? void 0 : _a2.remove();
+  document.body.insertAdjacentHTML("beforeend", '<div class="gm-sheet" id="gmSheet" role="dialog" aria-modal="true"><div class="gm-sheet-in gm-won">\n    <div class="gm-trophy">\u{1F3C6}</div><h2>Hai vinto!</h2><ul class="gm-perks">'.concat(rows, '</ul>\n    <button class="btn primary" id="gmSheetX" type="button">Fantastico</button></div></div>'));
+  try {
+    confetti();
+  } catch (e) {
+  }
+  $("gmSheetX").onclick = () => $("gmSheet").remove();
+}
+function gmPaintLive() {
+  const bd = $("gmBoard"), bh = $("gmBach"), en = $("gmEnds");
+  const B = GMX.bacheca;
+  if (en && B && B.ends_at) {
+    const last = new Date(new Date(B.ends_at).getTime() - 36e5), days = Math.max(0, Math.ceil((new Date(B.ends_at) - Date.now()) / 864e5));
+    en.innerHTML = "<span>Finisce il</span> <span data-notr>".concat(esc(gmDay(last)), "</span> \xB7 <b>").concat(days, "</b> <span>giorni</span>");
+  }
+  if (bd) {
+    const tier = GMX.tab, b = GMX.board[tier];
+    if (!SITE || !ACC.user) bd.innerHTML = '<p class="meta">Accedi per entrare in classifica e vincere i premi del mese.</p><button class="btn ghost small" id="gmLogin" type="button">Accedi dal Profilo</button>';
+    else if (!b) bd.innerHTML = '<p class="meta">'.concat(GMX.loading ? "Carico la classifica\u2026" : GMX.err ? "La classifica non \xE8 disponibile in questo momento." : "Carico la classifica\u2026", "</p>");
+    else {
+      const proLock = tier === "pro" && !GMX.pro;
+      bd.innerHTML = (proLock ? '<p class="gm-lock">'.concat(lockIco, "<span>Il concorso a premi \xE8 riservato a chi ha Pro. Qui vedi chi \xE8 in gara.</span></p>") : "") + (b.top.length ? '<ol class="gm-rows">'.concat(b.top.map((r) => '<li class="'.concat(r.me ? "me" : "").concat(r.rank <= 3 ? " podium" : "", '"><b class="pos">').concat(gmMedal(r.rank), '</b><span class="who" data-notr>').concat(esc(r.name), '</span><b class="pts">').concat(r.total, "</b></li>")).join(""), "</ol>") : '<p class="meta">Nessuno ha ancora giocato questo mese: inizia tu!</p>') + (b.me && !b.top.some((r) => r.me) ? '<p class="gm-mine"><span>La tua posizione</span> <b>'.concat(b.me.rank, "\xB0</b> \xB7 <b>").concat(b.me.total, "</b> <span>punti</span></p>") : "") + (!b.me && !proLock ? '<p class="meta">Gioca una partita per entrare in classifica.</p>' : "");
+    }
+    const lg = $("gmLogin");
+    if (lg) lg.onclick = () => go({ name: "profile" });
+  }
+  if (bh) {
+    if (!B) {
+      bh.innerHTML = '<p class="meta">'.concat(GMX.err ? "La bacheca non \xE8 disponibile in questo momento." : "Carico i premi\u2026", "</p>");
+      return;
+    }
+    const block = (month, tier) => {
+      const list = B.prizes.filter((p) => p.month === month && p.tier === tier);
+      if (!list.length) return "";
+      return '<div class="gm-prz '.concat(tier, '"><div class="gm-prz-h"><b>').concat(tier === "pro" ? "Concorso Pro" : "Classifica generale", "</b><span data-notr>").concat(esc(gmMonthName(month)), "</span></div>\n        <ul>").concat(list.map((p) => "<li><b>".concat(gmMedal(p.place), "</b><span><b>").concat(esc(p.title), "</b>").concat(p.details ? "<small>".concat(esc(p.details), "</small>") : "", "</span></li>")).join(""), "</ul></div>");
+    };
+    const win = B.winners && B.winners.length ? '<div class="gm-prz win"><div class="gm-prz-h"><b>Vincitori</b><span data-notr>'.concat(esc(gmMonthName(B.winners_month)), "</span></div><ul>").concat(B.winners.map((w) => "<li><b>".concat(gmMedal(w.place), "</b><span><b data-notr>").concat(esc(w.name), "</b><small><span>").concat(w.tier === "pro" ? "Concorso Pro" : "Classifica generale", "</span> \xB7 ").concat(w.total, " <span>punti</span></small></span></li>")).join(""), "</ul></div>") : "";
+    bh.innerHTML = block(B.month, "pro") + block(B.month, "free") + (B.show_next ? '<p class="gm-next">Premi del mese prossimo</p>' + block(B.next, "pro") + block(B.next, "free") : '<p class="meta">I premi del mese prossimo arrivano in bacheca il 26.</p>') + win;
+  }
 }
 document.body.insertAdjacentHTML("beforeend", '<div class="prova-badge" aria-hidden="true">Pagina di prova</div>');
 I18N.push(
@@ -9054,6 +9322,72 @@ I18N.push(
   ["Pagina di prova", "Test page", "P\xE1gina de prueba", "Page d'essai", "Testseite", "P\xE1gina de teste"]
 );
 I18N_RX.push([/^di (\d+) punti$/g, "of $1 points", "de $1 puntos", "sur $1 points", "von $1 Punkten", "de $1 pontos"]);
+I18N.push(
+  ["Classifica del mese", "This month's leaderboard", "Clasificaci\xF3n del mes", "Classement du mois", "Rangliste des Monats", "Ranking do m\xEAs"],
+  ["Generale", "General", "General", "G\xE9n\xE9ral", "Allgemein", "Geral"],
+  ["Carico la classifica\u2026", "Loading the leaderboard\u2026", "Cargando la clasificaci\xF3n\u2026", "Chargement du classement\u2026", "Rangliste wird geladen\u2026", "Carregando o ranking\u2026"],
+  ["Come funziona", "How it works", "C\xF3mo funciona", "Comment \xE7a marche", "So funktioniert's", "Como funciona"],
+  ["Conta il tuo miglior punteggio di ogni gioco nel mese: la classifica \xE8 la somma dei cinque.", "Your best score in each game this month counts: the leaderboard adds up all five.", "Cuenta tu mejor puntuaci\xF3n de cada juego en el mes: la clasificaci\xF3n es la suma de los cinco.", "Ton meilleur score de chaque jeu du mois compte : le classement additionne les cinq.", "Es z\xE4hlt dein bester Punktestand jedes Spiels im Monat: die Rangliste ist die Summe aller f\xFCnf.", "Conta a sua melhor pontua\xE7\xE3o de cada jogo no m\xEAs: o ranking \xE9 a soma dos cinco."],
+  ["La classifica parte il primo del mese e si chiude l'ultimo giorno.", "The leaderboard starts on the first of the month and closes on the last day.", "La clasificaci\xF3n empieza el d\xEDa uno y se cierra el \xFAltimo d\xEDa del mes.", "Le classement commence le premier du mois et se termine le dernier jour.", "Die Rangliste beginnt am Monatsersten und endet am letzten Tag.", "O ranking come\xE7a no dia primeiro e termina no \xFAltimo dia do m\xEAs."],
+  ["Classifica generale: per tutti. I primi tre vincono punti per sbloccare nuovi esercizi.", "General leaderboard: for everyone. The top three win points to unlock new exercises.", "Clasificaci\xF3n general: para todos. Los tres primeros ganan puntos para desbloquear ejercicios.", "Classement g\xE9n\xE9ral : pour tous. Les trois premiers gagnent des points pour d\xE9bloquer de nouveaux exercices.", "Allgemeine Rangliste: f\xFCr alle. Die ersten drei gewinnen Punkte, um neue \xDCbungen freizuschalten.", "Ranking geral: para todos. Os tr\xEAs primeiros ganham pontos para desbloquear novos exerc\xEDcios."],
+  ["Classifica Pro: solo per chi ha Pro. I primi tre vincono i premi della bacheca.", "Pro leaderboard: Pro members only. The top three win the prizes on the board.", "Clasificaci\xF3n Pro: solo para quien tiene Pro. Los tres primeros ganan los premios del tabl\xF3n.", "Classement Pro : r\xE9serv\xE9 aux membres Pro. Les trois premiers gagnent les prix du tableau.", "Pro-Rangliste: nur f\xFCr Pro. Die ersten drei gewinnen die Preise der Pinnwand.", "Ranking Pro: s\xF3 para quem tem Pro. Os tr\xEAs primeiros ganham os pr\xEAmios do mural."],
+  ["I premi del mese dopo sono in bacheca dal 26.", "Next month's prizes are on the board from the 26th.", "Los premios del mes siguiente est\xE1n en el tabl\xF3n desde el d\xEDa 26.", "Les prix du mois suivant sont sur le tableau d\xE8s le 26.", "Die Preise des n\xE4chsten Monats stehen ab dem 26. auf der Pinnwand.", "Os pr\xEAmios do m\xEAs seguinte est\xE3o no mural a partir do dia 26."],
+  ["A parit\xE0 di punti \xE8 davanti chi li ha fatti prima.", "On a tie, whoever got there first is ahead.", "En caso de empate, va delante quien los hizo antes.", "En cas d'\xE9galit\xE9, le premier \xE0 les avoir faits passe devant.", "Bei Punktgleichheit liegt vorn, wer sie zuerst erreicht hat.", "Em caso de empate, fica na frente quem fez primeiro."],
+  ["Bacheca premi", "Prize board", "Tabl\xF3n de premios", "Tableau des prix", "Preis-Pinnwand", "Mural de pr\xEAmios"],
+  ["Carico i premi\u2026", "Loading prizes\u2026", "Cargando los premios\u2026", "Chargement des prix\u2026", "Preise werden geladen\u2026", "Carregando os pr\xEAmios\u2026"],
+  ["I giochi", "The games", "Los juegos", "Les jeux", "Die Spiele", "Os jogos"],
+  ["Accedi dal Profilo per entrare nella classifica del mese.", "Sign in from your Profile to join this month's leaderboard.", "Inicia sesi\xF3n desde el Perfil para entrar en la clasificaci\xF3n del mes.", "Connecte-toi depuis le Profil pour entrer dans le classement du mois.", "Melde dich im Profil an, um in die Monatsrangliste zu kommen.", "Entre pelo Perfil para participar do ranking do m\xEAs."],
+  ["Classifica generale", "General leaderboard", "Clasificaci\xF3n general", "Classement g\xE9n\xE9ral", "Allgemeine Rangliste", "Ranking geral"],
+  ["Classifica Pro", "Pro leaderboard", "Clasificaci\xF3n Pro", "Classement Pro", "Pro-Rangliste", "Ranking Pro"],
+  ["Versione Pro", "Pro version", "Versi\xF3n Pro", "Version Pro", "Pro-Version", "Vers\xE3o Pro"],
+  ["Versione Free", "Free version", "Versi\xF3n Free", "Version Free", "Free-Version", "Vers\xE3o Free"],
+  ["Niente pubblicit\xE0, concorso del mese con premi veri per i primi tre.", "No ads, plus a monthly contest with real prizes for the top three.", "Sin anuncios y concurso del mes con premios reales para los tres primeros.", "Pas de pub, et un concours mensuel avec de vrais prix pour les trois premiers.", "Keine Werbung, dazu ein Monatswettbewerb mit echten Preisen f\xFCr die ersten drei.", "Sem an\xFAncios e concurso do m\xEAs com pr\xEAmios reais para os tr\xEAs primeiros."],
+  ["Gratis con pubblicit\xE0 prima di ogni nuovo gioco. Classifica generale: i primi tre vincono punti.", "Free with an ad before each new game. General leaderboard: the top three win points.", "Gratis con un anuncio antes de cada nuevo juego. Clasificaci\xF3n general: los tres primeros ganan puntos.", "Gratuit avec une pub avant chaque nouveau jeu. Classement g\xE9n\xE9ral : les trois premiers gagnent des points.", "Kostenlos mit Werbung vor jedem neuen Spiel. Allgemeine Rangliste: die ersten drei gewinnen Punkte.", "Gr\xE1tis com um an\xFAncio antes de cada novo jogo. Ranking geral: os tr\xEAs primeiros ganham pontos."],
+  ["Scopri Pro", "Discover Pro", "Descubre Pro", "D\xE9couvrir Pro", "Pro entdecken", "Conhe\xE7a o Pro"],
+  ["Simula Pro in questa prova", "Simulate Pro on this test page", "Simular Pro en esta prueba", "Simuler Pro sur cette page d'essai", "Pro auf dieser Testseite simulieren", "Simular Pro nesta p\xE1gina de teste"],
+  ["Solo per provare: toglie la pubblicit\xE0. La classifica Pro conta solo gli abbonati veri.", "Just for testing: removes the ads. The Pro leaderboard only counts real subscribers.", "Solo para probar: quita los anuncios. La clasificaci\xF3n Pro solo cuenta a los suscriptores reales.", "Juste pour tester : enl\xE8ve la pub. Le classement Pro ne compte que les vrais abonn\xE9s.", "Nur zum Testen: entfernt die Werbung. Die Pro-Rangliste z\xE4hlt nur echte Abonnenten.", "S\xF3 para testar: tira os an\xFAncios. O ranking Pro s\xF3 conta assinantes de verdade."],
+  ["Niente pubblicit\xE0", "No ads", "Sin anuncios", "Pas de pub", "Keine Werbung", "Sem an\xFAncios"],
+  ["Passi da un gioco all'altro senza aspettare.", "Go from one game to the next without waiting.", "Pasa de un juego a otro sin esperar.", "Passe d'un jeu \xE0 l'autre sans attendre.", "Wechsle ohne Warten von Spiel zu Spiel.", "Passe de um jogo para outro sem esperar."],
+  ["Concorso del mese", "Monthly contest", "Concurso del mes", "Concours du mois", "Monatswettbewerb", "Concurso do m\xEAs"],
+  ["Una classifica solo per gli abbonati Pro, dal primo all'ultimo giorno del mese.", "A leaderboard just for Pro subscribers, from the first to the last day of the month.", "Una clasificaci\xF3n solo para suscriptores Pro, del primer al \xFAltimo d\xEDa del mes.", "Un classement r\xE9serv\xE9 aux abonn\xE9s Pro, du premier au dernier jour du mois.", "Eine Rangliste nur f\xFCr Pro-Abonnenten, vom ersten bis zum letzten Tag des Monats.", "Um ranking s\xF3 para assinantes Pro, do primeiro ao \xFAltimo dia do m\xEAs."],
+  ["Premi per i primi tre", "Prizes for the top three", "Premios para los tres primeros", "Des prix pour les trois premiers", "Preise f\xFCr die ersten drei", "Pr\xEAmios para os tr\xEAs primeiros"],
+  ["I premi sono in bacheca e cambiano ogni mese. Quelli del mese dopo li vedi dal 26.", "The prizes are on the board and change every month. Next month's appear from the 26th.", "Los premios est\xE1n en el tabl\xF3n y cambian cada mes. Los del mes siguiente los ves desde el 26.", "Les prix sont sur le tableau et changent chaque mois. Ceux du mois suivant apparaissent d\xE8s le 26.", "Die Preise stehen auf der Pinnwand und wechseln jeden Monat. Die des n\xE4chsten Monats siehst du ab dem 26.", "Os pr\xEAmios est\xE3o no mural e mudam todo m\xEAs. Os do m\xEAs seguinte aparecem a partir do dia 26."],
+  ["Abbonamento in arrivo", "Subscription coming soon", "Suscripci\xF3n pr\xF3ximamente", "Abonnement bient\xF4t disponible", "Abo kommt bald", "Assinatura em breve"],
+  ["L'abbonamento si attiva con l'uscita dell'app nei negozi. Per ora puoi provare Pro con l'interruttore qui sotto.", "The subscription starts when the app is in the stores. For now you can try Pro with the switch below.", "La suscripci\xF3n se activa cuando la app est\xE9 en las tiendas. Por ahora puedes probar Pro con el interruptor de abajo.", "L'abonnement s'active \xE0 la sortie de l'app dans les stores. En attendant, essaie Pro avec l'interrupteur ci-dessous.", "Das Abo startet, wenn die App in den Stores ist. Bis dahin kannst du Pro mit dem Schalter unten testen.", "A assinatura come\xE7a quando o app estiver nas lojas. Por enquanto, teste o Pro com o bot\xE3o abaixo."],
+  ["Pubblicit\xE0", "Ad", "Anuncio", "Publicit\xE9", "Werbung", "An\xFAncio"],
+  ["Gioca senza pause con FitQuest Pro", "Play without breaks with FitQuest Pro", "Juega sin pausas con FitQuest Pro", "Joue sans pause avec FitQuest Pro", "Spiel ohne Pausen mit FitQuest Pro", "Jogue sem pausas com o FitQuest Pro"],
+  ["Niente pubblicit\xE0 e premi veri ogni mese per i primi tre.", "No ads and real prizes every month for the top three.", "Sin anuncios y premios reales cada mes para los tres primeros.", "Pas de pub et de vrais prix chaque mois pour les trois premiers.", "Keine Werbung und jeden Monat echte Preise f\xFCr die ersten drei.", "Sem an\xFAncios e pr\xEAmios reais todo m\xEAs para os tr\xEAs primeiros."],
+  ["Spazio pubblicitario di prova: qui comparir\xE0 la pubblicit\xE0 vera.", "Test ad space: the real ad will appear here.", "Espacio publicitario de prueba: aqu\xED aparecer\xE1 el anuncio real.", "Espace publicitaire d'essai : la vraie pub appara\xEEtra ici.", "Test-Werbefl\xE4che: hier erscheint sp\xE4ter die echte Werbung.", "Espa\xE7o publicit\xE1rio de teste: aqui aparecer\xE1 o an\xFAncio real."],
+  ["Chiudi e gioca", "Close and play", "Cerrar y jugar", "Fermer et jouer", "Schlie\xDFen und spielen", "Fechar e jogar"],
+  ["punti per sbloccare esercizi", "points to unlock exercises", "puntos para desbloquear ejercicios", "points pour d\xE9bloquer des exercices", "Punkte zum Freischalten von \xDCbungen", "pontos para desbloquear exerc\xEDcios"],
+  ["Ti contattiamo per consegnarti il premio.", "We'll contact you to deliver your prize.", "Te contactaremos para entregarte el premio.", "Nous te contacterons pour te remettre ton prix.", "Wir melden uns, um dir deinen Preis zu geben.", "Entraremos em contato para entregar o seu pr\xEAmio."],
+  ["Hai vinto!", "You won!", "\xA1Has ganado!", "Tu as gagn\xE9 !", "Du hast gewonnen!", "Voc\xEA ganhou!"],
+  ["Fantastico", "Awesome", "Genial", "G\xE9nial", "Super", "Demais"],
+  ["Finisce il", "Ends on", "Termina el", "Se termine le", "Endet am", "Termina em"],
+  ["giorni", "days", "d\xEDas", "jours", "Tage", "dias"],
+  ["Accedi per entrare in classifica e vincere i premi del mese.", "Sign in to join the leaderboard and win this month's prizes.", "Inicia sesi\xF3n para entrar en la clasificaci\xF3n y ganar los premios del mes.", "Connecte-toi pour entrer au classement et gagner les prix du mois.", "Melde dich an, um in die Rangliste zu kommen und die Monatspreise zu gewinnen.", "Entre para participar do ranking e ganhar os pr\xEAmios do m\xEAs."],
+  ["Accedi dal Profilo", "Sign in from Profile", "Iniciar sesi\xF3n en el Perfil", "Se connecter depuis le Profil", "Im Profil anmelden", "Entrar pelo Perfil"],
+  ["La classifica non \xE8 disponibile in questo momento.", "The leaderboard isn't available right now.", "La clasificaci\xF3n no est\xE1 disponible en este momento.", "Le classement n'est pas disponible pour le moment.", "Die Rangliste ist gerade nicht verf\xFCgbar.", "O ranking n\xE3o est\xE1 dispon\xEDvel no momento."],
+  ["Il concorso a premi \xE8 riservato a chi ha Pro. Qui vedi chi \xE8 in gara.", "The prize contest is for Pro members. Here you can see who's competing.", "El concurso con premios es para quien tiene Pro. Aqu\xED ves qui\xE9n compite.", "Le concours \xE0 prix est r\xE9serv\xE9 aux membres Pro. Ici tu vois qui est en lice.", "Der Preiswettbewerb ist f\xFCr Pro-Mitglieder. Hier siehst du, wer mitmacht.", "O concurso com pr\xEAmios \xE9 para quem tem Pro. Aqui voc\xEA v\xEA quem est\xE1 competindo."],
+  ["Nessuno ha ancora giocato questo mese: inizia tu!", "Nobody has played yet this month: you start!", "Nadie ha jugado a\xFAn este mes: \xA1empieza t\xFA!", "Personne n'a encore jou\xE9 ce mois-ci : \xE0 toi de commencer !", "Diesen Monat hat noch niemand gespielt: fang du an!", "Ningu\xE9m jogou ainda este m\xEAs: comece voc\xEA!"],
+  ["La tua posizione", "Your position", "Tu posici\xF3n", "Ta position", "Deine Position", "Sua posi\xE7\xE3o"],
+  ["Gioca una partita per entrare in classifica.", "Play a game to join the leaderboard.", "Juega una partida para entrar en la clasificaci\xF3n.", "Joue une partie pour entrer au classement.", "Spiel eine Runde, um in die Rangliste zu kommen.", "Jogue uma partida para entrar no ranking."],
+  ["La bacheca non \xE8 disponibile in questo momento.", "The prize board isn't available right now.", "El tabl\xF3n no est\xE1 disponible en este momento.", "Le tableau n'est pas disponible pour le moment.", "Die Pinnwand ist gerade nicht verf\xFCgbar.", "O mural n\xE3o est\xE1 dispon\xEDvel no momento."],
+  ["Concorso Pro", "Pro contest", "Concurso Pro", "Concours Pro", "Pro-Wettbewerb", "Concurso Pro"],
+  ["Vincitori", "Winners", "Ganadores", "Gagnants", "Gewinner", "Vencedores"],
+  ["Premi del mese prossimo", "Next month's prizes", "Premios del pr\xF3ximo mes", "Prix du mois prochain", "Preise des n\xE4chsten Monats", "Pr\xEAmios do pr\xF3ximo m\xEAs"],
+  ["I premi del mese prossimo arrivano in bacheca il 26.", "Next month's prizes arrive on the board on the 26th.", "Los premios del pr\xF3ximo mes llegan al tabl\xF3n el d\xEDa 26.", "Les prix du mois prochain arrivent sur le tableau le 26.", "Die Preise des n\xE4chsten Monats kommen am 26. auf die Pinnwand.", "Os pr\xEAmios do pr\xF3ximo m\xEAs chegam ao mural no dia 26."],
+  ["Premio da annunciare", "Prize to be announced", "Premio por anunciar", "Prix \xE0 annoncer", "Preis wird bekanntgegeben", "Pr\xEAmio a anunciar"],
+  ["Punti per sbloccare nuovi esercizi", "Points to unlock new exercises", "Puntos para desbloquear nuevos ejercicios", "Points pour d\xE9bloquer de nouveaux exercices", "Punkte zum Freischalten neuer \xDCbungen", "Pontos para desbloquear novos exerc\xEDcios"],
+  ["troppo presto: finisci la partita", "too soon: finish the game first", "demasiado pronto: termina la partida", "trop t\xF4t : termine la partie", "zu fr\xFCh: beende erst das Spiel", "cedo demais: termine a partida"],
+  ["limite di partite di oggi raggiunto", "today's game limit reached", "l\xEDmite de partidas de hoy alcanzado", "limite de parties du jour atteinte", "Spiellimit f\xFCr heute erreicht", "limite de partidas de hoje atingido"],
+  ["Punti del gioco: vince chi ne fa di pi\xF9. Il punteggio entra nella classifica del mese dei giochi.", "Game points: whoever scores more wins. The score goes into this month's games leaderboard.", "Puntos del juego: gana quien haga m\xE1s. La puntuaci\xF3n entra en la clasificaci\xF3n del mes de los juegos.", "Points du jeu : celui qui en marque le plus gagne. Le score entre dans le classement du mois des jeux.", "Spielpunkte: wer mehr hat, gewinnt. Der Punktestand z\xE4hlt f\xFCr die Monatsrangliste der Spiele.", "Pontos do jogo: vence quem fizer mais. A pontua\xE7\xE3o entra no ranking do m\xEAs dos jogos."]
+);
+I18N_RX.push(
+  [/^Il gioco parte tra (\d+) s$/g, "Game starts in $1 s", "El juego empieza en $1 s", "Le jeu commence dans $1 s", "Spiel startet in $1 s", "O jogo come\xE7a em $1 s"],
+  [/^(\d+) punti$/g, "$1 points", "$1 puntos", "$1 points", "$1 Punkte", "$1 pontos"],
+  [/^Il premio del (\d)° posto viene pubblicato qui$/g, "The prize for place $1 will be posted here", "El premio del puesto $1 se publicar\xE1 aqu\xED", "Le prix de la place $1 sera publi\xE9 ici", "Der Preis f\xFCr Platz $1 wird hier ver\xF6ffentlicht", "O pr\xEAmio do $1\xBA lugar ser\xE1 publicado aqui"]
+);
 const SB_URL = "https://maypmqnjkdrdqcssnvty.supabase.co";
 const SB_KEY = "sb_publishable_uorMl6G618tavZGF8MQpfQ_2Pg3AIlE";
 const APP_VER = "prova-web-v56";
