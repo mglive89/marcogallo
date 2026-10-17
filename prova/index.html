@@ -1218,6 +1218,20 @@ body.dark .ww-pts b { color: #7ee29b; }
 .gm-prz li.has-img { grid-template-columns: 30px 1fr 64px; align-items: center; }
 .gm-prz-img { width: 64px; height: 64px; border-radius: 12px; object-fit: cover; background: rgba(0,0,0,.05); }
 .gm-won-img { display: block; width: 100%; max-height: 180px; object-fit: contain; margin-top: 8px; border-radius: 12px; }
+/* readable prize boards: fixed text colours on the light gold/green cards, and dark versions in the dark theme */
+.gm-prz.pro, .gm-prz.win, .gm-tier.is-pro { color: #2b1d00; }
+.gm-prz.pro .gm-prz-h span, .gm-prz.pro li small { color: #7a5a12; }
+.gm-prz.win { color: #0f2e1b; } .gm-prz.win .gm-prz-h span, .gm-prz.win li small { color: #2f6b45; }
+body.dark .gm-prz.pro { background: linear-gradient(135deg, #3a2a08, #2a1e06); border: 1px solid rgba(245,166,35,.35); color: #fff3d6; }
+body.dark .gm-prz.pro .gm-prz-h b { color: #ffd36b; }
+body.dark .gm-prz.pro .gm-prz-h span, body.dark .gm-prz.pro li small { color: #e2c78c; }
+body.dark .gm-prz.win { background: linear-gradient(135deg, #10301e, #0c2617); border: 1px solid rgba(61,220,151,.3); color: #e3f7ea; }
+body.dark .gm-prz.win .gm-prz-h span, body.dark .gm-prz.win li small { color: #9fd4b3; }
+body.dark .gm-prz.free { border: 1px solid var(--line); }
+body.dark .gm-prz li small { color: #b3bfd1; }
+body.dark .gm-tier.is-pro { background: linear-gradient(135deg, #3a2a08, #2a1e06); color: #fff3d6; }
+body.dark .gm-tier.is-pro p { color: #e2c78c; }
+.gm-prz li > span > b { font-size: 16px; }
 </style>
 
 </head>
