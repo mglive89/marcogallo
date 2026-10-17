@@ -14,7 +14,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="FitQuest">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' data: blob:; connect-src 'self' https://maypmqnjkdrdqcssnvty.supabase.co wss://maypmqnjkdrdqcssnvty.supabase.co https://*.peerjs.com wss://*.peerjs.com https://*.googleapis.com wss://*.googleapis.com https://www.gstatic.com ws://localhost:* http://localhost:* ws://127.0.0.1:* http://127.0.0.1:*; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' data: blob:; connect-src 'self' https://maypmqnjkdrdqcssnvty.supabase.co wss://maypmqnjkdrdqcssnvty.supabase.co https://*.peerjs.com wss://*.peerjs.com https://*.livekit.cloud wss://*.livekit.cloud https://*.googleapis.com wss://*.googleapis.com https://www.gstatic.com ws://localhost:* http://localhost:* ws://127.0.0.1:* http://127.0.0.1:*; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'">
 <meta name="referrer" content="no-referrer">
 <script>if (window.top !== window.self) { try { window.top.location.replace(window.self.location.href); } catch (e) { document.documentElement.style.display = "none"; } }</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -961,16 +961,104 @@ body.fx-off .char-stand { animation: none; }
 body { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; touch-action: manipulation; }
 html.native, html.native body { overscroll-behavior: none; }
 input, textarea, select, [contenteditable] { -webkit-user-select: text; user-select: text; -webkit-touch-callout: default; }
+/* WalkWithMe · Cammina con me */
+.tabbar.six { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+.tabbar.six button { font-size: 10.5px; letter-spacing: .02em; }
+.ww .ww-hero { position: relative; overflow: hidden; border-radius: 26px; padding: 20px 18px 18px; color: #fff; background: radial-gradient(120% 90% at 20% 0%, #1f8a6a 0%, #11493f 55%, #0a2524 100%); box-shadow: 0 18px 40px rgba(10,60,50,.3), inset 0 0 0 1px rgba(255,255,255,.08); }
+.ww .ww-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.ww .ww-top h1 { margin: 0; font-size: 30px; line-height: 1.05; overflow-wrap: anywhere; }
+.ww-tag { flex: none; padding: 5px 10px; border-radius: 999px; background: rgba(255,255,255,.14); font-family: var(--f-cond); font-weight: 700; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; }
+.ww-sub { margin: 8px 0 0; color: rgba(255,255,255,.82); font-size: 15px; line-height: 1.4; }
+.ww-card { margin-top: 14px; padding: 16px; border-radius: 22px; background: var(--panel); box-shadow: var(--shadow); display: grid; gap: 12px; }
+.ww-card h2 { margin: 0; font-size: 22px; }
+.ww-card .meta { margin: 0; }
+.ww .btn svg { flex: none; }
+.ww-today { grid-template-columns: auto 1fr; align-items: center; }
+.ww-today > .ww-src, .ww-today > .btn, .ww-today > .ww-mon { grid-column: 1 / -1; }
+.ww-ring { --p: 0; width: 128px; height: 128px; border-radius: 50%; display: grid; place-content: center; text-align: center; background: radial-gradient(closest-side, var(--panel) 78%, transparent 79% 100%), conic-gradient(#22b07d calc(var(--p) * 1%), var(--line) 0); }
+.ww-ring b { font-size: 24px; line-height: 1; }
+.ww-ring small { color: var(--muted); font-size: 12px; margin-top: 4px; }
+.ww-pts { display: grid; gap: 10px; }
+.ww-pts b { display: block; font-size: 26px; line-height: 1; color: #1a9a6c; }
+.ww-pts small { color: var(--muted); font-size: 13px; }
+.ww-note { margin: 0; font-size: 13px; color: var(--muted); }
+.ww-hero .ww-note { color: rgba(255,255,255,.75); margin-top: 8px; }
+.ww-src { margin: 0; padding: 10px 12px; border-radius: 14px; background: var(--soft); font-size: 14px; line-height: 1.4; }
+.ww-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.ww-list li { display: grid; grid-template-columns: 48px minmax(0, 1fr) auto; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 18px; background: var(--panel); box-shadow: var(--shadow); }
+.ww-list li.ww-room { cursor: pointer; }
+.ww-list .who { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.ww-list .who b { font-size: 17px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ww-list .who small { color: var(--muted); font-size: 13px; line-height: 1.3; }
+.ww-list li.ww-blocked { opacity: .55; }
+.ww-acts { display: flex; gap: 6px; }
+.ww-go { font-size: 28px; color: var(--muted); padding: 0 4px; }
+.ww-rav { display: grid; place-items: center; background: #dff5ec; color: #1a9a6c; }
+.ww-more { width: 40px; height: 40px; border: 0; border-radius: 12px; background: var(--soft); color: var(--fg); font-size: 22px; line-height: 1; }
+.ww-x { border: 0; background: none; color: var(--brass); font: inherit; text-decoration: underline; padding: 0 2px; }
+.ww-new, .ww-priv { margin-top: 10px; }
+.ww-new[open], .ww-priv[open] { display: grid; gap: 10px; padding: 14px; border-radius: 20px; background: var(--panel); box-shadow: var(--shadow); }
+.ww-new summary { list-style: none; width: 100%; }
+.ww-new summary::-webkit-details-marker, .ww-priv summary::-webkit-details-marker { display: none; }
+.ww-priv { margin-top: 18px; }
+.ww-priv summary { cursor: pointer; padding: 12px 4px; font-weight: 700; color: var(--muted); }
+.ww input:not([type]), .ww select, .ww textarea, .ww-sheet select, .ww-sheet textarea { width: 100%; box-sizing: border-box; padding: 12px 14px; border-radius: 14px; border: 1px solid var(--line); background: var(--bg); color: var(--fg); font: inherit; font-size: 16px; }
+.ww .dz-switch, .ww-sheet .dz-switch { grid-template-columns: 1fr 52px; }
+.ww-consent .dz-switch span small, .ww .dz-switch span small { display: block; color: var(--muted); font-size: 13px; margin-top: 2px; }
+.ww-msg { margin-top: 12px; padding: 12px 14px; border-radius: 14px; background: var(--soft); color: var(--fg); }
+.ww-rhero .ww-goal { margin-top: 14px; }
+.ww-bar { height: 12px; border-radius: 999px; background: rgba(255,255,255,.18); overflow: hidden; }
+.ww-bar i { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #7ee29b, #3fd0a0); transition: width .5s; }
+.ww-goal p { margin: 8px 0 0; color: rgba(255,255,255,.9); font-size: 15px; }
+.ww-ring-in { margin-top: 12px; display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 12px 14px; border-radius: 18px; background: #e3f7ee; color: #0f5a43; font-weight: 600; animation: wwGlow 1.6s ease-in-out infinite; }
+@keyframes wwGlow { 50% { box-shadow: 0 0 0 6px rgba(34,176,125,.18); } }
+.ww-callbtns { display: grid; gap: 10px; }
+.ww-callbtns .btn { flex-wrap: wrap; }
+.ww-callbtns .btn small { width: 100%; font-family: var(--f-body, inherit); font-size: 12px; letter-spacing: 0; text-transform: none; font-weight: 500; opacity: .85; margin-top: -4px; }
+.ww-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; }
+.ww-tile { position: relative; aspect-ratio: 3 / 4; border-radius: 18px; overflow: hidden; background: #12202e; display: grid; place-items: center; }
+.ww-tile video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; }
+.ww-tile.vid video { opacity: 1; }
+.ww-tile.vid .dz-av { display: none; }
+.ww-tile .dz-av.big { width: 64px; height: 64px; font-size: 28px; }
+.ww-tile .nm { position: absolute; left: 8px; bottom: 8px; padding: 3px 8px; border-radius: 999px; background: rgba(0,0,0,.5); color: #fff; font-size: 13px; }
+.ww-callctl { display: flex; justify-content: center; gap: 14px; }
+.ww-cb { width: 58px; height: 58px; border-radius: 50%; border: 0; display: grid; place-items: center; background: var(--soft); color: var(--fg); }
+.ww-cb.off { background: var(--line); color: var(--muted); }
+.ww-cb.off svg { opacity: .5; }
+.ww-cb.end { background: #e0464e; color: #fff; }
+.ww-mon { display: grid; gap: 10px; }
+.ww-mon-top { display: flex; justify-content: space-between; align-items: center; }
+.ww-mon-top b { font-size: 26px; font-variant-numeric: tabular-nums; }
+.ww-live { display: inline-flex; align-items: center; gap: 8px; font-weight: 700; color: #1a9a6c; }
+.ww-live i, .ww-pill i { width: 10px; height: 10px; border-radius: 50%; background: #22b07d; animation: wwBlink 1.2s infinite; }
+@keyframes wwBlink { 50% { opacity: .3; } }
+.ww-mon-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; text-align: center; }
+.ww-mon-row > div { padding: 10px 4px; border-radius: 14px; background: var(--soft); }
+.ww-mon-row b { display: block; font-size: 22px; }
+.ww-mon-row small { color: var(--muted); font-size: 12px; }
+.ww-mon .note { margin: 0; }
+.ww-leave { width: 100%; margin-top: 18px; }
+.ww-pill { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(92px + env(safe-area-inset-bottom, 0px)); z-index: 6; display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border: 0; border-radius: 999px; background: #0f5a43; color: #fff; font-weight: 700; box-shadow: 0 10px 26px rgba(0,0,0,.25); }
+.ww .ww-pill { position: static; transform: none; margin-top: 12px; }
+.ww-sheet { position: fixed; inset: 0; z-index: 50; background: rgba(8,14,24,.5); display: flex; align-items: flex-end; justify-content: center; }
+.ww-sheet-in { width: 100%; max-width: 520px; box-sizing: border-box; padding: 18px 16px calc(18px + env(safe-area-inset-bottom, 0px)); border-radius: 24px 24px 0 0; background: var(--panel); display: grid; gap: 10px; }
+.ww-sheet-in h3 { margin: 0 0 4px; font-size: 20px; }
+.ww-sheet-acts, #wmR { display: grid; gap: 8px; }
+body.dark .ww-ring-in { background: rgba(34,176,125,.18); color: #bff0da; }
+body.dark .ww-rav { background: rgba(34,176,125,.18); color: #7ee29b; }
+body.dark .ww-pts b { color: #7ee29b; }
 </style>
 
 </head>
 <body>
 <main id="app"></main>
 <div id="splash" aria-hidden="true"><div class="sp-fig" id="spFig"></div><img class="sp-mark" src="img/logo.webp" alt="" draggable="false" hidden><div class="sp-logo" id="spLogo" data-notr>Fit<b>Quest</b></div><div class="ld3d"><i></i><i></i><i></i></div></div>
-<nav class="tabbar" id="tabbar" hidden aria-label="Sezioni">
+<nav class="tabbar six" id="tabbar" hidden aria-label="Sezioni">
   <button type="button" data-tab="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 12 4l9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg>Oggi</button>
   <button type="button" data-tab="exercises"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7v10M18 7v10M3 9v6M21 9v6M6 12h12"/></svg>Esercizi</button>
   <button type="button" data-tab="duels"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4l9 9M20 4l-9 9"/><path d="M6 18l-2 2M18 18l2 2"/><path d="M8 16l-2-2M16 16l2-2"/></svg>Sfide</button>
+  <button type="button" data-tab="walk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13" cy="4" r="2"/><path d="M10 21l2-6 3 3v3M8 12l2-4 4 1 2 4 3 1M10 8l-2 6"/></svg>Cammina</button>
   <button type="button" data-tab="ranking"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4"/><path d="M7 4h10v5a5 5 0 0 1-10 0V4z"/><path d="M7 6H4a3 3 0 0 0 3 4M17 6h3a3 3 0 0 1-3 4"/></svg>Classifica</button>
   <button type="button" data-tab="profile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg>Profilo</button>
 </nav>
@@ -3798,6 +3886,7 @@ const TAB_ICO = {
   home: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 12 4l9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg>',
   exercises: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7v10M18 7v10M3 9v6M21 9v6M6 12h12"/></svg>',
   duels: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4l9 9M20 4l-9 9"/><path d="M6 18l-2 2M18 18l2 2"/><path d="M8 16l-2-2M16 16l2-2"/></svg>',
+  walk: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13" cy="4" r="2"/><path d="M10 21l2-6 3 3v3M8 12l2-4 4 1 2 4 3 1M10 8l-2 6"/></svg>',
   ranking: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4"/><path d="M7 4h10v5a5 5 0 0 1-10 0V4z"/><path d="M7 6H4a3 3 0 0 0 3 4M17 6h3a3 3 0 0 1-3 4"/></svg>',
   profile: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg>'
 };
@@ -3809,18 +3898,19 @@ function go(r) {
   render();
   window.scrollTo(0, 0);
 }
-const TABS = ["home", "exercises", "duels", "ranking", "profile"];
+const TABS = ["home", "exercises", "duels", "walk", "ranking", "profile"];
 function render() {
-  const tab = TABS.includes(route.name);
+  const tab = TABS.includes(route.name) || route.name === "walk-room";
   document.body.classList.toggle("landing-on", route.name === "onboard");
   $("tabbar").hidden = !tab;
   document.body.classList.toggle("tabs", tab);
   $("tabbar").querySelectorAll("[data-tab]").forEach((b) => {
-    if (b.dataset.tab === route.name) b.setAttribute("aria-current", "page");
+    if (b.dataset.tab === (route.name === "walk-room" ? "walk" : route.name)) b.setAttribute("aria-current", "page");
     else b.removeAttribute("aria-current");
   });
   figAnim.els.clear();
   renderRoute();
+  wwPillSync();
   animateFigs(app);
   fxEnter();
 }
@@ -3856,6 +3946,8 @@ function renderRoute() {
   if (route.name === "duel-result") return renderDuelResult();
   if (route.name === "ranking") return renderRanking();
   if (route.name === "voice") return renderVoice();
+  if (route.name === "walk") return renderWalk();
+  if (route.name === "walk-room") return renderWalkRoom();
 }
 function renderHome() {
   const n = nextSession();
@@ -4226,6 +4318,7 @@ function stepsAdd(n) {
   const k = dayKey();
   steps.days[k] = (steps.days[k] | 0) + n;
   stepsHours()[(/* @__PURE__ */ new Date()).getHours()] += n;
+  if (WW.sess && WW.sess.source === "web_motion") WW.webSteps += n;
   stepsSave();
   stepsPaint();
 }
@@ -7045,9 +7138,1059 @@ function fxSettingsWire() {
     if (k === "rep" && fx.level !== "off" && v !== "none") burst(app.querySelector('#fxSet [data-k="rep"][data-v="'.concat(v, '"]')), fx.level === "lite" ? "ring" : v);
   });
 }
+const WW_TABS = ["walk", "walk-room"];
+const WW = {
+  home: null,
+  loading: null,
+  err: "",
+  msg: "",
+  consent: store.get("wwConsent", {}),
+  room: null,
+  state: null,
+  chan: null,
+  chanOk: false,
+  online: {},
+  sess: null,
+  pend: null,
+  syncT: 0,
+  tickT: 0,
+  lastRes: null,
+  webSteps: 0,
+  sending: false,
+  call: null,
+  sfu: null
+  // sfu: null = non so, true = LiveKit attivo, false = non configurato
+};
+const WW_ICE = [{ urls: ["stun:stun.l.google.com:19302", "stun:stun1.l.google.com:19302"] }];
+const wwNum = (n) => stepFmt(n | 0);
+const wwConsentSet = (o) => {
+  WW.consent = { ...WW.consent, ...o, at: (/* @__PURE__ */ new Date()).toISOString() };
+  store.set("wwConsent", WW.consent);
+};
+function wwErrText(e) {
+  const m = String(e && e.message || e || "");
+  if (/could not find the function|does not exist|schema cache|PGRST202/i.test(m)) return "Cammina con me non \xE8 ancora attivo sul server: manca l'ultimo passaggio di configurazione.";
+  if (/failed to fetch|network|load failed/i.test(m) || offline()) return "Serve internet: controlla la connessione e riprova.";
+  if (/login richiesto|JWT/i.test(m)) return "Accedi di nuovo al tuo account.";
+  return m.charAt(0).toUpperCase() + m.slice(1);
+}
+async function wwRpc(fn, args) {
+  const sb = await sbClient();
+  const { data, error } = await sb.rpc(fn, args || {});
+  if (error) throw new Error(error.message || "errore");
+  return data;
+}
+async function wwToken() {
+  const sb = await sbClient();
+  const { data } = await sb.auth.getSession();
+  return data && data.session ? data.session.access_token : null;
+}
+const wwHealth = () => NATIVE && window.FitQuestHealth && typeof FitQuestHealth.rangeSteps === "function";
+const wwSource = () => wwHealth() ? window.FitQuestNative && FitQuestNative.platform === "ios" ? "healthkit" : "health_connect" : "web_motion";
+const wwSrcName = (s) => s === "healthkit" ? "Apple Salute" : s === "health_connect" ? "Health Connect" : "sensore del telefono";
+async function wwLoad(quiet) {
+  if (!ACC.user) {
+    WW.home = null;
+    return;
+  }
+  if (WW.loading) return WW.loading;
+  WW.loading = (async () => {
+    try {
+      WW.home = await wwRpc("walk_home", { p_name: (myName || "").slice(0, 30) || null, p_code: typeof myFcode === "string" ? myFcode : null });
+      WW.err = "";
+      const a = WW.home.active_session;
+      if (a && (!WW.sess || WW.sess.id !== a.id)) wwResume(a);
+      if (!a && WW.sess && !WW.pend) wwStopLocal();
+    } catch (e) {
+      WW.err = wwErrText(e);
+      if (!quiet) reportBug("walk", "warning", "walk_home_failed", { m: String(e && e.message || e).slice(0, 120) });
+    } finally {
+      WW.loading = null;
+    }
+  })();
+  return WW.loading;
+}
+function renderWalk() {
+  const h = WW.home, t = h && h.today, me = h && h.me;
+  const goal = t ? t.daily_goal || 8e3 : 8e3, all = t ? (t.today_verified_steps | 0) + (t.today_estimated_steps | 0) : 0;
+  const pct = Math.min(1, all / goal), src = wwSource();
+  const head2 = '<section class="ww-hero">\n      <div class="ww-top"><h1>Cammina con me</h1><span class="ww-tag">WalkWithMe</span></div>\n      <p class="ww-sub">Cammina con i tuoi amici in chiamata: ognuno a casa sua, tutti insieme verso lo stesso obiettivo.</p>\n      '.concat(offline() ? '<p class="dz-off">Sei offline: per camminare con gli amici serve internet.</p>' : "", "\n    </section>");
+  if (!ACC.user) {
+    app.innerHTML = '<div class="screen ww">'.concat(head2, '\n      <div class="ww-card"><h2>Accedi per iniziare</h2><p class="meta">Amici, stanze e WalkPoints sono legati al tuo account, cos\xEC nessuno pu\xF2 contare passi al posto tuo.</p>\n      <button class="btn primary" id="wwLogin" type="button">Accedi o crea l\'account</button></div></div>');
+    $("wwLogin").onclick = () => go({ name: "profile" });
+    return;
+  }
+  if (!WW.consent.ok) return renderWalkConsent(head2);
+  if (!h) {
+    app.innerHTML = '<div class="screen ww">'.concat(head2, '<div class="ww-card">').concat(WW.err ? '<p class="meta">'.concat(esc(WW.err), '</p><button class="btn primary" id="wwRetry" type="button">Riprova</button>') : offline() ? '<p class="meta">Serve internet per vedere amici e stanze.</p>' : '<p class="meta">Carico i tuoi amici e le stanze\u2026</p>', "</div></div>");
+    if ($("wwRetry")) $("wwRetry").onclick = () => {
+      WW.err = "";
+      renderWalk();
+    };
+    if (!WW.err && !offline()) wwLoad().then(() => {
+      if (route.name === "walk") renderWalk();
+    });
+    return;
+  }
+  const inv = h.invites_in || [], out = h.invites_out || [], rooms = h.rooms || [], fr = h.friends || [], bl = h.blocked || [];
+  const duelFr = Object.entries(friends).filter(([, f]) => f.fcode && !fr.some((x) => x.name === f.name)).map(([, f]) => f);
+  app.innerHTML = '<div class="screen ww">'.concat(head2, '\n    <div class="ww-card ww-today">\n      <div class="ww-ring" style="--p:').concat((pct * 100).toFixed(1), '"><b>').concat(wwNum(all), "</b><small>di ").concat(wwNum(goal), ' passi</small></div>\n      <div class="ww-pts">\n        <div><b>').concat(t.today_points | 0, "</b><small>WalkPoints oggi \xB7 max ").concat(t.daily_point_cap | 0, "</small></div>\n        <div><b>").concat(t.balance | 0, "</b><small>WalkPoints totali</small></div>\n        ").concat(t.today_estimated_steps ? '<p class="ww-note">'.concat(wwNum(t.today_estimated_steps), " passi stimati non danno punti</p>") : "", '\n      </div>\n      <p class="ww-src">').concat(src === "web_motion" ? "Sul sito i passi sono <b>stimati</b> dal sensore e non danno WalkPoints. Nell'app FitQuest per Android o iPhone i passi arrivano da Health Connect o Apple Salute e valgono 1 WalkPoint ogni 100." : "Passi verificati da <b>".concat(wwSrcName(src), "</b>: 1 WalkPoint ogni 100 passi, fino a ").concat(t.daily_point_cap | 0, " al giorno."), "</p>\n      ").concat(WW.sess && !WW.sess.room_id ? wwMonitorHtml() : '<button class="btn primary" id="wwSolo" type="button">'.concat(wwWalkIco(), "Inizia a camminare</button>"), "\n    </div>\n    ").concat(WW.call ? wwCallPillHtml() : "", "\n    ").concat(inv.length ? '<div class="section"><div class="label">Inviti per te \xB7 '.concat(inv.length, '</div><ol class="ww-list">').concat(inv.map((i) => "<li>".concat(avatar(i.from_name), '<span class="who"><b>').concat(esc(i.from_name), "</b><small>").concat(i.kind === "room" ? "ti invita nella stanza \xAB".concat(esc(i.room_name || ""), "\xBB") : "vuole essere tuo amico", '</small></span>\n      <span class="ww-acts"><button class="btn primary small" type="button" data-acc="').concat(i.id, '">Accetta</button><button class="btn ghost small" type="button" data-dec="').concat(i.id, '">No</button></span></li>')).join(""), "</ol></div>") : "", '\n    <div class="section"><div class="label">Le tue stanze').concat(rooms.length ? " \xB7 ".concat(rooms.length) : "", "</div>\n      ").concat(rooms.length ? '<ol class="ww-list">'.concat(rooms.map((r) => '<li class="ww-room" data-room="'.concat(r.id, '">').concat(wwRoomIco(), '<span class="who"><b>').concat(esc(r.name), "</b><small>").concat(r.members, " ").concat(r.members === 1 ? "persona" : "persone", " \xB7 ").concat(wwNum(r.coop_steps), " / ").concat(wwNum(r.goal_steps), ' passi</small></span><span class="ww-go">\u203A</span></li>')).join(""), "</ol>") : '<p class="note">Una stanza \xE8 privata: entra solo chi inviti tu tra i tuoi amici.</p>', '\n      <details class="ww-new" id="wwNew"><summary class="btn ghost">Crea una stanza</summary>\n        <label class="label" for="wwRn">Nome</label><input id="wwRn" maxlength="40" placeholder="Giro serale" autocomplete="off">\n        <label class="label" for="wwRg">Obiettivo di gruppo</label>\n        <select id="wwRg">').concat([5e3, 1e4, 2e4, 3e4, 5e4].map((n) => '<option value="'.concat(n, '" ').concat(n === 1e4 ? "selected" : "", ">").concat(wwNum(n), " passi</option>")).join(""), '</select>\n        <label class="label" for="wwRm">Chiamata</label>\n        <select id="wwRm"><option value="audio" selected>Vocale (consigliata mentre cammini)</option><option value="video">Video</option></select>\n        <button class="btn primary" id="wwCreate" type="button">Crea la stanza</button>\n      </details>\n    </div>\n    <div class="section"><div class="label">Amici di Cammina con me').concat(fr.length ? " \xB7 ".concat(fr.length) : "", "</div>\n      ").concat(fr.length ? '<ol class="ww-list">'.concat(fr.map((f) => "<li>".concat(avatar(f.name), '<span class="who"><b>').concat(esc(f.name), '</b></span><button class="ww-more" type="button" data-user="').concat(f.user_id, '" data-name="').concat(esc(f.name), '" aria-label="Altro">\u22EF</button></li>')).join(""), "</ol>") : '<p class="note">Aggiungi un amico con il suo codice: gli arriva un invito e, quando accetta, potete camminare insieme.</p>', "\n      ").concat(out.length ? '<p class="note">In attesa di risposta: '.concat(out.map((o) => "".concat(esc(o.to_name)).concat(o.kind === "room" ? " (stanza \xAB".concat(esc(o.room_name || ""), "\xBB)") : "", ' <button class="ww-x" type="button" data-cancel="').concat(o.id, '">annulla</button>')).join(" \xB7 "), "</p>") : "", "\n      ").concat(duelFr.length ? '<div class="label">Dalle tue Sfide</div><ol class="ww-list">'.concat(duelFr.slice(0, 12).map((f) => "<li>".concat(avatar(f.name), '<span class="who"><b>').concat(esc(f.name), '</b></span><button class="btn ghost small" type="button" data-fc="').concat(esc(f.fcode), '">Invita</button></li>')).join(""), "</ol>") : "", '\n      <div class="dz-ticket"><div class="dz-ticket-top"><div class="label">Il tuo codice</div><div class="code">').concat(esc(me.code), '</div>\n        <button class="btn ghost small" id="wwShare" type="button">Invia il mio codice</button></div>\n        <div class="dz-ticket-bot"><label class="label" for="wwCode">Aggiungi un amico</label>\n        <div class="dz-add"><input id="wwCode" maxlength="6" autocapitalize="characters" autocomplete="off" placeholder="Codice amico"><button class="btn primary small" id="wwAdd" type="button">Invita</button></div></div></div>\n    </div>\n    <details class="ww-priv"><summary>Privacy, permessi e utenti bloccati</summary>\n      <label class="dz-switch"><span>Microfono per le chiamate</span><input type="checkbox" id="wwCMic" ').concat(WW.consent.mic ? "checked" : "", '><i></i></label>\n      <label class="dz-switch"><span>Fotocamera per le videochiamate</span><input type="checkbox" id="wwCCam" ').concat(WW.consent.cam ? "checked" : "", '><i></i></label>\n      <label class="dz-switch"><span>Passi da ').concat(src === "web_motion" ? "Health Connect / Apple Salute (solo nell'app)" : wwSrcName(src), '</span><input type="checkbox" id="wwCHealth" ').concat(me.health_consent_at ? "checked" : "", " ").concat(src === "web_motion" ? "disabled" : "", '><i></i></label>\n      <p class="note">La tua posizione non viene mai letta n\xE9 condivisa. Nelle stanze gli altri vedono solo il tuo nome, se stai camminando e i passi della camminata.</p>\n      <label class="label" for="wwGoal">Il tuo obiettivo giornaliero</label>\n      <select id="wwGoal">').concat([4e3, 6e3, 8e3, 1e4, 12e3, 15e3, 2e4].map((n) => '<option value="'.concat(n, '" ').concat(n === (me.daily_goal | 0) ? "selected" : "", ">").concat(wwNum(n), " passi</option>")).join(""), "</select>\n      ").concat(bl.length ? '<div class="label">Bloccati</div><ol class="ww-list">'.concat(bl.map((b) => "<li>".concat(avatar(b.name), '<span class="who"><b>').concat(esc(b.name), '</b></span><button class="btn ghost small" type="button" data-unblock="').concat(b.user_id, '">Sblocca</button></li>')).join(""), "</ol>") : '<p class="note">Non hai bloccato nessuno.</p>', '\n    </details>\n    <p class="note ww-msg" id="wwMsg" ').concat(WW.msg ? "" : "hidden", ">").concat(esc(WW.msg), "</p>\n  </div>");
+  WW.msg = "";
+  wireWalk();
+}
+function renderWalkConsent(head2) {
+  const src = wwSource();
+  app.innerHTML = '<div class="screen ww">'.concat(head2, '\n    <div class="ww-card ww-consent"><h2>Prima di iniziare</h2>\n      <p class="meta">Scegli tu cosa pu\xF2 usare Cammina con me. Puoi cambiare idea quando vuoi, in fondo a questa pagina.</p>\n      <label class="dz-switch"><span><b>Microfono</b><small>per parlare con gli amici durante la camminata</small></span><input type="checkbox" id="wcMic" checked><i></i></label>\n      <label class="dz-switch"><span><b>Fotocamera</b><small>solo se scegli una videochiamata</small></span><input type="checkbox" id="wcCam"><i></i></label>\n      <label class="dz-switch"><span><b>Dati salute: passi</b><small>').concat(src === "web_motion" ? "disponibile nell'app per Android e iPhone; sul sito i passi sono solo stimati" : "letti da ".concat(wwSrcName(src), " solo durante le camminate, per i WalkPoints"), '</small></span><input type="checkbox" id="wcHealth" ').concat(src === "web_motion" ? "disabled" : "checked", '><i></i></label>\n      <p class="note">Posizione: mai condivisa. Mentre cammini ti consigliamo la chiamata vocale: guarda la strada, non lo schermo.</p>\n      <button class="btn primary" id="wcOk" type="button">Continua</button>\n      <p class="note" id="wcMsg" hidden></p>\n    </div></div>');
+  $("wcOk").onclick = async () => {
+    const mic = $("wcMic").checked, cam = $("wcCam").checked, health = !$("wcHealth").disabled && $("wcHealth").checked;
+    wwConsentSet({ ok: true, mic, cam });
+    if (health) {
+      const ok = await wwHealthOn();
+      if (!ok) WW.msg = "Senza il permesso ai passi puoi camminare con gli amici, ma senza WalkPoints.";
+    }
+    renderWalk();
+  };
+}
+async function wwHealthOn() {
+  try {
+    const h = window.FitQuestHealth;
+    if (!h) return false;
+    if (h.available && !await h.available()) return false;
+    if (!(h.connected && h.connected())) {
+      const ok = await h.connect();
+      if (!ok) return false;
+    }
+    await wwRpc("walk_set_health_consent", { p_on: true });
+    if (WW.home && WW.home.me) WW.home.me.health_consent_at = (/* @__PURE__ */ new Date()).toISOString();
+    return true;
+  } catch (e) {
+    WW.msg = wwErrText(e);
+    return false;
+  }
+}
+function wwSay(t) {
+  const m = $("wwMsg");
+  if (m) {
+    m.hidden = false;
+    m.textContent = t;
+  } else frTip(t);
+}
+async function wwAct(f, okMsg2) {
+  try {
+    const r = await f();
+    if (okMsg2) WW.msg = typeof okMsg2 === "function" ? okMsg2(r) : okMsg2;
+    await wwLoad(true);
+  } catch (e) {
+    WW.msg = wwErrText(e);
+  }
+  if (route.name === "walk") renderWalk();
+  else if (route.name === "walk-room") renderWalkRoom();
+}
+function wireWalk() {
+  const on = (id, f) => {
+    const b = $(id);
+    if (b) b.onclick = f;
+  };
+  on("wwSolo", () => wwStart(null));
+  wireMonitor();
+  wireCallPill();
+  app.querySelectorAll("[data-room]").forEach((b) => b.onclick = () => go({ name: "walk-room", id: b.dataset.room }));
+  app.querySelectorAll("[data-acc]").forEach((b) => b.onclick = () => wwAct(async () => {
+    const r = await wwRpc("walk_respond", { p_inv: b.dataset.acc, p_accept: true });
+    if (r && r.kind === "room" && r.room_id) setTimeout(() => go({ name: "walk-room", id: r.room_id }), 0);
+    return r;
+  }, (r) => r && r.kind === "room" ? "Sei entrato nella stanza." : "Ora siete amici."));
+  app.querySelectorAll("[data-dec]").forEach((b) => b.onclick = () => wwAct(() => wwRpc("walk_respond", { p_inv: b.dataset.dec, p_accept: false }), "Invito rifiutato."));
+  app.querySelectorAll("[data-cancel]").forEach((b) => b.onclick = () => wwAct(() => wwRpc("walk_cancel_invite", { p_inv: b.dataset.cancel }), "Invito annullato."));
+  app.querySelectorAll("[data-unblock]").forEach((b) => b.onclick = () => wwAct(() => wwRpc("walk_unblock", { p_user: b.dataset.unblock }), "Utente sbloccato."));
+  app.querySelectorAll("[data-fc]").forEach((b) => b.onclick = () => wwInviteCode(b.dataset.fc));
+  app.querySelectorAll(".ww-more").forEach((b) => b.onclick = () => wwUserMenu(b.dataset.user, b.dataset.name, null));
+  on("wwAdd", () => {
+    const c = $("wwCode").value.trim().toUpperCase().replace(/[^A-Z0-9]/g, "");
+    if (c.length !== 6) return wwSay("Il codice ha 6 caratteri: controlla e riprova.");
+    wwInviteCode(c);
+  });
+  on("wwCreate", () => wwAct(async () => {
+    const id = await wwRpc("walk_create_room", { p_name: $("wwRn").value.trim() || "Camminata", p_goal: +$("wwRg").value, p_mode: $("wwRm").value, p_max: 8 });
+    setTimeout(() => go({ name: "walk-room", id }), 0);
+    return id;
+  }));
+  on("wwShare", async () => {
+    const text = tr("Camminiamo insieme su FitQuest: il mio codice \xE8 ".concat(WW.home.me.code)), url = siteUrl();
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: "FitQuest", text, url });
+        return;
+      }
+    } catch (e) {
+      if ((e == null ? void 0 : e.name) === "AbortError") return;
+    }
+    try {
+      await navigator.clipboard.writeText(text + " " + url);
+      wwSay("Copiato: incollalo in chat ai tuoi amici.");
+    } catch (e) {
+      wwSay(text);
+    }
+  });
+  const cm = $("wwCMic"), cc = $("wwCCam"), ch = $("wwCHealth"), g = $("wwGoal");
+  if (cm) cm.onchange = () => {
+    wwConsentSet({ mic: cm.checked });
+    if (!cm.checked && WW.call) wwHangup();
+  };
+  if (cc) cc.onchange = () => {
+    wwConsentSet({ cam: cc.checked });
+    if (!cc.checked && WW.call && WW.call.mode === "video") wwSetCam(false);
+  };
+  if (ch) ch.onchange = async () => {
+    if (ch.checked) {
+      if (!await wwHealthOn()) {
+        ch.checked = false;
+        wwSay("Permesso ai passi non concesso.");
+      }
+    } else wwAct(() => wwRpc("walk_set_health_consent", { p_on: false }), "Non leggiamo pi\xF9 i tuoi passi: le camminate non danno WalkPoints.");
+  };
+  if (g) g.onchange = () => wwAct(async () => {
+    const sb = await sbClient();
+    const { error } = await sb.from("walk_profiles").update({ daily_goal: +g.value }).eq("user_id", ACC.user.id);
+    if (error) throw error;
+  }, "Obiettivo aggiornato.");
+}
+async function wwInviteCode(code) {
+  wwSay("Invio l'invito\u2026");
+  try {
+    const found = await wwRpc("walk_find", { p_code: code });
+    if (!found || !found.length) {
+      wwSay("Nessuno usa ancora Cammina con me con questo codice. Quando entra in questa sezione potrai invitarlo.");
+      return;
+    }
+    await wwRpc("walk_invite_friend", { p_code: code });
+    WW.msg = "Invito mandato a ".concat(found[0].display_name, ".");
+    await wwLoad(true);
+  } catch (e) {
+    WW.msg = wwErrText(e);
+  }
+  if (route.name === "walk") renderWalk();
+}
+function wwUserMenu(uid, name, roomId) {
+  const isFriend2 = WW.home && (WW.home.friends || []).some((f) => f.user_id === uid);
+  const d = document.createElement("div");
+  d.className = "ww-sheet";
+  d.setAttribute("role", "dialog");
+  d.innerHTML = '<div class="ww-sheet-in"><h3>'.concat(esc(name), '</h3>\n    <div class="ww-sheet-acts" id="wmA">\n      <button class="btn ghost" type="button" data-a="report">Segnala</button>\n      <button class="btn ghost" type="button" data-a="block">Blocca</button>\n      ').concat(isFriend2 ? '<button class="btn ghost" type="button" data-a="unfriend">Togli dagli amici</button>' : "", '\n      <button class="btn primary" type="button" data-a="close">Chiudi</button>\n    </div>\n    <div id="wmR" hidden><label class="label" for="wmWhy">Motivo</label>\n      <select id="wmWhy"><option value="molestie">Molestie o insulti</option><option value="spam">Spam</option><option value="contenuti">Contenuti inadatti</option><option value="falso">Profilo falso</option><option value="altro">Altro</option></select>\n      <label class="label" for="wmTxt">Dettagli (facoltativo)</label><textarea id="wmTxt" maxlength="500" rows="3"></textarea>\n      <label class="dz-switch"><span>Blocca anche questa persona</span><input type="checkbox" id="wmAlso" checked><i></i></label>\n      <button class="btn primary" type="button" id="wmSend">Invia segnalazione</button></div>\n    <p class="note" id="wmMsg" hidden></p></div>');
+  document.body.append(d);
+  const close = () => d.remove();
+  d.onclick = (e) => {
+    if (e.target === d) close();
+  };
+  const say2 = (t) => {
+    const m = d.querySelector("#wmMsg");
+    m.hidden = false;
+    m.textContent = t;
+  };
+  d.querySelectorAll("[data-a]").forEach((b) => b.onclick = async () => {
+    const a = b.dataset.a;
+    if (a === "close") return close();
+    if (a === "report") {
+      d.querySelector("#wmA").hidden = true;
+      d.querySelector("#wmR").hidden = false;
+      return;
+    }
+    try {
+      if (a === "block") {
+        await wwRpc("walk_block", { p_user: uid });
+        wwBlockedNow(uid);
+        WW.msg = "".concat(name, " \xE8 bloccato: non pu\xF2 invitarti n\xE9 vederti.");
+      }
+      if (a === "unfriend") {
+        await wwRpc("walk_unfriend", { p_user: uid });
+        WW.msg = "".concat(name, " non \xE8 pi\xF9 tra i tuoi amici.");
+      }
+      close();
+      await wwLoad(true);
+      route.name === "walk-room" ? wwRoomRefresh() : renderWalk();
+    } catch (e) {
+      say2(wwErrText(e));
+    }
+  });
+  d.querySelector("#wmSend").onclick = async () => {
+    try {
+      await wwRpc("walk_report", { p_user: uid, p_reason: d.querySelector("#wmWhy").value, p_details: d.querySelector("#wmTxt").value.trim() || null, p_room: roomId || null });
+      if (d.querySelector("#wmAlso").checked) {
+        await wwRpc("walk_block", { p_user: uid });
+        wwBlockedNow(uid);
+      }
+      WW.msg = "Grazie: la segnalazione \xE8 arrivata.";
+      close();
+      await wwLoad(true);
+      route.name === "walk-room" ? wwRoomRefresh() : renderWalk();
+    } catch (e) {
+      say2(wwErrText(e));
+    }
+  };
+}
+function wwBlockedNow(uid) {
+  const c = WW.call;
+  if (!c) return;
+  if (c.kind === "p2p" && c.pcs[uid]) wwHangup();
+  if (c.kind === "sfu") wwSfuMute(uid);
+}
+function renderWalkRoom() {
+  if (!ACC.user) return go({ name: "walk" });
+  const id = route.id;
+  if (WW.room !== id) {
+    WW.state = null;
+    WW.room = id;
+    wwChanJoin(id);
+  }
+  const st = WW.state;
+  if (!st) {
+    app.innerHTML = '<div class="screen ww"><button class="back" id="back" type="button">\u2039 Cammina</button><div class="ww-card"><p class="meta" id="wrMsg">'.concat(esc(WW.err || "Entro nella stanza\u2026"), "</p></div></div>");
+    $("back").onclick = () => wwLeaveScreen();
+    wwRoomRefresh();
+    return;
+  }
+  const r = st.room, mem = st.members || [], me = ACC.user.id, owner = r.owner_id === me;
+  const coop = st.coop_steps | 0, pct = Math.min(100, coop / r.goal_steps * 100);
+  const fr = (WW.home && WW.home.friends || []).filter((f) => !mem.some((m) => m.user_id === f.user_id));
+  const calling = mem.filter((m) => m.user_id !== me && WW.online[m.user_id] && WW.online[m.user_id].call);
+  const keep = WW.call && WW.call.room === r.id && $("wwCall"), y = window.scrollY;
+  app.innerHTML = '<div class="screen ww">\n    <button class="back" id="back" type="button">\u2039 Cammina</button>\n    <section class="ww-hero ww-rhero"><div class="ww-top"><h1>'.concat(esc(r.name), '</h1><span class="ww-tag">').concat(mem.length, "/").concat(r.max_members, '</span></div>\n      <div class="ww-goal"><div class="ww-bar"><i style="width:').concat(pct.toFixed(1), '%"></i></div>\n      <p><b>').concat(wwNum(coop), "</b> di ").concat(wwNum(r.goal_steps), " passi insieme").concat(st.coop_verified_steps !== coop ? " \xB7 ".concat(wwNum(st.coop_verified_steps), " verificati") : "").concat(pct >= 100 ? " \xB7 obiettivo raggiunto!" : "", "</p></div>\n      ").concat(WW.chanOk ? "" : '<p class="ww-note">Collegamento alla stanza in corso\u2026</p>', "\n    </section>\n    ").concat(calling.length && !WW.call ? '<div class="ww-ring-in"><span>'.concat(esc(calling.map((m) => m.name).join(", ")), " ").concat(calling.length === 1 ? "\xE8" : "sono", ' in chiamata</span><button class="btn primary small" type="button" id="wwJoinCall">Entra</button></div>') : "", '\n    <div class="ww-card ww-callbox">').concat(WW.call && WW.call.room === r.id ? wwCallHtml() : '\n      <div class="ww-callbtns">\n        <button class="btn primary" id="wwAudio" type="button">'.concat(wwMicIco(), 'Chiamata vocale<small>consigliata mentre cammini</small></button>\n        <button class="btn ghost" id="wwVideo" type="button">').concat(wwCamIco(), 'Videochiamata</button>\n      </div>\n      <p class="note" id="wwCallNote">').concat(WW.sfu === false ? "Chiamata diretta tra due persone. Le chiamate di gruppo si attivano quando il server delle chiamate \xE8 configurato." : "Solo i membri della stanza possono entrare nella chiamata.", "</p>"), '\n    </div>\n    <div class="ww-card">').concat(WW.sess && WW.sess.room_id === r.id ? wwMonitorHtml() : '<button class="btn primary" id="wwRoomWalk" type="button">'.concat(wwWalkIco(), 'Inizia a camminare qui</button>\n      <p class="note">I tuoi passi della camminata si sommano a quelli del gruppo.</p>'), '</div>\n    <div class="section"><div class="label">Nella stanza</div><ol class="ww-list">').concat(mem.map((m) => {
+    const o = WW.online[m.user_id], you = m.user_id === me;
+    return '<li class="'.concat(m.blocked ? "ww-blocked" : "", '">').concat(avatar(m.name), '<span class="who"><b>').concat(esc(m.name)).concat(you ? " (tu)" : "", "</b><small>").concat(m.blocked ? "bloccato" : [o || you ? "online" : "non connesso", m.walking ? "sta camminando" : "", o && o.call ? o.call === "video" ? "in video" : "in chiamata" : ""].filter(Boolean).join(" \xB7 "), " \xB7 ").concat(wwNum(m.steps), " passi</small></span>\n        ").concat(you ? "" : '<button class="ww-more" type="button" data-user="'.concat(m.user_id, '" data-name="').concat(esc(m.name), '" aria-label="Altro">\u22EF</button>'), "</li>");
+  }).join(""), "</ol></div>\n    ").concat(fr.length && mem.length < r.max_members ? '<div class="section"><div class="label">Invita i tuoi amici</div><ol class="ww-list">'.concat(fr.map((f) => "<li>".concat(avatar(f.name), '<span class="who"><b>').concat(esc(f.name), '</b></span><button class="btn ghost small" type="button" data-rinv="').concat(f.user_id, '">Invita</button></li>')).join(""), "</ol></div>") : !fr.length ? '<p class="note">Per invitare qualcuno qui, prima aggiungilo agli amici dalla pagina Cammina.</p>' : "", '\n    <button class="btn ghost ww-leave" id="wwLeave" type="button">').concat(owner ? "Chiudi la stanza" : "Esci dalla stanza", '</button>\n    <p class="note ww-msg" id="wwMsg" ').concat(WW.msg ? "" : "hidden", ">").concat(esc(WW.msg), "</p>\n  </div>");
+  WW.msg = "";
+  if (keep) {
+    const n = $("wwCall");
+    if (n) {
+      n.replaceWith(keep);
+      window.scrollTo(0, y);
+    }
+  }
+  $("back").onclick = () => wwLeaveScreen();
+  const on = (i, f) => {
+    const b = $(i);
+    if (b) b.onclick = f;
+  };
+  on("wwAudio", () => wwStartCall("audio"));
+  on("wwVideo", () => wwStartCall("video"));
+  on("wwJoinCall", () => wwStartCall(calling.some((m) => WW.online[m.user_id].call === "video") && WW.consent.cam ? "video" : "audio"));
+  on("wwRoomWalk", () => wwStart(r.id));
+  on("wwLeave", async () => {
+    if (!confirm(owner ? "Chiudere la stanza per tutti?" : "Uscire dalla stanza?")) return;
+    try {
+      if (WW.call) wwHangup();
+      await wwRpc("walk_leave_room", { p_room: r.id });
+      if (WW.sess && WW.sess.room_id === r.id) wwStopLocal();
+      wwChanLeave();
+      WW.room = null;
+      await wwLoad(true);
+      go({ name: "walk" });
+    } catch (e) {
+      wwSay(wwErrText(e));
+    }
+  });
+  app.querySelectorAll("[data-rinv]").forEach((b) => b.onclick = async () => {
+    try {
+      await wwRpc("walk_invite_to_room", { p_room: r.id, p_user: b.dataset.rinv });
+      b.disabled = true;
+      b.textContent = "Invitato";
+    } catch (e) {
+      wwSay(wwErrText(e));
+    }
+  });
+  app.querySelectorAll(".ww-more").forEach((b) => b.onclick = () => wwUserMenu(b.dataset.user, b.dataset.name, r.id));
+  wireMonitor();
+  wireCall();
+}
+function wwLeaveScreen() {
+  go({ name: "walk" });
+  if (!WW.call && !(WW.sess && WW.sess.room_id)) {
+    wwChanLeave();
+    WW.room = null;
+  }
+}
+let wwRoomQ = 0;
+async function wwRoomRefresh() {
+  const id = WW.room;
+  if (!id) return;
+  clearTimeout(wwRoomQ);
+  try {
+    WW.state = await wwRpc("walk_room_state", { p_room: id });
+    WW.err = "";
+    if (!WW.home) await wwLoad(true);
+  } catch (e) {
+    WW.err = wwErrText(e);
+    if (/stanza non trovata/i.test(WW.err)) {
+      WW.msg = "Questa stanza non \xE8 pi\xF9 disponibile.";
+      if (WW.call) wwHangup();
+      wwChanLeave();
+      WW.room = null;
+      await wwLoad(true);
+      if (route.name === "walk-room") go({ name: "walk" });
+      return;
+    }
+  }
+  if (route.name === "walk-room" && route.id === id && !wwTyping()) renderWalkRoom();
+  wwRoomQ = setTimeout(wwRoomRefresh, 2e4);
+}
+const wwTyping = () => {
+  const a = document.activeElement;
+  return a && /INPUT|TEXTAREA|SELECT/.test(a.tagName) && app.contains(a);
+};
+let wwPaintQ = 0;
+function wwPaintRoom() {
+  clearTimeout(wwPaintQ);
+  wwPaintQ = setTimeout(() => {
+    if (route.name === "walk-room" && WW.state && !wwTyping()) renderWalkRoom();
+  }, 150);
+}
+async function wwChanJoin(roomId) {
+  wwChanLeave();
+  try {
+    const sb = await sbClient(), tok = await wwToken();
+    if (tok) sb.realtime.setAuth(tok);
+    const me = ACC.user.id;
+    const ch = sb.channel("walk:" + roomId, { config: { private: true, broadcast: { self: false, ack: false }, presence: { key: me } } });
+    ch.on("presence", { event: "sync" }, () => {
+      const ps = ch.presenceState(), on = {};
+      for (const [k, arr] of Object.entries(ps)) if (k !== me && arr && arr[0]) on[k] = { call: arr[0].call === "video" || arr[0].call === "audio" ? arr[0].call : null, walking: !!arr[0].walking };
+      WW.online = on;
+      wwPaintRoom();
+      if (WW.call) wwCallPaint();
+    });
+    ch.on("broadcast", { event: "sig" }, ({ payload }) => wwSignal(payload));
+    ch.on("broadcast", { event: "room" }, () => wwRoomRefresh());
+    ch.subscribe((st) => {
+      if (WW.chan !== ch) return;
+      if (st === "SUBSCRIBED") {
+        WW.chanOk = true;
+        ch.track(wwPresence());
+        wwPaintRoom();
+      } else if (st === "CHANNEL_ERROR" || st === "TIMED_OUT" || st === "CLOSED") {
+        WW.chanOk = false;
+        wwPaintRoom();
+      }
+    });
+    WW.chan = ch;
+    WW.chanRoom = roomId;
+  } catch (e) {
+    WW.chanOk = false;
+    reportBug("walk", "warning", "walk_channel_failed", { m: String(e && e.message || e).slice(0, 120) });
+  }
+}
+function wwChanLeave() {
+  const ch = WW.chan;
+  WW.chan = null;
+  WW.chanOk = false;
+  WW.online = {};
+  WW.chanRoom = null;
+  if (ch) try {
+    ch.unsubscribe();
+    ACC.sb && ACC.sb.removeChannel(ch);
+  } catch (e) {
+  }
+}
+const wwPresence = () => ({ walking: !!(WW.sess && WW.sess.room_id === WW.chanRoom), call: WW.call ? WW.call.mode : null });
+function wwTrack() {
+  if (WW.chan && WW.chanOk) try {
+    WW.chan.track(wwPresence());
+  } catch (e) {
+  }
+}
+let wwSend = (event, payload) => {
+  if (WW.chan) return WW.chan.send({ type: "broadcast", event, payload });
+};
+const wwIsMember = (uid) => !!(WW.state && (WW.state.members || []).some((m) => m.user_id === uid && !m.blocked));
+function wwWalkIco() {
+  return '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="13" cy="4" r="2"/><path d="M10 21l2-6 3 3v3M8 12l2-4 4 1 2 4 3 1M10 8l-2 6"/></svg>';
+}
+function wwRoomIco() {
+  return '<span class="dz-av ww-rav"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20c.7-3.5 3-5 6-5s5.3 1.5 6 5M15 15c3 0 5 1.5 6 4.5"/></svg></span>';
+}
+function wwMicIco() {
+  return '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>';
+}
+function wwCamIco() {
+  return '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="M16 10l5-3v10l-5-3"/></svg>';
+}
+function wwMonitorHtml() {
+  const s = WW.sess, r = WW.lastRes || {}, live = s.source === "web_motion" ? Math.max(s.steps | 0, WW.webSteps) : s.steps | 0;
+  const secs = Math.max(0, Math.floor((Date.now() - Date.parse(s.started_at)) / 1e3));
+  return '<div class="ww-mon" id="wwMon">\n    <div class="ww-mon-top"><span class="ww-live"><i></i>In cammino</span><b id="wwTime">'.concat(fmt(secs), '</b></div>\n    <div class="ww-mon-row"><div><b id="wwSteps">').concat(wwNum(live), '</b><small>passi</small></div><div><b id="wwPts">').concat(s.verified ? "+" + (s.points | 0) : "\u2014", "</b><small>WalkPoints</small></div><div><b>").concat(s.verified ? "\u2713" : "\u2248", "</b><small>").concat(s.verified ? "verificati" : "stimati", '</small></div></div>\n    <p class="note" id="wwMonNote">').concat(esc(wwMonNote()), '</p>\n    <button class="btn ghost" id="wwStop" type="button">Fine camminata</button>\n  </div>');
+}
+function wwMonNote() {
+  const s = WW.sess, r = WW.lastRes;
+  if (WW.pend && WW.pendErr) return "Non riesco a mandare i passi: riprovo da solo appena torna la connessione.";
+  if (r && r.reason === "troppo veloce") return "Troppi passi in pochissimo tempo: quell'aggiornamento non \xE8 stato contato.";
+  if (r && r.today_points >= r.daily_point_cap) return "Hai raggiunto i WalkPoints di oggi: i passi contano comunque per te e per il gruppo.";
+  if (!s.verified) return wwHealth() ? "Passi stimati: attiva i dati salute per i WalkPoints." : "Sul sito i passi si contano solo con FitQuest aperta e lo schermo acceso, e non danno WalkPoints.";
+  return "Passi da ".concat(wwSrcName(s.source), ": puoi anche mettere il telefono in tasca.");
+}
+function wireMonitor() {
+  const b = $("wwStop");
+  if (b) b.onclick = () => wwStop();
+}
+function wwMonPaint() {
+  const s = WW.sess;
+  if (!s) return;
+  const t = $("wwTime");
+  if (t) t.textContent = fmt(Math.max(0, Math.floor((Date.now() - Date.parse(s.started_at)) / 1e3)));
+  const n = $("wwSteps");
+  if (n) n.textContent = wwNum(s.source === "web_motion" ? Math.max(s.steps | 0, WW.webSteps) : s.steps | 0);
+  const p = $("wwPts");
+  if (p && s.verified) p.textContent = "+" + (s.points | 0);
+  const m = $("wwMonNote");
+  if (m) m.textContent = wwMonNote();
+}
+async function wwStart(roomId) {
+  if (offline()) return wwSay("Serve internet per iniziare la camminata.");
+  let src = wwSource();
+  if (src !== "web_motion" && !(WW.home && WW.home.me && WW.home.me.health_consent_at)) {
+    if (!confirm("Per i WalkPoints FitQuest legge i passi da " + wwSrcName(src) + " durante la camminata. Vuoi dare il permesso?") || !await wwHealthOn()) {
+      return wwSay("Senza il permesso ai passi la camminata nell'app non pu\xF2 contare i passi. Puoi attivarlo in Privacy e permessi.");
+    }
+  }
+  if (src === "web_motion") {
+    if (typeof DeviceMotionEvent === "undefined") return wwSay("Questo telefono non ha un sensore di movimento utilizzabile dal sito: usa l'app FitQuest.");
+    if (stepsNeedsAsk()) {
+      let r = "denied";
+      try {
+        r = await DeviceMotionEvent.requestPermission();
+      } catch (e) {
+      }
+      if (r !== "granted") return wwSay("Serve il permesso al sensore di movimento per stimare i passi.");
+    }
+    stepsMotionStart();
+  }
+  try {
+    const s = await wwRpc("walk_start_session", { p_source: src, p_room: roomId });
+    wwResume(s);
+    if (roomId) {
+      wwTrack();
+      wwSend("room", { t: "walk" });
+    }
+  } catch (e) {
+    return wwSay(wwErrText(e));
+  }
+  route.name === "walk-room" ? wwRoomRefresh() : renderWalk();
+}
+function wwResume(s) {
+  WW.sess = s;
+  WW.pend = null;
+  WW.pendErr = false;
+  WW.lastRes = null;
+  WW.webSteps = s.source === "web_motion" ? s.steps | 0 : 0;
+  if (s.source === "web_motion") stepsMotionStart();
+  clearInterval(WW.tickT);
+  WW.tickT = setInterval(wwMonPaint, 1e3);
+  clearTimeout(WW.syncT);
+  WW.syncT = setTimeout(wwSync, 2e4);
+}
+function wwStopLocal() {
+  clearInterval(WW.tickT);
+  clearTimeout(WW.syncT);
+  const had = WW.sess && WW.sess.room_id;
+  WW.sess = null;
+  WW.pend = null;
+  if (had) wwTrack();
+}
+async function wwCumulative() {
+  const s = WW.sess;
+  if (s.source === "web_motion") return WW.webSteps | 0;
+  return Math.max(0, Math.round(await FitQuestHealth.rangeSteps(s.started_at, (/* @__PURE__ */ new Date()).toISOString())) || 0);
+}
+async function wwSync(end) {
+  const s = WW.sess;
+  if (!s) return;
+  clearTimeout(WW.syncT);
+  if (WW.sending) {
+    if (!end) WW.syncT = setTimeout(wwSync, 5e3);
+    return;
+  }
+  WW.sending = true;
+  try {
+    if (!WW.pend) WW.pend = { seq: (s.last_seq | 0) + 1, cum: await wwCumulative() };
+    else if (s.source !== "web_motion" || end) WW.pend.cum = Math.max(WW.pend.cum, await wwCumulative());
+    const r = await wwRpc("walk_submit_steps", { p_session: s.id, p_seq: WW.pend.seq, p_cumulative: WW.pend.cum, p_end: !!end });
+    WW.pend = null;
+    WW.pendErr = false;
+    WW.lastRes = r;
+    if (WW.sess === s) {
+      s.last_seq = (s.last_seq | 0) + 1;
+      s.steps = r.session_steps;
+      s.points = r.session_points;
+    }
+    if (WW.home) WW.home.today = { ...WW.home.today, ...r };
+    if (r.status === "ended") wwStopLocal();
+    if (s.room_id && r.delta) {
+      wwSend("room", { t: "steps" });
+      if (route.name === "walk-room" && WW.room === s.room_id) wwRoomRefresh();
+    }
+  } catch (e) {
+    const m = String(e && e.message || e);
+    if (/sequenza non valida|sessione chiusa|sessione non trovata/i.test(m)) {
+      WW.pend = null;
+      await wwLoad(true);
+      if (!WW.home || !WW.home.active_session) wwStopLocal();
+    } else {
+      WW.pendErr = true;
+      if (end) throw e;
+    }
+  } finally {
+    WW.sending = false;
+  }
+  if (WW.sess === s) WW.syncT = setTimeout(wwSync, document.hidden ? 6e4 : 3e4);
+  wwMonPaint();
+}
+async function wwStop() {
+  const s = WW.sess;
+  if (!s) return;
+  const b = $("wwStop");
+  if (b) {
+    b.disabled = true;
+    b.textContent = "Salvo i passi\u2026";
+  }
+  try {
+    await wwSync(true);
+    if (WW.sess === s) {
+      await wwRpc("walk_end_session", { p_session: s.id });
+      wwStopLocal();
+    }
+  } catch (e) {
+    try {
+      await wwRpc("walk_end_session", { p_session: s.id });
+    } catch (e2) {
+    }
+    wwStopLocal();
+    WW.msg = "Camminata chiusa: gli ultimi passi non sono arrivati al server.";
+  }
+  const r = WW.lastRes;
+  if (r && !WW.msg) WW.msg = s.verified ? "Camminata finita: ".concat(wwNum(r.session_steps), " passi, +").concat(r.session_points | 0, " WalkPoints.") : "Camminata finita: circa ".concat(wwNum(r.session_steps), " passi (stimati, senza WalkPoints).");
+  if (s.room_id) {
+    wwTrack();
+    wwSend("room", { t: "walk" });
+  }
+  await wwLoad(true);
+  route.name === "walk-room" ? wwRoomRefresh() : route.name === "walk" ? renderWalk() : 0;
+}
+document.addEventListener("visibilitychange", () => {
+  if (!document.hidden && WW.sess) wwSync();
+});
+function wwCallHtml() {
+  const c = WW.call;
+  return '<div class="ww-call" id="wwCall"><div class="ww-tiles" id="wwTiles"></div>\n    <p class="note" id="wwCallMsg">'.concat(esc(c.msg || ""), '</p>\n    <div class="ww-callctl">\n      <button class="ww-cb ').concat(c.mic ? "" : "off", '" id="wwMute" type="button" aria-label="Microfono">').concat(wwMicIco(), '</button>\n      <button class="ww-cb ').concat(c.cam ? "" : "off", '" id="wwCam" type="button" aria-label="Fotocamera">').concat(wwCamIco(), '</button>\n      <button class="ww-cb end" id="wwEnd" type="button" aria-label="Chiudi chiamata"><svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M12 9c-3.3 0-6.3 1-8.6 2.8-.6.5-.7 1.4-.2 2l1.5 1.8c.4.5 1.2.6 1.8.3l2.2-1.2c.4-.2.7-.7.7-1.2V12c1.7-.4 3.5-.4 5.2 0v1.5c0 .5.3 1 .7 1.2l2.2 1.2c.6.3 1.4.2 1.8-.3l1.5-1.8c.5-.6.4-1.5-.2-2C18.3 10 15.3 9 12 9z"/></svg></button>\n    </div>').concat(c.mode === "video" ? '<p class="note">Mentre cammini guarda la strada: la chiamata vocale consuma meno e distrae meno.</p>' : "", "</div>");
+}
+function wwCallPillHtml() {
+  return '<button class="ww-pill" id="wwPill" type="button"><i></i>In chiamata \xB7 torna alla stanza</button>';
+}
+function wireCallPill() {
+  const p = $("wwPill");
+  if (p) p.onclick = () => go({ name: "walk-room", id: WW.call.room });
+}
+function wireCall() {
+  const on = (i, f) => {
+    const b = $(i);
+    if (b) b.onclick = f;
+  };
+  on("wwMute", () => wwSetMic(!WW.call.mic));
+  on("wwCam", () => wwSetCam(!WW.call.cam));
+  on("wwEnd", () => wwHangup());
+  wireCallPill();
+  wwCallPaint();
+}
+function wwCallPaint() {
+  const c = WW.call;
+  if (!c) return;
+  let sink = $("wwSink");
+  if (!sink) {
+    sink = document.createElement("div");
+    sink.id = "wwSink";
+    sink.hidden = true;
+    document.body.append(sink);
+  }
+  for (const a of [...sink.children]) if (!c.remote[a.dataset.uid]) a.remove();
+  for (const [uid, s] of Object.entries(c.remote)) {
+    let a = sink.querySelector('[data-uid="'.concat(uid, '"]'));
+    if (!a) {
+      a = document.createElement("audio");
+      a.autoplay = true;
+      a.dataset.uid = uid;
+      sink.append(a);
+    }
+    if (a.srcObject !== s) {
+      a.srcObject = s;
+      a.play().catch(() => {
+        c.msg = "Tocca lo schermo per sentire gli altri.";
+      });
+    }
+  }
+  const box = $("wwTiles");
+  if (!box) return;
+  const names = {};
+  for (const m2 of WW.state && WW.state.members || []) names[m2.user_id] = m2.name;
+  const want = [ACC.user.id, ...Object.keys(c.remote)];
+  for (const el of [...box.children]) if (!want.includes(el.dataset.uid)) el.remove();
+  for (const uid of want) {
+    let t = box.querySelector('[data-uid="'.concat(uid, '"]'));
+    if (!t) {
+      t = document.createElement("div");
+      t.className = "ww-tile";
+      t.dataset.uid = uid;
+      t.innerHTML = "<video playsinline autoplay muted></video>".concat(avatar(names[uid] || "?", "big"), '<span class="nm"></span>');
+      box.append(t);
+    }
+    const v = t.querySelector("video"), s = uid === ACC.user.id ? c.local : c.remote[uid];
+    if (s && v.srcObject !== s) {
+      v.srcObject = s;
+      v.play().catch(() => {
+        c.msg = "Tocca lo schermo per sentire gli altri.";
+      });
+    }
+    const hasVid = !!(s && s.getVideoTracks().some((tr2) => tr2.enabled && tr2.readyState === "live" && !tr2.muted)) && (uid !== ACC.user.id || c.cam);
+    t.classList.toggle("vid", hasVid);
+    t.querySelector(".nm").textContent = uid === ACC.user.id ? "Tu" : names[uid] || "Amico";
+  }
+  const m = $("wwCallMsg");
+  if (m) {
+    m.textContent = c.msg || (Object.keys(c.remote).length ? "" : "In attesa che entri qualcuno\u2026");
+    m.hidden = !m.textContent;
+  }
+}
+document.addEventListener("click", () => {
+  const c = WW.call;
+  if (!c) return;
+  document.querySelectorAll(".ww-tile video, #wwSink audio").forEach((v) => {
+    if (v.paused && v.srcObject) v.play().catch(() => {
+    });
+  });
+});
+async function wwAskMedia(mode) {
+  if (!WW.consent.mic) {
+    if (!confirm("Per la chiamata FitQuest usa il microfono, solo mentre sei in chiamata. Vuoi continuare?")) return null;
+    wwConsentSet({ mic: true });
+  }
+  let cam = mode === "video";
+  if (cam && !WW.consent.cam) {
+    if (confirm("Per la videochiamata FitQuest usa la fotocamera, solo mentre sei in chiamata. Vuoi attivarla?")) wwConsentSet({ cam: true });
+    else cam = false;
+  }
+  return cam ? "video" : "audio";
+}
+async function wwStartCall(mode0) {
+  if (WW.call) return;
+  if (offline()) return wwSay("Serve internet per la chiamata.");
+  const r = WW.state && WW.state.room;
+  if (!r) return;
+  const mode = await wwAskMedia(mode0);
+  if (!mode) return;
+  const note = $("wwCallNote");
+  if (note) note.textContent = "Mi collego\u2026";
+  let tk = null;
+  try {
+    const tok = await wwToken();
+    const res = await fetch(SB_URL + "/functions/v1/walk-call", { method: "POST", headers: { Authorization: "Bearer " + tok, apikey: SB_KEY, "Content-Type": "application/json" }, body: JSON.stringify({ room: r.id }) });
+    const j = await res.json().catch(() => ({}));
+    if (res.ok && j.configured && j.token) {
+      tk = j;
+      WW.sfu = true;
+    } else if (res.status === 503 || j.configured === false) WW.sfu = false;
+    else if (res.status === 403) return wwSay("Non fai pi\xF9 parte di questa stanza.");
+    else WW.sfu = false;
+  } catch (e) {
+    WW.sfu = false;
+  }
+  try {
+    if (tk) await wwSfuJoin(r.id, mode, tk);
+    else {
+      const inCall = Object.values(WW.online).filter((o) => o.call).length;
+      if (inCall >= 2) {
+        if (note) note.textContent = "Ci sono gi\xE0 due persone in chiamata: le chiamate di gruppo si attivano quando il server delle chiamate \xE8 configurato.";
+        return;
+      }
+      await wwP2pJoin(r.id, mode);
+    }
+  } catch (e) {
+    wwHangup(true);
+    const m = String(e && e.name || "") + " " + String(e && e.message || e);
+    wwSay(/NotAllowed|Permission/i.test(m) ? "Il telefono non ha dato il permesso al microfono o alla fotocamera: attivalo nelle impostazioni del telefono." : /NotFound/i.test(m) ? "Microfono non trovato." : "Chiamata non riuscita: " + wwErrText(e));
+    return;
+  }
+  wwTrack();
+  if (route.name === "walk-room") renderWalkRoom();
+}
+function wwCallNew(room, mode, kind) {
+  WW.call = { room, mode, kind, mic: true, cam: mode === "video", local: null, remote: {}, pcs: {}, msg: "", lk: null };
+  return WW.call;
+}
+async function wwGetLocal(mode) {
+  return navigator.mediaDevices.getUserMedia({
+    audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true },
+    video: mode === "video" ? { facingMode: "user", width: { ideal: 640 }, height: { ideal: 480 }, frameRate: { ideal: 20 } } : false
+  });
+}
+function wwSetMic(on) {
+  const c = WW.call;
+  if (!c) return;
+  c.mic = on;
+  if (c.kind === "sfu" && c.lk) c.lk.localParticipant.setMicrophoneEnabled(on).catch(() => {
+  });
+  else if (c.local) c.local.getAudioTracks().forEach((t) => t.enabled = on);
+  const b = $("wwMute");
+  if (b) b.classList.toggle("off", !on);
+}
+async function wwSetCam(on) {
+  const c = WW.call;
+  if (!c) return;
+  if (on && !WW.consent.cam) {
+    if (!confirm("Attivare la fotocamera per questa videochiamata?")) return;
+    wwConsentSet({ cam: true });
+  }
+  c.cam = on;
+  try {
+    if (c.kind === "sfu" && c.lk) {
+      await c.lk.localParticipant.setCameraEnabled(on);
+      c.local = wwSfuLocalStream(c.lk);
+    } else if (c.local) {
+      let vt = c.local.getVideoTracks()[0];
+      if (on && !vt) {
+        const s = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user", width: { ideal: 640 }, height: { ideal: 480 } } });
+        vt = s.getVideoTracks()[0];
+        c.local.addTrack(vt);
+        for (const pc of Object.values(c.pcs)) pc.addTrack(vt, c.local);
+      } else if (vt) vt.enabled = on;
+    }
+    c.mode = on ? "video" : "audio";
+    wwTrack();
+  } catch (e) {
+    c.cam = false;
+    c.msg = "Fotocamera non disponibile.";
+  }
+  const b = $("wwCam");
+  if (b) b.classList.toggle("off", !c.cam);
+  wwCallPaint();
+}
+function wwHangup(quiet) {
+  const c = WW.call;
+  if (!c) return;
+  WW.call = null;
+  try {
+    if (c.kind === "p2p") wwSend("sig", { from: ACC.user.id, to: "*", k: "bye" });
+  } catch (e) {
+  }
+  for (const pc of Object.values(c.pcs)) try {
+    pc.close();
+  } catch (e) {
+  }
+  if (c.local) c.local.getTracks().forEach((t) => t.stop());
+  if (c.lk) try {
+    c.lk.disconnect();
+  } catch (e) {
+  }
+  const sink = $("wwSink");
+  if (sink) sink.remove();
+  wwTrack();
+  if (!quiet && route.name === "walk-room") renderWalkRoom();
+  else if (route.name === "walk") renderWalk();
+}
+async function wwP2pJoin(room, mode) {
+  const local = await wwGetLocal(mode);
+  const c = wwCallNew(room, mode, "p2p");
+  c.local = local;
+  wwSend("sig", { from: ACC.user.id, to: "*", k: "join" });
+  c.msg = "";
+}
+function wwPc(uid) {
+  const c = WW.call, me = ACC.user.id;
+  if (c.pcs[uid]) return c.pcs[uid];
+  const pc = new RTCPeerConnection({ iceServers: WW_ICE });
+  c.pcs[uid] = pc;
+  c.local.getTracks().forEach((t) => pc.addTrack(t, c.local));
+  pc.onicecandidate = (e) => {
+    if (e.candidate) wwSend("sig", { from: me, to: uid, k: "ice", c: e.candidate.toJSON() });
+  };
+  pc.ontrack = (e) => {
+    c.remote[uid] = e.streams[0] || new MediaStream([e.track]);
+    e.track.onunmute = () => wwCallPaint();
+    wwCallPaint();
+  };
+  pc.onnegotiationneeded = async () => {
+    if (me < uid || pc.remoteDescription) {
+      try {
+        await pc.setLocalDescription(await pc.createOffer());
+        wwSend("sig", { from: me, to: uid, k: "offer", d: pc.localDescription.toJSON() });
+      } catch (e) {
+      }
+    }
+  };
+  pc.onconnectionstatechange = () => {
+    const s = pc.connectionState;
+    if (s === "failed") {
+      c.msg = "La rete blocca la chiamata diretta. Con il server delle chiamate (TURN) funzioner\xE0 anche qui.";
+      wwPcDrop(uid);
+    } else if (s === "disconnected") c.msg = "Connessione instabile\u2026";
+    else if (s === "connected") c.msg = "";
+    wwCallPaint();
+  };
+  return pc;
+}
+function wwPcDrop(uid) {
+  const c = WW.call;
+  if (!c) return;
+  try {
+    c.pcs[uid] && c.pcs[uid].close();
+  } catch (e) {
+  }
+  delete c.pcs[uid];
+  delete c.remote[uid];
+  wwCallPaint();
+}
+async function wwSignal(p) {
+  const c = WW.call, me = ACC.user && ACC.user.id;
+  if (!p || typeof p !== "object" || !me || p.from === me || p.to !== "*" && p.to !== me) return;
+  if (!wwIsMember(p.from)) return;
+  if (!c || c.kind !== "p2p") return;
+  const uid = p.from, peers = Object.keys(c.pcs);
+  try {
+    if (p.k === "bye") return wwPcDrop(uid);
+    if (p.k === "join" || p.k === "here") {
+      if (peers.length && !c.pcs[uid]) {
+        wwSend("sig", { from: me, to: uid, k: "busy" });
+        return;
+      }
+      if (me < uid) {
+        const pc2 = wwPc(uid);
+        if (!pc2.localDescription) {
+          await pc2.setLocalDescription(await pc2.createOffer());
+          wwSend("sig", { from: me, to: uid, k: "offer", d: pc2.localDescription.toJSON() });
+        }
+      } else if (p.k === "join") wwSend("sig", { from: me, to: uid, k: "here" });
+      return;
+    }
+    if (p.k === "busy") {
+      c.msg = "Ci sono gi\xE0 due persone in chiamata: le chiamate di gruppo si attivano quando il server delle chiamate \xE8 configurato.";
+      wwCallPaint();
+      return;
+    }
+    if (p.k === "offer" && p.d && p.d.type === "offer") {
+      if (peers.length && !c.pcs[uid]) {
+        wwSend("sig", { from: me, to: uid, k: "busy" });
+        return;
+      }
+      const pc2 = wwPc(uid);
+      await pc2.setRemoteDescription(p.d);
+      await pc2.setLocalDescription(await pc2.createAnswer());
+      wwSend("sig", { from: me, to: uid, k: "answer", d: pc2.localDescription.toJSON() });
+      for (const x of pc2._q || []) await pc2.addIceCandidate(x).catch(() => {
+      });
+      pc2._q = [];
+      return;
+    }
+    const pc = c.pcs[uid];
+    if (!pc) return;
+    if (p.k === "answer" && p.d && p.d.type === "answer") {
+      await pc.setRemoteDescription(p.d);
+      for (const x of pc._q || []) await pc.addIceCandidate(x).catch(() => {
+      });
+      pc._q = [];
+    }
+    if (p.k === "ice" && p.c) {
+      if (pc.remoteDescription) await pc.addIceCandidate(p.c).catch(() => {
+      });
+      else (pc._q = pc._q || []).push(p.c);
+    }
+  } catch (e) {
+    reportBug("walk", "warning", "walk_p2p_signal", { k: p.k, m: String(e && e.message || e).slice(0, 120) });
+  }
+}
+async function wwSfuJoin(room, mode, tk) {
+  if (!window.LivekitClient) await loadScript("livekit-client.min.js");
+  const L2 = window.LivekitClient;
+  const lk = new L2.Room({ adaptiveStream: true, dynacast: true, audioCaptureDefaults: { echoCancellation: true, noiseSuppression: true, autoGainControl: true } });
+  const c = wwCallNew(room, mode, "sfu");
+  c.lk = lk;
+  const upd = () => {
+    if (WW.call !== c) return;
+    c.remote = {};
+    for (const p of lk.remoteParticipants.values()) {
+      if (!wwIsMember(p.identity)) continue;
+      const s = new MediaStream();
+      for (const pub of p.trackPublications.values()) if (pub.track && pub.isSubscribed && pub.track.mediaStreamTrack) s.addTrack(pub.track.mediaStreamTrack);
+      c.remote[p.identity] = s;
+    }
+    c.local = wwSfuLocalStream(lk);
+    wwCallPaint();
+  };
+  lk.on(L2.RoomEvent.TrackSubscribed, (track, pub, part) => {
+    if (!wwIsMember(part.identity)) {
+      try {
+        pub.setSubscribed(false);
+      } catch (e) {
+      }
+      return;
+    }
+    upd();
+  }).on(L2.RoomEvent.TrackUnsubscribed, upd).on(L2.RoomEvent.TrackMuted, upd).on(L2.RoomEvent.TrackUnmuted, upd).on(L2.RoomEvent.ParticipantConnected, upd).on(L2.RoomEvent.ParticipantDisconnected, upd).on(L2.RoomEvent.LocalTrackPublished, upd).on(L2.RoomEvent.Reconnecting, () => {
+    c.msg = "Connessione instabile\u2026";
+    wwCallPaint();
+  }).on(L2.RoomEvent.Reconnected, () => {
+    c.msg = "";
+    wwCallPaint();
+  }).on(L2.RoomEvent.Disconnected, () => {
+    if (WW.call === c) wwHangup();
+  });
+  await lk.connect(tk.url, tk.token);
+  await lk.localParticipant.setMicrophoneEnabled(true);
+  if (mode === "video") await lk.localParticipant.setCameraEnabled(true);
+  upd();
+}
+function wwSfuLocalStream(lk) {
+  const s = new MediaStream();
+  for (const pub of lk.localParticipant.trackPublications.values()) if (pub.track && pub.track.mediaStreamTrack) s.addTrack(pub.track.mediaStreamTrack);
+  return s;
+}
+function wwSfuMute(uid) {
+  const c = WW.call;
+  if (!c || !c.lk) return;
+  const p = [...c.lk.remoteParticipants.values()].find((x) => x.identity === uid);
+  if (p) for (const pub of p.trackPublications.values()) try {
+    pub.setSubscribed(false);
+  } catch (e) {
+  }
+  delete c.remote[uid];
+  wwCallPaint();
+}
+function wwOnAuth() {
+  if (!ACC.user) {
+    if (WW.call) wwHangup(true);
+    wwChanLeave();
+    wwStopLocal();
+    WW.home = null;
+    WW.room = null;
+  } else if (WW_TABS.includes(route.name)) wwLoad(true).then(() => route.name === "walk" && renderWalk());
+}
+addEventListener("online", () => {
+  if (route.name === "walk") renderWalk();
+});
+function wwPillSync() {
+  let p = document.getElementById("wwPillG");
+  const show = !!(WW.call && !WW_TABS.includes(route.name) && route.name !== "onboard");
+  if (!show) {
+    if (p) p.remove();
+    return;
+  }
+  if (!p) {
+    p = document.createElement("button");
+    p.id = "wwPillG";
+    p.type = "button";
+    p.className = "ww-pill";
+    p.innerHTML = "<i></i>In chiamata \xB7 torna alla stanza";
+    p.onclick = () => go({ name: "walk-room", id: WW.call.room });
+    document.body.append(p);
+  }
+}
 const SB_URL = "https://maypmqnjkdrdqcssnvty.supabase.co";
 const SB_KEY = "sb_publishable_uorMl6G618tavZGF8MQpfQ_2Pg3AIlE";
-const APP_VER = "web-v54";
+const APP_VER = "web-v55";
 const SYNC_SKIP = ["lite", "vpack", "rndInv"];
 const ACC = { sb: null, user: null, loading: null, busy: false, msg: "", err: false, timer: null, mode: "login" };
 const syncInfo = () => {
@@ -7080,6 +8223,7 @@ async function sbClient() {
       ACC.user = session2 ? session2.user : null;
       if (ACC.user && ACC.user.id !== was) setTimeout(() => accFirstSync().catch((e) => reportBug("sync", "error", "first_sync_failed", { m: String(e && e.message || e).slice(0, 120) })), 0);
       if (route.name === "profile") accRefresh();
+      if ((ACC.user && ACC.user.id) !== was) wwOnAuth();
     });
     const { data } = await sb.auth.getSession();
     ACC.user = data && data.session ? data.session.user : null;
