@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>FitQuest · Premi dei giochi</title>
+<link rel="icon" href="../icons/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root { --bg:#f3f5f9; --panel:#fff; --line:#e1e6ee; --fg:#16202c; --muted:#667283; --acc:#2e86de; --soft:#e6f1fc; --ok:#24a148; --bad:#e0473a; --gold:#c9971c; --pro:#b02a91; --prosoft:#f8e6f3;
+  --f-display:"Barlow Condensed","Arial Narrow",sans-serif; --f-body:"Barlow",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; color-scheme: light; }
+@media (prefers-color-scheme: dark) { :root { --bg:#0b1220; --panel:#151e2d; --line:#27344b; --fg:#eef2f8; --muted:#9aa8bb; --soft:#16304d; --prosoft:#3a1733; color-scheme: dark; } }
+* { box-sizing: border-box; }
+body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.45 var(--f-body); }
+main { max-width:880px; margin:0 auto; padding:18px 16px 60px; }
+h1,h2 { font-family:var(--f-display); letter-spacing:.01em; margin:0; }
+h1 { font-size:30px; } h2 { font-size:22px; margin-bottom:10px; }
+.top { display:flex; justify-content:space-between; align-items:flex-end; gap:12px; flex-wrap:wrap; margin-bottom:14px; }
+.who { color:var(--muted); font-size:14px; }
+.card { background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:16px; margin-top:14px; }
+.kpis { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+.kpi { background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:12px; }
+.kpi b { display:block; font:700 28px var(--f-display); }
+.kpi span { color:var(--muted); font-size:13px; }
+.chips { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px; }
+.chip { border:1px solid var(--line); background:var(--panel); color:var(--fg); border-radius:999px; padding:7px 14px; font:600 15px var(--f-body); cursor:pointer; }
+.chip[aria-pressed=true] { background:var(--acc); border-color:var(--acc); color:#fff; }
+.tier { border-radius:12px; padding:12px; margin-top:10px; }
+.tier.pro { background:var(--prosoft); } .tier.free { background:var(--soft); }
+.tier h3 { margin:0 0 8px; font:700 18px var(--f-display); }
+.row { display:grid; grid-template-columns:34px 1fr; gap:8px; align-items:start; margin-top:8px; }
+.medal { font-size:24px; line-height:38px; text-align:center; }
+.fields { display:grid; grid-template-columns:1fr; gap:6px; }
+.fields.free { grid-template-columns:1fr 110px; }
+.fields .wide { grid-column:1/-1; }
+input, textarea { width:100%; border:1px solid var(--line); background:var(--panel); color:var(--fg); border-radius:10px; padding:9px 10px; font:15px var(--f-body); }
+textarea { resize:vertical; min-height:40px; }
+label.small { font-size:12px; color:var(--muted); display:block; margin-bottom:2px; }
+.btn { border:0; border-radius:12px; padding:11px 18px; font:700 16px var(--f-body); background:var(--acc); color:#fff; cursor:pointer; }
+.btn.ghost { background:transparent; border:1px solid var(--line); color:var(--fg); }
+.btn.small { padding:6px 12px; font-size:14px; }
+.btn:disabled { opacity:.5; cursor:default; }
+.actions { display:flex; gap:10px; align-items:center; margin-top:12px; flex-wrap:wrap; }
+.msg { font-size:14px; color:var(--muted); }
+.msg.ok { color:var(--ok); } .msg.bad { color:var(--bad); }
+.note { font-size:13px; color:var(--muted); margin:6px 0 0; }
+table { width:100%; border-collapse:collapse; font-size:15px; }
+th, td { text-align:left; padding:8px 6px; border-bottom:1px solid var(--line); vertical-align:top; }
+th { font-size:12px; color:var(--muted); font-weight:600; text-transform:uppercase; letter-spacing:.04em; }
+td.n { text-align:right; font-variant-numeric:tabular-nums; }
+.em { color:var(--muted); font-size:13px; word-break:break-all; }
+.tag { display:inline-block; border-radius:999px; padding:2px 9px; font-size:12px; font-weight:600; }
+.tag.pro { background:var(--pro); color:#fff; } .tag.free { background:var(--acc); color:#fff; }
+.tag.ok { background:var(--ok); color:#fff; } .tag.wait { background:var(--line); color:var(--fg); }
+.empty { color:var(--muted); padding:8px 0; }
+.form3 { display:grid; grid-template-columns:1fr 90px 1fr auto; gap:8px; align-items:end; }
+.center { text-align:center; padding:30px 10px; }
+.scroll { overflow-x:auto; }
+@media (max-width:620px) { .form3 { grid-template-columns:1fr 1fr; } .form3 .btn { grid-column:1/-1; } .kpi b { font-size:24px; } .fields.free { grid-template-columns:1fr 90px; } }
+</style>
+</head>
+<body>
+<main>
+  <div class="top">
+    <div><h1>Premi dei giochi</h1><div class="who" id="who">Caricamento…</div></div>
+    <a class="btn ghost small" href="../">Apri FitQuest</a>
+  </div>
+  <div id="app"><div class="card center">Caricamento…</div></div>
+</main>
+<script src="../supabase.min.js"></script>
+<script>
+const SB_URL = "https://maypmqnjkdrdqcssnvty.supabase.co";
+const SB_KEY = "sb_publishable_uorMl6G618tavZGF8MQpfQ_2Pg3AIlE"; // chiave pubblica: i permessi li decide il database
+const sb = window.supabase.createClient(SB_URL, SB_KEY, { auth: { flowType: "pkce", persistSession: true, autoRefreshToken: true, detectSessionInUrl: true } });
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const MEDAL = ["🥇", "🥈", "🥉"];
+const MESI = ["gennaio", "febbraio", "marzo", "aprile", "maggio", "giugno", "luglio", "agosto", "settembre", "ottobre", "novembre", "dicembre"];
+const monthName = d => { const [y, m] = d.split("-").map(Number); return MESI[m - 1] + " " + y; };
+const addMonths = (d, n) => { const [y, m] = d.split("-").map(Number); const t = new Date(Date.UTC(y, m - 1 + n, 1)); return t.toISOString().slice(0, 10); };
+const fmtDate = t => t ? new Date(t).toLocaleDateString("it-IT", { day: "numeric", month: "short", year: "numeric" }) : "";
+const S = { user: undefined, cur: null, sel: null, over: null, selOver: null, board: "free" };
+
+async function rpc(fn, args) {
+  const { data, error } = await sb.rpc(fn, args || {});
+  if (error) throw error;
+  return data;
+}
+function errText(e) {
+  const m = String(e && (e.message || e) || "");
+  if (/solo amministratore/.test(m)) return "Questo account non è amministratore.";
+  if (/does not exist|Could not find the function|schema cache/i.test(m)) return "Il database dei giochi non è ancora pronto: esegui 04_games.sql nell'SQL Editor di Supabase.";
+  if (/Failed to fetch|NetworkError/i.test(m)) return "Nessuna connessione. Riprova.";
+  return m;
+}
+
+async function start() {
+  const { data: { session } } = await sb.auth.getSession();
+  S.user = session?.user?.id || null;
+  if (!session) return renderLogin();
+  $("who").textContent = session.user.email || "";
+  try {
+    S.over = await rpc("game_admin_overview");
+    S.cur = S.over.current;
+    if (!S.sel) S.sel = S.cur;
+    S.selOver = S.sel === S.cur ? S.over : await rpc("game_admin_overview", { p_month: S.sel });
+    render();
+  } catch (e) {
+    $("app").innerHTML = `<div class="card center"><p>${esc(errText(e))}</p><div class="actions" style="justify-content:center"><button class="btn ghost" id="out">Cambia account</button> <button class="btn" id="again">Riprova</button></div></div>`;
+    $("out").onclick = async () => { await sb.auth.signOut(); start(); };
+    $("again").onclick = start;
+  }
+}
+
+function renderLogin() {
+  $("who").textContent = "Non hai fatto l'accesso";
+  $("app").innerHTML = `<div class="card center"><p>Accedi con l'account amministratore di FitQuest.</p>
+    <button class="btn" id="google">Accedi con Google</button>
+    <p class="note">Se ti riporta nell'app, fai l'accesso lì e poi riapri questa pagina.</p></div>`;
+  $("google").onclick = () => sb.auth.signInWithOAuth({ provider: "google", options: { redirectTo: location.origin + location.pathname } });
+}
+
+function prizeOf(list, tier, place) { return (list || []).find(p => p.tier === tier && p.place === place) || {}; }
+
+function render() {
+  const o = S.over, so = S.selOver, st = o.stats || {};
+  const months = [S.cur, addMonths(S.cur, 1), addMonths(S.cur, 2), addMonths(S.cur, 3)];
+  const today = new Date(); const showNext = today.getDate() >= 26;
+  const tierRows = (tier) => [1, 2, 3].map(pl => {
+    const p = prizeOf(so.prizes, tier, pl);
+    return `<div class="row"><div class="medal">${MEDAL[pl - 1]}</div><div class="fields ${tier}">
+      <div><label class="small">Premio del ${pl}° posto</label><input data-t="${tier}" data-p="${pl}" data-k="title" maxlength="80" value="${esc(p.title)}" placeholder="${tier === "pro" ? "Es. Smartwatch" : "Es. 500 punti"}"></div>
+      ${tier === "free" ? `<div><label class="small">Punti</label><input type="number" min="0" max="5000" step="10" data-t="${tier}" data-p="${pl}" data-k="points" value="${p.points ?? [500, 300, 150][pl - 1]}"></div>` : ""}
+      <div class="wide"><label class="small">Dettagli (si vedono in bacheca)</label><textarea data-t="${tier}" data-p="${pl}" data-k="details" maxlength="300" rows="2">${esc(p.details)}</textarea></div>
+    </div></div>`;
+  }).join("");
+  const board = (o.boards || {})[S.board] || [];
+  const winners = o.winners || [];
+  const wRow = w => `<tr><td>${MEDAL[w.place - 1]}</td><td>${esc(w.name)}<div class="em">${esc(w.email)}</div></td><td class="n">${w.total}</td>
+    <td>${esc(w.prize || (w.tier === "free" ? [500, 300, 150][w.place - 1] + " punti" : ""))}</td>
+    <td>${w.tier === "free" ? (w.claimed ? `<span class="tag ok">Punti ricevuti</span>` : `<span class="tag wait">Li riceve aprendo l'app</span>`)
+      : (w.delivered_at ? `<span class="tag ok">Consegnato ${esc(fmtDate(w.delivered_at))}</span> <button class="btn ghost small" data-undo="${w.place}">Annulla</button>` : `<button class="btn small" data-deliver="${w.place}">Segna consegnato</button>`)}</td></tr>`;
+  const wTable = tier => {
+    const ws = winners.filter(w => w.tier === tier);
+    return ws.length ? `<div class="scroll"><table><tr><th></th><th>Chi</th><th class="n">Punti</th><th>Premio</th><th></th></tr>${ws.map(wRow).join("")}</table></div>` : `<div class="empty">Nessun vincitore.</div>`;
+  };
+  const pros = o.pro_users || [];
+  $("app").innerHTML = `
+  <div class="kpis">
+    <div class="kpi"><b>${st.players ?? 0}</b><span>giocatori a ${esc(MESI[+S.cur.slice(5, 7) - 1])}</span></div>
+    <div class="kpi"><b>${st.games ?? 0}</b><span>partite del mese</span></div>
+    <div class="kpi"><b>${st.pro_active ?? 0}</b><span>abbonati Pro</span></div>
+  </div>
+
+  <section class="card">
+    <h2>Premi del mese</h2>
+    <div class="chips">${months.map(m => `<button class="chip" data-m="${m}" aria-pressed="${m === S.sel}">${esc(monthName(m))}</button>`).join("")}</div>
+    <p class="note">${S.sel === S.cur ? "Questi premi sono già in bacheca." : S.sel === addMonths(S.cur, 1) ? (showNext ? "Sono già in bacheca: dal 26 si vedono i premi del mese dopo." : "Compaiono in bacheca dal 26 di " + esc(MESI[+S.cur.slice(5, 7) - 1]) + ".") : "Compaiono in bacheca dal 26 del mese prima."}</p>
+    <div class="tier pro"><h3><span class="tag pro">PRO</span> Concorso a premi</h3>${tierRows("pro")}</div>
+    <div class="tier free"><h3><span class="tag free">FREE</span> Classifica generale: punti per sbloccare esercizi</h3>${tierRows("free")}</div>
+    <div class="actions"><button class="btn" id="save">Salva i premi di ${esc(monthName(S.sel))}</button><span class="msg" id="saveMsg"></span></div>
+  </section>
+
+  <section class="card">
+    <h2>Classifica di ${esc(monthName(S.cur))}</h2>
+    <div class="chips"><button class="chip" data-b="free" aria-pressed="${S.board === "free"}">Generale (Free)</button><button class="chip" data-b="pro" aria-pressed="${S.board === "pro"}">Pro</button></div>
+    ${board.length ? `<div class="scroll"><table><tr><th>#</th><th>Chi</th><th class="n">Punti</th></tr>${board.map(r => `<tr><td>${r.rank <= 3 ? MEDAL[r.rank - 1] : r.rank}</td><td>${esc(r.name)}<div class="em">${esc(r.email)}</div></td><td class="n">${r.total}</td></tr>`).join("")}</table></div>` : `<div class="empty">Ancora nessuna partita questo mese.</div>`}
+    <p class="note">Il punteggio è la somma del miglior risultato in ogni gioco. Finisce l'ultimo giorno del mese a mezzanotte (ora italiana).</p>
+  </section>
+
+  <section class="card">
+    <h2>Vincitori di ${esc(monthName(o.prev))}</h2>
+    <div class="tier pro"><h3><span class="tag pro">PRO</span> Premi da consegnare</h3>${wTable("pro")}</div>
+    <div class="tier free"><h3><span class="tag free">FREE</span> Punti</h3>${wTable("free")}</div>
+    <span class="msg" id="winMsg"></span>
+  </section>
+
+  <section class="card">
+    <h2>Abbonati Pro</h2>
+    <p class="note">Il pagamento vero non c'è ancora: qui puoi dare il Pro a mano, per esempio a chi prova l'app.</p>
+    <div class="form3" style="margin-top:10px">
+      <div><label class="small">Email dell'account</label><input id="proEmail" type="email" placeholder="nome@email.it"></div>
+      <div><label class="small">Giorni</label><input id="proDays" type="number" min="1" max="3660" value="30"></div>
+      <div><label class="small">Nota (facoltativa)</label><input id="proNote" maxlength="80" placeholder="Es. tester"></div>
+      <button class="btn" id="proAdd">Dai il Pro</button>
+    </div>
+    <span class="msg" id="proMsg"></span>
+    ${pros.length ? `<div class="scroll" style="margin-top:10px"><table><tr><th>Account</th><th>Fino al</th><th>Nota</th><th></th></tr>${pros.map(p => `<tr><td class="em">${esc(p.email)}</td><td>${p.active ? "" : `<span class="tag wait">Scaduto</span> `}${esc(fmtDate(p.until))}</td><td>${esc(p.note)}</td><td><button class="btn ghost small" data-unpro="${esc(p.email)}">Togli</button></td></tr>`).join("")}</table></div>` : `<div class="empty">Nessun abbonato.</div>`}
+  </section>`;
+  wire();
+}
+
+function wire() {
+  document.querySelectorAll("[data-m]").forEach(b => b.onclick = async () => {
+    S.sel = b.dataset.m;
+    try { S.selOver = S.sel === S.cur ? S.over : await rpc("game_admin_overview", { p_month: S.sel }); render(); }
+    catch (e) { $("saveMsg").textContent = errText(e); $("saveMsg").className = "msg bad"; }
+  });
+  document.querySelectorAll("[data-b]").forEach(b => b.onclick = () => { S.board = b.dataset.b; render(); });
+  $("save").onclick = async () => {
+    const msg = $("saveMsg"), btn = $("save");
+    const val = (t, p, k) => document.querySelector(`[data-t="${t}"][data-p="${p}"][data-k="${k}"]`)?.value ?? "";
+    const jobs = [];
+    for (const t of ["pro", "free"]) for (const p of [1, 2, 3]) {
+      const title = val(t, p, "title").trim();
+      if (!title) { msg.textContent = `Scrivi il premio del ${p}° posto (${t === "pro" ? "Pro" : "Free"}).`; msg.className = "msg bad"; return; }
+      jobs.push({ p_month: S.sel, p_tier: t, p_place: p, p_title: title, p_details: val(t, p, "details").trim() || null, p_points: t === "free" ? parseInt(val(t, p, "points"), 10) : null });
+    }
+    btn.disabled = true; msg.textContent = "Salvataggio…"; msg.className = "msg";
+    try {
+      for (const j of jobs) await rpc("game_admin_set_prize", j);
+      S.selOver = await rpc("game_admin_overview", { p_month: S.sel });
+      if (S.sel === S.cur) S.over = S.selOver;
+      render(); $("saveMsg").textContent = "Premi salvati: li vedono tutti in bacheca."; $("saveMsg").className = "msg ok";
+    } catch (e) { btn.disabled = false; msg.textContent = errText(e); msg.className = "msg bad"; }
+  };
+  const winAct = async (place, done) => {
+    try { await rpc("game_admin_delivered", { p_month: S.over.prev, p_place: place, p_done: done }); await reload(); }
+    catch (e) { $("winMsg").textContent = errText(e); $("winMsg").className = "msg bad"; }
+  };
+  document.querySelectorAll("[data-deliver]").forEach(b => b.onclick = () => winAct(+b.dataset.deliver, true));
+  document.querySelectorAll("[data-undo]").forEach(b => b.onclick = () => winAct(+b.dataset.undo, false));
+  $("proAdd").onclick = async () => {
+    const email = $("proEmail").value.trim(), days = parseInt($("proDays").value, 10), note = $("proNote").value.trim();
+    if (!email || !(days > 0)) { $("proMsg").textContent = "Scrivi l'email e i giorni."; $("proMsg").className = "msg bad"; return; }
+    try { await rpc("game_admin_set_pro", { p_email: email, p_days: days, p_note: note || null }); await reload(); $("proMsg").textContent = `Pro attivo per ${email}.`; $("proMsg").className = "msg ok"; }
+    catch (e) { $("proMsg").textContent = errText(e); $("proMsg").className = "msg bad"; }
+  };
+  document.querySelectorAll("[data-unpro]").forEach(b => b.onclick = async () => {
+    if (!confirm(`Togliere il Pro a ${b.dataset.unpro}?`)) return;
+    try { await rpc("game_admin_set_pro", { p_email: b.dataset.unpro, p_days: 0 }); await reload(); }
+    catch (e) { $("proMsg").textContent = errText(e); $("proMsg").className = "msg bad"; }
+  });
+}
+
+async function reload() {
+  S.over = await rpc("game_admin_overview");
+  S.selOver = S.sel === S.cur ? S.over : await rpc("game_admin_overview", { p_month: S.sel });
+  render();
+}
+
+// only a real change of account reloads the page data (Supabase also repeats SIGNED_IN when the tab comes back)
+sb.auth.onAuthStateChange((ev, session) => { const id = session?.user?.id || null; if ((ev === "SIGNED_IN" || ev === "SIGNED_OUT") && id !== S.user) start(); });
+start();
+</script>
+</body>
+</html>
