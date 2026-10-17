@@ -1118,6 +1118,22 @@ body.dark .ww-pts b { color: #7ee29b; }
 .split-vs em { position: absolute; top: 50%; left: 0; transform: translate(-50%, -50%); padding: 6px 10px; border-radius: 999px; font-style: normal; font-family: var(--f-display); font-weight: 800; font-size: 20px; letter-spacing: .06em; color: #fff; background: linear-gradient(135deg, #ff5e8a, #b45cff); box-shadow: 0 4px 14px rgba(0,0,0,.5); }
 .split-me { position: absolute; bottom: 92px; right: 4px; width: calc(50vw - 12px); text-align: center; font-family: var(--f-cond); font-weight: 700; font-size: 15px; letter-spacing: .06em; text-transform: uppercase; color: #9ccaf5; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-shadow: 0 2px 10px rgba(0,0,0,.8); }
 .stage.split .hud-top, .stage.split .banner, .stage.split .dfx, .stage.split .counter { z-index: 7; }
+/* caricamento dei giochi: niente avatar, solo l'icona del gioco e una barra che carica */
+.loading.gm-load .ld-fig, .loading.gm-load .ld-tip, .loading.gm-load .ld3d { display: none; }
+.loading.gm-load { background: radial-gradient(120% 80% at 50% 30%, #1d2b5a 0%, #0b1024 70%); }
+.loading.gm-load #loadingMsg { font-family: var(--f-body); font-weight: 500; font-size: 14px; color: #9fb0c8; letter-spacing: 0; text-transform: none; }
+.gm-ld { display: none; flex-direction: column; align-items: center; gap: 16px; }
+.loading.gm-load .gm-ld { display: flex; }
+.gm-ld-ring { position: relative; width: 104px; height: 104px; display: grid; place-items: center; }
+.gm-ld-ring::before { content: ""; position: absolute; inset: 0; border-radius: 50%; border: 5px solid rgba(255,255,255,.1); border-top-color: var(--gc); animation: gmSpin .9s linear infinite; }
+.gm-ld-ring .gm-ico { width: 64px; height: 64px; border-radius: 20px; animation: gmPulse 1.2s ease-in-out infinite; }
+.gm-ld-ring .gm-ico svg { width: 36px; height: 36px; }
+.gm-ld b { font-family: var(--f-cond); font-weight: 800; font-size: 24px; letter-spacing: .04em; text-transform: uppercase; }
+.gm-ld-bar { width: min(240px, 64vw); height: 6px; border-radius: 3px; background: rgba(255,255,255,.12); overflow: hidden; }
+.gm-ld-bar i { display: block; height: 100%; width: 35%; border-radius: 3px; background: var(--gc); animation: gmBar 1.2s ease-in-out infinite; }
+@keyframes gmSpin { to { transform: rotate(360deg); } }
+@keyframes gmPulse { 50% { transform: scale(.9); } }
+@keyframes gmBar { 0% { transform: translateX(-100%); } 100% { transform: translateX(290%); } }
 </style>
 
 </head>
@@ -7370,6 +7386,7 @@ function splashStart() {
 }
 const LD_TIPS = ["Metti il telefono a terra, di lato, a 2\u20133 metri.", "Assicurati che si vedano testa e piedi.", "Meglio la luce davanti a te, non alle spalle.", "Alza il volume: ti correggo a voce."];
 function loadFx(ex) {
+  gmLoading(ex);
   const f = $("ldFig"), tip = $("ldTip");
   if (!f) return;
   f.dataset.fig = POSES[ex] ? ex : "squat";
@@ -8537,6 +8554,15 @@ function gmBegin(c) {
   setBanner(GAMES[g].hint, "ok");
   (_a2 = $("gmCard")) == null ? void 0 : _a2.remove();
   if (g === "g_wall") $("stage").insertAdjacentHTML("beforeend", '<div class="gm-pose" id="gmCard" hidden><i class="gm-pose-fig"></i><b></b><span class="gm-bar"><em></em></span><span class="gm-hold"><em></em></span></div>');
+}
+function gmLoading(ex) {
+  var _a2;
+  const l = $("loading");
+  if (!l) return;
+  const g = GAMES[ex];
+  l.classList.toggle("gm-load", !!g);
+  (_a2 = $("gmLd")) == null ? void 0 : _a2.remove();
+  if (g) l.insertAdjacentHTML("afterbegin", '<div class="gm-ld" id="gmLd" style="--gc:'.concat(g.color, '"><span class="gm-ld-ring"><span class="gm-ico">').concat(GM_ICO[ex], "</span></span><b>").concat(g.name, '</b><span class="gm-ld-bar"><i></i></span></div>'));
 }
 function duelSplit(on) {
   var _a2;
