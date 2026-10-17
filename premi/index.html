@@ -55,6 +55,14 @@ td.n { text-align:right; font-variant-numeric:tabular-nums; }
 .tag.pro { background:var(--pro); color:#fff; } .tag.free { background:var(--acc); color:#fff; }
 .tag.ok { background:var(--ok); color:#fff; } .tag.wait { background:var(--line); color:var(--fg); }
 .empty { color:var(--muted); padding:8px 0; }
+.photo { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+.photo .ph { width:72px; height:72px; border-radius:12px; border:1px dashed var(--line); background:var(--panel) center/cover no-repeat; display:grid; place-items:center; color:var(--muted); font-size:26px; flex:none; }
+.photo .ph.has { border-style:solid; }
+.photo input[type=file] { display:none; }
+.photo .pmsg { font-size:13px; color:var(--muted); }
+.assist { display:flex; gap:12px; align-items:center; justify-content:space-between; flex-wrap:wrap; background:linear-gradient(120deg, var(--soft), var(--prosoft)); border-radius:12px; padding:12px; margin-bottom:12px; }
+.assist b { display:block; } .assist span { font-size:14px; color:var(--muted); }
+.draft { background:var(--soft); border:1px solid var(--acc); border-radius:12px; padding:10px 12px; margin-bottom:10px; font-size:14px; }
 .form3 { display:grid; grid-template-columns:1fr 90px 1fr auto; gap:8px; align-items:end; }
 .center { text-align:center; padding:30px 10px; }
 .scroll { overflow-x:auto; }
@@ -77,11 +85,13 @@ const sb = window.supabase.createClient(SB_URL, SB_KEY, { auth: { flowType: "pkc
 const $ = id => document.getElementById(id);
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const MEDAL = ["🥇", "🥈", "🥉"];
+const ASSISTENTE = "https://claude.ai/artifact/DaLtTj6An8CntwSmz28Q4z"; // the "Assistente premi" page on claude.ai: you write the prizes in your words, it fills this form
+const PHOTO_BASE = SB_URL + "/storage/v1/object/public/premi/";
 const MESI = ["gennaio", "febbraio", "marzo", "aprile", "maggio", "giugno", "luglio", "agosto", "settembre", "ottobre", "novembre", "dicembre"];
 const monthName = d => { const [y, m] = d.split("-").map(Number); return MESI[m - 1] + " " + y; };
 const addMonths = (d, n) => { const [y, m] = d.split("-").map(Number); const t = new Date(Date.UTC(y, m - 1 + n, 1)); return t.toISOString().slice(0, 10); };
 const fmtDate = t => t ? new Date(t).toLocaleDateString("it-IT", { day: "numeric", month: "short", year: "numeric" }) : "";
-const S = { user: undefined, cur: null, sel: null, over: null, selOver: null, board: "free" };
+const S = { user: undefined, img: {}, draft: null, cur: null, sel: null, over: null, selOver: null, board: "free" };
 
 async function rpc(fn, args) {
   const { data, error } = await sb.rpc(fn, args || {});
@@ -104,6 +114,8 @@ async function start() {
   try {
     S.over = await rpc("game_admin_overview");
     S.cur = S.over.current;
+    if (!S.draft) S.draft = readDraft();
+    if (S.draft && S.draft.month >= S.cur) S.sel = S.draft.month;
     if (!S.sel) S.sel = S.cur;
     S.selOver = S.sel === S.cur ? S.over : await rpc("game_admin_overview", { p_month: S.sel });
     render();
@@ -126,6 +138,7 @@ function prizeOf(list, tier, place) { return (list || []).find(p => p.tier === t
 
 function render() {
   const o = S.over, so = S.selOver, st = o.stats || {};
+  S.img = {}; for (const p of so.prizes || []) S.img[p.tier + "-" + p.place] = p.image || null;
   const months = [S.cur, addMonths(S.cur, 1), addMonths(S.cur, 2), addMonths(S.cur, 3)];
   const today = new Date(); const showNext = today.getDate() >= 26;
   const tierRows = (tier) => [1, 2, 3].map(pl => {
@@ -134,6 +147,9 @@ function render() {
       <div><label class="small">Premio del ${pl}° posto</label><input data-t="${tier}" data-p="${pl}" data-k="title" maxlength="80" value="${esc(p.title)}" placeholder="${tier === "pro" ? "Es. Smartwatch" : "Es. 500 punti"}"></div>
       ${tier === "free" ? `<div><label class="small">Punti</label><input type="number" min="0" max="5000" step="10" data-t="${tier}" data-p="${pl}" data-k="points" value="${p.points ?? [500, 300, 150][pl - 1]}"></div>` : ""}
       <div class="wide"><label class="small">Dettagli (si vedono in bacheca)</label><textarea data-t="${tier}" data-p="${pl}" data-k="details" maxlength="300" rows="2">${esc(p.details)}</textarea></div>
+      <div class="wide photo"><div class="ph${p.image ? " has" : ""}" data-ph="${tier}-${pl}" ${p.image ? `style="background-image:url('${esc(p.image)}')"` : ""}>${p.image ? "" : "📷"}</div>
+        <label class="btn ghost small" for="f-${tier}-${pl}">${p.image ? "Cambia foto" : "Aggiungi foto"}</label><input type="file" accept="image/*" id="f-${tier}-${pl}" data-file="${tier}-${pl}">
+        <button class="btn ghost small" type="button" data-nophoto="${tier}-${pl}" ${p.image ? "" : "hidden"}>Togli</button><span class="pmsg" data-pmsg="${tier}-${pl}"></span></div>
     </div></div>`;
   }).join("");
   const board = (o.boards || {})[S.board] || [];
@@ -156,6 +172,8 @@ function render() {
 
   <section class="card">
     <h2>Premi del mese</h2>
+    <div class="assist"><div><b>🤖 Assistente premi</b><span>Scrivigli i premi con parole tue: li sistema e li mette qui, tu aggiungi le foto e salvi.</span></div><a class="btn small" href="${ASSISTENTE}" target="_blank" rel="noopener">Apri l'assistente</a></div>
+    ${S.draft && S.draft.month === S.sel ? `<div class="draft" id="draftNote">✍️ Bozza dell'assistente inserita qui sotto. Controlla, aggiungi le foto e premi <b>Salva</b>.</div>` : ""}
     <div class="chips">${months.map(m => `<button class="chip" data-m="${m}" aria-pressed="${m === S.sel}">${esc(monthName(m))}</button>`).join("")}</div>
     <p class="note">${S.sel === S.cur ? "Questi premi sono già in bacheca." : S.sel === addMonths(S.cur, 1) ? (showNext ? "Sono già in bacheca: dal 26 si vedono i premi del mese dopo." : "Compaiono in bacheca dal 26 di " + esc(MESI[+S.cur.slice(5, 7) - 1]) + ".") : "Compaiono in bacheca dal 26 del mese prima."}</p>
     <div class="tier pro"><h3><span class="tag pro">PRO</span> Concorso a premi</h3>${tierRows("pro")}</div>
@@ -206,16 +224,34 @@ function wire() {
     for (const t of ["pro", "free"]) for (const p of [1, 2, 3]) {
       const title = val(t, p, "title").trim();
       if (!title) { msg.textContent = `Scrivi il premio del ${p}° posto (${t === "pro" ? "Pro" : "Free"}).`; msg.className = "msg bad"; return; }
-      jobs.push({ p_month: S.sel, p_tier: t, p_place: p, p_title: title, p_details: val(t, p, "details").trim() || null, p_points: t === "free" ? parseInt(val(t, p, "points"), 10) : null });
+      jobs.push({ p_month: S.sel, p_tier: t, p_place: p, p_title: title, p_details: val(t, p, "details").trim() || null, p_points: t === "free" ? parseInt(val(t, p, "points"), 10) : null, p_image: S.img[t + "-" + p] || null });
     }
     btn.disabled = true; msg.textContent = "Salvataggio…"; msg.className = "msg";
     try {
       for (const j of jobs) await rpc("game_admin_set_prize", j);
       S.selOver = await rpc("game_admin_overview", { p_month: S.sel });
       if (S.sel === S.cur) S.over = S.selOver;
+      S.draft = null;
       render(); $("saveMsg").textContent = "Premi salvati: li vedono tutti in bacheca."; $("saveMsg").className = "msg ok";
     } catch (e) { btn.disabled = false; msg.textContent = errText(e); msg.className = "msg bad"; }
   };
+  document.querySelectorAll("[data-file]").forEach(inp => inp.onchange = async () => {
+    const key = inp.dataset.file, f = inp.files && inp.files[0]; inp.value = "";
+    if (!f) return;
+    const m = document.querySelector(`[data-pmsg="${key}"]`);
+    m.textContent = "Carico la foto…"; m.style.color = "";
+    try {
+      const blob = await shrink(f);
+      const path = `${S.sel}/${key}-${Date.now()}.jpg`;
+      const { error } = await sb.storage.from("premi").upload(path, blob, { contentType: "image/jpeg", upsert: false });
+      if (error) throw error;
+      S.img[key] = PHOTO_BASE + path;
+      paintPhoto(key);
+      m.textContent = "Foto pronta: premi Salva per pubblicarla.";
+    } catch (e) { m.textContent = /row-level|security|Unauthorized|403/i.test(String(e && e.message)) ? "Solo l'amministratore può caricare foto." : /Bucket not found/i.test(String(e && e.message)) ? "Prima esegui di nuovo 04_games.sql (cartella foto)." : "Foto non caricata: " + errText(e); m.style.color = "var(--bad)"; }
+  });
+  document.querySelectorAll("[data-nophoto]").forEach(b => b.onclick = () => { S.img[b.dataset.nophoto] = null; paintPhoto(b.dataset.nophoto); document.querySelector(`[data-pmsg="${b.dataset.nophoto}"]`).textContent = "Foto tolta: premi Salva."; });
+  if (S.draft && S.draft.month === S.sel) applyDraft(S.draft);
   const winAct = async (place, done) => {
     try { await rpc("game_admin_delivered", { p_month: S.over.prev, p_place: place, p_done: done }); await reload(); }
     catch (e) { $("winMsg").textContent = errText(e); $("winMsg").className = "msg bad"; }
@@ -235,6 +271,41 @@ function wire() {
   });
 }
 
+function paintPhoto(key) {
+  const url = S.img[key], ph = document.querySelector(`[data-ph="${key}"]`);
+  ph.classList.toggle("has", !!url); ph.style.backgroundImage = url ? `url('${url}')` : ""; ph.textContent = url ? "" : "📷";
+  document.querySelector(`label[for="f-${key}"]`).textContent = url ? "Cambia foto" : "Aggiungi foto";
+  document.querySelector(`[data-nophoto="${key}"]`).hidden = !url;
+}
+// photos are made smaller before upload (max 1200 px, JPEG), so they load fast in the app
+async function shrink(file) {
+  if (!/^image\//.test(file.type)) throw new Error("Scegli un'immagine.");
+  const img = await new Promise((ok, ko) => { const i = new Image(); i.onload = () => ok(i); i.onerror = () => ko(new Error("Immagine non leggibile.")); i.src = URL.createObjectURL(file); });
+  const k = Math.min(1, 1200 / Math.max(img.naturalWidth, img.naturalHeight));
+  const c = document.createElement("canvas"); c.width = Math.round(img.naturalWidth * k); c.height = Math.round(img.naturalHeight * k);
+  const g = c.getContext("2d"); g.fillStyle = "#fff"; g.fillRect(0, 0, c.width, c.height); g.drawImage(img, 0, 0, c.width, c.height);
+  URL.revokeObjectURL(img.src);
+  return await new Promise((ok, ko) => c.toBlob(b => b ? ok(b) : ko(new Error("Immagine non leggibile.")), "image/jpeg", .85));
+}
+// a draft from the assistant arrives in the link: #bozza=<base64url JSON {month, prizes:[{tier, place, title, details, points}]}>
+function readDraft() {
+  const m = location.hash.match(/bozza=([A-Za-z0-9_-]+)/); if (!m) return null;
+  try { history.replaceState(null, "", location.pathname); } catch {}
+  try {
+    const b = m[1].replace(/-/g, "+").replace(/_/g, "/");
+    const j = JSON.parse(new TextDecoder().decode(Uint8Array.from(atob(b + "===".slice((b.length + 3) % 4)), c => c.charCodeAt(0))));
+    if (!/^\d{4}-\d{2}-01$/.test(j.month) || !Array.isArray(j.prizes)) return null;
+    j.prizes = j.prizes.filter(p => (p.tier === "pro" || p.tier === "free") && [1, 2, 3].includes(p.place)).slice(0, 6);
+    return j;
+  } catch { return null; }
+}
+function applyDraft(d) {
+  for (const p of d.prizes) {
+    const set = (k, v) => { const el = document.querySelector(`[data-t="${p.tier}"][data-p="${p.place}"][data-k="${k}"]`); if (el && v != null && v !== "") el.value = String(v).slice(0, k === "details" ? 300 : 80); };
+    set("title", p.title); set("details", p.details); if (p.tier === "free") set("points", Number.isFinite(+p.points) ? Math.max(0, Math.min(5000, Math.round(+p.points))) : null);
+  }
+}
+
 async function reload() {
   S.over = await rpc("game_admin_overview");
   S.selOver = S.sel === S.cur ? S.over : await rpc("game_admin_overview", { p_month: S.sel });
@@ -243,6 +314,7 @@ async function reload() {
 
 // only a real change of account reloads the page data (Supabase also repeats SIGNED_IN when the tab comes back)
 sb.auth.onAuthStateChange((ev, session) => { const id = session?.user?.id || null; if ((ev === "SIGNED_IN" || ev === "SIGNED_OUT") && id !== S.user) start(); });
+addEventListener("hashchange", () => { if (/bozza=/.test(location.hash)) { S.draft = readDraft(); start(); } });
 start();
 </script>
 </body>

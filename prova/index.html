@@ -13,7 +13,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="FitQuest">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' data: blob:; connect-src 'self' https://maypmqnjkdrdqcssnvty.supabase.co wss://maypmqnjkdrdqcssnvty.supabase.co https://*.peerjs.com wss://*.peerjs.com https://*.livekit.cloud wss://*.livekit.cloud https://*.googleapis.com wss://*.googleapis.com https://www.gstatic.com ws://localhost:* http://localhost:* ws://127.0.0.1:* http://127.0.0.1:*; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://maypmqnjkdrdqcssnvty.supabase.co; media-src 'self' data: blob:; connect-src 'self' https://maypmqnjkdrdqcssnvty.supabase.co wss://maypmqnjkdrdqcssnvty.supabase.co https://*.peerjs.com wss://*.peerjs.com https://*.livekit.cloud wss://*.livekit.cloud https://*.googleapis.com wss://*.googleapis.com https://www.gstatic.com ws://localhost:* http://localhost:* ws://127.0.0.1:* http://127.0.0.1:*; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'">
 <meta name="referrer" content="no-referrer">
 <script>if (window.top !== window.self) { try { window.top.location.replace(window.self.location.href); } catch (e) { document.documentElement.style.display = "none"; } }</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1214,6 +1214,10 @@ body.dark .ww-pts b { color: #7ee29b; }
 .gm-sso:disabled { opacity: .55; }
 .gm-sso svg { flex: none; }
 .gm-tabs button[data-gtab="pro"][aria-selected="true"] ~ i { transform: translateX(100%); background: linear-gradient(120deg, #f5a623, #e2741d); box-shadow: 0 6px 16px rgba(245,166,35,.35); }
+/* prize photos on the board */
+.gm-prz li.has-img { grid-template-columns: 30px 1fr 64px; align-items: center; }
+.gm-prz-img { width: 64px; height: 64px; border-radius: 12px; object-fit: cover; background: rgba(0,0,0,.05); }
+.gm-won-img { display: block; width: 100%; max-height: 180px; object-fit: contain; margin-top: 8px; border-radius: 12px; }
 </style>
 
 </head>
@@ -9292,7 +9296,7 @@ function gmWon(list) {
       addPoints(w.points || 0);
       return "<li><b>".concat(gmMedal(w.place), "</b><span><span>Classifica generale</span> \xB7 <span data-notr>").concat(esc(mon), "</span><br><b>+").concat(w.points, "</b> <span>punti per sbloccare esercizi</span></span></li>");
     }
-    return "<li><b>".concat(gmMedal(w.place), "</b><span><span>Classifica Pro</span> \xB7 <span data-notr>").concat(esc(mon), "</span><br><b data-notr>").concat(esc(w.prize || ""), "</b> <span>Ti contattiamo per consegnarti il premio.</span></span></li>");
+    return "<li><b>".concat(gmMedal(w.place), "</b><span><span>Classifica Pro</span> \xB7 <span data-notr>").concat(esc(mon), "</span><br><b data-notr>").concat(esc(w.prize || ""), "</b> <span>Ti contattiamo per consegnarti il premio.</span>").concat(w.image ? '<img class="gm-won-img" src="'.concat(esc(w.image), '" alt="">') : "", "</span></li>");
   }).join("");
   (_a2 = $("gmSheet")) == null ? void 0 : _a2.remove();
   document.body.insertAdjacentHTML("beforeend", '<div class="gm-sheet" id="gmSheet" role="dialog" aria-modal="true"><div class="gm-sheet-in gm-won">\n    <div class="gm-trophy">\u{1F3C6}</div><h2>Hai vinto!</h2><ul class="gm-perks">'.concat(rows, '</ul>\n    <button class="btn primary" id="gmSheetX" type="button">Fantastico</button></div></div>'));
@@ -9328,7 +9332,7 @@ function gmPaintLive() {
     const block = (month, tier) => {
       const list = B.prizes.filter((p) => p.month === month && p.tier === tier);
       if (!list.length) return "";
-      return '<div class="gm-prz '.concat(tier, '"><div class="gm-prz-h"><b>').concat(tier === "pro" ? "Concorso Pro" : "Classifica generale", "</b><span data-notr>").concat(esc(gmMonthName(month)), "</span></div>\n        <ul>").concat(list.map((p) => "<li><b>".concat(gmMedal(p.place), "</b><span><b>").concat(esc(p.title), "</b>").concat(p.details ? "<small>".concat(esc(p.details), "</small>") : "", "</span></li>")).join(""), "</ul></div>");
+      return '<div class="gm-prz '.concat(tier, '"><div class="gm-prz-h"><b>').concat(tier === "pro" ? "Concorso Pro" : "Classifica generale", "</b><span data-notr>").concat(esc(gmMonthName(month)), "</span></div>\n        <ul>").concat(list.map((p) => '<li class="'.concat(p.image ? "has-img" : "", '"><b>').concat(gmMedal(p.place), "</b><span><b>").concat(esc(p.title), "</b>").concat(p.details ? "<small>".concat(esc(p.details), "</small>") : "", "</span>").concat(p.image ? '<img class="gm-prz-img" src="'.concat(esc(p.image), '" alt="" loading="lazy" decoding="async">') : "", "</li>")).join(""), "</ul></div>");
     };
     const win = B.winners && B.winners.length ? '<div class="gm-prz win"><div class="gm-prz-h"><b>Vincitori</b><span data-notr>'.concat(esc(gmMonthName(B.winners_month)), "</span></div><ul>").concat(B.winners.map((w) => "<li><b>".concat(gmMedal(w.place), "</b><span><b data-notr>").concat(esc(w.name), "</b><small><span>").concat(w.tier === "pro" ? "Concorso Pro" : "Classifica generale", "</span> \xB7 ").concat(w.total, " <span>punti</span></small></span></li>")).join(""), "</ul></div>") : "";
     bh.innerHTML = block(B.month, "pro") + block(B.month, "free") + (B.show_next ? '<p class="gm-next">Premi del mese prossimo</p>' + block(B.next, "pro") + block(B.next, "free") : '<p class="meta">I premi del mese prossimo arrivano in bacheca il 26.</p>') + win;
