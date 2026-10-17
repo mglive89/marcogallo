@@ -65,6 +65,46 @@ td.n { text-align:right; font-variant-numeric:tabular-nums; }
 .draft { background:var(--soft); border:1px solid var(--acc); border-radius:12px; padding:10px 12px; margin-bottom:10px; font-size:14px; }
 .form3 { display:grid; grid-template-columns:1fr 90px 1fr auto; gap:8px; align-items:end; }
 .center { text-align:center; padding:30px 10px; }
+.poster-ed { display:grid; grid-template-columns:1fr minmax(0,360px); gap:14px; align-items:start; margin-top:6px; }
+.themes { display:flex; gap:8px; flex-wrap:wrap; }
+.theme { width:44px; height:44px; border-radius:12px; border:2px solid transparent; cursor:pointer; padding:0; }
+.theme[aria-pressed=true] { border-color:var(--fg); box-shadow:0 0 0 2px var(--panel) inset; }
+.theme.th-oro { background:linear-gradient(150deg,#2a1a00,#7a4b00); } .theme.th-notte { background:linear-gradient(150deg,#0b1130,#3a2a8a); }
+.theme.th-energia { background:linear-gradient(150deg,#c3124a,#ff8a2b); } .theme.th-estate { background:linear-gradient(150deg,#0087b8,#f2a500); }
+.theme.th-inverno { background:linear-gradient(150deg,#173a73,#5aa7e8); }
+.langs { display:flex; gap:4px; flex-wrap:wrap; margin-bottom:8px; }
+.langs .chip { padding:4px 10px; font-size:13px; }
+.tr-ok { color:var(--ok); } .tr-no { color:var(--gold); }
+.pv { max-width:360px; }
+.pv .gm-poster { font-family:var(--f-body); }
+@media (max-width:720px) { .poster-ed { grid-template-columns:1fr; } }
+/* the same poster as the app (from prova/games.css) */
+.gm-pro { display: inline-block; font-style: normal; font-family: var(--f-display); font-weight: 800; font-size: 11px; letter-spacing: .08em; padding: 2px 7px; border-radius: 999px; color: #3a2400; background: linear-gradient(135deg, #ffe08a, #f5a623); vertical-align: middle; box-shadow: 0 2px 8px rgba(245,166,35,.35); }
+/* the Pro poster on the prize board */
+.gm-poster { --p1: #2a1a00; --p2: #7a4b00; --pa: #ffd36b; --pt: #fff8e6; --ps: rgba(255,248,230,.78); --pc: rgba(255,255,255,.12);
+  position: relative; overflow: hidden; border-radius: 22px; padding: 16px; color: var(--pt); background: linear-gradient(150deg, var(--p1), var(--p2)); box-shadow: 0 14px 30px rgba(0,0,0,.22); display: grid; gap: 12px; }
+.gm-poster.th-notte { --p1: #0b1130; --p2: #3a2a8a; --pa: #9fb8ff; }
+.gm-poster.th-energia { --p1: #c3124a; --p2: #ff8a2b; --pa: #fff1a8; }
+.gm-poster.th-estate { --p1: #0087b8; --p2: #f2a500; --pa: #fff4b8; }
+.gm-poster.th-inverno { --p1: #173a73; --p2: #5aa7e8; --pa: #e4f3ff; }
+.gm-pt-glow { position: absolute; inset: -40% -30% auto auto; width: 70%; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle, rgba(255,255,255,.28), transparent 65%); pointer-events: none; }
+.gm-pt-h { position: relative; display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 13px; }
+.gm-pt-k { display: inline-flex; align-items: center; gap: 6px; font-family: var(--f-display); font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+.gm-pt-m { text-transform: capitalize; color: var(--ps); font-weight: 600; }
+.gm-pt-hl { position: relative; margin: 0; font-family: var(--f-display); font-weight: 800; font-size: clamp(26px, 8vw, 36px); line-height: 1; text-transform: uppercase; color: var(--pa); text-wrap: balance; text-shadow: 0 2px 12px rgba(0,0,0,.25); }
+.gm-pt-1 { position: relative; display: grid; grid-template-columns: 112px 1fr; gap: 12px; align-items: center; padding: 10px; border-radius: 16px; background: var(--pc); }
+.gm-pt-img { width: 112px; height: 112px; border-radius: 14px; object-fit: cover; background: rgba(255,255,255,.9); }
+.gm-pt-img.s { width: 100%; height: auto; aspect-ratio: 4 / 3; }
+.gm-pt-medal { display: grid; place-items: center; font-size: 52px; background: rgba(255,255,255,.14); }
+.gm-pt-img.s.gm-pt-medal { font-size: 38px; }
+.gm-pt-1t { display: grid; gap: 4px; min-width: 0; }
+.gm-pt-pl { justify-self: start; font-family: var(--f-display); font-weight: 800; font-size: 13px; padding: 2px 9px; border-radius: 999px; background: var(--pa); color: #1d1300; }
+.gm-poster b { color: var(--pt); font-size: 16px; line-height: 1.2; }
+.gm-poster .gm-pt-t { font-size: 20px; }
+.gm-poster small { display: block; color: var(--ps); font-size: 13px; line-height: 1.3; }
+.gm-pt-23 { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.gm-pt-s { display: grid; gap: 5px; align-content: start; padding: 8px; border-radius: 14px; background: var(--pc); min-width: 0; }
+.gm-pt-f { position: relative; display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; font-size: 12px; color: var(--ps); border-top: 1px solid rgba(255,255,255,.2); padding-top: 8px; }
 .scroll { overflow-x:auto; }
 @media (max-width:620px) { .form3 { grid-template-columns:1fr 1fr; } .form3 .btn { grid-column:1/-1; } .kpi b { font-size:24px; } .fields.free { grid-template-columns:1fr 90px; } }
 </style>
@@ -87,11 +127,21 @@ const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": 
 const MEDAL = ["🥇", "🥈", "🥉"];
 const ASSISTENTE = "https://claude.ai/artifact/DaLtTj6An8CntwSmz28Q4z"; // the "Assistente premi" page on claude.ai: you write the prizes in your words, it fills this form
 const PHOTO_BASE = SB_URL + "/storage/v1/object/public/premi/";
+const LANGS = ["it", "en", "es", "fr", "de", "pt"];
+const THEMES = [["oro", "Oro"], ["notte", "Notte"], ["energia", "Energia"], ["estate", "Estate"], ["inverno", "Inverno"]];
+// the poster words in the app languages, as the app shows them
+const PW = {
+  it: ["Concorso Pro", "Premi del mese", "Finisce il", "Solo per abbonati Pro", "Premio da annunciare"],
+  en: ["Pro contest", "Prizes of the month", "Ends on", "Pro subscribers only", "Prize to be announced"],
+  es: ["Concurso Pro", "Premios del mes", "Termina el", "Solo para suscriptores Pro", "Premio por anunciar"],
+  fr: ["Concours Pro", "Prix du mois", "Se termine le", "Réservé aux abonnés Pro", "Prix à annoncer"],
+  de: ["Pro-Wettbewerb", "Preise des Monats", "Endet am", "Nur für Pro-Abonnenten", "Preis wird bekanntgegeben"],
+  pt: ["Concurso Pro", "Prêmios do mês", "Termina em", "Só para assinantes Pro", "Prêmio a anunciar"] };
 const MESI = ["gennaio", "febbraio", "marzo", "aprile", "maggio", "giugno", "luglio", "agosto", "settembre", "ottobre", "novembre", "dicembre"];
 const monthName = d => { const [y, m] = d.split("-").map(Number); return MESI[m - 1] + " " + y; };
 const addMonths = (d, n) => { const [y, m] = d.split("-").map(Number); const t = new Date(Date.UTC(y, m - 1 + n, 1)); return t.toISOString().slice(0, 10); };
 const fmtDate = t => t ? new Date(t).toLocaleDateString("it-IT", { day: "numeric", month: "short", year: "numeric" }) : "";
-const S = { user: undefined, img: {}, draft: null, cur: null, sel: null, over: null, selOver: null, board: "free" };
+const S = { user: undefined, img: {}, form: {}, tr: {}, theme: "oro", hl: {}, hlSrc: "", plang: "it", draft: null, cur: null, sel: null, over: null, selOver: null, board: "free" };
 
 async function rpc(fn, args) {
   const { data, error } = await sb.rpc(fn, args || {});
@@ -118,7 +168,7 @@ async function start() {
     if (S.draft && S.draft.month >= S.cur) S.sel = S.draft.month;
     if (!S.sel) S.sel = S.cur;
     S.selOver = S.sel === S.cur ? S.over : await rpc("game_admin_overview", { p_month: S.sel });
-    render();
+    initForm(); render();
   } catch (e) {
     $("app").innerHTML = `<div class="card center"><p>${esc(errText(e))}</p><div class="actions" style="justify-content:center"><button class="btn ghost" id="out">Cambia account</button> <button class="btn" id="again">Riprova</button></div></div>`;
     $("out").onclick = async () => { await sb.auth.signOut(); start(); };
@@ -136,17 +186,61 @@ function renderLogin() {
 
 function prizeOf(list, tier, place) { return (list || []).find(p => p.tier === tier && p.place === place) || {}; }
 
+// the prize form of the selected month: saved prizes, then the assistant's draft on top
+// a translation stays only while the Italian text is the one it was made from (tr[key].src)
+function initForm() {
+  const so = S.selOver;
+  S.img = {}; S.form = {}; S.tr = {};
+  for (const t of ["pro", "free"]) for (const pl of [1, 2, 3]) {
+    const p = prizeOf(so.prizes, t, pl), k = t + "-" + pl;
+    S.img[k] = p.image || null;
+    S.form[k] = { title: p.title || "", details: p.details || "", points: p.points ?? (t === "free" ? [500, 300, 150][pl - 1] : null) };
+    S.tr[k] = { src: srcOf(S.form[k]), i18n: p.i18n || {} };
+  }
+  S.theme = (so.poster && so.poster.theme) || "oro";
+  S.hl = Object.assign({}, so.poster && so.poster.headline); S.hlSrc = S.hl.it || "";
+  if (S.draft && S.draft.month === S.sel) applyDraft(S.draft);
+}
+const srcOf = f => (f.title || "").trim() + "\n" + (f.details || "").trim();
+const trOk = k => S.tr[k] && S.tr[k].src === srcOf(S.form[k]) && Object.keys(S.tr[k].i18n || {}).length > 0;
+const hlOk = () => (S.hl.it || "") === S.hlSrc && Object.keys(S.hl).some(l => l !== "it" && S.hl[l]);
+
+// the poster as the app shows it, in the language picked above the preview
+function posterHtml(lg) {
+  const w = PW[lg] || PW.it;
+  const text = (k, big) => {
+    const f = S.form[k] || {}, t = (lg !== "it" && trOk(k) && S.tr[k].i18n[lg]) || {};
+    const title = t.title || f.title.trim() || w[4], details = t.details || f.details.trim();
+    return `<b${big ? ' class="gm-pt-t"' : ""}>${esc(title)}</b>${details ? `<small>${esc(details)}</small>` : ""}`;
+  };
+  const pic = (k, cls) => S.img[k] ? `<img class="${cls}" src="${esc(S.img[k])}" alt="">` : `<span class="${cls} gm-pt-medal">${MEDAL[+k.slice(-1) - 1]}</span>`;
+  const hl = (lg === "it" || hlOk() ? S.hl[lg] : "") || S.hl.it || w[1];
+  const [y, m] = S.sel.split("-").map(Number);
+  const mName = new Date(Date.UTC(y, m - 1, 15)).toLocaleDateString(lg, { month: "long", year: "numeric", timeZone: "UTC" });
+  const last = new Date(Date.UTC(y, m, 0, 12)).toLocaleDateString(lg, { day: "numeric", month: "long", timeZone: "UTC" });
+  return `<article class="gm-poster th-${esc(S.theme)}"><div class="gm-pt-glow"></div>
+    <header class="gm-pt-h"><span class="gm-pt-k"><i class="gm-pro">PRO</i> <span>${esc(w[0])}</span></span><span class="gm-pt-m">${esc(mName)}</span></header>
+    <h3 class="gm-pt-hl">${esc(hl)}</h3>
+    <div class="gm-pt-1">${pic("pro-1", "gm-pt-img")}<div class="gm-pt-1t"><span class="gm-pt-pl">1°</span>${text("pro-1", true)}</div></div>
+    <div class="gm-pt-23">${["pro-2", "pro-3"].map(k => `<div class="gm-pt-s">${pic(k, "gm-pt-img s")}<span class="gm-pt-pl">${k.slice(-1)}°</span>${text(k)}</div>`).join("")}</div>
+    <footer class="gm-pt-f"><span>${esc(w[2])} ${esc(last)}</span><span>${esc(w[3])}</span></footer></article>`;
+}
+function paintPreview() {
+  const pv = $("pv"); if (pv) pv.innerHTML = posterHtml(S.plang);
+  const ht = $("hlTr"); if (ht) { const ok = hlOk(); ht.className = "note " + (ok ? "tr-ok" : "tr-no"); ht.textContent = ok ? "✓ Tradotto nelle 6 lingue dell'app." : "Solo in italiano: per le altre lingue fallo scrivere all'assistente."; }
+  document.querySelectorAll("[data-trk]").forEach(el => { const ok = trOk(el.dataset.trk); el.className = "note " + (ok ? "tr-ok" : "tr-no"); el.textContent = ok ? "✓ Tradotto nelle 6 lingue" : "Solo in italiano (le traduzioni le fa l'assistente)"; });
+}
+
 function render() {
   const o = S.over, so = S.selOver, st = o.stats || {};
-  S.img = {}; for (const p of so.prizes || []) S.img[p.tier + "-" + p.place] = p.image || null;
   const months = [S.cur, addMonths(S.cur, 1), addMonths(S.cur, 2), addMonths(S.cur, 3)];
   const today = new Date(); const showNext = today.getDate() >= 26;
   const tierRows = (tier) => [1, 2, 3].map(pl => {
-    const p = prizeOf(so.prizes, tier, pl);
+    const k = tier + "-" + pl, p = Object.assign({}, S.form[k], { image: S.img[k] });
     return `<div class="row"><div class="medal">${MEDAL[pl - 1]}</div><div class="fields ${tier}">
       <div><label class="small">Premio del ${pl}° posto</label><input data-t="${tier}" data-p="${pl}" data-k="title" maxlength="80" value="${esc(p.title)}" placeholder="${tier === "pro" ? "Es. Smartwatch" : "Es. 500 punti"}"></div>
-      ${tier === "free" ? `<div><label class="small">Punti</label><input type="number" min="0" max="5000" step="10" data-t="${tier}" data-p="${pl}" data-k="points" value="${p.points ?? [500, 300, 150][pl - 1]}"></div>` : ""}
-      <div class="wide"><label class="small">Dettagli (si vedono in bacheca)</label><textarea data-t="${tier}" data-p="${pl}" data-k="details" maxlength="300" rows="2">${esc(p.details)}</textarea></div>
+      ${tier === "free" ? `<div><label class="small">Punti</label><input type="number" min="0" max="5000" step="10" data-t="${tier}" data-p="${pl}" data-k="points" value="${p.points ?? ""}"></div>` : ""}
+      <div class="wide"><label class="small">Dettagli (si vedono in bacheca)</label><textarea data-t="${tier}" data-p="${pl}" data-k="details" maxlength="300" rows="2">${esc(p.details)}</textarea><div data-trk="${k}"></div></div>
       <div class="wide photo"><div class="ph${p.image ? " has" : ""}" data-ph="${tier}-${pl}" ${p.image ? `style="background-image:url('${esc(p.image)}')"` : ""}>${p.image ? "" : "📷"}</div>
         <label class="btn ghost small" for="f-${tier}-${pl}">${p.image ? "Cambia foto" : "Aggiungi foto"}</label><input type="file" accept="image/*" id="f-${tier}-${pl}" data-file="${tier}-${pl}">
         <button class="btn ghost small" type="button" data-nophoto="${tier}-${pl}" ${p.image ? "" : "hidden"}>Togli</button><span class="pmsg" data-pmsg="${tier}-${pl}"></span></div>
@@ -154,7 +248,7 @@ function render() {
   }).join("");
   const board = (o.boards || {})[S.board] || [];
   const winners = o.winners || [];
-  const wRow = w => `<tr><td>${MEDAL[w.place - 1]}</td><td>${esc(w.name)}<div class="em">${esc(w.email)}</div></td><td class="n">${w.total}</td>
+  const wRow = w => `<tr><td>${MEDAL[w.place - 1]}</td><td>${esc(w.name)}<div class="em">${esc(w.email)}</div>${w.tier === "pro" && w.email ? `<a class="btn ghost small" style="margin-top:4px;display:inline-block;text-decoration:none" href="${esc(mailTo(w, o.prev))}">✉️ Chiedi l'indirizzo</a>` : ""}</td><td class="n">${w.total}</td>
     <td>${esc(w.prize || (w.tier === "free" ? [500, 300, 150][w.place - 1] + " punti" : ""))}</td>
     <td>${w.tier === "free" ? (w.claimed ? `<span class="tag ok">Punti ricevuti</span>` : `<span class="tag wait">Li riceve aprendo l'app</span>`)
       : (w.delivered_at ? `<span class="tag ok">Consegnato ${esc(fmtDate(w.delivered_at))}</span> <button class="btn ghost small" data-undo="${w.place}">Annulla</button>` : `<button class="btn small" data-deliver="${w.place}">Segna consegnato</button>`)}</td></tr>`;
@@ -176,7 +270,17 @@ function render() {
     ${S.draft && S.draft.month === S.sel ? `<div class="draft" id="draftNote">✍️ Bozza dell'assistente inserita qui sotto. Controlla, aggiungi le foto e premi <b>Salva</b>.</div>` : ""}
     <div class="chips">${months.map(m => `<button class="chip" data-m="${m}" aria-pressed="${m === S.sel}">${esc(monthName(m))}</button>`).join("")}</div>
     <p class="note">${S.sel === S.cur ? "Questi premi sono già in bacheca." : S.sel === addMonths(S.cur, 1) ? (showNext ? "Sono già in bacheca: dal 26 si vedono i premi del mese dopo." : "Compaiono in bacheca dal 26 di " + esc(MESI[+S.cur.slice(5, 7) - 1]) + ".") : "Compaiono in bacheca dal 26 del mese prima."}</p>
-    <div class="tier pro"><h3><span class="tag pro">PRO</span> Concorso a premi</h3>${tierRows("pro")}</div>
+    <div class="tier pro"><h3><span class="tag pro">PRO</span> Concorso a premi</h3>${tierRows("pro")}
+      <h3 style="margin-top:16px">🖼️ Locandina in bacheca</h3>
+      <div class="poster-ed"><div>
+        <label class="small">Stile</label><div class="themes">${THEMES.map(([t, n]) => `<button class="theme th-${t}" type="button" data-th="${t}" title="${n}" aria-label="${n}" aria-pressed="${t === S.theme}"></button>`).join("")}</div>
+        <label class="small" style="margin-top:10px">Titolo grande (italiano)</label><input id="hl" maxlength="60" value="${esc(S.hl.it || "")}" placeholder="Es. Sfida d'autunno">
+        <div id="hlTr"></div>
+        <p class="note">Nell'app la locandina si vede nella lingua del telefono. Le traduzioni le scrive l'assistente; se cambi un testo a mano resta in italiano finché non rifai la bozza.</p>
+      </div><div class="pv">
+        <div class="langs">${LANGS.map(l => `<button class="chip" type="button" data-pl="${l}" aria-pressed="${l === S.plang}">${l.toUpperCase()}</button>`).join("")}</div>
+        <div id="pv"></div></div></div>
+    </div>
     <div class="tier free"><h3><span class="tag free">FREE</span> Classifica generale: punti per sbloccare esercizi</h3>${tierRows("free")}</div>
     <div class="actions"><button class="btn" id="save">Salva i premi di ${esc(monthName(S.sel))}</button><span class="msg" id="saveMsg"></span></div>
   </section>
@@ -190,7 +294,7 @@ function render() {
 
   <section class="card">
     <h2>Vincitori di ${esc(monthName(o.prev))}</h2>
-    <div class="tier pro"><h3><span class="tag pro">PRO</span> Premi da consegnare</h3>${wTable("pro")}</div>
+    <div class="tier pro"><h3><span class="tag pro">PRO</span> Premi da consegnare</h3>${wTable("pro")}<p class="note">Nell'app i vincitori leggono che li contatterai all'email del loro account per l'indirizzo di spedizione.</p></div>
     <div class="tier free"><h3><span class="tag free">FREE</span> Punti</h3>${wTable("free")}</div>
     <span class="msg" id="winMsg"></span>
   </section>
@@ -213,26 +317,33 @@ function render() {
 function wire() {
   document.querySelectorAll("[data-m]").forEach(b => b.onclick = async () => {
     S.sel = b.dataset.m;
-    try { S.selOver = S.sel === S.cur ? S.over : await rpc("game_admin_overview", { p_month: S.sel }); render(); }
+    try { S.selOver = S.sel === S.cur ? S.over : await rpc("game_admin_overview", { p_month: S.sel }); initForm(); render(); }
     catch (e) { $("saveMsg").textContent = errText(e); $("saveMsg").className = "msg bad"; }
   });
   document.querySelectorAll("[data-b]").forEach(b => b.onclick = () => { S.board = b.dataset.b; render(); });
+  document.querySelectorAll("[data-k]").forEach(el => el.oninput = () => { S.form[el.dataset.t + "-" + el.dataset.p][el.dataset.k] = el.value; paintPreview(); });
+  document.querySelectorAll("[data-th]").forEach(b => b.onclick = () => { S.theme = b.dataset.th; document.querySelectorAll("[data-th]").forEach(x => x.setAttribute("aria-pressed", x === b)); paintPreview(); });
+  document.querySelectorAll("[data-pl]").forEach(b => b.onclick = () => { S.plang = b.dataset.pl; document.querySelectorAll("[data-pl]").forEach(x => x.setAttribute("aria-pressed", x === b)); paintPreview(); });
+  $("hl").oninput = () => { S.hl.it = $("hl").value; paintPreview(); };
+  paintPreview();
   $("save").onclick = async () => {
     const msg = $("saveMsg"), btn = $("save");
-    const val = (t, p, k) => document.querySelector(`[data-t="${t}"][data-p="${p}"][data-k="${k}"]`)?.value ?? "";
     const jobs = [];
     for (const t of ["pro", "free"]) for (const p of [1, 2, 3]) {
-      const title = val(t, p, "title").trim();
+      const k = t + "-" + p, f = S.form[k], title = f.title.trim();
       if (!title) { msg.textContent = `Scrivi il premio del ${p}° posto (${t === "pro" ? "Pro" : "Free"}).`; msg.className = "msg bad"; return; }
-      jobs.push({ p_month: S.sel, p_tier: t, p_place: p, p_title: title, p_details: val(t, p, "details").trim() || null, p_points: t === "free" ? parseInt(val(t, p, "points"), 10) : null, p_image: S.img[t + "-" + p] || null });
+      jobs.push({ p_month: S.sel, p_tier: t, p_place: p, p_title: title, p_details: f.details.trim() || null, p_points: t === "free" ? parseInt(f.points, 10) : null, p_image: S.img[k] || null, p_i18n: trOk(k) ? S.tr[k].i18n : {} });
     }
+    const hlIt = (S.hl.it || "").trim();
+    const headline = hlOk() ? Object.assign({}, S.hl, { it: hlIt }) : (hlIt ? { it: hlIt } : {});
     btn.disabled = true; msg.textContent = "Salvataggio…"; msg.className = "msg";
     try {
       for (const j of jobs) await rpc("game_admin_set_prize", j);
+      await rpc("game_admin_set_poster", { p_month: S.sel, p_theme: S.theme, p_headline: headline });
       S.selOver = await rpc("game_admin_overview", { p_month: S.sel });
       if (S.sel === S.cur) S.over = S.selOver;
       S.draft = null;
-      render(); $("saveMsg").textContent = "Premi salvati: li vedono tutti in bacheca."; $("saveMsg").className = "msg ok";
+      initForm(); render(); $("saveMsg").textContent = "Premi salvati: li vedono tutti in bacheca."; $("saveMsg").className = "msg ok";
     } catch (e) { btn.disabled = false; msg.textContent = errText(e); msg.className = "msg bad"; }
   };
   document.querySelectorAll("[data-file]").forEach(inp => inp.onchange = async () => {
@@ -246,12 +357,11 @@ function wire() {
       const { error } = await sb.storage.from("premi").upload(path, blob, { contentType: "image/jpeg", upsert: false });
       if (error) throw error;
       S.img[key] = PHOTO_BASE + path;
-      paintPhoto(key);
+      paintPhoto(key); paintPreview();
       m.textContent = "Foto pronta: premi Salva per pubblicarla.";
     } catch (e) { m.textContent = /row-level|security|Unauthorized|403/i.test(String(e && e.message)) ? "Solo l'amministratore può caricare foto." : /Bucket not found/i.test(String(e && e.message)) ? "Prima esegui di nuovo 04_games.sql (cartella foto)." : "Foto non caricata: " + errText(e); m.style.color = "var(--bad)"; }
   });
-  document.querySelectorAll("[data-nophoto]").forEach(b => b.onclick = () => { S.img[b.dataset.nophoto] = null; paintPhoto(b.dataset.nophoto); document.querySelector(`[data-pmsg="${b.dataset.nophoto}"]`).textContent = "Foto tolta: premi Salva."; });
-  if (S.draft && S.draft.month === S.sel) applyDraft(S.draft);
+  document.querySelectorAll("[data-nophoto]").forEach(b => b.onclick = () => { S.img[b.dataset.nophoto] = null; paintPhoto(b.dataset.nophoto); paintPreview(); document.querySelector(`[data-pmsg="${b.dataset.nophoto}"]`).textContent = "Foto tolta: premi Salva."; });
   const winAct = async (place, done) => {
     try { await rpc("game_admin_delivered", { p_month: S.over.prev, p_place: place, p_done: done }); await reload(); }
     catch (e) { $("winMsg").textContent = errText(e); $("winMsg").className = "msg bad"; }
@@ -271,6 +381,13 @@ function wire() {
   });
 }
 
+// the email to a Pro winner, ready in the mail app: asks where to ship the prize
+function mailTo(w, month) {
+  const sub = `FitQuest: hai vinto il Concorso Pro di ${monthName(month)}!`;
+  const body = `Ciao ${w.name || ""},\n\ncomplimenti! Sei arrivato ${w.place}° nel Concorso Pro di ${monthName(month)} su FitQuest${w.prize ? " e hai vinto: " + w.prize : ""}.\n\nPer spedirti il premio rispondi a questa email con:\n- nome e cognome\n- indirizzo completo (via, numero, CAP, città, paese)\n- un numero di telefono per il corriere\n\nGrazie e continua ad allenarti!\nFitQuest`;
+  return "mailto:" + encodeURIComponent(w.email).replace(/%40/g, "@") + "?subject=" + encodeURIComponent(sub) + "&body=" + encodeURIComponent(body);
+}
+
 function paintPhoto(key) {
   const url = S.img[key], ph = document.querySelector(`[data-ph="${key}"]`);
   ph.classList.toggle("has", !!url); ph.style.backgroundImage = url ? `url('${url}')` : ""; ph.textContent = url ? "" : "📷";
@@ -287,7 +404,7 @@ async function shrink(file) {
   URL.revokeObjectURL(img.src);
   return await new Promise((ok, ko) => c.toBlob(b => b ? ok(b) : ko(new Error("Immagine non leggibile.")), "image/jpeg", .85));
 }
-// a draft from the assistant arrives in the link: #bozza=<base64url JSON {month, prizes:[{tier, place, title, details, points}]}>
+// a draft from the assistant arrives in the link: #bozza=<base64url JSON {month, theme, headline:{it,en,…}, prizes:[{tier, place, title, details, points, i18n:{en:{title, details},…}}]}>
 function readDraft() {
   const m = location.hash.match(/bozza=([A-Za-z0-9_-]+)/); if (!m) return null;
   try { history.replaceState(null, "", location.pathname); } catch {}
@@ -299,10 +416,21 @@ function readDraft() {
     return j;
   } catch { return null; }
 }
+const cut = (v, n) => typeof v === "string" ? v.trim().slice(0, n) : "";
 function applyDraft(d) {
   for (const p of d.prizes) {
-    const set = (k, v) => { const el = document.querySelector(`[data-t="${p.tier}"][data-p="${p.place}"][data-k="${k}"]`); if (el && v != null && v !== "") el.value = String(v).slice(0, k === "details" ? 300 : 80); };
-    set("title", p.title); set("details", p.details); if (p.tier === "free") set("points", Number.isFinite(+p.points) ? Math.max(0, Math.min(5000, Math.round(+p.points))) : null);
+    const k = p.tier + "-" + p.place, f = S.form[k];
+    if (cut(p.title, 80)) f.title = cut(p.title, 80);
+    if (cut(p.details, 300)) f.details = cut(p.details, 300);
+    if (p.tier === "free" && p.points != null && Number.isFinite(+p.points)) f.points = Math.max(0, Math.min(5000, Math.round(+p.points)));
+    const i18n = {};
+    for (const l of LANGS.slice(1)) { const t = p.i18n && p.i18n[l]; if (t && cut(t.title, 80)) i18n[l] = { title: cut(t.title, 80), details: cut(t.details, 300) || undefined }; }
+    S.tr[k] = { src: srcOf(f), i18n };
+  }
+  if (THEMES.some(t => t[0] === d.theme)) S.theme = d.theme;
+  if (d.headline && cut(d.headline.it, 60)) {
+    S.hl = {}; for (const l of LANGS) if (cut(d.headline[l], 60)) S.hl[l] = cut(d.headline[l], 60);
+    S.hlSrc = S.hl.it;
   }
 }
 

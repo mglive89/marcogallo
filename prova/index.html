@@ -1232,6 +1232,31 @@ body.dark .gm-prz li small { color: #b3bfd1; }
 body.dark .gm-tier.is-pro { background: linear-gradient(135deg, #3a2a08, #2a1e06); color: #fff3d6; }
 body.dark .gm-tier.is-pro p { color: #e2c78c; }
 .gm-prz li > span > b { font-size: 16px; }
+/* the Pro poster on the prize board */
+.gm-poster { --p1: #2a1a00; --p2: #7a4b00; --pa: #ffd36b; --pt: #fff8e6; --ps: rgba(255,248,230,.78); --pc: rgba(255,255,255,.12);
+  position: relative; overflow: hidden; border-radius: 22px; padding: 16px; color: var(--pt); background: linear-gradient(150deg, var(--p1), var(--p2)); box-shadow: 0 14px 30px rgba(0,0,0,.22); display: grid; gap: 12px; }
+.gm-poster.th-notte { --p1: #0b1130; --p2: #3a2a8a; --pa: #9fb8ff; }
+.gm-poster.th-energia { --p1: #c3124a; --p2: #ff8a2b; --pa: #fff1a8; }
+.gm-poster.th-estate { --p1: #0087b8; --p2: #f2a500; --pa: #fff4b8; }
+.gm-poster.th-inverno { --p1: #173a73; --p2: #5aa7e8; --pa: #e4f3ff; }
+.gm-pt-glow { position: absolute; inset: -40% -30% auto auto; width: 70%; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle, rgba(255,255,255,.28), transparent 65%); pointer-events: none; }
+.gm-pt-h { position: relative; display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 13px; }
+.gm-pt-k { display: inline-flex; align-items: center; gap: 6px; font-family: var(--f-cond); font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+.gm-pt-m { text-transform: capitalize; color: var(--ps); font-weight: 600; }
+.gm-pt-hl { position: relative; margin: 0; font-family: var(--f-cond); font-weight: 800; font-size: clamp(26px, 8vw, 36px); line-height: 1; text-transform: uppercase; color: var(--pa); text-wrap: balance; text-shadow: 0 2px 12px rgba(0,0,0,.25); }
+.gm-pt-1 { position: relative; display: grid; grid-template-columns: 112px 1fr; gap: 12px; align-items: center; padding: 10px; border-radius: 16px; background: var(--pc); }
+.gm-pt-img { width: 112px; height: 112px; border-radius: 14px; object-fit: cover; background: rgba(255,255,255,.9); }
+.gm-pt-img.s { width: 100%; height: auto; aspect-ratio: 4 / 3; }
+.gm-pt-medal { display: grid; place-items: center; font-size: 52px; background: rgba(255,255,255,.14); }
+.gm-pt-img.s.gm-pt-medal { font-size: 38px; }
+.gm-pt-1t { display: grid; gap: 4px; min-width: 0; }
+.gm-pt-pl { justify-self: start; font-family: var(--f-cond); font-weight: 800; font-size: 13px; padding: 2px 9px; border-radius: 999px; background: var(--pa); color: #1d1300; }
+.gm-poster b { color: var(--pt); font-size: 16px; line-height: 1.2; }
+.gm-poster .gm-pt-t { font-size: 20px; }
+.gm-poster small { display: block; color: var(--ps); font-size: 13px; line-height: 1.3; }
+.gm-pt-23 { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.gm-pt-s { display: grid; gap: 5px; align-content: start; padding: 8px; border-radius: 14px; background: var(--pc); min-width: 0; }
+.gm-pt-f { position: relative; display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; font-size: 12px; color: var(--ps); border-top: 1px solid rgba(255,255,255,.2); padding-top: 8px; }
 </style>
 
 </head>
@@ -9101,7 +9126,7 @@ const gmChoices = (sel) => '<div class="label">Giochi con la telecamera</div><di
 const gmEntry = () => '<button class="gm-entry" id="openGames" type="button"><span class="gm-entry-ico">'.concat(GM_ICO.g_stars, '</span><span><b>Giochi con la telecamera</b><small>Stelle, boxe, meteoriti e altri giochi: da solo o con gli amici</small></span><span class="go">\u203A</span></button>');
 function renderGames() {
   const rec = store.get("gameRec", {});
-  app.innerHTML = '\n  <div class="screen gm">\n    <section class="dz-hero gm-hero">\n      <div class="dz-glow"></div>\n      <div class="dz-top"><h1>Giochi</h1>'.concat(gmIsPro() ? '<span class="gm-pro big">PRO</span>' : "", '</div>\n      <p class="dz-sub">Giochi interattivi con la telecamera: muoviti davanti al telefono, da solo o sfidando un amico in videochiamata.</p>\n      <div class="gm-hero-ico">').concat(GAME_IDS.map((id) => '<span style="--gc:'.concat(GAMES[id].color, '">').concat(GM_ICO[id], "</span>")).join(""), "</div>\n    </section>\n    ").concat(gmTierCard(), '\n    <section class="gm-sec"><div class="gm-sec-h"><h2>Classifica del mese</h2><span class="gm-ends" id="gmEnds"></span></div>\n      <div class="excat gm-tabs" role="tablist"><button type="button" role="tab" data-gtab="free" aria-selected="').concat(GMX.tab === "free", '">Generale</button><button type="button" role="tab" data-gtab="pro" aria-selected="').concat(GMX.tab === "pro", '">Pro <span class="gm-pro">PRO</span></button><i></i></div>\n      <div id="gmBoard" class="gm-board"><p class="meta">Carico la classifica\u2026</p></div>\n      <details class="gm-rules"><summary>Come funziona</summary><ul>\n        <li>Conta il tuo miglior punteggio di ogni gioco nel mese: la classifica \xE8 la somma dei cinque.</li>\n        <li>La classifica parte il primo del mese e si chiude l\'ultimo giorno.</li>\n        <li>Classifica generale: per tutti. I primi tre vincono punti per sbloccare nuovi esercizi.</li>\n        <li>Classifica Pro: solo per chi ha Pro. I primi tre vincono i premi della bacheca.</li>\n        <li>I premi del mese dopo sono in bacheca dal 26.</li>\n        <li>A parit\xE0 di punti \xE8 davanti chi li ha fatti prima.</li>\n      </ul></details>\n    </section>\n    <section class="gm-sec"><div class="gm-sec-h"><h2>Bacheca premi</h2></div><div id="gmBach" class="gm-bach"><p class="meta">Carico i premi\u2026</p></div></section>\n    <h2 class="gm-h2">I giochi</h2>\n    <div class="camtip">').concat(sideCam, "<span>").concat(GAME_CAM, '</span></div>\n    <div class="gm-list">').concat(GAME_IDS.map((id) => '\n      <div class="gm-card" style="--gc:'.concat(GAMES[id].color, '">\n        <div class="gm-head"><span class="gm-ico">').concat(GM_ICO[id], "</span><div><b>").concat(GAMES[id].name, "</b><small>").concat(GAMES[id].tag, '</small></div><em class="gm-rec"><span>Record</span> <b>').concat(rec[id] || 0, "</b></em></div>\n        <p>").concat(GAMES[id].desc, '</p>\n        <div class="gm-btns"><button class="btn primary small" type="button" data-solo="').concat(id, '">Da solo</button><button class="btn ghost small" type="button" data-vs="').concat(id, '">Con un amico</button></div>\n      </div>')).join(""), "\n    </div>\n  </div>");
+  app.innerHTML = '\n  <div class="screen gm">\n    <section class="dz-hero gm-hero">\n      <div class="dz-glow"></div>\n      <div class="dz-top"><h1>Giochi</h1>'.concat(gmIsPro() ? '<span class="gm-pro big">PRO</span>' : "", '</div>\n      <p class="dz-sub">Giochi interattivi con la telecamera: muoviti davanti al telefono, da solo o sfidando un amico in videochiamata.</p>\n      <div class="gm-hero-ico">').concat(GAME_IDS.map((id) => '<span style="--gc:'.concat(GAMES[id].color, '">').concat(GM_ICO[id], "</span>")).join(""), "</div>\n    </section>\n    ").concat(gmTierCard(), '\n    <section class="gm-sec"><div class="gm-sec-h"><h2>Classifica del mese</h2><span class="gm-ends" id="gmEnds"></span></div>\n      <div class="excat gm-tabs" role="tablist"><button type="button" role="tab" data-gtab="free" aria-selected="').concat(GMX.tab === "free", '">Generale</button><button type="button" role="tab" data-gtab="pro" aria-selected="').concat(GMX.tab === "pro", '">Pro <span class="gm-pro">PRO</span></button><i></i></div>\n      <div id="gmBoard" class="gm-board"><p class="meta">Carico la classifica\u2026</p></div>\n      <details class="gm-rules"><summary>Come funziona</summary><ul>\n        <li>Conta il tuo miglior punteggio di ogni gioco nel mese: la classifica \xE8 la somma dei cinque.</li>\n        <li>La classifica parte il primo del mese e si chiude l\'ultimo giorno.</li>\n        <li>Classifica generale: per tutti. I primi tre vincono punti per sbloccare nuovi esercizi.</li>\n        <li>Classifica Pro: solo per chi ha Pro. I primi tre vincono i premi della bacheca.</li>\n        <li>I premi del mese dopo sono in bacheca dal 26.</li>\n        <li>I vincitori Pro vengono contattati all\'email del loro account per l\'indirizzo di spedizione.</li>\n        <li>A parit\xE0 di punti \xE8 davanti chi li ha fatti prima.</li>\n      </ul></details>\n    </section>\n    <section class="gm-sec"><div class="gm-sec-h"><h2>Bacheca premi</h2></div><div id="gmBach" class="gm-bach"><p class="meta">Carico i premi\u2026</p></div></section>\n    <h2 class="gm-h2">I giochi</h2>\n    <div class="camtip">').concat(sideCam, "<span>").concat(GAME_CAM, '</span></div>\n    <div class="gm-list">').concat(GAME_IDS.map((id) => '\n      <div class="gm-card" style="--gc:'.concat(GAMES[id].color, '">\n        <div class="gm-head"><span class="gm-ico">').concat(GM_ICO[id], "</span><div><b>").concat(GAMES[id].name, "</b><small>").concat(GAMES[id].tag, '</small></div><em class="gm-rec"><span>Record</span> <b>').concat(rec[id] || 0, "</b></em></div>\n        <p>").concat(GAMES[id].desc, '</p>\n        <div class="gm-btns"><button class="btn primary small" type="button" data-solo="').concat(id, '">Da solo</button><button class="btn ghost small" type="button" data-vs="').concat(id, '">Con un amico</button></div>\n      </div>')).join(""), "\n    </div>\n  </div>");
   app.querySelectorAll("[data-solo]").forEach((b) => b.onclick = () => gmPlay(b.dataset.solo));
   app.querySelectorAll("[data-vs]").forEach((b) => b.onclick = () => gmVs(b.dataset.vs));
   app.querySelectorAll("[data-gtab]").forEach((b) => b.onclick = () => {
@@ -9310,7 +9335,7 @@ function gmWon(list) {
       addPoints(w.points || 0);
       return "<li><b>".concat(gmMedal(w.place), "</b><span><span>Classifica generale</span> \xB7 <span data-notr>").concat(esc(mon), "</span><br><b>+").concat(w.points, "</b> <span>punti per sbloccare esercizi</span></span></li>");
     }
-    return "<li><b>".concat(gmMedal(w.place), "</b><span><span>Classifica Pro</span> \xB7 <span data-notr>").concat(esc(mon), "</span><br><b data-notr>").concat(esc(w.prize || ""), "</b> <span>Ti contattiamo per consegnarti il premio.</span>").concat(w.image ? '<img class="gm-won-img" src="'.concat(esc(w.image), '" alt="">') : "", "</span></li>");
+    return "<li><b>".concat(gmMedal(w.place), "</b><span><span>Classifica Pro</span> \xB7 <span data-notr>").concat(esc(mon), "</span><br><b data-notr>").concat(esc(w.prize || ""), "</b> <span>Ti scriviamo all'email del tuo account per sapere dove spedire il premio.</span>").concat(w.image ? '<img class="gm-won-img" src="'.concat(esc(w.image), '" alt="">') : "", "</span></li>");
   }).join("");
   (_a2 = $("gmSheet")) == null ? void 0 : _a2.remove();
   document.body.insertAdjacentHTML("beforeend", '<div class="gm-sheet" id="gmSheet" role="dialog" aria-modal="true"><div class="gm-sheet-in gm-won">\n    <div class="gm-trophy">\u{1F3C6}</div><h2>Hai vinto!</h2><ul class="gm-perks">'.concat(rows, '</ul>\n    <button class="btn primary" id="gmSheetX" type="button">Fantastico</button></div></div>'));
@@ -9319,6 +9344,21 @@ function gmWon(list) {
   } catch (e) {
   }
   $("gmSheetX").onclick = () => $("gmSheet").remove();
+}
+function gmPrizeText(p, big) {
+  const t = lang !== "it" && p.i18n && p.i18n[lang] || {};
+  const title = t.title || tr(p.title || ""), details = t.details || tr(p.details || "");
+  return "<b data-notr".concat(big ? ' class="gm-pt-t"' : "", ">").concat(esc(title), "</b>").concat(details ? "<small data-notr>".concat(esc(details), "</small>") : "");
+}
+const GM_THEMES = ["oro", "notte", "energia", "estate", "inverno"];
+function gmPoster(month, list, poster, endsAt) {
+  const th = poster && GM_THEMES.includes(poster.theme) ? poster.theme : "oro";
+  const hl = poster && poster.headline && (poster.headline[lang] || poster.headline.it);
+  const by = (n) => list.find((p) => p.place === n) || { place: n, tier: "pro", title: tr("Premio da annunciare") };
+  const pic = (p, cls) => p.image ? '<img class="'.concat(cls, '" src="').concat(esc(p.image), '" alt="" loading="lazy" decoding="async">') : '<span class="'.concat(cls, ' gm-pt-medal">').concat(gmMedal(p.place), "</span>");
+  const p1 = by(1), rest = [by(2), by(3)];
+  const end = endsAt ? "<span>Finisce il</span> <span data-notr>".concat(esc(gmDay(new Date(new Date(endsAt).getTime() - 36e5))), "</span>") : "<span>Dal primo all'ultimo giorno del mese</span>";
+  return '<article class="gm-poster th-'.concat(th, '">\n    <div class="gm-pt-glow"></div>\n    <header class="gm-pt-h"><span class="gm-pt-k"><i class="gm-pro">PRO</i> <span>Concorso Pro</span></span><span class="gm-pt-m" data-notr>').concat(esc(gmMonthName(month)), '</span></header>\n    <h3 class="gm-pt-hl"').concat(hl ? " data-notr" : "", ">").concat(hl ? esc(hl) : "Premi del mese", '</h3>\n    <div class="gm-pt-1">').concat(pic(p1, "gm-pt-img"), '<div class="gm-pt-1t"><span class="gm-pt-pl">1\xB0</span>').concat(gmPrizeText(p1, true), '</div></div>\n    <div class="gm-pt-23">').concat(rest.map((p) => '<div class="gm-pt-s">'.concat(pic(p, "gm-pt-img s"), '<span class="gm-pt-pl">').concat(p.place, "\xB0</span>").concat(gmPrizeText(p), "</div>")).join(""), '</div>\n    <footer class="gm-pt-f"><span>').concat(end, "</span><span>Solo per abbonati Pro</span></footer>\n  </article>");
 }
 function gmPaintLive() {
   const bd = $("gmBoard"), bh = $("gmBach"), en = $("gmEnds");
@@ -9346,7 +9386,8 @@ function gmPaintLive() {
     const block = (month, tier) => {
       const list = B.prizes.filter((p) => p.month === month && p.tier === tier);
       if (!list.length) return "";
-      return '<div class="gm-prz '.concat(tier, '"><div class="gm-prz-h"><b>').concat(tier === "pro" ? "Concorso Pro" : "Classifica generale", "</b><span data-notr>").concat(esc(gmMonthName(month)), "</span></div>\n        <ul>").concat(list.map((p) => '<li class="'.concat(p.image ? "has-img" : "", '"><b>').concat(gmMedal(p.place), "</b><span><b>").concat(esc(p.title), "</b>").concat(p.details ? "<small>".concat(esc(p.details), "</small>") : "", "</span>").concat(p.image ? '<img class="gm-prz-img" src="'.concat(esc(p.image), '" alt="" loading="lazy" decoding="async">') : "", "</li>")).join(""), "</ul></div>");
+      if (tier === "pro") return gmPoster(month, list, (B.posters || {})[month], month === B.month ? B.ends_at : null);
+      return '<div class="gm-prz '.concat(tier, '"><div class="gm-prz-h"><b>').concat(tier === "pro" ? "Concorso Pro" : "Classifica generale", "</b><span data-notr>").concat(esc(gmMonthName(month)), "</span></div>\n        <ul>").concat(list.map((p) => '<li class="'.concat(p.image ? "has-img" : "", '"><b>').concat(gmMedal(p.place), "</b><span>").concat(gmPrizeText(p), "</span>").concat(p.image ? '<img class="gm-prz-img" src="'.concat(esc(p.image), '" alt="" loading="lazy" decoding="async">') : "", "</li>")).join(""), "</ul></div>");
     };
     const win = B.winners && B.winners.length ? '<div class="gm-prz win"><div class="gm-prz-h"><b>Vincitori</b><span data-notr>'.concat(esc(gmMonthName(B.winners_month)), "</span></div><ul>").concat(B.winners.map((w) => "<li><b>".concat(gmMedal(w.place), "</b><span><b data-notr>").concat(esc(w.name), "</b><small><span>").concat(w.tier === "pro" ? "Concorso Pro" : "Classifica generale", "</span> \xB7 ").concat(w.total, " <span>punti</span></small></span></li>")).join(""), "</ul></div>") : "";
     bh.innerHTML = block(B.month, "pro") + block(B.month, "free") + (B.show_next ? '<p class="gm-next">Premi del mese prossimo</p>' + block(B.next, "pro") + block(B.next, "free") : '<p class="meta">I premi del mese prossimo arrivano in bacheca il 26.</p>') + win;
@@ -9467,7 +9508,11 @@ I18N.push(
   ["Spazio pubblicitario di prova: qui comparir\xE0 la pubblicit\xE0 vera.", "Test ad space: the real ad will appear here.", "Espacio publicitario de prueba: aqu\xED aparecer\xE1 el anuncio real.", "Espace publicitaire d'essai : la vraie pub appara\xEEtra ici.", "Test-Werbefl\xE4che: hier erscheint sp\xE4ter die echte Werbung.", "Espa\xE7o publicit\xE1rio de teste: aqui aparecer\xE1 o an\xFAncio real."],
   ["Chiudi e gioca", "Close and play", "Cerrar y jugar", "Fermer et jouer", "Schlie\xDFen und spielen", "Fechar e jogar"],
   ["punti per sbloccare esercizi", "points to unlock exercises", "puntos para desbloquear ejercicios", "points pour d\xE9bloquer des exercices", "Punkte zum Freischalten von \xDCbungen", "pontos para desbloquear exerc\xEDcios"],
-  ["Ti contattiamo per consegnarti il premio.", "We'll contact you to deliver your prize.", "Te contactaremos para entregarte el premio.", "Nous te contacterons pour te remettre ton prix.", "Wir melden uns, um dir deinen Preis zu geben.", "Entraremos em contato para entregar o seu pr\xEAmio."],
+  ["Ti scriviamo all'email del tuo account per sapere dove spedire il premio.", "We'll email you at your account address to ask where to ship your prize.", "Te escribiremos al email de tu cuenta para saber d\xF3nde enviar el premio.", "Nous t'\xE9crirons \xE0 l'adresse e-mail de ton compte pour savoir o\xF9 envoyer ton prix.", "Wir schreiben dir an die E-Mail deines Kontos, um zu fragen, wohin wir den Preis schicken sollen.", "Vamos escrever para o e-mail da sua conta para saber onde enviar o pr\xEAmio."],
+  ["I vincitori Pro vengono contattati all'email del loro account per l'indirizzo di spedizione.", "Pro winners are contacted at their account email for the shipping address.", "Los ganadores Pro son contactados en el email de su cuenta para la direcci\xF3n de env\xEDo.", "Les gagnants Pro sont contact\xE9s \xE0 l'e-mail de leur compte pour l'adresse de livraison.", "Pro-Gewinner werden \xFCber die E-Mail ihres Kontos nach der Lieferadresse gefragt.", "Os vencedores Pro s\xE3o contatados pelo e-mail da conta para o endere\xE7o de entrega."],
+  ["Premi del mese", "Prizes of the month", "Premios del mes", "Prix du mois", "Preise des Monats", "Pr\xEAmios do m\xEAs"],
+  ["Dal primo all'ultimo giorno del mese", "From the first to the last day of the month", "Del primer al \xFAltimo d\xEDa del mes", "Du premier au dernier jour du mois", "Vom ersten bis zum letzten Tag des Monats", "Do primeiro ao \xFAltimo dia do m\xEAs"],
+  ["Solo per abbonati Pro", "Pro subscribers only", "Solo para suscriptores Pro", "R\xE9serv\xE9 aux abonn\xE9s Pro", "Nur f\xFCr Pro-Abonnenten", "S\xF3 para assinantes Pro"],
   ["Hai vinto!", "You won!", "\xA1Has ganado!", "Tu as gagn\xE9 !", "Du hast gewonnen!", "Voc\xEA ganhou!"],
   ["Fantastico", "Awesome", "Genial", "G\xE9nial", "Super", "Demais"],
   ["Finisce il", "Ends on", "Termina el", "Se termine le", "Endet am", "Termina em"],
