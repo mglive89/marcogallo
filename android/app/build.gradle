@@ -7,8 +7,9 @@ android {
         applicationId "com.mglive89.fitquest"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        // ogni APK costruito su GitHub ha un numero più alto del precedente, così il telefono lo installa come aggiornamento
+        versionCode 100 + (System.getenv("GITHUB_RUN_NUMBER") ?: "0").toInteger()
+        versionName "1." + (System.getenv("GITHUB_RUN_NUMBER") ?: "0")
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
@@ -16,7 +17,19 @@ android {
             ignoreAssetsPattern = '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
+    // stessa firma per tutti gli APK di prova: senza, Android rifiuta l'aggiornamento sopra la versione già installata
+    signingConfigs {
+        prova {
+            storeFile file("fitquest-prova.keystore")
+            storePassword "fitquest-prova"
+            keyAlias "fitquest"
+            keyPassword "fitquest-prova"
+        }
+    }
     buildTypes {
+        debug {
+            signingConfig signingConfigs.prova
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'

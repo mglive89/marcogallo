@@ -63,7 +63,8 @@ jobs:
           if git clone -q --depth 1 -b app-apk "$REPO_URL" apk-out 2>/dev/null; then :; else
             git init -q -b app-apk apk-out; git -C apk-out remote add origin "$REPO_URL"; fi
           rm -f apk-out/*.apk
-          cp FitQuest-*-prova.apk apk-out/
+          cp FitQuest-*-prova.apk apk-out/FitQuest.apk
+          ls FitQuest-*-prova.apk > apk-out/versione.txt
           cd apk-out
           git config user.name "fitquest-ci"; git config user.email "ci@users.noreply.github.com"
           git add -A && git commit -q -m "APK ${GITHUB_SHA::7}" || exit 0

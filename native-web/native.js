@@ -41,6 +41,11 @@
           return h;
         });
     },
+    // passi tra due istanti (ISO), già senza doppioni tra telefono e orologio: per le camminate di "Cammina con me"
+    rangeSteps: function (from, to) {
+      return Health.queryAggregated({ dataType: "steps", startDate: from, endDate: to, bucket: "day", aggregation: "sum" })
+        .then(function (r) { return ((r && r.samples) || []).reduce(function (a, s) { return a + (Number(s.value) || 0); }, 0); });
+    },
     openSettings: function () { return Health.openHealthConnectSettings ? Health.openHealthConnectSettings() : Promise.resolve(); }
   };
 
@@ -111,4 +116,44 @@
     });
   };
   try { Object.defineProperty(navigator, "share", { value: share, configurable: true }); } catch (e) { navigator.share = share; }
+
+  // --- Aggiornamenti automatici ---
+  // 1) La parte web (schermate, testi, funzioni) si aggiorna da sola: all'avvio l'app legge app/update.json dal sito,
+  //    scarica solo i file cambiati (gli altri li copia da quelli già nel telefono) e la nuova versione parte
+  //    la prossima volta che l'app va in secondo piano o si riapre. Se qualcosa va storto torna alla versione di prima.
+  // 2) Quando serve un APK nuovo (parti native cambiate), compare un avviso con il pulsante "Aggiorna".
+  var NATIVE_VER = 2; // alzare quando cambiano plugin o permessi Android/iOS
+  var SITE = "https://mglive89.github.io/marcogallo/";
+  var Updater = C.registerPlugin("CapacitorUpdater");
+  Updater.notifyAppReady().catch(function () {});
+  var webVer = function () { var m = document.documentElement.innerHTML.match(/APP_VER = "([^"]+)"/); return m ? m[1] : ""; };
+  var verNum = function (v) { var m = String(v || "").match(/(\d+)\s*$/); return m ? +m[1] : 0; };
+  function banner(info) {
+    if (document.getElementById("fqUpd")) return;
+    var d = document.createElement("div"); d.id = "fqUpd";
+    d.style.cssText = "position:fixed;left:12px;right:12px;top:calc(env(safe-area-inset-top,0px) + 10px);z-index:99999;display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:16px;background:#141d3d;color:#fff;font:600 15px system-ui,sans-serif;box-shadow:0 10px 30px rgba(0,0,0,.3)";
+    d.innerHTML = '<span style="flex:1">C\'è una nuova versione dell\'app FitQuest</span><button type="button" style="border:0;border-radius:12px;padding:10px 14px;background:#2e86de;color:#fff;font:700 14px system-ui">Aggiorna</button><button type="button" aria-label="Più tardi" style="border:0;background:none;color:#fff;font-size:20px;padding:4px 6px">×</button>';
+    var b = d.querySelectorAll("button");
+    b[0].onclick = function () { Browser.open({ url: info.apk }).catch(function () {}); d.remove(); };
+    b[1].onclick = function () { try { sessionStorage.setItem("fq:updLater", "1"); } catch (e) {} d.remove(); };
+    document.body.appendChild(d);
+  }
+  function checkUpdate() {
+    if (navigator.onLine === false) return;
+    fetch(SITE + "app/update.json?t=" + Date.now(), { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : null; }).then(function (j) {
+      if (!j || !j.web) return;
+      if ((j.native | 0) > NATIVE_VER) {
+        var later = false; try { later = sessionStorage.getItem("fq:updLater") === "1"; } catch (e) {}
+        if (j.apk && !later) banner(j);
+        return;
+      }
+      if (verNum(j.web) <= verNum(webVer()) || !Array.isArray(j.manifest)) return;
+      return Updater.list().then(function (l) {
+        var have = (l && l.bundles || []).filter(function (b) { return b.version === j.web && b.status === "success"; })[0];
+        return have || Updater.download({ url: SITE + "app/update.json", version: j.web, manifest: j.manifest });
+      }).then(function (b) { if (b && b.id) return Updater.next({ id: b.id }); });
+    }).catch(function () {});
+  }
+  setTimeout(checkUpdate, 4000);
+  App.addListener("resume", function () { setTimeout(checkUpdate, 1500); });
 })();
