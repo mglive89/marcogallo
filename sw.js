@@ -32,6 +32,8 @@ self.addEventListener("fetch", e => {
     return;
   }
   if (url.origin !== location.origin) return;
+  // the test copy of the app in /prova/ is never cached, so it can't replace the real app offline
+  if (url.pathname.includes("/prova/")) return;
   // the voice generator page and its phrase list always come from the network
   if (/voce\.html$|voice-phrases\.json$|voice\/manifest\.json$|assets\.json$/.test(url.pathname)) return;
   if (req.mode === "navigate") {
