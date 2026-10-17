@@ -1141,7 +1141,7 @@ body.dark .ww-pts b { color: #7ee29b; }
 .gm-tier-h b { font-family: var(--f-cond); font-weight: 800; font-size: 20px; text-transform: uppercase; }
 .gm-tier p { margin: 6px 0 10px; color: var(--muted); font-size: 14px; line-height: 1.35; }
 .gm-tier.is-pro p { color: #6b4b00; }
-.gm-sim { margin-top: 10px; padding: 10px 0 0; border-top: 1px solid var(--line); box-shadow: none; background: none; }
+.gm-sim { grid-template-columns: 1fr 52px; margin-top: 10px; padding: 10px 0 0; border-top: 1px solid var(--line); box-shadow: none; background: none; }
 .gm-sim small { display: block; color: var(--muted); font-size: 12px; }
 .gm-sec { margin-top: 14px; padding: 14px; border-radius: 20px; background: var(--panel); box-shadow: var(--shadow); }
 .gm-sec-h { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; flex-wrap: wrap; }
@@ -1197,6 +1197,23 @@ body.dark .ww-pts b { color: #7ee29b; }
 .gm-ad-box p { margin: 0 0 10px; color: #c8d3e0; }
 .gm-ad-box small { color: #8a97ad; font-size: 12px; }
 .gm-ad .btn.ghost { color: #fff; }
+/* Free with Google sign-in, Pro prices */
+.gm-free-acc { display: flex; align-items: center; gap: 8px; margin: 0 0 10px; font-size: 14px; color: var(--fg); }
+.gm-free-acc svg { flex: none; background: #fff; border-radius: 50%; padding: 2px; box-sizing: content-box; }
+.gm-tier-buy { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.gm-from { color: var(--muted); font-size: 14px; } .gm-from b { color: var(--fg); font-size: 16px; }
+.gm-plans { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.gm-plan { position: relative; display: grid; gap: 2px; justify-items: start; text-align: left; padding: 14px 12px 12px; border-radius: 16px; border: 2px solid var(--line); background: var(--panel-2, var(--panel)); color: var(--fg); font: inherit; cursor: pointer; }
+.gm-plan[aria-checked="true"] { border-color: #f5a623; background: linear-gradient(135deg, rgba(255,224,138,.25), rgba(245,166,35,.18)); }
+.gm-plan > b { font-family: var(--f-cond); font-weight: 800; text-transform: uppercase; font-size: 15px; }
+.gm-price { font-family: var(--f-cond); font-weight: 800; font-size: 28px; line-height: 1.1; }
+.gm-plan small { color: var(--muted); font-size: 13px; }
+.gm-save { position: absolute; top: -10px; right: 10px; font-style: normal; font-size: 11px; font-weight: 800; padding: 2px 8px; border-radius: 999px; color: #fff; background: var(--ok, #24a148); }
+.gm-buy-note { color: var(--fg); background: var(--panel-2, var(--panel)); padding: 10px 12px; border-radius: 12px; }
+.gm-sso { display: flex; align-items: center; justify-content: center; gap: 10px; background: #fff; color: #1f1f1f; border: 1px solid #dadce0; }
+.gm-sso:disabled { opacity: .55; }
+.gm-sso svg { flex: none; }
+.gm-tabs button[data-gtab="pro"][aria-selected="true"] ~ i { transform: translateX(100%); background: linear-gradient(120deg, #f5a623, #e2741d); box-shadow: 0 6px 16px rgba(245,166,35,.35); }
 </style>
 
 </head>
@@ -9040,6 +9057,7 @@ function gmFinish() {
   gmSubmit(g, score, "solo");
 }
 function gmPlay(id) {
+  if (gmNeedLogin(() => gmPlay(id))) return;
   if (!gmIsPro() && GMX.played > 0) return gmAd(() => gmStart(id));
   gmStart(id);
 }
@@ -9049,6 +9067,7 @@ function gmStart(id) {
   startSession("live");
 }
 function gmVs(id) {
+  if (gmNeedLogin(() => gmVs(id))) return;
   if (!gmIsPro() && GMX.played > 0) return gmAd(() => {
     GMX.played++;
     gmVs2(id);
@@ -9064,7 +9083,7 @@ const gmChoices = (sel) => '<div class="label">Giochi con la telecamera</div><di
 const gmEntry = () => '<button class="gm-entry" id="openGames" type="button"><span class="gm-entry-ico">'.concat(GM_ICO.g_stars, '</span><span><b>Giochi con la telecamera</b><small>Stelle, boxe, meteoriti e altri giochi: da solo o con gli amici</small></span><span class="go">\u203A</span></button>');
 function renderGames() {
   const rec = store.get("gameRec", {});
-  app.innerHTML = '\n  <div class="screen gm">\n    <section class="dz-hero gm-hero">\n      <div class="dz-glow"></div>\n      <div class="dz-top"><h1>Giochi</h1>'.concat(gmIsPro() ? '<span class="gm-pro big">PRO</span>' : "", '</div>\n      <p class="dz-sub">Giochi interattivi con la telecamera: muoviti davanti al telefono, da solo o sfidando un amico in videochiamata.</p>\n      <div class="gm-hero-ico">').concat(GAME_IDS.map((id) => '<span style="--gc:'.concat(GAMES[id].color, '">').concat(GM_ICO[id], "</span>")).join(""), "</div>\n    </section>\n    ").concat(gmTierCard(), '\n    <section class="gm-sec"><div class="gm-sec-h"><h2>Classifica del mese</h2><span class="gm-ends" id="gmEnds"></span></div>\n      <div class="excat gm-tabs" role="tablist"><button type="button" role="tab" data-gtab="free" aria-selected="').concat(GMX.tab === "free", '">Generale</button><button type="button" role="tab" data-gtab="pro" aria-selected="').concat(GMX.tab === "pro", '">Pro <i class="gm-pro">PRO</i></button></div>\n      <div id="gmBoard" class="gm-board"><p class="meta">Carico la classifica\u2026</p></div>\n      <details class="gm-rules"><summary>Come funziona</summary><ul>\n        <li>Conta il tuo miglior punteggio di ogni gioco nel mese: la classifica \xE8 la somma dei cinque.</li>\n        <li>La classifica parte il primo del mese e si chiude l\'ultimo giorno.</li>\n        <li>Classifica generale: per tutti. I primi tre vincono punti per sbloccare nuovi esercizi.</li>\n        <li>Classifica Pro: solo per chi ha Pro. I primi tre vincono i premi della bacheca.</li>\n        <li>I premi del mese dopo sono in bacheca dal 26.</li>\n        <li>A parit\xE0 di punti \xE8 davanti chi li ha fatti prima.</li>\n      </ul></details>\n    </section>\n    <section class="gm-sec"><div class="gm-sec-h"><h2>Bacheca premi</h2></div><div id="gmBach" class="gm-bach"><p class="meta">Carico i premi\u2026</p></div></section>\n    <h2 class="gm-h2">I giochi</h2>\n    <div class="camtip">').concat(sideCam, "<span>").concat(GAME_CAM, '</span></div>\n    <div class="gm-list">').concat(GAME_IDS.map((id) => '\n      <div class="gm-card" style="--gc:'.concat(GAMES[id].color, '">\n        <div class="gm-head"><span class="gm-ico">').concat(GM_ICO[id], "</span><div><b>").concat(GAMES[id].name, "</b><small>").concat(GAMES[id].tag, '</small></div><em class="gm-rec"><span>Record</span> <b>').concat(rec[id] || 0, "</b></em></div>\n        <p>").concat(GAMES[id].desc, '</p>\n        <div class="gm-btns"><button class="btn primary small" type="button" data-solo="').concat(id, '">Da solo</button><button class="btn ghost small" type="button" data-vs="').concat(id, '">Con un amico</button></div>\n      </div>')).join(""), "\n    </div>\n  </div>");
+  app.innerHTML = '\n  <div class="screen gm">\n    <section class="dz-hero gm-hero">\n      <div class="dz-glow"></div>\n      <div class="dz-top"><h1>Giochi</h1>'.concat(gmIsPro() ? '<span class="gm-pro big">PRO</span>' : "", '</div>\n      <p class="dz-sub">Giochi interattivi con la telecamera: muoviti davanti al telefono, da solo o sfidando un amico in videochiamata.</p>\n      <div class="gm-hero-ico">').concat(GAME_IDS.map((id) => '<span style="--gc:'.concat(GAMES[id].color, '">').concat(GM_ICO[id], "</span>")).join(""), "</div>\n    </section>\n    ").concat(gmTierCard(), '\n    <section class="gm-sec"><div class="gm-sec-h"><h2>Classifica del mese</h2><span class="gm-ends" id="gmEnds"></span></div>\n      <div class="excat gm-tabs" role="tablist"><button type="button" role="tab" data-gtab="free" aria-selected="').concat(GMX.tab === "free", '">Generale</button><button type="button" role="tab" data-gtab="pro" aria-selected="').concat(GMX.tab === "pro", '">Pro <span class="gm-pro">PRO</span></button><i></i></div>\n      <div id="gmBoard" class="gm-board"><p class="meta">Carico la classifica\u2026</p></div>\n      <details class="gm-rules"><summary>Come funziona</summary><ul>\n        <li>Conta il tuo miglior punteggio di ogni gioco nel mese: la classifica \xE8 la somma dei cinque.</li>\n        <li>La classifica parte il primo del mese e si chiude l\'ultimo giorno.</li>\n        <li>Classifica generale: per tutti. I primi tre vincono punti per sbloccare nuovi esercizi.</li>\n        <li>Classifica Pro: solo per chi ha Pro. I primi tre vincono i premi della bacheca.</li>\n        <li>I premi del mese dopo sono in bacheca dal 26.</li>\n        <li>A parit\xE0 di punti \xE8 davanti chi li ha fatti prima.</li>\n      </ul></details>\n    </section>\n    <section class="gm-sec"><div class="gm-sec-h"><h2>Bacheca premi</h2></div><div id="gmBach" class="gm-bach"><p class="meta">Carico i premi\u2026</p></div></section>\n    <h2 class="gm-h2">I giochi</h2>\n    <div class="camtip">').concat(sideCam, "<span>").concat(GAME_CAM, '</span></div>\n    <div class="gm-list">').concat(GAME_IDS.map((id) => '\n      <div class="gm-card" style="--gc:'.concat(GAMES[id].color, '">\n        <div class="gm-head"><span class="gm-ico">').concat(GM_ICO[id], "</span><div><b>").concat(GAMES[id].name, "</b><small>").concat(GAMES[id].tag, '</small></div><em class="gm-rec"><span>Record</span> <b>').concat(rec[id] || 0, "</b></em></div>\n        <p>").concat(GAMES[id].desc, '</p>\n        <div class="gm-btns"><button class="btn primary small" type="button" data-solo="').concat(id, '">Da solo</button><button class="btn ghost small" type="button" data-vs="').concat(id, '">Con un amico</button></div>\n      </div>')).join(""), "\n    </div>\n  </div>");
   app.querySelectorAll("[data-solo]").forEach((b) => b.onclick = () => gmPlay(b.dataset.solo));
   app.querySelectorAll("[data-vs]").forEach((b) => b.onclick = () => gmVs(b.dataset.vs));
   app.querySelectorAll("[data-gtab]").forEach((b) => b.onclick = () => {
@@ -9087,7 +9106,7 @@ function renderGameResult() {
   $("gmVs").onclick = () => gmVs(r.g);
   $("gmMore").onclick = () => go({ name: "games" });
 }
-const GMX = { pro: false, me: null, played: 0, board: { free: null, pro: null }, bacheca: null, tab: "free", claimed: false, loading: null, err: false };
+const GMX = { pro: false, me: null, played: 0, board: { free: null, pro: null }, bacheca: null, tab: "free", plan: "year", claimed: false, loading: null, err: false };
 const gmSimPro = () => !!store.get("gmSimPro", false);
 const gmIsPro = () => GMX.pro || gmSimPro();
 const gmMonthName = (m) => {
@@ -9163,7 +9182,7 @@ function gmRankLine() {
 }
 function gmTierCard() {
   const pro = gmIsPro();
-  return '<section class="gm-tier'.concat(pro ? " is-pro" : "", '">\n    <div class="gm-tier-h"><b>').concat(pro ? "Versione Pro" : "Versione Free", "</b>").concat(pro ? '<i class="gm-pro">PRO</i>' : "", "</div>\n    <p>").concat(pro ? "Niente pubblicit\xE0, concorso del mese con premi veri per i primi tre." : "Gratis con pubblicit\xE0 prima di ogni nuovo gioco. Classifica generale: i primi tre vincono punti.", "</p>\n    ").concat(pro ? "" : '<button class="btn primary small" id="gmGoPro" type="button">Scopri Pro</button>', '\n    <label class="dz-switch gm-sim"><span>Simula Pro in questa prova<small>Solo per provare: toglie la pubblicit\xE0. La classifica Pro conta solo gli abbonati veri.</small></span><input type="checkbox" id="gmSim" ').concat(gmSimPro() ? "checked" : "", "><i></i></label>\n  </section>");
+  return '<section class="gm-tier'.concat(pro ? " is-pro" : "", '">\n    <div class="gm-tier-h"><b>').concat(pro ? "Versione Pro" : "Versione Free", "</b>").concat(pro ? '<i class="gm-pro">PRO</i>' : "", "</div>\n    <p>").concat(pro ? "Niente pubblicit\xE0, concorso del mese con premi veri per i primi tre." : "Gratis con pubblicit\xE0 prima di ogni nuovo gioco. Classifica generale: i primi tre vincono punti.", "</p>\n    ").concat(pro ? "" : '<p class="gm-free-acc">'.concat(gIco, '<span>Gratis con l\'accesso Google. Presto anche con Apple.</span></p>\n    <div class="gm-tier-buy"><button class="btn primary small" id="gmGoPro" type="button">Scopri Pro</button><span class="gm-from"><span>Pro da</span> <b data-notr>3,99 \u20AC</b><span>/mese</span></span></div>'), '\n    <label class="dz-switch gm-sim"><span>Simula Pro in questa prova<small>Solo per provare: toglie la pubblicit\xE0. La classifica Pro conta solo gli abbonati veri.</small></span><input type="checkbox" id="gmSim" ').concat(gmSimPro() ? "checked" : "", "><i></i></label>\n  </section>");
 }
 function gmTierWire() {
   const b = $("gmGoPro");
@@ -9179,11 +9198,60 @@ function gmTierWire() {
 function gmProSheet() {
   var _a2;
   (_a2 = $("gmSheet")) == null ? void 0 : _a2.remove();
-  document.body.insertAdjacentHTML("beforeend", '<div class="gm-sheet" id="gmSheet" role="dialog" aria-modal="true"><div class="gm-sheet-in">\n    <div class="gm-tier-h"><b>FitQuest Pro</b><i class="gm-pro big">PRO</i></div>\n    <ul class="gm-perks"><li><b>Niente pubblicit\xE0</b><span>Passi da un gioco all\'altro senza aspettare.</span></li>\n      <li><b>Concorso del mese</b><span>Una classifica solo per gli abbonati Pro, dal primo all\'ultimo giorno del mese.</span></li>\n      <li><b>Premi per i primi tre</b><span>I premi sono in bacheca e cambiano ogni mese. Quelli del mese dopo li vedi dal 26.</span></li></ul>\n    <button class="btn primary" type="button" disabled>Abbonamento in arrivo</button>\n    <p class="meta">L\'abbonamento si attiva con l\'uscita dell\'app nei negozi. Per ora puoi provare Pro con l\'interruttore qui sotto.</p>\n    <button class="btn ghost" id="gmSheetX" type="button">Chiudi</button></div></div>');
+  document.body.insertAdjacentHTML("beforeend", '<div class="gm-sheet" id="gmSheet" role="dialog" aria-modal="true"><div class="gm-sheet-in">\n    <div class="gm-tier-h"><b>FitQuest Pro</b><i class="gm-pro big">PRO</i></div>\n    <ul class="gm-perks"><li><b>Niente pubblicit\xE0</b><span>Passi da un gioco all\'altro senza aspettare.</span></li>\n      <li><b>Concorso del mese</b><span>Una classifica solo per gli abbonati Pro, dal primo all\'ultimo giorno del mese.</span></li>\n      <li><b>Premi per i primi tre</b><span>I premi sono in bacheca e cambiano ogni mese. Quelli del mese dopo li vedi dal 26.</span></li></ul>\n    <div class="gm-plans" role="radiogroup">'.concat(GM_PLANS.map((p) => '<button class="gm-plan" type="button" role="radio" data-plan="'.concat(p.id, '" aria-checked="').concat(p.id === GMX.plan, '">\n      ').concat(p.save ? '<i class="gm-save"><span>Risparmi</span> <span data-notr>'.concat(p.save, "</span></i>") : "", "<b>").concat(p.name, '</b><span class="gm-price" data-notr>').concat(p.price, "</span><small>").concat(p.per, "</small>").concat(p.month ? "<small><span>pari a</span> <span data-notr>".concat(p.month, "</span><span>/mese</span></small>") : "", "</button>")).join(""), '</div>\n    <button class="btn primary" id="gmBuy" type="button"></button>\n    <p class="meta" id="gmBuyMsg">L\'abbonamento si attiva con l\'uscita dell\'app nei negozi. Per ora puoi provare Pro con l\'interruttore "Simula Pro".</p>\n    <p class="meta">Disdici quando vuoi. Serve l\'accesso con il tuo account.</p>\n    <button class="btn ghost" id="gmSheetX" type="button">Chiudi</button></div></div>'));
+  const paint = () => {
+    const pl = GM_PLANS.find((p) => p.id === GMX.plan);
+    document.querySelectorAll("[data-plan]").forEach((b) => b.setAttribute("aria-checked", b.dataset.plan === GMX.plan));
+    $("gmBuy").innerHTML = "<span>Abbonati</span> \xB7 <span data-notr>".concat(pl.price, "</span>").concat(tr(pl.id === "year" ? "/anno" : "/mese"));
+  };
+  document.querySelectorAll("[data-plan]").forEach((b) => b.onclick = () => {
+    GMX.plan = b.dataset.plan;
+    paint();
+  });
+  paint();
+  $("gmBuy").onclick = () => {
+    if (SITE && !ACC.user) {
+      $("gmSheet").remove();
+      return gmNeedLogin(gmProSheet);
+    }
+    const m = $("gmBuyMsg");
+    m.className = "meta gm-buy-note";
+    m.textContent = tr("Il pagamento non \xE8 ancora attivo: arriva con l'app su Google Play e App Store. Nessun addebito.");
+  };
   $("gmSheetX").onclick = () => $("gmSheet").remove();
   $("gmSheet").onclick = (e) => {
     if (e.target.id === "gmSheet") $("gmSheet").remove();
   };
+}
+const GM_PLANS = [
+  { id: "month", name: "Mensile", price: "3,99 \u20AC", per: "al mese" },
+  { id: "year", name: "Annuale", price: "29,99 \u20AC", per: "all'anno", month: "2,50 \u20AC", save: "37%" }
+];
+const gIco = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="#4285F4" d="M22.6 12.3c0-.8-.1-1.5-.2-2.3H12v4.3h5.9a5 5 0 0 1-2.2 3.3v2.7h3.6c2.1-1.9 3.3-4.8 3.3-8z"/><path fill="#34A853" d="M12 23c3 0 5.5-1 7.3-2.7l-3.6-2.7c-1 .7-2.2 1.1-3.7 1.1-2.9 0-5.3-1.9-6.2-4.5H2.1v2.8A11 11 0 0 0 12 23z"/><path fill="#FBBC05" d="M5.8 14.2a6.6 6.6 0 0 1 0-4.3V7.1H2.1a11 11 0 0 0 0 9.9l3.7-2.8z"/><path fill="#EA4335" d="M12 5.4c1.6 0 3.1.6 4.2 1.7l3.2-3.2A11 11 0 0 0 2.1 7.1l3.7 2.8C6.7 7.3 9.1 5.4 12 5.4z"/></svg>';
+const aIco = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M16.4 12.6c0-2.5 2-3.7 2.1-3.8a4.6 4.6 0 0 0-3.6-2c-1.5-.2-3 .9-3.7.9-.8 0-2-.9-3.2-.8A4.8 4.8 0 0 0 4 9.4c-1.7 3-.4 7.4 1.2 9.8.8 1.2 1.8 2.5 3 2.4 1.2 0 1.7-.8 3.1-.8 1.5 0 1.9.8 3.2.8 1.3 0 2.2-1.2 3-2.4a10 10 0 0 0 1.3-2.8 4.3 4.3 0 0 1-2.4-3.8zM14 5.2c.7-.8 1.1-1.9 1-3-1 0-2.1.7-2.8 1.5-.6.7-1.2 1.8-1 2.9 1 .1 2.1-.6 2.8-1.4z"/></svg>';
+function gmNeedLogin(next) {
+  var _a2;
+  if (!SITE || ACC.user) return false;
+  (_a2 = $("gmSheet")) == null ? void 0 : _a2.remove();
+  document.body.insertAdjacentHTML("beforeend", '<div class="gm-sheet" id="gmSheet" role="dialog" aria-modal="true"><div class="gm-sheet-in gm-login">\n    <div class="gm-tier-h"><b>Accedi per giocare</b></div>\n    <p class="meta">I giochi sono gratis: serve solo l\'accesso, cos\xEC i tuoi punteggi entrano in classifica e puoi vincere i premi del mese.</p>\n    <button class="btn gm-sso" id="gmGoogle" type="button">'.concat(gIco, '<span>Continua con Google</span></button>\n    <button class="btn gm-sso" type="button" disabled>').concat(aIco, '<span>Apple</span> \xB7 <span>in arrivo</span></button>\n    <p class="meta gm-buy-note" id="gmLoginMsg" hidden></p>\n    <button class="btn ghost" id="gmSheetX" type="button">Non ora</button></div></div>'));
+  $("gmSheetX").onclick = () => $("gmSheet").remove();
+  $("gmSheet").onclick = (e) => {
+    if (e.target.id === "gmSheet") $("gmSheet").remove();
+  };
+  $("gmGoogle").onclick = async () => {
+    const b = $("gmGoogle");
+    b.disabled = true;
+    try {
+      if (offline()) throw new Error("network");
+      await ssoStart("google", "games");
+    } catch (e) {
+      b.disabled = false;
+      const m = $("gmLoginMsg");
+      m.hidden = false;
+      m.textContent = tr(String(e && e.message) === "network" ? "Nessuna connessione. Riprova." : "Accesso non riuscito. Riprova.");
+    }
+  };
+  return true;
 }
 function gmAd(next) {
   var _a2;
@@ -9355,6 +9423,27 @@ I18N.push(
   ["Abbonamento in arrivo", "Subscription coming soon", "Suscripci\xF3n pr\xF3ximamente", "Abonnement bient\xF4t disponible", "Abo kommt bald", "Assinatura em breve"],
   ["L'abbonamento si attiva con l'uscita dell'app nei negozi. Per ora puoi provare Pro con l'interruttore qui sotto.", "The subscription starts when the app is in the stores. For now you can try Pro with the switch below.", "La suscripci\xF3n se activa cuando la app est\xE9 en las tiendas. Por ahora puedes probar Pro con el interruptor de abajo.", "L'abonnement s'active \xE0 la sortie de l'app dans les stores. En attendant, essaie Pro avec l'interrupteur ci-dessous.", "Das Abo startet, wenn die App in den Stores ist. Bis dahin kannst du Pro mit dem Schalter unten testen.", "A assinatura come\xE7a quando o app estiver nas lojas. Por enquanto, teste o Pro com o bot\xE3o abaixo."],
   ["Pubblicit\xE0", "Ad", "Anuncio", "Publicit\xE9", "Werbung", "An\xFAncio"],
+  ["Gratis con l'accesso Google. Presto anche con Apple.", "Free with Google sign-in. Apple coming soon.", "Gratis con acceso de Google. Pronto tambi\xE9n con Apple.", "Gratuit avec la connexion Google. Bient\xF4t aussi avec Apple.", "Kostenlos mit Google-Anmeldung. Bald auch mit Apple.", "Gr\xE1tis com login do Google. Em breve tamb\xE9m com a Apple."],
+  ["Pro da", "Pro from", "Pro desde", "Pro d\xE8s", "Pro ab", "Pro a partir de"],
+  ["/mese", "/month", "/mes", "/mois", "/Monat", "/m\xEAs"],
+  ["/anno", "/year", "/a\xF1o", "/an", "/Jahr", "/ano"],
+  ["Mensile", "Monthly", "Mensual", "Mensuel", "Monatlich", "Mensal"],
+  ["Annuale", "Yearly", "Anual", "Annuel", "J\xE4hrlich", "Anual"],
+  ["al mese", "per month", "al mes", "par mois", "pro Monat", "por m\xEAs"],
+  ["all'anno", "per year", "al a\xF1o", "par an", "pro Jahr", "por ano"],
+  ["pari a", "just", "equivale a", "soit", "entspricht", "equivale a"],
+  ["Risparmi", "Save", "Ahorras", "\xC9conomise", "Spare", "Economize"],
+  ["Abbonati", "Subscribe", "Suscr\xEDbete", "S'abonner", "Abonnieren", "Assinar"],
+  ["L'abbonamento si attiva con l'uscita dell'app nei negozi. Per ora puoi provare Pro con l'interruttore \"Simula Pro\".", 'The subscription starts when the app is in the stores. For now you can try Pro with the "Simulate Pro" switch.', 'La suscripci\xF3n se activa cuando la app est\xE9 en las tiendas. Por ahora puedes probar Pro con el interruptor "Simular Pro".', "L'abonnement s'active \xE0 la sortie de l'app dans les stores. En attendant, essaie Pro avec l'interrupteur \"Simuler Pro\".", 'Das Abo startet, wenn die App in den Stores ist. Bis dahin kannst du Pro mit dem Schalter "Pro simulieren" testen.', 'A assinatura come\xE7a quando o app estiver nas lojas. Por enquanto, teste o Pro com o bot\xE3o "Simular Pro".'],
+  ["Disdici quando vuoi. Serve l'accesso con il tuo account.", "Cancel anytime. You need to be signed in to your account.", "Cancela cuando quieras. Necesitas iniciar sesi\xF3n con tu cuenta.", "R\xE9siliable \xE0 tout moment. Il faut \xEAtre connect\xE9 \xE0 ton compte.", "Jederzeit k\xFCndbar. Du musst mit deinem Konto angemeldet sein.", "Cancele quando quiser. \xC9 preciso entrar com sua conta."],
+  ["Il pagamento non \xE8 ancora attivo: arriva con l'app su Google Play e App Store. Nessun addebito.", "Payment isn't active yet: it comes with the app on Google Play and the App Store. You haven't been charged.", "El pago a\xFAn no est\xE1 activo: llega con la app en Google Play y App Store. No se ha cobrado nada.", "Le paiement n'est pas encore actif : il arrive avec l'app sur Google Play et l'App Store. Aucun d\xE9bit.", "Die Zahlung ist noch nicht aktiv: sie kommt mit der App bei Google Play und im App Store. Es wurde nichts abgebucht.", "O pagamento ainda n\xE3o est\xE1 ativo: chega com o app no Google Play e na App Store. Nada foi cobrado."],
+  ["Accedi per giocare", "Sign in to play", "Inicia sesi\xF3n para jugar", "Connecte-toi pour jouer", "Melde dich an, um zu spielen", "Entre para jogar"],
+  ["I giochi sono gratis: serve solo l'accesso, cos\xEC i tuoi punteggi entrano in classifica e puoi vincere i premi del mese.", "The games are free: you just need to sign in, so your scores enter the leaderboard and you can win the monthly prizes.", "Los juegos son gratis: solo necesitas iniciar sesi\xF3n, as\xED tus puntuaciones entran en la clasificaci\xF3n y puedes ganar los premios del mes.", "Les jeux sont gratuits : il suffit de te connecter, pour que tes scores entrent au classement et que tu puisses gagner les prix du mois.", "Die Spiele sind kostenlos: du musst dich nur anmelden, damit deine Punkte in die Rangliste kommen und du die Monatspreise gewinnen kannst.", "Os jogos s\xE3o gr\xE1tis: basta entrar, assim suas pontua\xE7\xF5es entram no ranking e voc\xEA pode ganhar os pr\xEAmios do m\xEAs."],
+  ["Continua con Google", "Continue with Google", "Continuar con Google", "Continuer avec Google", "Weiter mit Google", "Continuar com o Google"],
+  ["in arrivo", "coming soon", "pr\xF3ximamente", "bient\xF4t", "kommt bald", "em breve"],
+  ["Non ora", "Not now", "Ahora no", "Pas maintenant", "Nicht jetzt", "Agora n\xE3o"],
+  ["Nessuna connessione. Riprova.", "No connection. Try again.", "Sin conexi\xF3n. Int\xE9ntalo de nuevo.", "Pas de connexion. R\xE9essaie.", "Keine Verbindung. Versuch es noch mal.", "Sem conex\xE3o. Tente de novo."],
+  ["Accesso non riuscito. Riprova.", "Sign-in failed. Try again.", "No se pudo iniciar sesi\xF3n. Int\xE9ntalo de nuevo.", "Connexion impossible. R\xE9essaie.", "Anmeldung fehlgeschlagen. Versuch es noch mal.", "N\xE3o foi poss\xEDvel entrar. Tente de novo."],
   ["Gioca senza pause con FitQuest Pro", "Play without breaks with FitQuest Pro", "Juega sin pausas con FitQuest Pro", "Joue sans pause avec FitQuest Pro", "Spiel ohne Pausen mit FitQuest Pro", "Jogue sem pausas com o FitQuest Pro"],
   ["Niente pubblicit\xE0 e premi veri ogni mese per i primi tre.", "No ads and real prizes every month for the top three.", "Sin anuncios y premios reales cada mes para los tres primeros.", "Pas de pub et de vrais prix chaque mois pour les trois premiers.", "Keine Werbung und jeden Monat echte Preise f\xFCr die ersten drei.", "Sem an\xFAncios e pr\xEAmios reais todo m\xEAs para os tr\xEAs primeiros."],
   ["Spazio pubblicitario di prova: qui comparir\xE0 la pubblicit\xE0 vera.", "Test ad space: the real ad will appear here.", "Espacio publicitario de prueba: aqu\xED aparecer\xE1 el anuncio real.", "Espace publicitaire d'essai : la vraie pub appara\xEEtra ici.", "Test-Werbefl\xE4che: hier erscheint sp\xE4ter die echte Werbung.", "Espa\xE7o publicit\xE1rio de teste: aqui aparecer\xE1 o an\xFAncio real."],
@@ -9739,7 +9828,7 @@ window.fqAuthReturn = async (url) => {
     err = err || String(e && e.message || e);
   }
   if (ACC.user && from === "welcome") accWelcomeDone();
-  else if (ACC.user) go({ name: "profile" });
+  else if (ACC.user) go({ name: from === "games" ? "games" : "profile" });
   else {
     reportBug("login", "warning", "sso_return_error", { native: true, m: String(err || "").slice(0, 120) });
     go(from === "welcome" ? { name: "onboard" } : { name: "profile" });
@@ -9770,7 +9859,7 @@ function accInit() {
       } catch (e) {
       }
       if (ACC.user && from === "welcome") accWelcomeDone();
-      else if (ACC.user) go({ name: "profile" });
+      else if (ACC.user) go({ name: from === "games" ? "games" : "profile" });
       else if (backErr) {
         reportBug("login", "warning", "sso_return_error", {});
         go(from === "welcome" ? { name: "onboard" } : { name: "profile" });
