@@ -610,6 +610,11 @@ html.land #rotate svg { animation: rotPhone 1.8s ease-in-out infinite; }
 .dz-switch input:checked + i { background: linear-gradient(120deg, #3b8cff, #8a6bff); }
 .dz-switch input:checked + i::after { transform: translateX(22px); }
 .dz-switch input:focus-visible + i { outline: 2px solid var(--brass); outline-offset: 2px; }
+.fr-add { display: grid; grid-template-columns: 40px minmax(0, 1fr); align-items: center; gap: 4px 12px; margin: 14px 0; padding: 14px; border-radius: 18px; background: var(--panel); box-shadow: var(--shadow); text-align: left; }
+.fr-add .fr-ico { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; color: #fff; background: linear-gradient(135deg, #3b8cff, #8a6bff); }
+.fr-add.done .fr-ico { background: linear-gradient(135deg, #20b38a, #3bc98f); }
+.fr-add b { display: block; font-size: 16px; } .fr-add small { display: block; color: var(--muted); font-size: 13px; line-height: 1.35; }
+.fr-add .btn { grid-column: 1 / -1; margin-top: 8px; width: 100%; }
 .dz-friends { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
 .dz-friends li { display: grid; grid-template-columns: 48px minmax(0, 1fr) auto; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 18px; background: var(--panel); box-shadow: var(--shadow); }
 .dz-av { width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; font-family: var(--f-display); font-weight: 800; font-size: 22px; color: #fff; background: linear-gradient(135deg, hsl(var(--h) 80% 60%), hsl(calc(var(--h) + 50) 75% 50%)); box-shadow: 0 0 0 3px var(--panel), 0 0 0 5px hsl(var(--h) 70% 65% / .5); }
@@ -5259,6 +5264,52 @@ function saveFriend(c) {
   friends[c.id] = { name: cleanName(c.name, "Amico"), rank: Math.min(RANKS.length - 1, Math.max(0, c.rank | 0)), total: Math.min(1e7, Math.max(0, c.total | 0)), gold: !!c.gold, crowns: crownN(c.crowns), months, ...fcode ? { fcode } : {} };
   store.set("friends", friends);
 }
+function oppCardSeen(c) {
+  if (!CH.random || c && typeof c.id === "string" && friends[c.id]) saveFriend(c);
+}
+const isFriend = (c) => !!(c && typeof c.id === "string" && friends[c.id]);
+function addOppFriend() {
+  const c = CH.oppCard;
+  if (!c) return false;
+  if (!ACC.user) {
+    store.set("frPending", c);
+    return false;
+  }
+  saveFriend(c);
+  store.set("frPending", null);
+  return true;
+}
+function frPendingFlush() {
+  const c = store.get("frPending", null);
+  if (c && ACC.user) {
+    saveFriend(c);
+    store.set("frPending", null);
+  }
+}
+function addFriendBox() {
+  const c = CH.oppCard;
+  if (!CH.random || !c) return "";
+  const name = esc(CH.oppName || cleanName(c.name, "Avversario"));
+  if (isFriend(c)) return '<div class="fr-add done"><span class="fr-ico">'.concat(RULE_ICO.check, "</span><span><b>").concat(name, " \xE8 nei tuoi amici</b><small>Lo trovi in Sfide: potrai sfidarlo con un tocco</small></span></div>");
+  if (ACC.user) return '<div class="fr-add"><span class="fr-ico">'.concat(RULE_ICO.users, "</span><span><b>Ti \xE8 piaciuto sfidare ").concat(name, '?</b><small>Aggiungilo agli amici per sfidarlo di nuovo quando vuoi</small></span><button class="btn primary small" id="frAdd" type="button">Aggiungi agli amici</button></div>');
+  return '<div class="fr-add"><span class="fr-ico">'.concat(RULE_ICO.users, "</span><span><b>Vuoi aggiungere ").concat(name, ' agli amici?</b><small>Serve un account (Google, Apple o email): accedi e lo aggiungiamo subito</small></span><button class="btn ghost small" id="frLogin" type="button">Accedi</button></div>');
+}
+function wireAddFriend(again) {
+  const a = $("frAdd");
+  if (a) a.onclick = () => {
+    addOppFriend();
+    again();
+  };
+  const l = $("frLogin");
+  if (l) l.onclick = () => {
+    addOppFriend();
+    go({ name: "profile" });
+    setTimeout(() => {
+      const e = $("acc");
+      if (e) e.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 350);
+  };
+}
 function friendsBoard(key) {
   var _a2;
   const rows = Object.entries(friends).map(([id, f]) => ({ id, name: f.name, rank: f.rank, gold: f.gold, crowns: f.crowns, pts: f.months[key] || 0 }));
@@ -5556,7 +5607,7 @@ function onDuelMsg(m) {
     CH.oppName = cleanName(m.name, "Amico");
     if (m.card && typeof m.card === "object") {
       CH.oppCard = m.card;
-      saveFriend(m.card);
+      oppCardSeen(m.card);
     }
     refreshLobby();
   } else if (m.t === "cfg" && CH.role === "guest" && okCfg(m.cfg)) {
@@ -5571,7 +5622,7 @@ function onDuelMsg(m) {
     if (CH.cfg.ok !== false) startDuelSession();
   } else if (m.t === "card" && m.card && typeof m.card === "object") {
     CH.oppCard = m.card;
-    saveFriend(m.card);
+    oppCardSeen(m.card);
   } else if (m.t === "reps") {
     const n = Math.min(oppRepCap(), Math.max(0, m.n | 0));
     if (n !== CH.oppReps) {
@@ -6107,9 +6158,14 @@ function renderRndJoin() {
   })();
 }
 function renderDuels() {
-  const fl = invitable(), cr = crownN(stats.crowns);
+  frPendingFlush();
+  const fl = Object.entries(friends).filter(([id]) => !id.startsWith("code:") || friends[id].fcode).map(([id, f]) => ({ id, ...f })).sort((a, b) => {
+    var _a2, _b2;
+    return (((_a2 = b.months) == null ? void 0 : _a2[monthKey()]) || 0) - (((_b2 = a.months) == null ? void 0 : _b2[monthKey()]) || 0) || String(a.name).localeCompare(String(b.name));
+  }), cr = crownN(stats.crowns);
   const av = (n) => avatar(n);
-  app.innerHTML = '\n  <div class="screen dz">\n    <section class="dz-hero">\n      <div class="dz-glow"></div>\n      <div class="dz-top"><h1>Sfide</h1>'.concat(cr ? '<span class="dz-crowns">'.concat(crownSVG(), "<b>").concat(cr, "</b></span>") : "", '</div>\n      <p class="dz-sub">Uno contro uno in videochiamata: la fotocamera conta le ripetizioni di entrambi</p>\n      ').concat(offline() ? '<p class="dz-off">Sei offline: per sfidare qualcuno serve internet.</p>' : "", "\n      ").concat(SITE ? '<div class="dz-arena"><img class="dz-m" src="'.concat(imgDir(), 'chars/vs-m.webp" alt="" draggable="false"><em class="dz-vs">VS</em><img class="dz-f" src="').concat(imgDir(), 'chars/vs-f.webp" alt="" draggable="false"></div>') : '<div class="dz-arena"><em class="dz-vs">VS</em></div>', '\n      <button class="dz-cta" id="duelRandom" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg><span><b>Sfida casuale</b><small>Ti abbino a chi sta cercando una sfida in questo momento</small></span></button>\n    </section>\n    <div class="dz-tiles">\n      <button class="dz-tile t1" id="duelNew" type="button"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v12H5.5L4 17.5z"/><path d="M8 9h8M8 12h5"/></svg></span><b>Invita un amico</b><small>Crea la sfida e mandagli il link o l\'invito</small></button>\n      <button class="dz-tile t2" id="duelJoin" type="button"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="10" rx="2"/><path d="M7 12h.01M11 12h.01M15 12h.01"/></svg></span><b>Ho un codice</b><small>Entra nella sfida di un amico</small></button>\n    </div>\n    <label class="dz-switch"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 21h4"/></svg></span><span>Avvisami quando qualcuno cerca una sfida casuale</span><input type="checkbox" id="rndT" ').concat(RW.on ? "checked" : "", '><i></i></label>\n    <div class="section"><div class="label">I tuoi amici</div>\n      ').concat(fl.length ? '<ol class="dz-friends">'.concat(fl.map((f) => "<li>".concat(av(f.name), '<span class="who"><b>').concat(esc(f.name), "</b>").concat(rankBadge(Math.min(RANKS.length - 1, Math.max(0, f.rank | 0)), !!f.gold, f.crowns), '</span><button class="btn primary small inv" type="button" data-inv="').concat(esc(f.fcode), '">Sfida</button></li>')).join(""), "</ol>") : '<p class="note">Aggiungi un amico con il suo codice, oppure sfidalo con un link: comparir\xE0 qui e potrai invitarlo con un tocco.</p>', '\n    </div>\n    <div class="dz-ticket">\n      <div class="dz-ticket-top">\n        <div class="label">Il tuo codice amico</div>\n        <div class="code">').concat(myFcode, '</div>\n        <p class="meta">Dallo ai tuoi amici: con questo codice ti aggiungono e ti invitano alle sfide quando hai l\'app aperta.</p>\n        <button class="btn ghost small" id="shareMe" type="button">Invia il mio codice</button>\n      </div>\n      <div class="dz-ticket-bot">\n        <label class="label" for="addCode">Aggiungi un amico</label>\n        <div class="dz-add"><input id="addCode" maxlength="6" autocapitalize="characters" autocomplete="off" placeholder="Codice amico"><button class="btn primary small" id="addBtn" type="button">Aggiungi</button></div>\n        <p class="note" id="addNote" hidden></p>\n      </div>\n    </div>\n  </div>');
+  const friendsSec = '    <div class="section"><div class="label">I tuoi amici'.concat(fl.length ? " \xB7 ".concat(fl.length) : "", "</div>\n      ").concat(fl.length ? '<ol class="dz-friends">'.concat(fl.map((f) => "<li>".concat(av(f.name), '<span class="who"><b>').concat(esc(f.name), "</b>").concat(rankBadge(Math.min(RANKS.length - 1, Math.max(0, f.rank | 0)), !!f.gold, f.crowns), "</span>").concat(f.fcode ? '<button class="btn primary small inv" type="button" data-inv="'.concat(esc(f.fcode), '">Sfida</button>') : '<button class="btn ghost small inv" type="button" data-link>Sfida</button>', "</li>")).join(""), "</ol>") : '<p class="note">Qui trovi i tuoi amici, pronti da sfidare con un tocco. Aggiungili con il loro codice, con un link di sfida, oppure dopo una sfida casuale con "Aggiungi agli amici".</p>', "\n    </div>");
+  app.innerHTML = '\n  <div class="screen dz">\n    <section class="dz-hero">\n      <div class="dz-glow"></div>\n      <div class="dz-top"><h1>Sfide</h1>'.concat(cr ? '<span class="dz-crowns">'.concat(crownSVG(), "<b>").concat(cr, "</b></span>") : "", '</div>\n      <p class="dz-sub">Uno contro uno in videochiamata: la fotocamera conta le ripetizioni di entrambi</p>\n      ').concat(offline() ? '<p class="dz-off">Sei offline: per sfidare qualcuno serve internet.</p>' : "", "\n      ").concat(SITE ? '<div class="dz-arena"><img class="dz-m" src="'.concat(imgDir(), 'chars/vs-m.webp" alt="" draggable="false"><em class="dz-vs">VS</em><img class="dz-f" src="').concat(imgDir(), 'chars/vs-f.webp" alt="" draggable="false"></div>') : '<div class="dz-arena"><em class="dz-vs">VS</em></div>', '\n      <button class="dz-cta" id="duelRandom" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg><span><b>Sfida casuale</b><small>Ti abbino a chi sta cercando una sfida in questo momento</small></span></button>\n    </section>\n    ').concat(fl.length ? friendsSec : "", '\n    <div class="dz-tiles">\n      <button class="dz-tile t1" id="duelNew" type="button"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v12H5.5L4 17.5z"/><path d="M8 9h8M8 12h5"/></svg></span><b>Invita un amico</b><small>Crea la sfida e mandagli il link o l\'invito</small></button>\n      <button class="dz-tile t2" id="duelJoin" type="button"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="10" rx="2"/><path d="M7 12h.01M11 12h.01M15 12h.01"/></svg></span><b>Ho un codice</b><small>Entra nella sfida di un amico</small></button>\n    </div>\n    <label class="dz-switch"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 21h4"/></svg></span><span>Avvisami quando qualcuno cerca una sfida casuale</span><input type="checkbox" id="rndT" ').concat(RW.on ? "checked" : "", "><i></i></label>\n    ").concat(fl.length ? "" : friendsSec, '\n    <div class="dz-ticket">\n      <div class="dz-ticket-top">\n        <div class="label">Il tuo codice amico</div>\n        <div class="code">').concat(myFcode, '</div>\n        <p class="meta">Dallo ai tuoi amici: con questo codice ti aggiungono e ti invitano alle sfide quando hai l\'app aperta.</p>\n        <button class="btn ghost small" id="shareMe" type="button">Invia il mio codice</button>\n      </div>\n      <div class="dz-ticket-bot">\n        <label class="label" for="addCode">Aggiungi un amico</label>\n        <div class="dz-add"><input id="addCode" maxlength="6" autocapitalize="characters" autocomplete="off" placeholder="Codice amico"><button class="btn primary small" id="addBtn" type="button">Aggiungi</button></div>\n        <p class="note" id="addNote" hidden></p>\n      </div>\n    </div>\n  </div>');
   $("duelRandom").onclick = () => go({ name: "duel-new", mode: "random" });
   $("rndT").onchange = (e) => {
     RW.on = e.target.checked;
@@ -6124,6 +6180,7 @@ function renderDuels() {
   $("duelNew").onclick = () => go({ name: "duel-new", mode: "invite" });
   $("duelJoin").onclick = () => go({ name: "duel-join", code: "" });
   app.querySelectorAll("[data-inv]").forEach((b) => b.onclick = () => go({ name: "duel-new", mode: "invite", inviteTo: b.dataset.inv }));
+  app.querySelectorAll("[data-link]").forEach((b) => b.onclick = () => go({ name: "duel-new", mode: "invite" }));
   $("addBtn").onclick = async () => {
     const code = $("addCode").value.trim().toUpperCase().replace(/[^A-Z0-9]/g, "");
     const n = $("addNote");
@@ -6642,7 +6699,8 @@ function maybeDuelResult() {
 function renderDuelResult() {
   const r = route, host = CH.role === "host";
   const verdict = r.outcome === "win" ? "Hai vinto!" : r.outcome === "lose" ? "Ha vinto ".concat(esc(CH.oppName || "l'amico")) : "Pareggio";
-  app.innerHTML = '\n  <div class="screen">\n    <header class="mast"><div><div class="sub">Sfida \xB7 '.concat(esc(fmtTxt(CH.cfg)), '</div></div><div class="callsign">Vittorie<b>').concat((r.score || [CH.wins.me, CH.wins.opp]).join("\u2013"), "</b></div></header>\n    ").concat(r.crown ? '<div class="crown-win'.concat(r.crown === "me" ? " mine" : "", '"><div class="cw-rays"></div><div class="cw-crown">').concat(crownSVG(), '<i class="sp s1"></i><i class="sp s2"></i><i class="sp s3"></i><i class="sp s4"></i></div><b>').concat(r.crown === "me" ? "Hai conquistato la Corona!" : "".concat(esc(CH.oppName || "L'amico"), " conquista la Corona"), "</b><small>").concat(r.crown === "me" ? "".concat(CROWN_WINS, " vittorie: la corona brilla accanto al tuo nome.") : "Ha vinto ".concat(CROWN_WINS, " sfide. Prenditi la rivincita!"), "</small></div>") : '<p class="meta crown-hint">'.concat(crownSVG(), "<span>Chi vince ").concat(CROWN_WINS, " sfide conquista la Corona</span></p>"), '\n    <div class="verdict">').concat(verdict, '</div>\n    <div class="vs">\n      <div class="').concat(r.outcome === "win" ? "win" : "", '"><b>').concat(r.me, "</b><span>").concat(esc(myName || "Tu"), " ").concat(myBadge(), '</span></div>\n      <em>VS</em>\n      <div class="').concat(r.outcome === "lose" ? "win" : "", '"><b>').concat(r.opp, "</b><span>").concat(esc(CH.oppName || "Amico"), '</span></div>\n    </div>\n    <p class="meta">Contano solo le ripetizioni complete e valide. Punti sfida: ').concat(r.outcome === "win" ? "+30" : r.outcome === "tie" ? "+15" : "+10", ', pi\xF9 1 punto per ripetizione.</p>\n    <div class="row">\n      ').concat(host ? '<button class="btn primary" id="again" type="button" '.concat(CH.connected ? "" : "disabled", ">Rivincita</button>") : '<p class="note">'.concat(CH.connected ? "Per la rivincita aspetta ".concat(esc(CH.oppName || "l'amico"), ".") : "La connessione con l'amico si \xE8 chiusa.", "</p>"), '\n      <button class="btn ghost" id="leave" type="button">Esci dalla sfida</button>\n    </div>\n  </div>');
+  app.innerHTML = '\n  <div class="screen">\n    <header class="mast"><div><div class="sub">Sfida \xB7 '.concat(esc(fmtTxt(CH.cfg)), '</div></div><div class="callsign">Vittorie<b>').concat((r.score || [CH.wins.me, CH.wins.opp]).join("\u2013"), "</b></div></header>\n    ").concat(r.crown ? '<div class="crown-win'.concat(r.crown === "me" ? " mine" : "", '"><div class="cw-rays"></div><div class="cw-crown">').concat(crownSVG(), '<i class="sp s1"></i><i class="sp s2"></i><i class="sp s3"></i><i class="sp s4"></i></div><b>').concat(r.crown === "me" ? "Hai conquistato la Corona!" : "".concat(esc(CH.oppName || "L'amico"), " conquista la Corona"), "</b><small>").concat(r.crown === "me" ? "".concat(CROWN_WINS, " vittorie: la corona brilla accanto al tuo nome.") : "Ha vinto ".concat(CROWN_WINS, " sfide. Prenditi la rivincita!"), "</small></div>") : '<p class="meta crown-hint">'.concat(crownSVG(), "<span>Chi vince ").concat(CROWN_WINS, " sfide conquista la Corona</span></p>"), '\n    <div class="verdict">').concat(verdict, '</div>\n    <div class="vs">\n      <div class="').concat(r.outcome === "win" ? "win" : "", '"><b>').concat(r.me, "</b><span>").concat(esc(myName || "Tu"), " ").concat(myBadge(), '</span></div>\n      <em>VS</em>\n      <div class="').concat(r.outcome === "lose" ? "win" : "", '"><b>').concat(r.opp, "</b><span>").concat(esc(CH.oppName || "Amico"), "</span></div>\n    </div>\n    ").concat(addFriendBox(), '\n    <p class="meta">Contano solo le ripetizioni complete e valide. Punti sfida: ').concat(r.outcome === "win" ? "+30" : r.outcome === "tie" ? "+15" : "+10", ', pi\xF9 1 punto per ripetizione.</p>\n    <div class="row">\n      ').concat(host ? '<button class="btn primary" id="again" type="button" '.concat(CH.connected ? "" : "disabled", ">Rivincita</button>") : '<p class="note">'.concat(CH.connected ? "Per la rivincita aspetta ".concat(esc(CH.oppName || "l'amico"), ".") : "La connessione con l'amico si \xE8 chiusa.", "</p>"), '\n      <button class="btn ghost" id="leave" type="button">Esci dalla sfida</button>\n    </div>\n  </div>');
+  wireAddFriend(renderDuelResult);
   if (host) $("again").onclick = () => {
     duelSend({ t: "lobby" });
     go({ name: "lobby" });
@@ -6932,7 +6990,7 @@ function fxSettingsWire() {
 }
 const SB_URL = "https://maypmqnjkdrdqcssnvty.supabase.co";
 const SB_KEY = "sb_publishable_uorMl6G618tavZGF8MQpfQ_2Pg3AIlE";
-const APP_VER = "web-v52";
+const APP_VER = "web-v53";
 const SYNC_SKIP = ["lite", "vpack", "rndInv"];
 const ACC = { sb: null, user: null, loading: null, busy: false, msg: "", err: false, timer: null, mode: "login" };
 const syncInfo = () => {
@@ -7287,6 +7345,7 @@ window.fqAuthReturn = async (url) => {
   }
 };
 function accRefresh() {
+  frPendingFlush();
   const el = $("acc");
   if (!el || route.name !== "profile") return;
   el.outerHTML = accountCard();
