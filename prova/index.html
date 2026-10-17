@@ -1164,6 +1164,8 @@ body.dark .ww-pts b { color: #7ee29b; }
 .gm-rules summary { cursor: pointer; font-weight: 600; color: var(--fg); }
 .gm-rules ul { margin: 8px 0 0; padding-left: 18px; display: grid; gap: 4px; }
 .gm-bach { display: grid; gap: 10px; margin-top: 10px; }
+.gm-bach:empty { display: none; }
+.gm-h3 { margin: 16px 0 0; font-family: var(--f-cond); font-weight: 800; font-size: 17px; text-transform: uppercase; letter-spacing: .02em; }
 .gm-prz { border-radius: 16px; padding: 12px; background: var(--panel-2); }
 .gm-prz.pro { background: linear-gradient(135deg, #fff7e0, #ffeec2); }
 .gm-prz.win { background: linear-gradient(135deg, #e8f7ee, #d6f1e1); }
@@ -1257,6 +1259,38 @@ body.dark .gm-tier.is-pro p { color: #e2c78c; }
 .gm-pt-23 { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .gm-pt-s { display: grid; gap: 5px; align-content: start; padding: 8px; border-radius: 14px; background: var(--pc); min-width: 0; }
 .gm-pt-f { position: relative; display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; font-size: 12px; color: var(--ps); border-top: 1px solid rgba(255,255,255,.2); padding-top: 8px; }
+
+/* home: Free and Pro plans side by side */
+.hp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; align-items: stretch; }
+.hp-card { position: relative; display: flex; flex-direction: column; gap: 8px; padding: 14px 12px 12px; border-radius: 18px; background: var(--panel); border: 1.5px solid var(--line); box-shadow: var(--shadow); min-width: 0; }
+.hp-card header { display: flex; align-items: center; gap: 6px; min-height: 22px; }
+.hp-card header b { font-family: var(--f-cond); font-weight: 800; font-size: 22px; text-transform: uppercase; letter-spacing: .02em; }
+.hp-tag { margin-left: auto; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 999px; background: var(--soft); color: var(--brass); }
+.hp-card.free.on { border-color: var(--brass); }
+.hp-price { display: flex; align-items: baseline; gap: 5px; flex-wrap: wrap; }
+.hp-price b { font-family: var(--f-cond); font-weight: 800; font-size: 30px; line-height: 1; }
+.hp-price small { font-size: 13px; color: var(--muted); }
+.hp-alt { margin: -4px 0 0; font-size: 12.5px; color: var(--muted); }
+.hp-alt b { color: var(--fg); }
+.hp-alt i { font-style: normal; font-weight: 800; font-size: 11px; padding: 1px 6px; border-radius: 999px; background: #1f9a47; color: #fff; margin-left: 2px; }
+.hp-card ul { list-style: none; margin: 2px 0 4px; padding: 0; display: grid; gap: 7px; font-size: 13.5px; line-height: 1.25; flex: 1; align-content: start; }
+.hp-card li { display: grid; grid-template-columns: 16px 1fr; gap: 6px; align-items: start; }
+.hp-card li svg { width: 16px; height: 16px; margin-top: 1px; color: #1f9a47; }
+.hp-card li.no { color: var(--muted); }
+.hp-card li.no svg { color: var(--muted); opacity: .7; }
+.hp-btn { width: 100%; justify-content: center; display: inline-flex; align-items: center; gap: 6px; }
+.hp-btn#hpFree { font-family: var(--f-body); font-size: 14px; font-weight: 700; text-transform: none; letter-spacing: 0; padding-inline: 8px; white-space: nowrap; }
+.hp-cur { display: block; text-align: center; font-size: 13px; font-weight: 700; color: var(--muted); padding: 8px 0 4px; border-top: 1px solid var(--line); }
+.hp-card.pro { border: 0; padding-top: 22px; color: #fff8e6; background: linear-gradient(155deg, #23160a, #5a3a10 70%, #8a5a12); box-shadow: 0 12px 28px rgba(90,58,16,.35); }
+.hp-card.pro .hp-price small, .hp-card.pro .hp-alt { color: rgba(255,248,230,.75); }
+.hp-card.pro .hp-alt b { color: #ffd36b; }
+.hp-card.pro .hp-price b { color: #ffd36b; }
+.hp-card.pro li svg { color: #ffd36b; }
+.hp-card.pro .hp-cur { color: #ffd36b; border-color: rgba(255,255,255,.2); }
+.hp-card.pro .btn.primary { background: linear-gradient(135deg, #ffe08a, #f5a623); color: #2a1a00; border: 0; }
+.hp-ribbon { position: absolute; top: 0; right: 12px; transform: translateY(-50%); font-size: 11px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; padding: 3px 10px; border-radius: 999px; background: linear-gradient(135deg, #ffe08a, #f5a623); color: #3a2400; box-shadow: 0 4px 12px rgba(245,166,35,.4); }
+.hp-foot { margin: 8px 2px 0; font-size: 12.5px; color: var(--muted); }
+@media (max-width: 340px) { .hp-grid { grid-template-columns: 1fr; } }
 </style>
 
 </head>
@@ -4365,7 +4399,7 @@ function renderHome() {
     const ri = rankIndex(), cur = RANKS[ri], nx = RANKS[ri + 1];
     const pct = nx ? Math.round((stats.total - cur[1]) / (nx[1] - cur[1]) * 100) : 100;
     return '<button class="rankcard" id="openRank" type="button" style="text-align:left;color:inherit">\n      <div><div class="label">Il tuo livello</div><div class="rname">'.concat(myBadge(), " <span>").concat(cur[0], '</span></div></div>\n      <div class="pts">').concat(stats.month.pts, '<small>punti del mese</small></div>\n      <div class="xp"><i style="width:').concat(pct, '%"></i></div>\n      <div class="meta">').concat(nx ? "".concat(nx[1] - stats.total, " punti al livello ").concat(nx[0]) : "Livello massimo raggiunto", " \xB7 Classifica \u203A</div>\n    </button>");
-  })(), '\n\n    <section class="section">\n      <div class="label">Programma di oggi \xB7 Settimana ').concat(n.wk, ", sessione ").concat(n.d + 1, '</div>\n      <div class="order">\n        <h2>').concat(esc(s.title), '</h2>\n        <div class="circuit">').concat(s.blocks.map(([ex, sets, t]) => '<button class="step" type="button" data-ex="'.concat(ex, '"><div class="figbox" data-fig="').concat(ex, '" data-g="').concat(G(), '"></div><b>').concat(EX[ex].name, "</b><span>").concat(sets, " \xD7 ").concat(targetTxt(ex, t), "</span>").concat(ARROW, "</button>")).join(""), '</div>\n        <p class="restnote">1 minuto di riposo tra ogni serie \xB7 la telecamera conta le ripetizioni e ti corregge a voce</p>\n        <div class="weeks">').concat(weeks, '</div>\n      </div>\n    </section>\n\n    <section class="section">\n      <div class="label">Prova di efficienza fisica</div>\n      <div class="exlist">\n        ').concat(tests.map((id) => {
+  })(), "\n    ").concat(gmHomePlans(), '\n\n    <section class="section">\n      <div class="label">Programma di oggi \xB7 Settimana ').concat(n.wk, ", sessione ").concat(n.d + 1, '</div>\n      <div class="order">\n        <h2>').concat(esc(s.title), '</h2>\n        <div class="circuit">').concat(s.blocks.map(([ex, sets, t]) => '<button class="step" type="button" data-ex="'.concat(ex, '"><div class="figbox" data-fig="').concat(ex, '" data-g="').concat(G(), '"></div><b>').concat(EX[ex].name, "</b><span>").concat(sets, " \xD7 ").concat(targetTxt(ex, t), "</span>").concat(ARROW, "</button>")).join(""), '</div>\n        <p class="restnote">1 minuto di riposo tra ogni serie \xB7 la telecamera conta le ripetizioni e ti corregge a voce</p>\n        <div class="weeks">').concat(weeks, '</div>\n      </div>\n    </section>\n\n    <section class="section">\n      <div class="label">Prova di efficienza fisica</div>\n      <div class="exlist">\n        ').concat(tests.map((id) => {
     var _a2;
     return '<button class="ex wide" data-test="'.concat(id, '" type="button"><div class="figbox" data-fig="').concat(id, '" data-g="').concat(G(), '"></div><span><b>').concat(EX[id].name, " in 2 minuti</b><small>Record: ").concat((_a2 = records[id]) != null ? _a2 : "\u2014", '</small></span><span class="go">\u203A</span></button>');
   }).join(""), "\n      </div>\n    </section>\n\n    ").concat(SITE ? '<section class="section">\n      <div class="label">Sfida</div>\n      <button class="mode" id="openDuels" type="button"><span class="ico">'.concat(TAB_ICO.duels, '</span><span><b>Sfida qualcuno in videochiamata</b><small>Avversario casuale, un amico invitato o un codice</small></span><span class="go">\u203A</span></button>\n    </section>') : "", "\n    ").concat(COMPAT_MSG ? '<p class="note" style="background:#fdecea">'.concat(COMPAT_MSG, "</p>") : "", "\n  </div>");
@@ -4376,6 +4410,7 @@ function renderHome() {
     go({ name: "brief", queue: [{ ex: id, target: 0, set: 1, sets: 1, timeLimit: 120 }], title: EX[id].name + " in 2 minuti", test: id });
   });
   $("openRank").onclick = () => go({ name: "ranking" });
+  gmHomeWire();
   if (SITE) $("openDuels").onclick = () => go({ name: "duels" });
 }
 function openFree(id) {
@@ -9126,7 +9161,7 @@ const gmChoices = (sel) => '<div class="label">Giochi con la telecamera</div><di
 const gmEntry = () => '<button class="gm-entry" id="openGames" type="button"><span class="gm-entry-ico">'.concat(GM_ICO.g_stars, '</span><span><b>Giochi con la telecamera</b><small>Stelle, boxe, meteoriti e altri giochi: da solo o con gli amici</small></span><span class="go">\u203A</span></button>');
 function renderGames() {
   const rec = store.get("gameRec", {});
-  app.innerHTML = '\n  <div class="screen gm">\n    <section class="dz-hero gm-hero">\n      <div class="dz-glow"></div>\n      <div class="dz-top"><h1>Giochi</h1>'.concat(gmIsPro() ? '<span class="gm-pro big">PRO</span>' : "", '</div>\n      <p class="dz-sub">Giochi interattivi con la telecamera: muoviti davanti al telefono, da solo o sfidando un amico in videochiamata.</p>\n      <div class="gm-hero-ico">').concat(GAME_IDS.map((id) => '<span style="--gc:'.concat(GAMES[id].color, '">').concat(GM_ICO[id], "</span>")).join(""), "</div>\n    </section>\n    ").concat(gmTierCard(), '\n    <section class="gm-sec"><div class="gm-sec-h"><h2>Classifica del mese</h2><span class="gm-ends" id="gmEnds"></span></div>\n      <div class="excat gm-tabs" role="tablist"><button type="button" role="tab" data-gtab="free" aria-selected="').concat(GMX.tab === "free", '">Generale</button><button type="button" role="tab" data-gtab="pro" aria-selected="').concat(GMX.tab === "pro", '">Pro <span class="gm-pro">PRO</span></button><i></i></div>\n      <div id="gmBoard" class="gm-board"><p class="meta">Carico la classifica\u2026</p></div>\n      <details class="gm-rules"><summary>Come funziona</summary><ul>\n        <li>Conta il tuo miglior punteggio di ogni gioco nel mese: la classifica \xE8 la somma dei cinque.</li>\n        <li>La classifica parte il primo del mese e si chiude l\'ultimo giorno.</li>\n        <li>Classifica generale: per tutti. I primi tre vincono punti per sbloccare nuovi esercizi.</li>\n        <li>Classifica Pro: solo per chi ha Pro. I primi tre vincono i premi della bacheca.</li>\n        <li>I premi del mese dopo sono in bacheca dal 26.</li>\n        <li>I vincitori Pro vengono contattati all\'email del loro account per l\'indirizzo di spedizione.</li>\n        <li>A parit\xE0 di punti \xE8 davanti chi li ha fatti prima.</li>\n      </ul></details>\n    </section>\n    <section class="gm-sec"><div class="gm-sec-h"><h2>Bacheca premi</h2></div><div id="gmBach" class="gm-bach"><p class="meta">Carico i premi\u2026</p></div></section>\n    <h2 class="gm-h2">I giochi</h2>\n    <div class="camtip">').concat(sideCam, "<span>").concat(GAME_CAM, '</span></div>\n    <div class="gm-list">').concat(GAME_IDS.map((id) => '\n      <div class="gm-card" style="--gc:'.concat(GAMES[id].color, '">\n        <div class="gm-head"><span class="gm-ico">').concat(GM_ICO[id], "</span><div><b>").concat(GAMES[id].name, "</b><small>").concat(GAMES[id].tag, '</small></div><em class="gm-rec"><span>Record</span> <b>').concat(rec[id] || 0, "</b></em></div>\n        <p>").concat(GAMES[id].desc, '</p>\n        <div class="gm-btns"><button class="btn primary small" type="button" data-solo="').concat(id, '">Da solo</button><button class="btn ghost small" type="button" data-vs="').concat(id, '">Con un amico</button></div>\n      </div>')).join(""), "\n    </div>\n  </div>");
+  app.innerHTML = '\n  <div class="screen gm">\n    <section class="dz-hero gm-hero">\n      <div class="dz-glow"></div>\n      <div class="dz-top"><h1>Giochi</h1>'.concat(gmIsPro() ? '<span class="gm-pro big">PRO</span>' : "", '</div>\n      <p class="dz-sub">Giochi interattivi con la telecamera: muoviti davanti al telefono, da solo o sfidando un amico in videochiamata.</p>\n      <div class="gm-hero-ico">').concat(GAME_IDS.map((id) => '<span style="--gc:'.concat(GAMES[id].color, '">').concat(GM_ICO[id], "</span>")).join(""), "</div>\n    </section>\n    ").concat(gmTierCard(), '\n    <section class="gm-sec"><div class="gm-sec-h"><h2>Bacheca premi</h2><span class="gm-ends" id="gmEnds"></span></div>\n      <div class="excat gm-tabs" role="tablist"><button type="button" role="tab" data-gtab="free" aria-selected="').concat(GMX.tab === "free", '">Generale</button><button type="button" role="tab" data-gtab="pro" aria-selected="').concat(GMX.tab === "pro", '">Pro <span class="gm-pro">PRO</span></button><i></i></div>\n      <div id="gmBachTop" class="gm-bach"></div>\n      <h3 class="gm-h3">Classifica del mese</h3>\n      <div id="gmBoard" class="gm-board"><p class="meta">Carico la classifica\u2026</p></div>\n      <div id="gmBach" class="gm-bach"><p class="meta">Carico i premi\u2026</p></div>\n      <details class="gm-rules"><summary>Come funziona</summary><ul>\n        <li>Conta il tuo miglior punteggio di ogni gioco nel mese: la classifica \xE8 la somma dei cinque.</li>\n        <li>La classifica parte il primo del mese e si chiude l\'ultimo giorno.</li>\n        <li>Classifica generale: per tutti. I primi tre vincono punti per sbloccare nuovi esercizi.</li>\n        <li>Classifica Pro: solo per chi ha Pro. I primi tre vincono i premi della bacheca.</li>\n        <li>I premi del mese dopo sono in bacheca dal 26.</li>\n        <li>I vincitori Pro vengono contattati all\'email del loro account per l\'indirizzo di spedizione.</li>\n        <li>A parit\xE0 di punti \xE8 davanti chi li ha fatti prima.</li>\n      </ul></details>\n    </section>\n    <h2 class="gm-h2">I giochi</h2>\n    <div class="camtip">').concat(sideCam, "<span>").concat(GAME_CAM, '</span></div>\n    <div class="gm-list">').concat(GAME_IDS.map((id) => '\n      <div class="gm-card" style="--gc:'.concat(GAMES[id].color, '">\n        <div class="gm-head"><span class="gm-ico">').concat(GM_ICO[id], "</span><div><b>").concat(GAMES[id].name, "</b><small>").concat(GAMES[id].tag, '</small></div><em class="gm-rec"><span>Record</span> <b>').concat(rec[id] || 0, "</b></em></div>\n        <p>").concat(GAMES[id].desc, '</p>\n        <div class="gm-btns"><button class="btn primary small" type="button" data-solo="').concat(id, '">Da solo</button><button class="btn ghost small" type="button" data-vs="').concat(id, '">Con un amico</button></div>\n      </div>')).join(""), "\n    </div>\n  </div>");
   app.querySelectorAll("[data-solo]").forEach((b) => b.onclick = () => gmPlay(b.dataset.solo));
   app.querySelectorAll("[data-vs]").forEach((b) => b.onclick = () => gmVs(b.dataset.vs));
   app.querySelectorAll("[data-gtab]").forEach((b) => b.onclick = () => {
@@ -9266,6 +9301,32 @@ function gmProSheet() {
     if (e.target.id === "gmSheet") $("gmSheet").remove();
   };
 }
+function gmHomePlans() {
+  const pro = gmIsPro(), y = GM_PLANS[1];
+  const ok = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5 6.5 12 13 4.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  const no = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 4.5l7 7M11.5 4.5l-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+  const li = (yes, t) => '<li class="'.concat(yes ? "" : "no", '">').concat(yes ? ok : no, "<span>").concat(t, "</span></li>");
+  const freeBtn = pro ? "" : SITE && !ACC.user ? '<button class="btn ghost small hp-btn" id="hpFree" type="button">'.concat(gIco, "<span>Accedi con Google</span></button>") : '<span class="hp-cur">Il tuo piano</span>';
+  return '<section class="section hp">\n    <div class="label">Scegli la tua versione</div>\n    <div class="hp-grid">\n      <article class="hp-card free'.concat(pro || SITE && !ACC.user ? "" : " on", '">\n        <header><b data-notr>Free</b>').concat(pro || SITE && !ACC.user ? "" : '<span class="hp-tag">Attivo</span>', '</header>\n        <div class="hp-price"><b data-notr>0 \u20AC</b><small>gratis per sempre</small></div>\n        <ul>').concat(li(1, "Allenamenti, esercizi e sfide")).concat(li(1, "Giochi con la telecamera")).concat(li(1, "Classifica generale: i primi tre vincono punti")).concat(li(0, "Pubblicit\xE0 prima dei giochi"), "</ul>\n        ").concat(freeBtn, '\n      </article>\n      <article class="hp-card pro').concat(pro ? " on" : "", '">\n        <span class="hp-ribbon">').concat(pro ? "Attivo" : "Consigliato", '</span>\n        <header><b data-notr>Pro</b><i class="gm-pro">PRO</i></header>\n        <div class="hp-price"><b data-notr>').concat(GM_PLANS[0].price, '</b><small>al mese</small></div>\n        <p class="hp-alt"><span>oppure</span> <b data-notr>').concat(y.price, "</b><span>/anno</span> <i data-notr>-").concat(y.save, "</i></p>\n        <ul>").concat(li(1, "Tutto quello che c'\xE8 in Free")).concat(li(1, "Niente pubblicit\xE0")).concat(li(1, "Concorso del mese con premi veri"), "</ul>\n        ").concat(pro ? '<span class="hp-cur">Il tuo piano</span>' : '<button class="btn primary small hp-btn" id="hpPro" type="button">Passa a Pro</button>', '\n      </article>\n    </div>\n    <p class="hp-foot">Free: serve l\'accesso con Google, presto anche con Apple. Pro: disdici quando vuoi.</p>\n  </section>');
+}
+function gmHomeWire() {
+  const p = $("hpPro");
+  if (p) p.onclick = gmProSheet;
+  const f = $("hpFree");
+  if (f) f.onclick = () => gmNeedLogin();
+  const uid = SITE && ACC.user && ACC.user.id;
+  if (uid && GMX.homeFor !== uid) {
+    GMX.homeFor = uid;
+    sbClient().then(() => wwRpc("game_me")).then((m) => {
+      GMX.me = m;
+      const was = gmIsPro();
+      GMX.pro = !!(m && m.pro);
+      if (gmIsPro() !== was && route.name === "home") render();
+    }).catch(() => {
+      GMX.homeFor = null;
+    });
+  }
+}
 const GM_PLANS = [
   { id: "month", name: "Mensile", price: "3,99 \u20AC", per: "al mese" },
   { id: "year", name: "Annuale", price: "29,99 \u20AC", per: "all'anno", month: "2,50 \u20AC", save: "37%" }
@@ -9378,7 +9439,9 @@ function gmPaintLive() {
     const lg = $("gmLogin");
     if (lg) lg.onclick = () => go({ name: "profile" });
   }
+  const bt = $("gmBachTop");
   if (bh) {
+    if (bt) bt.innerHTML = "";
     if (!B) {
       bh.innerHTML = '<p class="meta">'.concat(GMX.err ? "La bacheca non \xE8 disponibile in questo momento." : "Carico i premi\u2026", "</p>");
       return;
@@ -9390,7 +9453,8 @@ function gmPaintLive() {
       return '<div class="gm-prz '.concat(tier, '"><div class="gm-prz-h"><b>').concat(tier === "pro" ? "Concorso Pro" : "Classifica generale", "</b><span data-notr>").concat(esc(gmMonthName(month)), "</span></div>\n        <ul>").concat(list.map((p) => '<li class="'.concat(p.image ? "has-img" : "", '"><b>').concat(gmMedal(p.place), "</b><span>").concat(gmPrizeText(p), "</span>").concat(p.image ? '<img class="gm-prz-img" src="'.concat(esc(p.image), '" alt="" loading="lazy" decoding="async">') : "", "</li>")).join(""), "</ul></div>");
     };
     const win = B.winners && B.winners.length ? '<div class="gm-prz win"><div class="gm-prz-h"><b>Vincitori</b><span data-notr>'.concat(esc(gmMonthName(B.winners_month)), "</span></div><ul>").concat(B.winners.map((w) => "<li><b>".concat(gmMedal(w.place), "</b><span><b data-notr>").concat(esc(w.name), "</b><small><span>").concat(w.tier === "pro" ? "Concorso Pro" : "Classifica generale", "</span> \xB7 ").concat(w.total, " <span>punti</span></small></span></li>")).join(""), "</ul></div>") : "";
-    bh.innerHTML = block(B.month, "pro") + block(B.month, "free") + (B.show_next ? '<p class="gm-next">Premi del mese prossimo</p>' + block(B.next, "pro") + block(B.next, "free") : '<p class="meta">I premi del mese prossimo arrivano in bacheca il 26.</p>') + win;
+    if (bt) bt.innerHTML = block(B.month, GMX.tab);
+    bh.innerHTML = (B.show_next ? '<p class="gm-next">Premi del mese prossimo</p>' + block(B.next, GMX.tab) : '<p class="meta">I premi del mese prossimo arrivano in bacheca il 26.</p>') + win;
   }
 }
 document.body.insertAdjacentHTML("beforeend", '<div class="prova-badge" aria-hidden="true">Pagina di prova</div>');
@@ -9534,6 +9598,21 @@ I18N.push(
   ["troppo presto: finisci la partita", "too soon: finish the game first", "demasiado pronto: termina la partida", "trop t\xF4t : termine la partie", "zu fr\xFCh: beende erst das Spiel", "cedo demais: termine a partida"],
   ["limite di partite di oggi raggiunto", "today's game limit reached", "l\xEDmite de partidas de hoy alcanzado", "limite de parties du jour atteinte", "Spiellimit f\xFCr heute erreicht", "limite de partidas de hoje atingido"],
   ["Punti del gioco: vince chi ne fa di pi\xF9. Il punteggio entra nella classifica del mese dei giochi.", "Game points: whoever scores more wins. The score goes into this month's games leaderboard.", "Puntos del juego: gana quien haga m\xE1s. La puntuaci\xF3n entra en la clasificaci\xF3n del mes de los juegos.", "Points du jeu : celui qui en marque le plus gagne. Le score entre dans le classement du mois des jeux.", "Spielpunkte: wer mehr hat, gewinnt. Der Punktestand z\xE4hlt f\xFCr die Monatsrangliste der Spiele.", "Pontos do jogo: vence quem fizer mais. A pontua\xE7\xE3o entra no ranking do m\xEAs dos jogos."]
+);
+I18N.push(
+  ["Scegli la tua versione", "Choose your version", "Elige tu versi\xF3n", "Choisis ta version", "W\xE4hle deine Version", "Escolha sua vers\xE3o"],
+  ["Attivo", "Active", "Activo", "Actif", "Aktiv", "Ativo"],
+  ["Consigliato", "Recommended", "Recomendado", "Recommand\xE9", "Empfohlen", "Recomendado"],
+  ["gratis per sempre", "free forever", "gratis para siempre", "gratuit pour toujours", "f\xFCr immer kostenlos", "gr\xE1tis para sempre"],
+  ["Allenamenti, esercizi e sfide", "Workouts, exercises and challenges", "Entrenamientos, ejercicios y retos", "Entra\xEEnements, exercices et d\xE9fis", "Trainings, \xDCbungen und Challenges", "Treinos, exerc\xEDcios e desafios"],
+  ["Classifica generale: i primi tre vincono punti", "General leaderboard: the top three win points", "Clasificaci\xF3n general: los tres primeros ganan puntos", "Classement g\xE9n\xE9ral : les trois premiers gagnent des points", "Gesamtrangliste: die ersten drei gewinnen Punkte", "Ranking geral: os tr\xEAs primeiros ganham pontos"],
+  ["Pubblicit\xE0 prima dei giochi", "Ads before games", "Anuncios antes de los juegos", "Publicit\xE9s avant les jeux", "Werbung vor den Spielen", "An\xFAncios antes dos jogos"],
+  ["Tutto quello che c'\xE8 in Free", "Everything in Free", "Todo lo de Free", "Tout ce qu'il y a dans Free", "Alles aus Free", "Tudo o que h\xE1 no Free"],
+  ["Concorso del mese con premi veri", "Monthly contest with real prizes", "Concurso del mes con premios reales", "Concours du mois avec de vrais prix", "Monatswettbewerb mit echten Preisen", "Concurso do m\xEAs com pr\xEAmios reais"],
+  ["Accedi con Google", "Sign in with Google", "Inicia sesi\xF3n con Google", "Se connecter avec Google", "Mit Google anmelden", "Entrar com Google"],
+  ["Il tuo piano", "Your plan", "Tu plan", "Ton offre", "Dein Tarif", "Seu plano"],
+  ["Passa a Pro", "Upgrade to Pro", "P\xE1sate a Pro", "Passer \xE0 Pro", "Zu Pro wechseln", "Mudar para Pro"],
+  ["Free: serve l'accesso con Google, presto anche con Apple. Pro: disdici quando vuoi.", "Free: sign in with Google, Apple coming soon. Pro: cancel anytime.", "Free: inicia sesi\xF3n con Google, pronto tambi\xE9n con Apple. Pro: cancela cuando quieras.", "Free : connexion avec Google, bient\xF4t aussi avec Apple. Pro : r\xE9siliable \xE0 tout moment.", "Free: Anmeldung mit Google, bald auch mit Apple. Pro: jederzeit k\xFCndbar.", "Free: entre com Google, em breve tamb\xE9m com Apple. Pro: cancele quando quiser."]
 );
 I18N_RX.push(
   [/^Il gioco parte tra (\d+) s$/g, "Game starts in $1 s", "El juego empieza en $1 s", "Le jeu commence dans $1 s", "Spiel startet in $1 s", "O jogo come\xE7a em $1 s"],
