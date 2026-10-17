@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font-size:14px}img{max-width:100%}</style>
 <title>FitQuest</title>
-<meta name="theme-color" content="#f3f5f9">
+<meta name="theme-color" content="#0b1220">
 <meta name="description" content="Personal trainer con la fotocamera: percorsi Uomo e Donna, conta le ripetizioni e corregge la postura.">
 <link rel="icon" href="../icons/icon-192.png">
 <link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
@@ -1424,6 +1424,8 @@ body.dark .gm-tier.is-pro p { color: #e2c78c; }
 .wt-pop.mv .wt-pop-btns .btn.primary { color: #14703f; }
 @media (prefers-reduced-motion: reduce) { .mv-ring i { animation: none !important; } }
 .mv-hero .wt-top { flex-direction: column; align-items: flex-start; gap: 2px; }
+/* theme switch fades instead of flashing */
+body { transition: background-color .35s ease, color .35s ease; }
 </style>
 
 </head>
@@ -4320,6 +4322,7 @@ function makeTracker(exId) {
   T.widepush = T.pushup;
   T.bandsquat = T.squat;
   for (const [id, [base]] of Object.entries(BAND_OF)) T[id] = T[base];
+  Object.assign(T, xtraTrackers(st, smooth, angleRep, T));
   T.bandcurl = (lm) => {
     const p = pick(lm, side(lm, [11, 13, 15], [12, 14, 16]));
     if (!vis(p.sh, p.el, p.wr)) return { lost: "Inquadrati di lato: spalla, gomito e mano" };
@@ -4530,11 +4533,11 @@ function renderHome() {
   app.innerHTML = '\n  <div class="screen">\n    '.concat((() => {
     const ri = rankIndex(), first = s.blocks[0][0], nsets = s.blocks.reduce((a, b) => a + b[1], 0), mins = Math.max(5, Math.round(nsets * 1.6));
     return '<section class="hero">\n      <div>\n        <div class="hi">Ciao,</div><h1>'.concat(esc(myName || "Atleta"), '</h1>\n        <div class="chip">').concat(myBadge(), " ").concat(RANKS[ri][0], '</div>\n        <div class="ringwrap"><div class="ring"><svg viewBox="0 0 62 62" aria-hidden="true"><defs><linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7ee29b"/><stop offset="1" stop-color="#6cb8ff"/></linearGradient></defs><circle class="bgc" cx="31" cy="31" r="26"/><circle class="fgc" cx="31" cy="31" r="26" style="stroke-dashoffset:').concat((163.4 * (1 - done / 12)).toFixed(1)).concat(done ? "" : ";stroke-opacity:0", '"/></svg><b>').concat(done, "</b></div><small>Sessioni completate<b>").concat(done, ' / 12</b></small></div>\n      </div>\n      <div class="hero-fig"><div class="figbox charbox" data-fig="jacks" data-g="').concat(G(), '" data-pic></div></div>\n      <div class="hero-cta">\n        <div class="today"><small>Allenamento di oggi</small><b>').concat(esc(s.title), "</b><span>\u2248 ").concat(mins, " min \xB7 ").concat(s.blocks.length, ' esercizi</span></div>\n        <button class="btn primary big" id="startDay" type="button"><span class="play"><svg viewBox="0 0 10 12"><path d="M0 0 10 6 0 12z"/></svg></span>Inizia ora</button>\n      </div>\n      ').concat([12, 26, 41, 57, 70, 83, 93].map((x, i) => '<i class="pt" style="--x:'.concat(x, "%;--d:").concat(5 + i % 3 * 1.6, "s;--w:").concat((i * 0.9).toFixed(1), 's"></i>')).join(""), "\n    </section>");
-  })(), "\n\n    ").concat((() => {
+  })(), "\n\n    ").concat(hubProgTile(s), '\n    <section class="section" id="hubProgBox" ').concat(store.get("hubOpen", "") === "prog" ? "" : "hidden", '>\n      <div class="label">Programma di oggi \xB7 Settimana ').concat(n.wk, ", sessione ").concat(n.d + 1, '</div>\n      <div class="order">\n        <h2>').concat(esc(s.title), '</h2>\n        <div class="circuit">').concat(s.blocks.map(([ex, sets, t]) => '<button class="step" type="button" data-ex="'.concat(ex, '"><div class="figbox" data-fig="').concat(ex, '" data-g="').concat(G(), '"></div><b>').concat(EX[ex].name, "</b><span>").concat(sets, " \xD7 ").concat(targetTxt(ex, t), "</span>").concat(ARROW, "</button>")).join(""), '</div>\n        <p class="restnote">1 minuto di riposo tra ogni serie \xB7 la telecamera conta le ripetizioni e ti corregge a voce</p>\n        <div class="weeks">').concat(weeks, "</div>\n      </div>\n    </section>\n\n    ").concat((() => {
     const ri = rankIndex(), cur = RANKS[ri], nx = RANKS[ri + 1];
     const pct = nx ? Math.round((stats.total - cur[1]) / (nx[1] - cur[1]) * 100) : 100;
     return '<button class="rankcard" id="openRank" type="button" style="text-align:left;color:inherit">\n      <div><div class="label">Il tuo livello</div><div class="rname">'.concat(myBadge(), " <span>").concat(cur[0], '</span></div></div>\n      <div class="pts">').concat(stats.month.pts, '<small>punti del mese</small></div>\n      <div class="xp"><i style="width:').concat(pct, '%"></i></div>\n      <div class="meta">').concat(nx ? "".concat(nx[1] - stats.total, " punti al livello ").concat(nx[0]) : "Livello massimo raggiunto", " \xB7 Classifica \u203A</div>\n    </button>");
-  })(), "\n\n    ").concat(hubTiles(s, n), '\n    <section class="section" id="hubProgBox" ').concat(store.get("hubOpen", "") === "prog" ? "" : "hidden", '>\n      <div class="label">Programma di oggi \xB7 Settimana ').concat(n.wk, ", sessione ").concat(n.d + 1, '</div>\n      <div class="order">\n        <h2>').concat(esc(s.title), '</h2>\n        <div class="circuit">').concat(s.blocks.map(([ex, sets, t]) => '<button class="step" type="button" data-ex="'.concat(ex, '"><div class="figbox" data-fig="').concat(ex, '" data-g="').concat(G(), '"></div><b>').concat(EX[ex].name, "</b><span>").concat(sets, " \xD7 ").concat(targetTxt(ex, t), "</span>").concat(ARROW, "</button>")).join(""), '</div>\n        <p class="restnote">1 minuto di riposo tra ogni serie \xB7 la telecamera conta le ripetizioni e ti corregge a voce</p>\n        <div class="weeks">').concat(weeks, "</div>\n      </div>\n    </section>\n\n    ").concat(COMPAT_MSG ? '<p class="note" style="background:#fdecea">'.concat(COMPAT_MSG, "</p>") : "", "\n  </div>");
+  })(), "\n\n    ").concat(hubTiles(s, n), "\n\n    ").concat(COMPAT_MSG ? '<p class="note" style="background:#fdecea">'.concat(COMPAT_MSG, "</p>") : "", "\n  </div>");
   $("startDay").onclick = () => go({ name: "brief", queue: blocksToQueue(s.blocks), day: n, title: s.title });
   app.querySelectorAll("[data-ex]").forEach((b) => b.onclick = () => openFree(b.dataset.ex));
   app.querySelectorAll("[data-test]").forEach((b) => b.onclick = () => {
@@ -6058,7 +6061,7 @@ function checkFriendsElite() {
   store.set("stats", stats);
 }
 function themeDark() {
-  const t = store.get("theme", "light");
+  const t = store.get("theme", "dark");
   if (t === "auto") {
     try {
       return matchMedia("(prefers-color-scheme: dark)").matches;
@@ -7513,7 +7516,7 @@ const FX_AUTO = (() => {
     if (matchMedia("(prefers-reduced-motion: reduce)").matches) return "off";
   } catch (e) {
   }
-  return navigator.deviceMemory && navigator.deviceMemory <= 2 || navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 2 ? "lite" : "full";
+  return "full";
 })();
 const fx = { level: store.get("fx", FX_AUTO), trans: store.get("fxTrans", "slide"), rep: store.get("fxRep", "sparks") };
 function applyFx() {
@@ -7707,8 +7710,8 @@ function loadFx(ex) {
 }
 function fxSettings() {
   const opt = (k, v, t) => '<button type="button" data-k="'.concat(k, '" data-v="').concat(v, '" aria-pressed="').concat(fx[k] === v, '">').concat(t, "</button>");
-  const th = store.get("theme", "light"), topt = (v, t) => '<button type="button" data-k="theme" data-v="'.concat(v, '" aria-pressed="').concat(th === v, '">').concat(t, "</button>");
-  return '<div class="section" id="fxSet"><div class="label">Grafica ed effetti</div>\n    <div class="label">Tema</div>\n    <div class="fxopts" role="group" aria-label="Tema">'.concat(topt("light", "Chiaro")).concat(topt("dark", "Scuro")).concat(topt("auto", "Automatico"), '</div>\n    <div class="label">Effetti</div>\n    <div class="fxopts" role="group" aria-label="Livello degli effetti">').concat(opt("level", "full", "Completi")).concat(opt("level", "lite", "Leggeri")).concat(opt("level", "off", "Spenti"), "</div>\n    ").concat(fx.level === "off" ? "" : '<div class="label">Passaggio tra le schermate</div>\n    <div class="fxopts" role="group" aria-label="Passaggio tra le schermate">'.concat(opt("trans", "slide", "Scorrimento")).concat(opt("trans", "zoom", "Zoom")).concat(opt("trans", "flip", "Rotazione 3D")).concat(opt("trans", "fade", "Dissolvenza"), '</div>\n    <div class="label">Effetto a ogni ripetizione</div>\n    <div class="fxopts" role="group" aria-label="Effetto a ogni ripetizione">').concat(opt("rep", "sparks", "Scintille")).concat(opt("rep", "ring", "Onda")).concat(opt("rep", "none", "Nessuno"), "</div>"), '\n    <p class="note">').concat(fx.level === "lite" ? "Effetti leggeri: dissolvenze brevi, consigliati sui telefoni meno recenti." : fx.level === "off" ? "Nessuna animazione: le figure degli esercizi restano in movimento." : "Tocca un'opzione per vederla in azione.", "</p>\n  </div>");
+  const th = store.get("theme", "dark"), topt = (v, t) => '<button type="button" data-k="theme" data-v="'.concat(v, '" aria-pressed="').concat(th === v, '">').concat(t, "</button>");
+  return '<div class="section" id="fxSet"><div class="label">Grafica ed effetti</div>\n    <div class="label">Tema</div>\n    <div class="fxopts" role="group" aria-label="Tema">'.concat(topt("dark", "Scuro")).concat(topt("light", "Chiaro")).concat(topt("auto", "Automatico"), '</div>\n    <div class="label">Effetti</div>\n    <div class="fxopts" role="group" aria-label="Livello degli effetti">').concat(opt("level", "full", "Completi")).concat(opt("level", "lite", "Leggeri")).concat(opt("level", "off", "Spenti"), "</div>\n    ").concat(fx.level === "off" ? "" : '<div class="label">Passaggio tra le schermate</div>\n    <div class="fxopts" role="group" aria-label="Passaggio tra le schermate">'.concat(opt("trans", "slide", "Scorrimento")).concat(opt("trans", "zoom", "Zoom")).concat(opt("trans", "flip", "Rotazione 3D")).concat(opt("trans", "fade", "Dissolvenza"), '</div>\n    <div class="label">Effetto a ogni ripetizione</div>\n    <div class="fxopts" role="group" aria-label="Effetto a ogni ripetizione">').concat(opt("rep", "sparks", "Scintille")).concat(opt("rep", "ring", "Onda")).concat(opt("rep", "none", "Nessuno"), "</div>"), '\n    <p class="note">').concat(fx.level === "lite" ? "Effetti leggeri: dissolvenze brevi, consigliati sui telefoni meno recenti." : fx.level === "off" ? "Nessuna animazione: le figure degli esercizi restano in movimento." : "Tocca un'opzione per vederla in azione.", "</p>\n  </div>");
 }
 function fxSettingsWire() {
   app.querySelectorAll("#fxSet [data-k]").forEach((b) => b.onclick = () => {
@@ -9800,10 +9803,14 @@ function wtTank(level, cls = "") {
   const y = (100 - Math.max(0, Math.min(1, level)) * 88).toFixed(1);
   return '<svg class="wt-tank '.concat(cls, '" viewBox="0 0 100 120" aria-hidden="true">\n    <defs><clipPath id="wtClip').concat(cls, '"><path d="M14 8h72l-8 104a6 6 0 0 1-6 5H28a6 6 0 0 1-6-5z"/></clipPath>\n      <linearGradient id="wtWater').concat(cls, '" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7fd3ff"/><stop offset="1" stop-color="#2e86de"/></linearGradient></defs>\n    <g clip-path="url(#wtClip').concat(cls, ')">\n      <rect x="0" y="0" width="100" height="120" class="wt-glass-bg"/>\n      <g class="wt-level" style="transform:translateY(').concat(y, 'px)">\n        <path class="wt-wave a" fill="url(#wtWater').concat(cls, ')" d="M-100 6c12 0 12-6 25-6s13 6 25 6 12-6 25-6 13 6 25 6 12-6 25-6 13 6 25 6 12-6 25-6 13 6 25 6v130h-200z"/>\n        <path class="wt-wave b" fill="#2e86de" opacity=".45" d="M-100 4c12 0 12 6 25 6s13-6 25-6 12 6 25 6 13-6 25-6 12 6 25 6 13-6 25-6 12 6 25 6v130h-200z"/>\n        <circle class="wt-bub" cx="34" cy="60" r="2.4"/><circle class="wt-bub d2" cx="58" cy="80" r="1.8"/><circle class="wt-bub d3" cx="70" cy="50" r="2"/>\n      </g>\n    </g>\n    <path d="M14 8h72l-8 104a6 6 0 0 1-6 5H28a6 6 0 0 1-6-5z" class="wt-glass-line"/>\n    <path d="M24 18l5 80" class="wt-shine"/>\n  </svg>');
 }
+function hubProgTile(s) {
+  const open = store.get("hubOpen", "") === "prog";
+  return '<section class="section hub hub-progsec">\n    <div class="label">Programma di allenamenti</div>\n    <div class="hub-grid">\n      <button class="hub-tile prog'.concat(open ? " on" : "", '" id="hubProg" type="button" aria-expanded="').concat(open, '">\n        <span class="hub-ico">').concat(TAB_ICO.exercises, "</span>\n        <b>").concat(esc(s.title), '</b><small>Programma di oggi</small>\n        <i class="hub-chev" aria-hidden="true">\u203A</i>\n      </button>\n    </div>\n  </section>');
+}
 function hubTiles(s, n) {
-  const w = wtGet(), c = wtToday(w), open = store.get("hubOpen", "");
+  const w = wtGet(), c = wtToday(w);
   const nx = wtNext(w);
-  return '<section class="section hub">\n    <div class="label">Le tue app</div>\n    <div class="hub-grid">\n      <button class="hub-tile prog'.concat(open === "prog" ? " on" : "", '" id="hubProg" type="button" aria-expanded="').concat(open === "prog", '">\n        <span class="hub-ico">').concat(TAB_ICO.exercises, "</span>\n        <b>").concat(esc(s.title), '</b><small>Programma di oggi</small>\n        <i class="hub-chev" aria-hidden="true">\u203A</i>\n      </button>\n      <button class="hub-tile water" id="hubWater" type="button">\n        <span class="hub-ico">').concat(wtTank(c / w.goal, "mini"), "</span>\n        <b>Bevi acqua</b><small><span data-notr>").concat(c, " / ").concat(w.goal, "</span> <span>bicchieri</span>").concat(nx != null ? " \xB7 <span>prossimo</span> <span data-notr>".concat(wtHm(nx), "</span>") : "", '</small>\n        <i class="hub-chev" aria-hidden="true">\u203A</i>\n      </button>\n      <button class="hub-tile move" id="hubMove" type="button">\n        <span class="hub-ico">').concat(MV_ICO, "</span>\n        <b>Muoviti</b><small>").concat(mvGet().on ? "<span>Promemoria attivo</span> \xB7 <span data-notr>".concat(esc(mvGet().from), "\u2013").concat(esc(mvGet().to), "</span>") : "Promemoria spento", '</small>\n        <i class="hub-chev" aria-hidden="true">\u203A</i>\n      </button>\n    </div>\n  </section>');
+  return '<section class="section hub">\n    <div class="label">Le tue app</div>\n    <div class="hub-grid">\n      <button class="hub-tile water" id="hubWater" type="button">\n        <span class="hub-ico">'.concat(wtTank(c / w.goal, "mini"), "</span>\n        <b>Bevi acqua</b><small><span data-notr>").concat(c, " / ").concat(w.goal, "</span> <span>bicchieri</span>").concat(nx != null ? " \xB7 <span>prossimo</span> <span data-notr>".concat(wtHm(nx), "</span>") : "", '</small>\n        <i class="hub-chev" aria-hidden="true">\u203A</i>\n      </button>\n      <button class="hub-tile move" id="hubMove" type="button">\n        <span class="hub-ico">').concat(MV_ICO, "</span>\n        <b>Muoviti</b><small>").concat(mvGet().on ? "<span>Promemoria attivo</span> \xB7 <span data-notr>".concat(esc(mvGet().from), "\u2013").concat(esc(mvGet().to), "</span>") : "Promemoria spento", '</small>\n        <i class="hub-chev" aria-hidden="true">\u203A</i>\n      </button>\n    </div>\n  </section>');
 }
 function hubWire() {
   const p = $("hubProg"), w = $("hubWater"), box = $("hubProgBox");
@@ -10103,6 +10110,7 @@ function mvTick() {
 setInterval(mvTick, 2e4);
 I18N.push(
   ["Le tue app", "Your apps", "Tus apps", "Tes applis", "Deine Apps", "Seus apps"],
+  ["Programma di allenamenti", "Training programme", "Programa de entrenamiento", "Programme d'entra\xEEnement", "Trainingsprogramm", "Programa de treino"],
   ["Programma di oggi", "Today's plan", "Plan de hoy", "Programme du jour", "Heutiger Plan", "Plano de hoje"],
   ["Bevi acqua", "Drink water", "Bebe agua", "Bois de l'eau", "Wasser trinken", "Beba \xE1gua"],
   ["Muoviti", "Get moving", "Mu\xE9vete", "Bouge", "Beweg dich", "Mexa-se"],
@@ -10153,6 +10161,232 @@ I18N.push(
   ["A ogni orario controlliamo i passi delle ultime 2 ore: se sono meno di", "At each time we check your steps in the last 2 hours: if there are fewer than", "En cada hora revisamos tus pasos de las \xFAltimas 2 horas: si son menos de", "\xC0 chaque heure on v\xE9rifie tes pas des 2 derni\xE8res heures : s'il y en a moins de", "Zu jeder Zeit pr\xFCfen wir deine Schritte der letzten 2 Stunden: wenn es weniger als", "A cada hor\xE1rio verificamos seus passos das \xFAltimas 2 horas: se forem menos de"],
   ['e non ti sei allenato, arriva il promemoria. Suono e vibrazione sono quelli di "Bevi acqua".', 'and you haven\'t trained, the reminder arrives. Sound and vibration follow "Drink water".', 'y no has entrenado, llega el recordatorio. Sonido y vibraci\xF3n son los de "Bebe agua".', "et que tu ne t'es pas entra\xEEn\xE9, le rappel arrive. Son et vibration suivent \xAB Bois de l'eau \xBB.", 'sind und du nicht trainiert hast, kommt die Erinnerung. Ton und Vibration wie bei "Wasser trinken".', 'e voc\xEA n\xE3o treinou, chega o lembrete. Som e vibra\xE7\xE3o seguem "Beba \xE1gua".'],
   ["Sul sito il promemoria arriva mentre FitQuest \xE8 aperta. Con l'app FitQuest i passi si leggono anche in sottofondo.", "On the website the reminder arrives while FitQuest is open. With the FitQuest app steps are read in the background too.", "En la web el recordatorio llega mientras FitQuest est\xE1 abierta. Con la app FitQuest los pasos se leen tambi\xE9n en segundo plano.", "Sur le site, le rappel arrive quand FitQuest est ouverte. Avec l'appli FitQuest, les pas sont lus aussi en arri\xE8re-plan.", "Auf der Website kommt die Erinnerung, solange FitQuest offen ist. Mit der FitQuest-App werden Schritte auch im Hintergrund gelesen.", "No site o lembrete chega com o FitQuest aberto. Com o app FitQuest os passos s\xE3o lidos tamb\xE9m em segundo plano."]
+);
+Object.assign(EX, {
+  diampush: {
+    name: "Piegamenti a diamante",
+    unit: "reps",
+    tag: "Tricipiti e petto",
+    cam: "Telefono a terra, di lato, a circa 2 metri, all'altezza del pavimento.",
+    steps: [
+      "Mani vicine sotto il petto: pollici e indici formano un diamante.",
+      "Corpo dritto dalla testa ai talloni, addome contratto.",
+      "Scendi con i gomiti stretti ai fianchi fino a 90\xB0.",
+      "Spingi fino a braccia distese."
+    ],
+    faults: ["Bacino che cede verso il basso", "Gomiti non piegati a 90\xB0 (non conta)"]
+  },
+  pikepush: {
+    name: "Piegamenti pike",
+    unit: "reps",
+    tag: "Spalle e tricipiti",
+    cam: "Telefono a terra, di lato, a circa 2 metri. Devi vedere mani, bacino e piedi.",
+    steps: [
+      "Mani a terra larghe come le spalle, bacino in alto: il corpo fa una V rovesciata.",
+      "Gambe il pi\xF9 possibile distese, peso sulle mani.",
+      "Piega i gomiti e porta la testa verso il pavimento.",
+      "Spingi fino a braccia distese, sempre con il bacino in alto."
+    ],
+    faults: ["Bacino troppo basso", "Gomiti non abbastanza piegati (non conta)"]
+  },
+  highknees: {
+    name: "Ginocchia alte",
+    unit: "reps",
+    tag: "Cardio e gambe",
+    cam: "Telefono in verticale, di fronte a te, a 2\u20133 metri. Devi vederti dalla testa ai piedi.",
+    steps: [
+      "In piedi, piedi larghi come le anche.",
+      "Corri sul posto portando un ginocchio alla volta all'altezza del bacino.",
+      "Muovi le braccia come quando corri.",
+      "Conta ogni ginocchio che arriva in alto."
+    ],
+    faults: ["Ginocchio non abbastanza alto (non conta)"]
+  },
+  squatthrust: {
+    name: "Squat thrust",
+    unit: "reps",
+    tag: "Tutto il corpo, senza salto",
+    cam: "Telefono in verticale, di lato, a circa 3 metri. Devi vederti in piedi e a terra.",
+    steps: [
+      "In piedi, scendi in accosciata e appoggia le mani a terra.",
+      "Porta i piedi indietro in posizione di piegamento, corpo dritto.",
+      "Riporta i piedi verso le mani.",
+      "Rialzati in piedi: la ripetizione conta quando sei dritto."
+    ],
+    faults: ["Bacino che cede a terra", "Non torni in piedi (non conta)"]
+  },
+  legraise: {
+    name: "Sollevamento gambe",
+    unit: "reps",
+    tag: "Addome basso",
+    cam: "Telefono a terra, di lato, a circa 2 metri. Devi vedere spalle, bacino e piedi.",
+    steps: [
+      "Supino, gambe distese, mani a terra lungo i fianchi.",
+      "Schiena bassa appoggiata a terra.",
+      "Solleva le gambe tese fino a farle quasi verticali.",
+      "Riabbassale piano fino a sfiorare il pavimento."
+    ],
+    faults: ["Gambe non abbastanza alte (non conta)"]
+  },
+  dips: {
+    name: "Dip sulla sedia",
+    unit: "reps",
+    tag: "Tricipiti e braccia",
+    cam: "Telefono a terra, di lato, a circa 2 metri. Devi vedere spalla, gomito e mano.",
+    steps: [
+      "Mani sul bordo di una sedia stabile dietro di te, dita in avanti.",
+      "Gambe in avanti, bacino vicino alla sedia.",
+      "Piega i gomiti e scendi finch\xE9 sono a 90\xB0.",
+      "Spingi fino a braccia distese."
+    ],
+    faults: ["Gomiti non piegati a 90\xB0 (non conta)"]
+  }
+});
+Object.assign(POSES, {
+  diampush: { ...POSES.pushup },
+  pikepush: { floor: 1, A: { t: 50, a: [92, 90], a2: [88, 92], l: [128, 128], l2: [130, 130] }, B: { t: 28, a: [150, 60], a2: [146, 64], l: [134, 134], l2: [136, 136] } },
+  highknees: { A: { t: -90, a: [60, -30], a2: [120, 150], l: [90, 90], l2: [8, 95] }, B: { t: -90, a: [120, 150], a2: [60, -30], l: [8, 95], l2: [90, 90] } },
+  squatthrust: { A: { ...POSES.burpee.A }, B: { t: -90, a: [95, 92], a2: [85, 88], l: [90, 90], l2: [92, 92] } },
+  legraise: { floor: 1, A: { t: -178, a: [178, 178], a2: [176, 176], l: [-2, -2], l2: [-1, -1] }, B: { t: -178, a: [178, 178], a2: [176, 176], l: [-80, -80], l2: [-78, -78] } },
+  dips: { box: "seat", A: { t: -90, a: [112, 92], a2: [110, 90], l: [-5, 80], l2: [-3, 82] }, B: { t: -90, a: [160, 82], a2: [158, 80], l: [-5, 80], l2: [-3, 82] } }
+});
+for (const id of ["diampush", "pikepush", "highknees", "squatthrust", "legraise", "dips"]) {
+  if (!GENDER_EX.m.includes(id)) GENDER_EX.m.push(id);
+  if (!GENDER_EX.f.includes(id)) GENDER_EX.f.push(id);
+}
+function xtraTrackers(st, smooth, angleRep, T) {
+  return {
+    diampush: T.pushup,
+    // inverted V: the hips stay above shoulders and feet, the elbows bend
+    pikepush(lm) {
+      const p = pick(lm, side(lm, [11, 13, 15, 23], [12, 14, 16, 24]));
+      const foot = vis(p.an) ? p.an : p.kn;
+      if (!vis(p.sh, p.el, p.wr, p.hip, foot)) return { lost: "Inquadrati di lato, dalle mani ai piedi" };
+      if (!(p.hip.y < foot.y - 0.05 && p.hip.y < p.wr.y - 0.05)) return { lost: "Bacino in alto: fai una V rovesciata" };
+      const elbow = ang(p.sh, p.el, p.wr);
+      let fault = null, cue = null;
+      if (p.hip.y > p.sh.y + 0.02) {
+        fault = "low";
+        cue = "Bacino pi\xF9 in alto";
+      }
+      const r = angleRep({ value: elbow, top: 150, bottom: 105, partial: 132, fault });
+      return { ...r, fault, cue, noRepCue: "Piega di pi\xF9 i gomiti, testa verso terra! Non conta" };
+    },
+    // front view: each knee that comes up to hip height is one rep
+    highknees(lm) {
+      const g = (i) => P(lm, i);
+      const lH = g(23), rH = g(24), lK = g(25), rK = g(26), lA = g(27), rA = g(28);
+      if (!vis(lH, rH, lK, rK)) return { lost: "Inquadrati di fronte, dalla testa ai piedi" };
+      st.legs = st.legs || { l: "down", r: "down" };
+      const thigh = Math.max(0.05, ((lA.y + rA.y) / 2 - (lH.y + rH.y) / 2) / 2);
+      let event = null, best = 0;
+      for (const [k, h, kn] of [["l", lH, lK], ["r", rH, rK]]) {
+        const lift = (h.y + thigh - kn.y) / thigh;
+        best = Math.max(best, lift);
+        if (st.legs[k] === "down" && lift > 0.75) {
+          st.legs[k] = "up";
+          event = "rep";
+        } else if (st.legs[k] === "up" && lift < 0.3) st.legs[k] = "down";
+      }
+      return { metric: Math.max(0, Math.min(1, best)), event, fault: null, cue: null };
+    },
+    // like a burpee without the jump: standing → plank → standing again
+    squatthrust(lm, t) {
+      const p = pick(lm, side(lm, [11, 23, 25, 27], [12, 24, 26, 28]));
+      const foot = vis(p.an) ? p.an : p.kn;
+      if (!vis(p.sh, p.hip, foot)) return { lost: "Inquadrati tutto, dalla testa ai piedi" };
+      const horiz = Math.abs(foot.x - p.sh.x) > Math.abs(foot.y - p.sh.y);
+      const standing = Math.abs(p.sh.x - p.hip.x) < Math.abs(p.hip.y - p.sh.y) * 0.6 && p.sh.y < p.hip.y && p.hip.y < foot.y && vis(p.kn, p.an) && ang(p.hip, p.kn, p.an) > 150;
+      let event = null, fault = null, cue = null, metric = 0;
+      if (st.phase === "top") {
+        if (horiz) {
+          st.phase = "floor";
+          st.floorT = t;
+        }
+      } else if (st.phase === "floor") {
+        metric = 0.5;
+        if (horiz && ang(p.sh, p.hip, foot) < 150 && hipOffset(p.sh, p.hip, foot) > 0) {
+          fault = "sag";
+          cue = "Bacino su, corpo dritto";
+        }
+        if (standing) {
+          event = "rep";
+          st.phase = "top";
+          metric = 1;
+        }
+      }
+      return { metric, event, fault, cue };
+    },
+    // lying on the back: the angle shoulder-hip-ankle goes from flat (about 180°) to legs up (about 90°)
+    legraise(lm) {
+      const p = pick(lm, side(lm, [11, 23, 27], [12, 24, 28]));
+      if (!vis(p.sh, p.hip, p.an)) return { lost: "Inquadrati di lato: spalle, bacino e piedi" };
+      if (Math.abs(p.sh.y - p.hip.y) > Math.abs(p.sh.x - p.hip.x)) return { lost: "Sdraiati sulla schiena" };
+      const hip = ang(p.sh, p.hip, p.an);
+      const r = angleRep({ value: hip, top: 155, bottom: 110, partial: 135, countAt: "bottom" });
+      return { ...r, fault: null, cue: null, noRepCue: "Gambe pi\xF9 in alto! Non conta" };
+    },
+    dips(lm) {
+      const p = pick(lm, side(lm, [11, 13, 15], [12, 14, 16]));
+      if (!vis(p.sh, p.el, p.wr)) return { lost: "Inquadrati di lato: spalla, gomito e mano" };
+      if (p.wr.y < p.sh.y) return { lost: "Mani sulla sedia dietro di te" };
+      const elbow = ang(p.sh, p.el, p.wr);
+      const r = angleRep({ value: elbow, top: 150, bottom: 100, partial: 130 });
+      return { ...r, fault: null, cue: null, noRepCue: "Scendi di pi\xF9! Gomiti a novanta gradi. Non conta" };
+    }
+  };
+}
+I18N.push(
+  ["Piegamenti a diamante", "Diamond push-ups", "Flexiones diamante", "Pompes diamant", "Diamant-Liegest\xFCtze", "Flex\xF5es diamante"],
+  ["Tricipiti e petto", "Triceps and chest", "Tr\xEDceps y pecho", "Triceps et pectoraux", "Trizeps und Brust", "Tr\xEDceps e peito"],
+  ["Mani vicine sotto il petto: pollici e indici formano un diamante.", "Hands close under your chest: thumbs and index fingers form a diamond.", "Manos juntas bajo el pecho: pulgares e \xEDndices forman un diamante.", "Mains rapproch\xE9es sous la poitrine : pouces et index forment un diamant.", "H\xE4nde eng unter der Brust: Daumen und Zeigefinger bilden eine Raute.", "M\xE3os pr\xF3ximas sob o peito: polegares e indicadores formam um diamante."],
+  ["Corpo dritto dalla testa ai talloni, addome contratto.", "Body straight from head to heels, abs tight.", "Cuerpo recto de la cabeza a los talones, abdomen contra\xEDdo.", "Corps droit de la t\xEAte aux talons, abdos serr\xE9s.", "K\xF6rper gerade von Kopf bis Ferse, Bauch angespannt.", "Corpo reto da cabe\xE7a aos calcanhares, abd\xF4men contra\xEDdo."],
+  ["Scendi con i gomiti stretti ai fianchi fino a 90\xB0.", "Lower with your elbows close to your sides down to 90\xB0.", "Baja con los codos pegados al cuerpo hasta 90\xB0.", "Descends coudes pr\xE8s du corps jusqu'\xE0 90\xB0.", "Senk dich mit eng anliegenden Ellbogen bis 90\xB0.", "Des\xE7a com os cotovelos junto ao corpo at\xE9 90\xB0."],
+  ["Piegamenti pike", "Pike push-ups", "Flexiones pike", "Pompes pike", "Pike-Liegest\xFCtze", "Flex\xF5es pike"],
+  ["Tricipiti e braccia", "Triceps and arms", "Tr\xEDceps y brazos", "Triceps et bras", "Trizeps und Arme", "Tr\xEDceps e bra\xE7os"],
+  ["Spalle e tricipiti", "Shoulders and triceps", "Hombros y tr\xEDceps", "\xC9paules et triceps", "Schultern und Trizeps", "Ombros e tr\xEDceps"],
+  ["Telefono a terra, di lato, a circa 2 metri. Devi vedere mani, bacino e piedi.", "Phone on the floor, to your side, about 2 metres away. It must see your hands, hips and feet.", "Tel\xE9fono en el suelo, de lado, a unos 2 metros. Debe ver manos, cadera y pies.", "T\xE9l\xE9phone au sol, de c\xF4t\xE9, \xE0 environ 2 m\xE8tres. Il doit voir mains, bassin et pieds.", "Handy auf dem Boden, seitlich, etwa 2 Meter entfernt. Es muss H\xE4nde, H\xFCfte und F\xFC\xDFe sehen.", "Celular no ch\xE3o, de lado, a cerca de 2 metros. Deve ver m\xE3os, quadril e p\xE9s."],
+  ["Mani a terra larghe come le spalle, bacino in alto: il corpo fa una V rovesciata.", "Hands on the floor shoulder-width apart, hips high: your body makes an upside-down V.", "Manos en el suelo al ancho de hombros, cadera arriba: el cuerpo forma una V invertida.", "Mains au sol \xE9cart\xE9es comme les \xE9paules, bassin haut : le corps forme un V invers\xE9.", "H\xE4nde schulterbreit am Boden, H\xFCfte hoch: der K\xF6rper bildet ein umgedrehtes V.", "M\xE3os no ch\xE3o na largura dos ombros, quadril alto: o corpo forma um V invertido."],
+  ["Gambe il pi\xF9 possibile distese, peso sulle mani.", "Legs as straight as you can, weight on your hands.", "Piernas lo m\xE1s estiradas posible, peso en las manos.", "Jambes aussi tendues que possible, poids sur les mains.", "Beine m\xF6glichst gestreckt, Gewicht auf den H\xE4nden.", "Pernas o mais esticadas poss\xEDvel, peso nas m\xE3os."],
+  ["Piega i gomiti e porta la testa verso il pavimento.", "Bend your elbows and bring your head towards the floor.", "Dobla los codos y lleva la cabeza hacia el suelo.", "Plie les coudes et approche la t\xEAte du sol.", "Beuge die Ellbogen und bring den Kopf Richtung Boden.", "Dobre os cotovelos e leve a cabe\xE7a em dire\xE7\xE3o ao ch\xE3o."],
+  ["Spingi fino a braccia distese, sempre con il bacino in alto.", "Push back up to straight arms, hips always high.", "Empuja hasta estirar los brazos, siempre con la cadera arriba.", "Pousse jusqu'\xE0 bras tendus, bassin toujours haut.", "Dr\xFCck dich hoch bis die Arme gestreckt sind, H\xFCfte immer oben.", "Empurre at\xE9 esticar os bra\xE7os, sempre com o quadril alto."],
+  ["Bacino troppo basso", "Hips too low", "Cadera demasiado baja", "Bassin trop bas", "H\xFCfte zu tief", "Quadril baixo demais"],
+  ["Gomiti non abbastanza piegati (non conta)", "Elbows not bent enough (doesn't count)", "Codos poco doblados (no cuenta)", "Coudes pas assez pli\xE9s (ne compte pas)", "Ellbogen nicht genug gebeugt (z\xE4hlt nicht)", "Cotovelos pouco dobrados (n\xE3o conta)"],
+  ["Ginocchia alte", "High knees", "Rodillas arriba", "Mont\xE9es de genoux", "Kniehebelauf", "Joelhos altos"],
+  ["Cardio e gambe", "Cardio and legs", "Cardio y piernas", "Cardio et jambes", "Cardio und Beine", "Cardio e pernas"],
+  ["Telefono in verticale, di fronte a te, a 2\u20133 metri. Devi vederti dalla testa ai piedi.", "Phone upright, in front of you, 2\u20133 metres away. You must be seen from head to feet.", "Tel\xE9fono en vertical, frente a ti, a 2\u20133 metros. Debes verte de la cabeza a los pies.", "T\xE9l\xE9phone debout, face \xE0 toi, \xE0 2\u20133 m\xE8tres. On doit te voir de la t\xEAte aux pieds.", "Handy hochkant, vor dir, 2\u20133 Meter entfernt. Du musst von Kopf bis Fu\xDF zu sehen sein.", "Celular na vertical, \xE0 sua frente, a 2\u20133 metros. Voc\xEA deve aparecer da cabe\xE7a aos p\xE9s."],
+  ["In piedi, piedi larghi come le anche.", "Stand with your feet hip-width apart.", "De pie, pies al ancho de la cadera.", "Debout, pieds \xE9cart\xE9s comme les hanches.", "Steh mit h\xFCftbreiten F\xFC\xDFen.", "Em p\xE9, p\xE9s na largura do quadril."],
+  ["Corri sul posto portando un ginocchio alla volta all'altezza del bacino.", "Run on the spot bringing one knee at a time up to hip height.", "Corre en el sitio subiendo una rodilla cada vez a la altura de la cadera.", "Cours sur place en montant un genou \xE0 la fois \xE0 hauteur du bassin.", "Lauf auf der Stelle und zieh abwechselnd ein Knie auf H\xFCfth\xF6he.", "Corra no lugar levando um joelho de cada vez \xE0 altura do quadril."],
+  ["Muovi le braccia come quando corri.", "Swing your arms like when you run.", "Mueve los brazos como al correr.", "Bouge les bras comme quand tu cours.", "Beweg die Arme wie beim Laufen.", "Mova os bra\xE7os como quando corre."],
+  ["Conta ogni ginocchio che arriva in alto.", "Every knee that comes up high counts.", "Cuenta cada rodilla que llega arriba.", "Chaque genou qui monte compte.", "Jedes Knie, das oben ankommt, z\xE4hlt.", "Conta cada joelho que chega ao alto."],
+  ["Ginocchio non abbastanza alto (non conta)", "Knee not high enough (doesn't count)", "Rodilla no suficientemente alta (no cuenta)", "Genou pas assez haut (ne compte pas)", "Knie nicht hoch genug (z\xE4hlt nicht)", "Joelho n\xE3o alto o bastante (n\xE3o conta)"],
+  ["Squat thrust", "Squat thrust", "Squat thrust", "Squat thrust", "Squat Thrust", "Squat thrust"],
+  ["Tutto il corpo, senza salto", "Full body, no jump", "Todo el cuerpo, sin salto", "Tout le corps, sans saut", "Ganzer K\xF6rper, ohne Sprung", "Corpo todo, sem salto"],
+  ["Porta i piedi indietro in posizione di piegamento, corpo dritto.", "Step or jump your feet back into a push-up position, body straight.", "Lleva los pies atr\xE1s a posici\xF3n de flexi\xF3n, cuerpo recto.", "Ram\xE8ne les pieds en arri\xE8re en position de pompe, corps droit.", "Bring die F\xFC\xDFe nach hinten in die Liegest\xFCtzposition, K\xF6rper gerade.", "Leve os p\xE9s para tr\xE1s em posi\xE7\xE3o de flex\xE3o, corpo reto."],
+  ["Riporta i piedi verso le mani.", "Bring your feet back towards your hands.", "Vuelve a llevar los pies hacia las manos.", "Ram\xE8ne les pieds vers les mains.", "Bring die F\xFC\xDFe zur\xFCck zu den H\xE4nden.", "Traga os p\xE9s de volta para as m\xE3os."],
+  ["Rialzati in piedi: la ripetizione conta quando sei dritto.", "Stand back up: the rep counts when you are upright.", "Vuelve a ponerte de pie: la repetici\xF3n cuenta cuando est\xE1s recto.", "Rel\xE8ve-toi : la r\xE9p\xE9tition compte quand tu es droit.", "Steh wieder auf: die Wiederholung z\xE4hlt, wenn du aufrecht bist.", "Levante-se: a repeti\xE7\xE3o conta quando voc\xEA est\xE1 reto."],
+  ["Non torni in piedi (non conta)", "You don't stand back up (doesn't count)", "No vuelves a ponerte de pie (no cuenta)", "Tu ne te rel\xE8ves pas (ne compte pas)", "Du stehst nicht wieder auf (z\xE4hlt nicht)", "Voc\xEA n\xE3o volta a ficar em p\xE9 (n\xE3o conta)"],
+  ["Sollevamento gambe", "Leg raises", "Elevaci\xF3n de piernas", "Relev\xE9s de jambes", "Beinheben", "Eleva\xE7\xE3o de pernas"],
+  ["Addome basso", "Lower abs", "Abdomen bajo", "Bas des abdos", "Unterer Bauch", "Abd\xF4men inferior"],
+  ["Telefono a terra, di lato, a circa 2 metri. Devi vedere spalle, bacino e piedi.", "Phone on the floor, to your side, about 2 metres away. It must see your shoulders, hips and feet.", "Tel\xE9fono en el suelo, de lado, a unos 2 metros. Debe ver hombros, cadera y pies.", "T\xE9l\xE9phone au sol, de c\xF4t\xE9, \xE0 environ 2 m\xE8tres. Il doit voir \xE9paules, bassin et pieds.", "Handy auf dem Boden, seitlich, etwa 2 Meter entfernt. Es muss Schultern, H\xFCfte und F\xFC\xDFe sehen.", "Celular no ch\xE3o, de lado, a cerca de 2 metros. Deve ver ombros, quadril e p\xE9s."],
+  ["Supino, gambe distese, mani a terra lungo i fianchi.", "Lie on your back, legs straight, hands on the floor by your sides.", "Boca arriba, piernas estiradas, manos en el suelo junto al cuerpo.", "Sur le dos, jambes tendues, mains au sol le long du corps.", "R\xFCckenlage, Beine gestreckt, H\xE4nde neben dem K\xF6rper am Boden.", "Deitado de costas, pernas esticadas, m\xE3os no ch\xE3o ao lado do corpo."],
+  ["Schiena bassa appoggiata a terra.", "Lower back pressed to the floor.", "Zona lumbar apoyada en el suelo.", "Bas du dos coll\xE9 au sol.", "Unterer R\xFCcken bleibt am Boden.", "Lombar apoiada no ch\xE3o."],
+  ["Solleva le gambe tese fino a farle quasi verticali.", "Raise your straight legs until they are almost vertical.", "Sube las piernas estiradas hasta casi la vertical.", "L\xE8ve les jambes tendues jusqu'\xE0 presque la verticale.", "Heb die gestreckten Beine fast bis in die Senkrechte.", "Levante as pernas esticadas at\xE9 ficarem quase verticais."],
+  ["Riabbassale piano fino a sfiorare il pavimento.", "Lower them slowly until they nearly touch the floor.", "B\xE1jalas despacio hasta rozar el suelo.", "Redescends-les lentement jusqu'\xE0 fr\xF4ler le sol.", "Senk sie langsam, bis sie fast den Boden ber\xFChren.", "Abaixe-as devagar at\xE9 quase tocar o ch\xE3o."],
+  ["Gambe non abbastanza alte (non conta)", "Legs not high enough (doesn't count)", "Piernas no suficientemente altas (no cuenta)", "Jambes pas assez hautes (ne compte pas)", "Beine nicht hoch genug (z\xE4hlt nicht)", "Pernas n\xE3o altas o bastante (n\xE3o conta)"],
+  ["Dip sulla sedia", "Chair dips", "Fondos en silla", "Dips sur chaise", "Dips am Stuhl", "Mergulho na cadeira"],
+  ["Telefono a terra, di lato, a circa 2 metri. Devi vedere spalla, gomito e mano.", "Phone on the floor, to your side, about 2 metres away. It must see your shoulder, elbow and hand.", "Tel\xE9fono en el suelo, de lado, a unos 2 metros. Debe ver hombro, codo y mano.", "T\xE9l\xE9phone au sol, de c\xF4t\xE9, \xE0 environ 2 m\xE8tres. Il doit voir \xE9paule, coude et main.", "Handy auf dem Boden, seitlich, etwa 2 Meter entfernt. Es muss Schulter, Ellbogen und Hand sehen.", "Celular no ch\xE3o, de lado, a cerca de 2 metros. Deve ver ombro, cotovelo e m\xE3o."],
+  ["Mani sul bordo di una sedia stabile dietro di te, dita in avanti.", "Hands on the edge of a sturdy chair behind you, fingers forward.", "Manos en el borde de una silla firme detr\xE1s de ti, dedos hacia delante.", "Mains sur le bord d'une chaise stable derri\xE8re toi, doigts vers l'avant.", "H\xE4nde an der Kante eines stabilen Stuhls hinter dir, Finger nach vorn.", "M\xE3os na borda de uma cadeira firme atr\xE1s de voc\xEA, dedos para a frente."],
+  ["Gambe in avanti, bacino vicino alla sedia.", "Legs out in front, hips close to the chair.", "Piernas hacia delante, cadera cerca de la silla.", "Jambes devant, bassin pr\xE8s de la chaise.", "Beine nach vorn, H\xFCfte nah am Stuhl.", "Pernas para a frente, quadril perto da cadeira."],
+  ["Piega i gomiti e scendi finch\xE9 sono a 90\xB0.", "Bend your elbows and lower until they reach 90\xB0.", "Dobla los codos y baja hasta 90\xB0.", "Plie les coudes et descends jusqu'\xE0 90\xB0.", "Beuge die Ellbogen und senk dich bis 90\xB0.", "Dobre os cotovelos e des\xE7a at\xE9 90\xB0."],
+  ["Inquadrati di lato, dalle mani ai piedi", "Stand side-on to the camera, hands to feet", "Ponte de lado, de las manos a los pies", "Mets-toi de profil, des mains aux pieds", "Stell dich seitlich, von den H\xE4nden bis zu den F\xFC\xDFen", "Fique de lado, das m\xE3os aos p\xE9s"],
+  ["Bacino in alto: fai una V rovesciata", "Hips up: make an upside-down V", "Cadera arriba: haz una V invertida", "Bassin haut : fais un V invers\xE9", "H\xFCfte hoch: bilde ein umgedrehtes V", "Quadril alto: fa\xE7a um V invertido"],
+  ["Bacino pi\xF9 in alto", "Hips higher", "Cadera m\xE1s alta", "Bassin plus haut", "H\xFCfte h\xF6her", "Quadril mais alto"],
+  ["Piega di pi\xF9 i gomiti, testa verso terra! Non conta", "Bend your elbows more, head to the floor! Doesn't count", "\xA1Dobla m\xE1s los codos, cabeza al suelo! No cuenta", "Plie plus les coudes, t\xEAte vers le sol ! Ne compte pas", "Beuge die Ellbogen mehr, Kopf Richtung Boden! Z\xE4hlt nicht", "Dobre mais os cotovelos, cabe\xE7a ao ch\xE3o! N\xE3o conta"],
+  ["Inquadrati di lato: spalle, bacino e piedi", "Side-on to the camera: shoulders, hips and feet", "De lado: hombros, cadera y pies", "De profil : \xE9paules, bassin et pieds", "Seitlich: Schultern, H\xFCfte und F\xFC\xDFe", "De lado: ombros, quadril e p\xE9s"],
+  ["Sdraiati sulla schiena", "Lie on your back", "T\xFAmbate boca arriba", "Allonge-toi sur le dos", "Leg dich auf den R\xFCcken", "Deite-se de costas"],
+  ["Gambe pi\xF9 in alto! Non conta", "Legs higher! Doesn't count", "\xA1Piernas m\xE1s arriba! No cuenta", "Jambes plus haut ! Ne compte pas", "Beine h\xF6her! Z\xE4hlt nicht", "Pernas mais altas! N\xE3o conta"],
+  ["Mani sulla sedia dietro di te", "Hands on the chair behind you", "Manos en la silla detr\xE1s de ti", "Mains sur la chaise derri\xE8re toi", "H\xE4nde auf den Stuhl hinter dir", "M\xE3os na cadeira atr\xE1s de voc\xEA"]
 );
 const SB_URL = "https://maypmqnjkdrdqcssnvty.supabase.co";
 const SB_KEY = "sb_publishable_uorMl6G618tavZGF8MQpfQ_2Pg3AIlE";
