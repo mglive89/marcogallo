@@ -3189,7 +3189,7 @@ function picHTML(ex, g) {
   if (!p) return "";
   const base = ex === "revlunge" ? "lunge" : ex === "situp" || ex === "crunch" ? "abs" : ex;
   let s = '<div class="pics" style="aspect-ratio:'.concat(p.w, " / ").concat(p.h, '">');
-  for (let i = 0; i < p.n; i++) s += '<img src="'.concat(imgDir(), "ex/").concat(base, "-").concat(g === "f" ? "f" : "m", "-").concat(i, '.webp" alt="" draggable="false" decoding="async"').concat(i ? ' style="opacity:0"' : "", ">");
+  for (let i = 0; i < p.n; i++) s += '<img src="'.concat(xpicDir(base), "ex/").concat(base, "-").concat(g === "f" ? "f" : "m", "-").concat(i, '.webp" alt="" draggable="false" decoding="async"').concat(i ? ' style="opacity:0"' : "", ">");
   return s + "</div>";
 }
 const fxFull = () => {
@@ -9316,7 +9316,7 @@ function renderGames() {
   gmBachWire();
 }
 function gmBachSection() {
-  return '<section class="gm-sec"><div class="gm-sec-h"><h2>Bacheca premi</h2><span class="gm-ends" id="gmEnds"></span></div>\n      <div class="excat gm-tabs" role="tablist"><button type="button" role="tab" data-gtab="free" aria-selected="'.concat(GMX.tab === "free", '">Generale</button><button type="button" role="tab" data-gtab="pro" aria-selected="').concat(GMX.tab === "pro", '">Pro <span class="gm-pro">PRO</span></button><i></i></div>\n      <div id="gmBachTop" class="gm-bach"></div>\n      <h3 class="gm-h3">Classifica del mese</h3>\n      <div id="gmBoard" class="gm-board"><p class="meta">Carico la classifica\u2026</p></div>\n      <div id="gmBach" class="gm-bach"><p class="meta">Carico i premi\u2026</p></div>\n      <details class="gm-rules"><summary>Come funziona</summary><ul>\n        <li>Conta il tuo miglior punteggio di ogni gioco nel mese: la classifica \xE8 la somma dei cinque.</li>\n        <li>La classifica parte il primo del mese e si chiude l\'ultimo giorno.</li>\n        <li>Classifica generale: per tutti. I primi tre vincono punti per sbloccare nuovi esercizi.</li>\n        <li>Classifica Pro: solo per chi ha Pro. I primi tre vincono i premi della bacheca.</li>\n        <li>I premi del mese dopo sono in bacheca dal 26.</li>\n        <li>I vincitori Pro vengono contattati all\'email del loro account per l\'indirizzo di spedizione.</li>\n        <li>A parit\xE0 di punti \xE8 davanti chi li ha fatti prima.</li>\n      </ul></details>\n    </section>');
+  return '<section class="gm-sec"><div class="gm-sec-h"><h2>Bacheca premi</h2><span class="gm-ends" id="gmEnds"></span></div>\n      <div class="excat gm-tabs" role="tablist"><button type="button" role="tab" data-gtab="free" aria-selected="'.concat(GMX.tab === "free", '">Generale</button><button type="button" role="tab" data-gtab="pro" aria-selected="').concat(GMX.tab === "pro", '"><span data-notr>Pro User</span></button><i></i></div>\n      <div id="gmBachTop" class="gm-bach"></div>\n      <h3 class="gm-h3">Classifica del mese</h3>\n      <div id="gmBoard" class="gm-board"><p class="meta">Carico la classifica\u2026</p></div>\n      <div id="gmBach" class="gm-bach"><p class="meta">Carico i premi\u2026</p></div>\n      <details class="gm-rules"><summary>Come funziona</summary><ul>\n        <li>Conta il tuo miglior punteggio di ogni gioco nel mese: la classifica \xE8 la somma dei cinque.</li>\n        <li>La classifica parte il primo del mese e si chiude l\'ultimo giorno.</li>\n        <li>Classifica generale: per tutti. I primi tre vincono punti per sbloccare nuovi esercizi.</li>\n        <li>Classifica Pro: solo per chi ha Pro. I primi tre vincono i premi della bacheca.</li>\n        <li>I premi del mese dopo sono in bacheca dal 26.</li>\n        <li>I vincitori Pro vengono contattati all\'email del loro account per l\'indirizzo di spedizione.</li>\n        <li>A parit\xE0 di punti \xE8 davanti chi li ha fatti prima.</li>\n      </ul></details>\n    </section>');
 }
 function gmBachWire() {
   app.querySelectorAll("[data-gtab]").forEach((b) => b.onclick = () => {
@@ -10285,6 +10285,10 @@ Object.assign(POSES, {
   legraise: { floor: 1, A: { t: -178, a: [178, 178], a2: [176, 176], l: [-2, -2], l2: [-1, -1] }, B: { t: -178, a: [178, 178], a2: [176, 176], l: [-80, -80], l2: [-78, -78] } },
   dips: { box: "seat", A: { t: -90, a: [112, 92], a2: [110, 90], l: [-5, 80], l2: [-3, 82] }, B: { t: -90, a: [160, 82], a2: [158, 80], l: [-5, 80], l2: [-3, 82] } }
 });
+Object.assign(PICS, { "diampush": { "m": { "w": 701, "h": 560, "n": 2 }, "f": { "w": 578, "h": 560, "n": 2 } }, "pikepush": { "m": { "w": 776, "h": 560, "n": 2 }, "f": { "w": 774, "h": 560, "n": 2 } }, "legraise": { "m": { "w": 900, "h": 536, "n": 2 }, "f": { "w": 900, "h": 548, "n": 2 } }, "squatthrust": { "m": { "w": 512, "h": 560, "n": 2 }, "f": { "w": 509, "h": 560, "n": 2 } }, "highknees": { "m": { "w": 270, "h": 560, "n": 2 }, "f": { "w": 214, "h": 560, "n": 2 } }, "dips": { "m": { "w": 452, "h": 560, "n": 2 }, "f": { "w": 433, "h": 560, "n": 2 } } });
+function xpicDir(id) {
+  return ["diampush", "pikepush", "highknees", "squatthrust", "legraise", "dips"].includes(id) ? tone ? "pimg/t".concat(tone, "/") : "pimg/" : imgDir();
+}
 for (const id of ["diampush", "pikepush", "highknees", "squatthrust", "legraise", "dips"]) {
   if (!GENDER_EX.m.includes(id)) GENDER_EX.m.push(id);
   if (!GENDER_EX.f.includes(id)) GENDER_EX.f.push(id);
