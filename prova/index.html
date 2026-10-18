@@ -1430,6 +1430,15 @@ body.dark .gm-tier.is-pro p { color: #e2c78c; }
 body { transition: background-color .35s ease, color .35s ease; }
 /* Muoviti reminder inside Profilo › Impostazioni */
 .mv-prof .subopt-body > .dz-switch { box-shadow: none; padding: 4px 0; background: none; }
+/* clip da condividere (rapporto) */
+.clip-box .clip-vid { display: block; width: min(100%, 280px); aspect-ratio: 9 / 16; height: auto; margin: 8px auto 12px; border-radius: 18px; background: #000; object-fit: cover; box-shadow: 0 10px 30px rgba(0, 0, 0, .35); }
+.clip-box .clip-row { justify-content: center; flex-wrap: wrap; }
+.clip-box .note { margin: 10px 0 0; text-align: center; }
+.clip-wait { display: flex; align-items: center; justify-content: center; gap: 12px; padding: 18px 0; color: var(--muted); font-weight: 600; }
+.clip-wait .ld3d { width: 34px; height: 34px; }
+.clip-wait .ld3d i { border-width: 3px; }
+.clip-wait .ld3d i:nth-child(2) { top: 5px; right: 5px; bottom: 5px; left: 5px; }
+.clip-wait .ld3d i:nth-child(3) { top: 10px; right: 10px; bottom: 10px; left: 10px; }
 </style>
 
 </head>
@@ -5242,8 +5251,9 @@ function renderSummary() {
   const totalReps = r.log.filter((l) => l.unit === "reps").reduce((a, l) => a + l.done, 0);
   const noReps = r.log.reduce((a, l) => a + l.noreps, 0);
   const topFault = Object.entries(r.faults).sort((a, b) => b[1] - a[1])[0];
-  app.innerHTML = '\n  <div class="screen">\n    <header class="mast"><div><h1>Rapporto</h1><div class="sub">'.concat(esc(r.title), '</div></div><div class="callsign">Durata<b>').concat(fmt(r.secs), '</b></div></header>\n    <div class="stats">\n      <div class="stat"><b>').concat(totalReps, '</b><span>Rip. valide</span></div>\n      <div class="stat"><b>').concat(noReps, '</b><span>Non valide</span></div>\n      <div class="stat"><b>+').concat(r.points || 0, "</b><span>Punti</span></div>\n    </div>\n    ").concat(r.promoted != null ? '<div class="order"><h2>Promosso a '.concat(RANKS[r.promoted][0], " ").concat(rankBadge(r.promoted), '</h2><p class="meta">').concat(Object.values(EX).filter((e) => e.lock === r.promoted).map((e) => "Hai sbloccato " + e.name + ".").join(" ") || "Continua cos\xEC.", "</p></div>") : "", "\n    ").concat(r.newRecord ? '<div class="order"><h2>Nuovo record: '.concat(r.newRecord, '</h2><p class="meta">Salvato su questo telefono.</p></div>') : "", '\n    <div class="section">\n      <div class="label">Dettaglio serie</div>\n      <ul class="log">').concat(r.log.map((l) => "<li><span>".concat(EX[l.ex].name, " \xB7 serie ").concat(l.set, "</span><span>").concat(l.unit === "secs" ? Math.round(l.done) + " s" : l.done + " rip.").concat(l.target ? " / " + targetTxt(l.ex, l.target) : "", "</span></li>")).join(""), '</ul>\n    </div>\n    <div class="section">\n      <div class="label">Correzione principale</div>\n      <p>').concat(topFault ? esc(topFault[0]) + " (".concat(topFault[1], " volte)") : "Nessun errore di postura rilevato. Ottimo lavoro.", '</p>\n    </div>\n    <div class="row"><button class="btn primary" id="home" type="button">Torna al programma</button></div>\n  </div>');
+  app.innerHTML = '\n  <div class="screen">\n    <header class="mast"><div><h1>Rapporto</h1><div class="sub">'.concat(esc(r.title), '</div></div><div class="callsign">Durata<b>').concat(fmt(r.secs), '</b></div></header>\n    <div class="stats">\n      <div class="stat"><b>').concat(totalReps, '</b><span>Rip. valide</span></div>\n      <div class="stat"><b>').concat(noReps, '</b><span>Non valide</span></div>\n      <div class="stat"><b>+').concat(r.points || 0, "</b><span>Punti</span></div>\n    </div>\n    ").concat(r.promoted != null ? '<div class="order"><h2>Promosso a '.concat(RANKS[r.promoted][0], " ").concat(rankBadge(r.promoted), '</h2><p class="meta">').concat(Object.values(EX).filter((e) => e.lock === r.promoted).map((e) => "Hai sbloccato " + e.name + ".").join(" ") || "Continua cos\xEC.", "</p></div>") : "", "\n    ").concat(r.newRecord ? '<div class="order"><h2>Nuovo record: '.concat(r.newRecord, '</h2><p class="meta">Salvato su questo telefono.</p></div>') : "", "\n    ").concat(clipSection(), '\n    <div class="section">\n      <div class="label">Dettaglio serie</div>\n      <ul class="log">').concat(r.log.map((l) => "<li><span>".concat(EX[l.ex].name, " \xB7 serie ").concat(l.set, "</span><span>").concat(l.unit === "secs" ? Math.round(l.done) + " s" : l.done + " rip.").concat(l.target ? " / " + targetTxt(l.ex, l.target) : "", "</span></li>")).join(""), '</ul>\n    </div>\n    <div class="section">\n      <div class="label">Correzione principale</div>\n      <p>').concat(topFault ? esc(topFault[0]) + " (".concat(topFault[1], " volte)") : "Nessun errore di postura rilevato. Ottimo lavoro.", '</p>\n    </div>\n    <div class="row"><button class="btn primary" id="home" type="button">Torna al programma</button></div>\n  </div>');
   $("home").onclick = () => go({ name: "home" });
+  clipWire();
 }
 function renderVoice() {
   var _a2, _b2;
@@ -5303,6 +5313,8 @@ async function startSession(mode, file) {
     log: [],
     faults: {},
     startT: performance.now(),
+    cur: null,
+    inRest: false,
     running: false,
     stream: null,
     facing: "user",
@@ -5316,6 +5328,29 @@ async function startSession(mode, file) {
     points: 0,
     promoted: null
   });
+  const tok = S.startT;
+  const stale = () => {
+    var _a3, _b2;
+    if (S.startT !== tok) return true;
+    if (!$("session").hidden) return false;
+    try {
+      (_a3 = S.wake) == null ? void 0 : _a3.release();
+    } catch (e) {
+    }
+    try {
+      (_b2 = S.stream) == null ? void 0 : _b2.getTracks().forEach((t) => t.stop());
+    } catch (e) {
+    }
+    S.stream = null;
+    try {
+      vid.pause();
+    } catch (e) {
+    }
+    if (vid.src && vid.src.startsWith("blob:")) URL.revokeObjectURL(vid.src);
+    vid.removeAttribute("src");
+    vid.srcObject = null;
+    return true;
+  };
   $("opp").hidden = true;
   $("stage").classList.remove("duel", "final10");
   duelSplit(false);
@@ -5331,6 +5366,7 @@ async function startSession(mode, file) {
     S.wake = await ((_a2 = navigator.wakeLock) == null ? void 0 : _a2.request("screen"));
   } catch (e) {
   }
+  if (stale()) return;
   try {
     await loadEngine();
   } catch (e) {
@@ -5338,10 +5374,12 @@ async function startSession(mode, file) {
     $("loadingMsg").textContent = "Il sistema di visione non si \xE8 caricato. Controlla la connessione e riprova.";
     return;
   }
+  if (stale()) return;
   try {
-    if (mode === "live") await openCamera();
+    if (mode === "live") await openCamera(tok);
     else await openFile(file);
   } catch (e) {
+    if (stale()) return;
     reportBug("camera", e && e.name === "NotAllowedError" ? "warning" : "error", mode === "live" ? e && e.name === "NotAllowedError" ? "camera_permission_denied" : "camera_open_failed" : "video_file_failed", { name: e && e.name, m: String(e && e.message || "").slice(0, 160) });
     if (mode === "live") {
       $("loadingMsg").innerHTML = "Non riesco ad aprire la fotocamera.<br><br>Controlla di aver dato il permesso nelle impostazioni del browser, oppure registra un video della serie.";
@@ -5358,14 +5396,20 @@ async function startSession(mode, file) {
     } else $("loadingMsg").textContent = "Non riesco a leggere questo video. Prova a registrarlo di nuovo.";
     return;
   }
+  if (stale()) return;
   $("loading").hidden = true;
   beginSet();
   S.running = true;
   loop();
 }
-async function openCamera() {
+async function openCamera(tok) {
   if (S.stream) S.stream.getTracks().forEach((t) => t.stop());
-  S.stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: S.facing, ...camSize() }, audio: false });
+  const cam = await navigator.mediaDevices.getUserMedia({ video: { facingMode: S.facing, ...camSize() }, audio: false });
+  if (tok !== void 0 && (S.startT !== tok || $("session").hidden)) {
+    cam.getTracks().forEach((t) => t.stop());
+    return;
+  }
+  S.stream = cam;
   vid.srcObject = S.stream;
   vid.removeAttribute("src");
   await vid.play();
@@ -5398,6 +5442,7 @@ function beginSet() {
   S.inRest = false;
   coach.reset(S.cur);
   if (EX[q.ex].game) gmBegin(S.cur);
+  clipArm();
   if (gritOn) setTimeout(() => {
     if (S.cur && S.cur.count === 0 && !S.inRest) say(pickLine("start"));
   }, 4e3);
@@ -5563,6 +5608,7 @@ function drawSkeleton(lm, kind) {
 function endSet() {
   const c = S.cur;
   if (!c || S.inRest) return;
+  clipSetEnd(false);
   if (S.challenge) return duelEnd();
   if (EX[c.ex].game) return gmFinish();
   const unit = EX[c.ex].unit;
@@ -5643,6 +5689,7 @@ function finish(all) {
 function closeSession() {
   var _a2, _b2;
   gmClean();
+  clipSetEnd(true);
   S.running = false;
   clearInterval(CH.wd);
   clearInterval(S.restTimer);
@@ -10427,6 +10474,453 @@ I18N.push(
   ["Gambe pi\xF9 in alto! Non conta", "Legs higher! Doesn't count", "\xA1Piernas m\xE1s arriba! No cuenta", "Jambes plus haut ! Ne compte pas", "Beine h\xF6her! Z\xE4hlt nicht", "Pernas mais altas! N\xE3o conta"],
   ["Mani sulla sedia dietro di te", "Hands on the chair behind you", "Manos en la silla detr\xE1s de ti", "Mains sur la chaise derri\xE8re toi", "H\xE4nde auf den Stuhl hinter dir", "M\xE3os na cadeira atr\xE1s de voc\xEA"]
 );
+const CLIP_MAX = 15e3, CLIP_CARD = 1800, CLIP_IDLE = 4e3;
+const CLIP = { st: "off" };
+let clipLast = null;
+let clipLogo = null;
+function clipSupported() {
+  try {
+    return !!(window.MediaRecorder && HTMLCanvasElement.prototype.captureStream);
+  } catch (e) {
+    return false;
+  }
+}
+function clipMime() {
+  for (const t of ["video/mp4;codecs=avc1.42E01F", "video/mp4;codecs=avc1.4D401F", "video/mp4;codecs=avc1", "video/mp4", "video/webm;codecs=vp9", "video/webm;codecs=vp8", "video/webm"])
+    try {
+      if (MediaRecorder.isTypeSupported(t)) return t;
+    } catch (e) {
+    }
+  return "";
+}
+const clipN = () => parseInt($("count").textContent, 10) || 0;
+const clipUnit = (unit, n) => tr(unit === "secs" ? n === 1 ? "secondo" : "secondi" : n === 1 ? "ripetizione" : "ripetizioni");
+const clipSite = () => siteUrl().replace(/prova\/?(index\.html)?$/, "");
+const clipVar = (k, d) => {
+  try {
+    return getComputedStyle(document.body).getPropertyValue(k).trim() || d;
+  } catch (e) {
+    return d;
+  }
+};
+function clipArm() {
+  if (!store.get("clipOn", true) || !clipSupported() || S.mode !== "live" || S.challenge || !S.cur || EX[S.cur.ex].game) return;
+  if (CLIP.sid === S.startT && CLIP.st !== "off" && CLIP.st !== "armed") return;
+  if (CLIP.sid !== S.startT) {
+    clipDiscard();
+    CLIP.pending = null;
+    if (clipLast) {
+      try {
+        URL.revokeObjectURL(clipLast.url);
+      } catch (e) {
+      }
+      clipLast = null;
+    }
+  }
+  CLIP.sid = S.startT;
+  CLIP.st = "armed";
+  if (!clipLogo) {
+    clipLogo = new Image();
+    clipLogo.src = "../img/logo.webp";
+  }
+  clipLoop();
+}
+function clipLoop() {
+  if (CLIP.raf) return;
+  const step = (t) => {
+    CLIP.raf = 0;
+    if (CLIP.st === "armed") {
+      if ($("session").hidden) CLIP.st = "off";
+      else if (S.running && !S.inRest && S.cur && S.mode === "live" && vid.readyState >= 2 && ($("banner").classList.contains("ok") || clipN() > 0)) clipStart(t);
+    }
+    if (CLIP.st === "rec" || CLIP.st === "hold") CLIP.best = Math.max(CLIP.best, clipN());
+    if (CLIP.st === "rec" || CLIP.st === "card") {
+      if (t - (CLIP.lastDraw || 0) >= 1e3 / CLIP.fps - 4) {
+        CLIP.lastDraw = t;
+        clipDraw(t);
+      }
+      if (CLIP.st === "rec") {
+        const el = t - CLIP.t0;
+        if (el >= CLIP_MAX - CLIP_CARD) clipHold(t);
+        else if (el >= CLIP_IDLE && CLIP.best === 0) {
+          clipDiscard();
+          CLIP.st = "armed";
+        }
+      } else if (t - CLIP.cardT >= CLIP_CARD) clipStop();
+    }
+    if (["armed", "rec", "hold", "card"].includes(CLIP.st)) CLIP.raf = requestAnimationFrame(step);
+  };
+  CLIP.raf = requestAnimationFrame(step);
+}
+function clipStart(t) {
+  const lite = liteMode, W = lite ? 480 : 720, H = lite ? 854 : 1280;
+  const c = CLIP.cv || (CLIP.cv = document.createElement("canvas"));
+  c.width = W;
+  c.height = H;
+  CLIP.fps = lite ? 20 : 24;
+  let stream, rec;
+  try {
+    stream = c.captureStream(CLIP.fps);
+    const mime = clipMime(), opt = { videoBitsPerSecond: lite ? 15e5 : 25e5 };
+    if (mime) opt.mimeType = mime;
+    try {
+      rec = new MediaRecorder(stream, opt);
+    } catch (e) {
+      rec = new MediaRecorder(stream);
+    }
+  } catch (e) {
+    try {
+      stream == null ? void 0 : stream.getTracks().forEach((k) => k.stop());
+    } catch (e2) {
+    }
+    CLIP.st = "off";
+    reportBug("clip", "warning", "clip_start_failed", { name: e && e.name, m: String(e && e.message || e).slice(0, 120) });
+    return;
+  }
+  const job = { rec, stream, chunks: [], sid: S.startT };
+  rec.ondataavailable = (e) => {
+    if (e.data && e.data.size) job.chunks.push(e.data);
+  };
+  rec.onstop = () => clipFinal(job);
+  rec.onerror = (e) => {
+    const er = e && e.error;
+    reportBug("clip", "warning", "clip_recorder_error", { name: er && er.name, m: String(er && er.message || "").slice(0, 120) });
+  };
+  Object.assign(CLIP, { job, t0: t, st: "rec", ex: S.cur.ex, unit: EX[S.cur.ex].unit, shownN: clipN(), best: clipN(), bumpT: 0, lastDraw: t });
+  clipDraw(t);
+  try {
+    rec.start(1e3);
+  } catch (e) {
+    clipDiscard();
+    CLIP.st = "off";
+  }
+}
+function clipRR(g, x, y, w, h, r) {
+  g.beginPath();
+  g.moveTo(x + r, y);
+  g.arcTo(x + w, y, x + w, y + h, r);
+  g.arcTo(x + w, y + h, x, y + h, r);
+  g.arcTo(x, y + h, x, y, r);
+  g.arcTo(x, y, x + w, y, r);
+  g.closePath();
+}
+function clipFont(g, text, px, maxW, fc) {
+  g.font = "800 ".concat(px, "px ").concat(fc);
+  const w = g.measureText(text).width;
+  if (w > maxW) g.font = "800 ".concat(Math.floor(px * maxW / w), "px ").concat(fc);
+}
+function clipDraw(t) {
+  const c = CLIP.cv, g = c.getContext("2d"), W = c.width, H = c.height, u = W / 720;
+  const fc = clipVar("--f-cond", "sans-serif"), acc = clipVar("--brass", "#2e86de");
+  if (CLIP.st === "card") return clipDrawCard(g, W, H, u, t, fc, acc);
+  g.fillStyle = "#0b1220";
+  g.fillRect(0, 0, W, H);
+  const vw = vid.videoWidth, vh = vid.videoHeight;
+  if (vw && vh && vid.readyState >= 2 && !S.inRest) {
+    const s = Math.max(W / vw, H / vh), dw = vw * s, dh = vh * s, dx = (W - dw) / 2, dy = (H - dh) / 2;
+    g.save();
+    if ($("stage").classList.contains("mirror")) {
+      g.translate(W, 0);
+      g.scale(-1, 1);
+    }
+    try {
+      g.drawImage(vid, dx, dy, dw, dh);
+      if (cv.width === vw && cv.height === vh) g.drawImage(cv, dx, dy, dw, dh);
+    } catch (e) {
+    }
+    g.restore();
+  }
+  let gr = g.createLinearGradient(0, 0, 0, 230 * u);
+  gr.addColorStop(0, "rgba(5,10,20,.72)");
+  gr.addColorStop(1, "rgba(5,10,20,0)");
+  g.fillStyle = gr;
+  g.fillRect(0, 0, W, 230 * u);
+  gr = g.createLinearGradient(0, H - 360 * u, 0, H);
+  gr.addColorStop(0, "rgba(5,10,20,0)");
+  gr.addColorStop(1, "rgba(5,10,20,.8)");
+  g.fillStyle = gr;
+  g.fillRect(0, H - 360 * u, W, 360 * u);
+  const lx = 36 * u, ly = 36 * u, ls = 64 * u;
+  if (clipLogo && clipLogo.complete && clipLogo.naturalWidth) g.drawImage(clipLogo, lx, ly, ls, ls);
+  g.textBaseline = "middle";
+  g.textAlign = "left";
+  g.fillStyle = "#fff";
+  g.font = "800 ".concat(44 * u, "px ").concat(fc);
+  g.fillText("Fit", lx + ls + 14 * u, ly + ls / 2);
+  const fw = g.measureText("Fit").width;
+  g.fillStyle = acc;
+  g.fillText("Quest", lx + ls + 14 * u + fw, ly + ls / 2);
+  const exName = tr(EX[CLIP.ex].name).toUpperCase();
+  g.fillStyle = "#fff";
+  g.textAlign = "left";
+  clipFont(g, exName, 46 * u, W - 2 * lx, fc);
+  g.fillText(exName, lx, ly + ls + 52 * u);
+  const n = clipN();
+  if (n !== CLIP.shownN) {
+    CLIP.shownN = n;
+    CLIP.bumpT = t;
+  }
+  const k = 1 + 0.22 * Math.max(0, 1 - (t - CLIP.bumpT) / 260);
+  g.save();
+  g.translate(W - 44 * u, H - 150 * u);
+  g.scale(k, k);
+  g.textAlign = "right";
+  g.textBaseline = "alphabetic";
+  g.fillStyle = "#fff";
+  g.shadowColor = "rgba(0,0,0,.6)";
+  g.shadowBlur = 18 * u;
+  g.font = "800 ".concat(220 * u, "px ").concat(fc);
+  g.fillText(String(n), 0, 0);
+  g.restore();
+  g.textAlign = "right";
+  g.textBaseline = "alphabetic";
+  g.fillStyle = acc;
+  g.font = "800 ".concat(34 * u, "px ").concat(fc);
+  g.fillText(clipUnit(CLIP.unit, n).toUpperCase(), W - 44 * u, H - 104 * u);
+  const foot = tr("Allenati con me su FitQuest");
+  g.textAlign = "left";
+  g.fillStyle = "rgba(255,255,255,.85)";
+  clipFont(g, foot, 28 * u, W - 2 * lx, fc);
+  g.fillText(foot, lx, H - 52 * u);
+}
+function clipDrawCard(g, W, H, u, t, fc, acc) {
+  const a = Math.min(1, (t - CLIP.cardT) / 350);
+  const gr = g.createRadialGradient(W / 2, H * 0.42, 40 * u, W / 2, H * 0.42, H * 0.75);
+  gr.addColorStop(0, "#1b2a46");
+  gr.addColorStop(1, "#070c16");
+  g.globalAlpha = 1;
+  g.fillStyle = gr;
+  g.fillRect(0, 0, W, H);
+  g.globalAlpha = a;
+  const ls = 190 * u, ly = H * 0.2;
+  if (clipLogo && clipLogo.complete && clipLogo.naturalWidth) g.drawImage(clipLogo, (W - ls) / 2, ly, ls, ls);
+  g.textAlign = "center";
+  g.textBaseline = "alphabetic";
+  g.fillStyle = "#fff";
+  g.font = "800 ".concat(300 * u, "px ").concat(fc);
+  g.fillText(String(CLIP.n), W / 2, H * 0.62);
+  const what = "".concat(clipUnit(CLIP.unit, CLIP.n), " \xB7 ").concat(tr(EX[CLIP.ex].name)).toUpperCase();
+  g.fillStyle = acc;
+  clipFont(g, what, 50 * u, W - 80 * u, fc);
+  g.fillText(what, W / 2, H * 0.62 + 70 * u);
+  const cta = tr("Sfidami su FitQuest").toUpperCase(), bh = 92 * u, by = H * 0.76;
+  clipFont(g, cta, 42 * u, W - 140 * u, fc);
+  const bw = Math.max(520 * u, g.measureText(cta).width + 80 * u);
+  g.fillStyle = acc;
+  clipRR(g, (W - bw) / 2, by, bw, bh, 46 * u);
+  g.fill();
+  g.fillStyle = "#fff";
+  g.textBaseline = "middle";
+  g.fillText(cta, W / 2, by + bh / 2);
+  g.fillStyle = "rgba(255,255,255,.75)";
+  g.font = "700 ".concat(28 * u, "px ").concat(fc);
+  g.fillText(clipSite().replace(/^https?:\/\//, "").replace(/\/$/, ""), W / 2, by + bh + 60 * u);
+  g.globalAlpha = 1;
+}
+function clipHold(t) {
+  const rec = CLIP.job && CLIP.job.rec;
+  try {
+    if (rec && rec.state === "recording" && rec.pause) {
+      rec.pause();
+      if (rec.state === "paused") {
+        CLIP.st = "hold";
+        return;
+      }
+    }
+  } catch (e) {
+  }
+  clipCard(t, Math.max(CLIP.best, clipN()));
+}
+function clipCard(t, n) {
+  if (CLIP.st !== "rec" && CLIP.st !== "hold") return;
+  const rec = CLIP.job && CLIP.job.rec;
+  if (CLIP.st === "hold") try {
+    if (rec.state === "paused") rec.resume();
+  } catch (e) {
+  }
+  CLIP.n = n;
+  CLIP.st = "card";
+  CLIP.cardT = t;
+  CLIP.lastDraw = t;
+  clipDraw(t);
+}
+function clipStop() {
+  const job = CLIP.job;
+  CLIP.st = "done";
+  CLIP.job = null;
+  if (!job) return;
+  job.keep = { ex: CLIP.ex, n: CLIP.n, unit: CLIP.unit };
+  CLIP.pending = job;
+  if (job.rec.state === "inactive") return clipFinal(job);
+  try {
+    job.rec.stop();
+  } catch (e) {
+    clipFinal(job);
+  }
+}
+function clipFinal(job) {
+  try {
+    job.stream.getTracks().forEach((k) => k.stop());
+  } catch (e) {
+  }
+  if (job.over) return;
+  job.over = true;
+  if (CLIP.job === job) {
+    CLIP.job = null;
+    if (CLIP.st === "rec" || CLIP.st === "hold" || CLIP.st === "card") CLIP.st = "off";
+  }
+  if (CLIP.pending === job) CLIP.pending = null;
+  if (job.keep && !job.drop && job.sid === CLIP.sid) {
+    const type = String(job.rec.mimeType || job.chunks[0] && job.chunks[0].type || "video/webm").split(";")[0] || "video/webm";
+    const blob = new Blob(job.chunks, { type });
+    if (blob.size >= 4e3) {
+      const ext = type.includes("mp4") ? "mp4" : "webm", m = job.keep;
+      if (clipLast) try {
+        URL.revokeObjectURL(clipLast.url);
+      } catch (e) {
+      }
+      clipLast = { blob, url: URL.createObjectURL(blob), type, name: "fitquest-".concat(m.ex, "-").concat(m.n, ".").concat(ext), sid: job.sid, ...m };
+    }
+  }
+  clipRefresh();
+}
+function clipDiscard() {
+  const job = CLIP.job;
+  CLIP.job = null;
+  if (!job) return;
+  job.drop = true;
+  job.chunks = [];
+  try {
+    if (job.rec.state !== "inactive") job.rec.stop();
+    else clipFinal(job);
+  } catch (e) {
+    clipFinal(job);
+  }
+}
+function clipSetEnd(closing) {
+  if (CLIP.sid !== S.startT) return;
+  if (CLIP.st === "rec" || CLIP.st === "hold") {
+    const n = Math.max(CLIP.best || 0, clipN());
+    if (n > 0) clipCard(performance.now(), n);
+    else {
+      clipDiscard();
+      CLIP.st = closing ? "off" : "armed";
+    }
+  } else if (CLIP.st === "armed" && closing) CLIP.st = "off";
+}
+document.addEventListener("visibilitychange", () => {
+  if (!document.hidden) return;
+  if (CLIP.st === "rec") {
+    if (CLIP.best > 0) clipHold(performance.now());
+    else {
+      clipDiscard();
+      CLIP.st = "armed";
+    }
+    if (CLIP.st === "card") clipStop();
+  } else if (CLIP.st === "card") clipStop();
+});
+function clipSection() {
+  if (!S.startT || CLIP.sid !== S.startT) return "";
+  const c = clipLast && clipLast.sid === S.startT ? clipLast : null;
+  const busy = !c && (CLIP.st === "card" || !!CLIP.pending);
+  if (!c && !busy) return "";
+  return '<div class="section clip-box" id="clipBox">\n      <div class="label">La tua clip</div>\n      '.concat(c ? '<video class="clip-vid" id="clipVid" src="'.concat(c.url, '" playsinline muted loop autoplay></video>\n      <div class="row clip-row"><button class="btn primary" id="clipShare" type="button">Condividi la clip</button><button class="btn ghost" id="clipSave" type="button">Salva</button></div>\n      <p class="note" id="clipNote">La clip resta sul tuo telefono: la vede solo chi la riceve da te.</p>') : '<div class="clip-wait"><div class="ld3d"><i></i><i></i><i></i></div><span>Preparo la clip\u2026</span></div>', "\n    </div>");
+}
+function clipRefresh() {
+  const box = $("clipBox");
+  if (!box || route.name !== "summary") return;
+  const html = clipSection();
+  if (!html) {
+    box.remove();
+    return;
+  }
+  box.outerHTML = html;
+  clipWire();
+}
+function clipWire() {
+  const c = clipLast && clipLast.sid === S.startT ? clipLast : null;
+  if (!c || !$("clipShare")) return;
+  const v = $("clipVid");
+  if (v) {
+    v.muted = true;
+    v.play().catch(() => {
+      v.controls = true;
+    });
+  }
+  const note = (m) => {
+    const n = $("clipNote");
+    if (n) n.textContent = m;
+  };
+  let sharing = false;
+  $("clipShare").onclick = async () => {
+    if (sharing) return;
+    const text = "".concat(c.n, " ").concat(clipUnit(c.unit, c.n), " \xB7 ").concat(tr(EX[c.ex].name), ". ").concat(tr("Riesci a fare di meglio? Sfidami su FitQuest"), " ").concat(clipSite());
+    let file = null;
+    try {
+      file = new File([c.blob], c.name, { type: c.type });
+    } catch (e) {
+    }
+    let can = false;
+    try {
+      can = !!(file && navigator.canShare && navigator.canShare({ files: [file] }));
+    } catch (e) {
+    }
+    if (can) {
+      sharing = true;
+      let copied = false;
+      try {
+        const sh = navigator.share(IS_IOS ? { files: [file] } : { files: [file], title: "FitQuest", text });
+        if (IS_IOS) try {
+          navigator.clipboard.writeText(text).then(() => {
+            copied = true;
+          }, () => {
+          });
+        } catch (e) {
+        }
+        await sh;
+        if (copied) note(tr("Testo della sfida copiato: incollalo sotto il video."));
+        return;
+      } catch (e) {
+        if (e && (e.name === "AbortError" || e.name === "InvalidStateError")) return;
+        clipDownload(c);
+        return note(tr("Condivisione non riuscita: la clip \xE8 stata salvata, pubblicala dalla galleria o dai download."));
+      } finally {
+        sharing = false;
+      }
+    }
+    clipDownload(c);
+    note(tr("Questo browser non condivide video: la clip \xE8 stata salvata, pubblicala dalla galleria o dai download."));
+  };
+  $("clipSave").onclick = () => {
+    clipDownload(c);
+    note(tr("Clip salvata: la trovi nei download del telefono."));
+  };
+}
+function clipDownload(c) {
+  const a = document.createElement("a");
+  a.href = c.url;
+  a.download = c.name;
+  a.rel = "noopener";
+  a.style.display = "none";
+  document.body.append(a);
+  a.click();
+  setTimeout(() => a.remove(), 0);
+}
+I18N.push(
+  ["La tua clip", "Your clip", "Tu clip", "Ton clip", "Dein Clip", "Seu clipe"],
+  ["Condividi la clip", "Share the clip", "Compartir el clip", "Partager le clip", "Clip teilen", "Compartilhar o clipe"],
+  ["Preparo la clip\u2026", "Preparing your clip\u2026", "Preparando el clip\u2026", "Je pr\xE9pare le clip\u2026", "Clip wird vorbereitet\u2026", "Preparando o clipe\u2026"],
+  ["La clip resta sul tuo telefono: la vede solo chi la riceve da te.", "The clip stays on your phone: only the people you send it to can see it.", "El clip se queda en tu tel\xE9fono: solo lo ve quien lo recibe de ti.", "Le clip reste sur ton t\xE9l\xE9phone : seules les personnes \xE0 qui tu l'envoies le voient.", "Der Clip bleibt auf deinem Handy: Nur wer ihn von dir bekommt, sieht ihn.", "O clipe fica no seu celular: s\xF3 quem recebe de voc\xEA pode ver."],
+  ["Allenati con me su FitQuest", "Train with me on FitQuest", "Entrena conmigo en FitQuest", "Entra\xEEne-toi avec moi sur FitQuest", "Trainiere mit mir auf FitQuest", "Treine comigo no FitQuest"],
+  ["Sfidami su FitQuest", "Challenge me on FitQuest", "R\xE9tame en FitQuest", "D\xE9fie-moi sur FitQuest", "Fordere mich auf FitQuest heraus", "Me desafie no FitQuest"],
+  ["Riesci a fare di meglio? Sfidami su FitQuest", "Can you beat it? Challenge me on FitQuest", "\xBFPuedes superarlo? R\xE9tame en FitQuest", "Tu peux faire mieux ? D\xE9fie-moi sur FitQuest", "Schaffst du mehr? Fordere mich auf FitQuest heraus", "Consegue fazer melhor? Me desafie no FitQuest"],
+  ["Questo browser non condivide video: la clip \xE8 stata salvata, pubblicala dalla galleria o dai download.", "This browser can't share videos: the clip was saved, post it from your gallery or downloads.", "Este navegador no comparte v\xEDdeos: el clip se guard\xF3, publ\xEDcalo desde la galer\xEDa o las descargas.", "Ce navigateur ne partage pas les vid\xE9os : le clip a \xE9t\xE9 enregistr\xE9, publie-le depuis ta galerie ou tes t\xE9l\xE9chargements.", "Dieser Browser kann keine Videos teilen: Der Clip wurde gespeichert, poste ihn aus der Galerie oder den Downloads.", "Este navegador n\xE3o compartilha v\xEDdeos: o clipe foi salvo, publique pela galeria ou downloads."],
+  ["Condivisione non riuscita: la clip \xE8 stata salvata, pubblicala dalla galleria o dai download.", "Sharing didn't work: the clip was saved, post it from your gallery or downloads.", "No se pudo compartir: el clip se guard\xF3, publ\xEDcalo desde la galer\xEDa o las descargas.", "Le partage n'a pas march\xE9 : le clip a \xE9t\xE9 enregistr\xE9, publie-le depuis ta galerie ou tes t\xE9l\xE9chargements.", "Teilen hat nicht geklappt: Der Clip wurde gespeichert, poste ihn aus der Galerie oder den Downloads.", "N\xE3o foi poss\xEDvel compartilhar: o clipe foi salvo, publique pela galeria ou downloads."],
+  ["Clip salvata: la trovi nei download del telefono.", "Clip saved: you'll find it in your phone's downloads.", "Clip guardado: lo encontrar\xE1s en las descargas del tel\xE9fono.", "Clip enregistr\xE9 : tu le trouveras dans les t\xE9l\xE9chargements du t\xE9l\xE9phone.", "Clip gespeichert: Du findest ihn in den Downloads deines Handys.", "Clipe salvo: voc\xEA encontra nos downloads do celular."],
+  ["Testo della sfida copiato: incollalo sotto il video.", "Challenge text copied: paste it under the video.", "Texto del reto copiado: p\xE9galo debajo del v\xEDdeo.", "Texte du d\xE9fi copi\xE9 : colle-le sous la vid\xE9o.", "Challenge-Text kopiert: F\xFCge ihn unter dem Video ein.", "Texto do desafio copiado: cole embaixo do v\xEDdeo."],
+  ["ripetizione", "rep", "repetici\xF3n", "r\xE9p\xE9tition", "Wiederholung", "repeti\xE7\xE3o"],
+  ["secondo", "second", "segundo", "seconde", "Sekunde", "segundo"]
+);
 const SB_URL = "https://maypmqnjkdrdqcssnvty.supabase.co";
 const SB_KEY = "sb_publishable_uorMl6G618tavZGF8MQpfQ_2Pg3AIlE";
 const APP_VER = "prova-web-v56";
@@ -10957,7 +11451,7 @@ if ("serviceWorker" in navigator) {
   const hadSW = !!navigator.serviceWorker.controller;
   let swReload = false;
   navigator.serviceWorker.addEventListener("controllerchange", () => {
-    if (!hadSW || swReload || !document.getElementById("session").hidden) return;
+    if (!hadSW || swReload || !document.getElementById("session").hidden || document.getElementById("clipBox")) return;
     swReload = true;
     location.reload();
   });
