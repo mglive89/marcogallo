@@ -1439,6 +1439,20 @@ body { transition: background-color .35s ease, color .35s ease; }
 .clip-wait .ld3d i { border-width: 3px; }
 .clip-wait .ld3d i:nth-child(2) { top: 5px; right: 5px; bottom: 5px; left: 5px; }
 .clip-wait .ld3d i:nth-child(3) { top: 10px; right: 10px; bottom: 10px; left: 10px; }
+
+/* Informazioni app e contatti (info.js) */
+.info-note { margin: 0 0 12px; line-height: 1.45; }
+.info-list { display: grid; gap: 8px; }
+.info-row { display: grid; grid-template-columns: 40px 1fr auto; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 14px; background: var(--panel); color: var(--fg); text-decoration: none; min-height: 52px; }
+body.dark .info-row { background: rgba(255,255,255,.06); }
+.info-row:not(a) { grid-template-columns: 40px 1fr; }
+.info-ico { width: 40px; height: 40px; border-radius: 12px; background: var(--soft); color: var(--brass); display: grid; place-items: center; overflow: hidden; }
+.info-ico svg { width: 22px; height: 22px; }
+.info-ico img { width: 100%; height: 100%; object-fit: cover; }
+.info-txt { display: grid; min-width: 0; }
+.info-txt b { font-weight: 700; }
+.info-txt small { opacity: .7; overflow-wrap: anywhere; }
+.info-row .go { font-size: 22px; opacity: .5; }
 </style>
 
 </head>
@@ -5159,9 +5173,10 @@ function stepsPaint() {
 }
 let profGOpen = false, profSetOpen = false, profTOpen = false;
 function renderProfile() {
-  app.innerHTML = '\n  <div class="screen">\n    <section class="lbz-hero pf-hero">\n      <div class="dz-glow"></div>\n      <div class="lbz-top"><h1>Profilo</h1>'.concat(crownN(stats.crowns) ? '<span class="dz-crowns">'.concat(crownSVG(), "<b>").concat(crownN(stats.crowns), "</b></span>") : "", '</div>\n      <div class="lbz-me">').concat(avatar(myName || "Tu", "lbz-av"), '<div><div class="pf-name">').concat(esc(myName || "Atleta"), '</div>\n        <div class="lbz-meta">').concat(myBadge(), " <span>").concat(RANKS[rankIndex()][0], "</span> \xB7 <span>").concat(G() === "f" ? "Donna" : "Uomo", '</span></div></div></div>\n      <div class="pf-stats"><div><b class="cu">').concat(stats.total, '</b><small>Punti totali</small></div><div><b class="cu">').concat(stats.month.pts, '</b><small>Questo mese</small></div><div><b class="cu">').concat(crownN(stats.crowns), "</b><small>Corone</small></div></div>\n    </section>\n    ").concat(stepsCard(), "\n    ").concat(SITE ? accountCard() : "", "\n    ").concat(gmHomePlans(), '\n    <details class="subopt set-menu" id="setSub"').concat(profSetOpen ? " open" : "", '><summary><span class="set-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></span><span>Impostazioni</span><b>Nome, lingua, voce, grafica</b></summary><div class="subopt-body set-body">\n    <details class="subopt" id="gSub"').concat(profGOpen ? " open" : "", "><summary><span>Percorso</span><b>").concat(G() === "f" ? "Donna" : "Uomo", '</b></summary><div class="subopt-body">').concat(genderPick(G()), '</div></details>\n    <details class="subopt" id="tSub"').concat(profTOpen ? " open" : "", '><summary><span>Avatar</span><b><i class="tone-dot" style="--c:').concat(TONE_DOT[tone], '"></i>').concat(TONE_NAMES[tone], '</b></summary><div class="subopt-body">').concat(tonePick(tone, G()), '</div></details>\n    <div class="field"><label class="label" for="nm">Il tuo nome</label><input id="nm" maxlength="20" autocomplete="nickname" placeholder="Es. Marco" value="').concat(esc(myName), '"></div>\n    <div class="field"><label class="label" for="pLang">Lingua</label>\n      <select id="pLang" class="sel">\n        <option value="">Automatica (').concat(LANGS[detectLang()].name, ")</option>\n        ").concat(LANG_ORDER.map((k) => '<option value="'.concat(k, '" ').concat(store.get("lang", "") === k ? "selected" : "", ">").concat(LANGS[k].name, "</option>")).join(""), '\n      </select></div>\n    <div class="section"><div class="label">Voce</div>\n      <label class="toggle"><input type="checkbox" id="voiceT" ').concat(voiceOn ? "checked" : "", '> Istruttore vocale</label>\n      <label class="toggle"><input type="checkbox" id="gritT" ').concat(gritOn ? "checked" : "", '> Voce del coach: incitamento durante l\'esercizio</label>\n      <button class="btn ghost" id="voiceSet" type="button">Personalizza la voce</button>\n    </div>\n    ').concat(mvProfile(), "\n    ").concat(fxSettings(), '\n    </div></details>\n    <p class="note">Il video resta sul tuo telefono: l\'analisi della postura avviene sul telefono e nessuna immagine viene inviata.</p>\n  </div>');
+  app.innerHTML = '\n  <div class="screen">\n    <section class="lbz-hero pf-hero">\n      <div class="dz-glow"></div>\n      <div class="lbz-top"><h1>Profilo</h1>'.concat(crownN(stats.crowns) ? '<span class="dz-crowns">'.concat(crownSVG(), "<b>").concat(crownN(stats.crowns), "</b></span>") : "", '</div>\n      <div class="lbz-me">').concat(avatar(myName || "Tu", "lbz-av"), '<div><div class="pf-name">').concat(esc(myName || "Atleta"), '</div>\n        <div class="lbz-meta">').concat(myBadge(), " <span>").concat(RANKS[rankIndex()][0], "</span> \xB7 <span>").concat(G() === "f" ? "Donna" : "Uomo", '</span></div></div></div>\n      <div class="pf-stats"><div><b class="cu">').concat(stats.total, '</b><small>Punti totali</small></div><div><b class="cu">').concat(stats.month.pts, '</b><small>Questo mese</small></div><div><b class="cu">').concat(crownN(stats.crowns), "</b><small>Corone</small></div></div>\n    </section>\n    ").concat(stepsCard(), "\n    ").concat(SITE ? accountCard() : "", "\n    ").concat(gmHomePlans(), '\n    <details class="subopt set-menu" id="setSub"').concat(profSetOpen ? " open" : "", '><summary><span class="set-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></span><span>Impostazioni</span><b>Nome, lingua, voce, grafica</b></summary><div class="subopt-body set-body">\n    <details class="subopt" id="gSub"').concat(profGOpen ? " open" : "", "><summary><span>Percorso</span><b>").concat(G() === "f" ? "Donna" : "Uomo", '</b></summary><div class="subopt-body">').concat(genderPick(G()), '</div></details>\n    <details class="subopt" id="tSub"').concat(profTOpen ? " open" : "", '><summary><span>Avatar</span><b><i class="tone-dot" style="--c:').concat(TONE_DOT[tone], '"></i>').concat(TONE_NAMES[tone], '</b></summary><div class="subopt-body">').concat(tonePick(tone, G()), '</div></details>\n    <div class="field"><label class="label" for="nm">Il tuo nome</label><input id="nm" maxlength="20" autocomplete="nickname" placeholder="Es. Marco" value="').concat(esc(myName), '"></div>\n    <div class="field"><label class="label" for="pLang">Lingua</label>\n      <select id="pLang" class="sel">\n        <option value="">Automatica (').concat(LANGS[detectLang()].name, ")</option>\n        ").concat(LANG_ORDER.map((k) => '<option value="'.concat(k, '" ').concat(store.get("lang", "") === k ? "selected" : "", ">").concat(LANGS[k].name, "</option>")).join(""), '\n      </select></div>\n    <div class="section"><div class="label">Voce</div>\n      <label class="toggle"><input type="checkbox" id="voiceT" ').concat(voiceOn ? "checked" : "", '> Istruttore vocale</label>\n      <label class="toggle"><input type="checkbox" id="gritT" ').concat(gritOn ? "checked" : "", '> Voce del coach: incitamento durante l\'esercizio</label>\n      <button class="btn ghost" id="voiceSet" type="button">Personalizza la voce</button>\n    </div>\n    ').concat(mvProfile(), "\n    ").concat(fxSettings(), "\n    ").concat(infoSection(), '\n    </div></details>\n    <p class="note">Il video resta sul tuo telefono: l\'analisi della postura avviene sul telefono e nessuna immagine viene inviata.</p>\n  </div>');
   fxSettingsWire();
   mvProfileWire();
+  infoWire();
   accountWire();
   gmHomeWire();
   stepsWire(true);
@@ -9386,8 +9401,7 @@ function renderGameResult() {
   $("gmMore").onclick = () => go({ name: "games" });
 }
 const GMX = { pro: false, me: null, played: 0, board: { free: null, pro: null }, bacheca: null, tab: "free", plan: "year", claimed: false, loading: null, err: false };
-const gmSimPro = () => !!store.get("gmSimPro", false);
-const gmIsPro = () => GMX.pro || gmSimPro();
+const gmIsPro = () => GMX.pro;
 const gmMonthName = (m) => {
   try {
     return (/* @__PURE__ */ new Date(m + "T12:00:00")).toLocaleDateString(lang, { month: "long" });
@@ -9461,23 +9475,16 @@ function gmRankLine() {
 }
 function gmTierCard() {
   const pro = gmIsPro();
-  return '<section class="gm-tier'.concat(pro ? " is-pro" : "", '">\n    <div class="gm-tier-h"><b>').concat(pro ? "Versione Pro" : "Versione Free", "</b>").concat(pro ? '<i class="gm-pro">PRO</i>' : "", "</div>\n    <p>").concat(pro ? "Niente pubblicit\xE0, concorso del mese con premi veri per i primi tre." : "Gratis con pubblicit\xE0 prima di ogni nuovo gioco. Classifica generale: i primi tre vincono punti.", "</p>\n    ").concat(pro ? "" : '<p class="gm-free-acc">'.concat(gIco, '<span>Gratis con l\'accesso Google. Presto anche con Apple.</span></p>\n    <div class="gm-tier-buy"><button class="btn primary small" id="gmGoPro" type="button">Scopri Pro</button><span class="gm-from"><span>Pro da</span> <b data-notr>3,99 \u20AC</b><span>/mese</span></span></div>'), '\n    <label class="dz-switch gm-sim"><span>Simula Pro in questa prova<small>Solo per provare: toglie la pubblicit\xE0. La classifica Pro conta solo gli abbonati veri.</small></span><input type="checkbox" id="gmSim" ').concat(gmSimPro() ? "checked" : "", "><i></i></label>\n  </section>");
+  return '<section class="gm-tier'.concat(pro ? " is-pro" : "", '">\n    <div class="gm-tier-h"><b>').concat(pro ? "Versione Pro" : "Versione Free", "</b>").concat(pro ? '<i class="gm-pro">PRO</i>' : "", "</div>\n    <p>").concat(pro ? "Niente pubblicit\xE0, concorso del mese con premi veri per i primi tre." : "Gratis con pubblicit\xE0 prima di ogni nuovo gioco. Classifica generale: i primi tre vincono punti.", "</p>\n    ").concat(pro ? "" : '<p class="gm-free-acc">'.concat(gIco, '<span>Gratis con l\'accesso Google. Presto anche con Apple.</span></p>\n    <div class="gm-tier-buy"><button class="btn primary small" id="gmGoPro" type="button">Scopri Pro</button><span class="gm-from"><span>Pro da</span> <b data-notr>3,99 \u20AC</b><span>/mese</span></span></div>'), "\n  </section>");
 }
 function gmTierWire() {
   const b = $("gmGoPro");
   if (b) b.onclick = gmProSheet;
-  const t = $("gmSim");
-  if (t) t.onchange = () => {
-    store.set("gmSimPro", t.checked);
-    const y = window.scrollY;
-    render();
-    window.scrollTo(0, y);
-  };
 }
 function gmProSheet() {
   var _a2;
   (_a2 = $("gmSheet")) == null ? void 0 : _a2.remove();
-  document.body.insertAdjacentHTML("beforeend", '<div class="gm-sheet" id="gmSheet" role="dialog" aria-modal="true"><div class="gm-sheet-in">\n    <div class="gm-tier-h"><b>FitQuest Pro</b><i class="gm-pro big">PRO</i></div>\n    <ul class="gm-perks"><li><b>Niente pubblicit\xE0</b><span>Passi da un gioco all\'altro senza aspettare.</span></li>\n      <li><b>Concorso del mese</b><span>Una classifica solo per gli abbonati Pro, dal primo all\'ultimo giorno del mese.</span></li>\n      <li><b>Premi per i primi tre</b><span>I premi sono in bacheca e cambiano ogni mese. Quelli del mese dopo li vedi dal 26.</span></li></ul>\n    <div class="gm-plans" role="radiogroup">'.concat(GM_PLANS.map((p) => '<button class="gm-plan" type="button" role="radio" data-plan="'.concat(p.id, '" aria-checked="').concat(p.id === GMX.plan, '">\n      ').concat(p.save ? '<i class="gm-save"><span>Risparmi</span> <span data-notr>'.concat(p.save, "</span></i>") : "", "<b>").concat(p.name, '</b><span class="gm-price" data-notr>').concat(p.price, "</span><small>").concat(p.per, "</small>").concat(p.month ? "<small><span>pari a</span> <span data-notr>".concat(p.month, "</span><span>/mese</span></small>") : "", "</button>")).join(""), '</div>\n    <button class="btn primary" id="gmBuy" type="button"></button>\n    <p class="meta" id="gmBuyMsg">L\'abbonamento si attiva con l\'uscita dell\'app nei negozi. Per ora puoi provare Pro con l\'interruttore "Simula Pro".</p>\n    <p class="meta">Disdici quando vuoi. Serve l\'accesso con il tuo account.</p>\n    <button class="btn ghost" id="gmSheetX" type="button">Chiudi</button></div></div>'));
+  document.body.insertAdjacentHTML("beforeend", '<div class="gm-sheet" id="gmSheet" role="dialog" aria-modal="true"><div class="gm-sheet-in">\n    <div class="gm-tier-h"><b>FitQuest Pro</b><i class="gm-pro big">PRO</i></div>\n    <ul class="gm-perks"><li><b>Niente pubblicit\xE0</b><span>Passi da un gioco all\'altro senza aspettare.</span></li>\n      <li><b>Concorso del mese</b><span>Una classifica solo per gli abbonati Pro, dal primo all\'ultimo giorno del mese.</span></li>\n      <li><b>Premi per i primi tre</b><span>I premi sono in bacheca e cambiano ogni mese. Quelli del mese dopo li vedi dal 26.</span></li></ul>\n    <div class="gm-plans" role="radiogroup">'.concat(GM_PLANS.map((p) => '<button class="gm-plan" type="button" role="radio" data-plan="'.concat(p.id, '" aria-checked="').concat(p.id === GMX.plan, '">\n      ').concat(p.save ? '<i class="gm-save"><span>Risparmi</span> <span data-notr>'.concat(p.save, "</span></i>") : "", "<b>").concat(p.name, '</b><span class="gm-price" data-notr>').concat(p.price, "</span><small>").concat(p.per, "</small>").concat(p.month ? "<small><span>pari a</span> <span data-notr>".concat(p.month, "</span><span>/mese</span></small>") : "", "</button>")).join(""), '</div>\n    <button class="btn primary" id="gmBuy" type="button"></button>\n    <p class="meta" id="gmBuyMsg">L\'abbonamento si attiva con l\'uscita dell\'app nei negozi.</p>\n    <p class="meta">Disdici quando vuoi. Serve l\'accesso con il tuo account.</p>\n    <button class="btn ghost" id="gmSheetX" type="button">Chiudi</button></div></div>'));
   const paint = () => {
     const pl = GM_PLANS.find((p) => p.id === GMX.plan);
     document.querySelectorAll("[data-plan]").forEach((b) => b.setAttribute("aria-checked", b.dataset.plan === GMX.plan));
@@ -9669,7 +9676,6 @@ function gmPaintLive() {
     bh.innerHTML = (B.show_next ? '<p class="gm-next">Premi del mese prossimo</p>' + block(B.next, GMX.tab) : '<p class="meta">I premi del mese prossimo arrivano in bacheca il 26.</p>') + win;
   }
 }
-document.body.insertAdjacentHTML("beforeend", '<div class="prova-badge" aria-hidden="true">Pagina di prova</div>');
 I18N.push(
   ["Acchiappa le stelle", "Catch the stars", "Atrapa las estrellas", "Attrape les \xE9toiles", "Fang die Sterne", "Pegue as estrelas"],
   ["Braccia e riflessi", "Arms and reflexes", "Brazos y reflejos", "Bras et r\xE9flexes", "Arme und Reflexe", "Bra\xE7os e reflexos"],
@@ -9722,6 +9728,7 @@ I18N.push(
   ["Nuovo record!", "New record!", "\xA1Nuevo r\xE9cord!", "Nouveau record !", "Neuer Rekord!", "Novo recorde!"],
   ["Fine del gioco. Bravo!", "Game over. Well done!", "Fin del juego. \xA1Bien hecho!", "Fin du jeu. Bravo !", "Spiel vorbei. Gut gemacht!", "Fim de jogo. Muito bem!"],
   ["Punti del gioco: vince chi ne fa di pi\xF9. Nella prova i giochi non danno punti alla classifica.", "Game points: whoever scores more wins. In the test version games don't give leaderboard points.", "Puntos del juego: gana quien haga m\xE1s. En la prueba los juegos no dan puntos para la clasificaci\xF3n.", "Points du jeu : celui qui en marque le plus gagne. Dans la version d'essai, les jeux ne donnent pas de points au classement.", "Spielpunkte: Wer mehr hat, gewinnt. In der Testversion geben Spiele keine Ranglistenpunkte.", "Pontos do jogo: vence quem fizer mais. Na vers\xE3o de teste os jogos n\xE3o d\xE3o pontos no ranking."],
+  ["L'abbonamento si attiva con l'uscita dell'app nei negozi.", "The subscription starts when the app is in the stores.", "La suscripci\xF3n se activa cuando la app est\xE9 en las tiendas.", "L'abonnement s'active \xE0 la sortie de l'app dans les stores.", "Das Abo startet, sobald die App in den Stores ist.", "A assinatura come\xE7a quando o app chegar \xE0s lojas."],
   ["Pagina di prova", "Test page", "P\xE1gina de prueba", "Page d'essai", "Testseite", "P\xE1gina de teste"]
 );
 I18N_RX.push([/^di (\d+) punti$/g, "of $1 points", "de $1 puntos", "sur $1 points", "von $1 Punkten", "de $1 pontos"]);
@@ -9899,7 +9906,7 @@ function renderWater() {
     return '<div class="wt-day'.concat(i === 6 ? " now" : "", '"><i style="--h:').concat(Math.min(100, Math.round(v / w.goal * 100)), '%"></i><small data-notr>').concat(esc(d.toLocaleDateString(lang, { weekday: "narrow" })), "</small></div>");
   }).join("");
   const chips = (key, list, fmt2) => '<div class="wt-chips" role="radiogroup">'.concat(list.map((v) => '<button class="wt-chip" type="button" role="radio" data-set="'.concat(key, '" data-v="').concat(v, '" aria-checked="').concat(w[key] === v, '">').concat(fmt2(v), "</button>")).join(""), "</div>");
-  app.innerHTML = '\n  <div class="screen wt">\n    <button class="back" id="back" type="button">\u2039 Oggi</button>\n    <section class="wt-hero'.concat(c >= w.goal ? " done" : "", '">\n      <div class="wt-drops" aria-hidden="true">').concat([8, 22, 37, 63, 78, 91].map((x, i) => '<i style="--x:'.concat(x, "%;--d:").concat(4 + i % 3, "s;--w:").concat((i * 0.7).toFixed(1), 's"></i>')).join(""), '</div>\n      <div class="wt-top"><h1>Bevi acqua</h1><span class="wt-goal"><b data-notr>').concat(c * w.ml >= 1e3 ? (c * w.ml / 1e3).toFixed(1).replace(".", ",") + " l" : c * w.ml + " ml", '</b> <span>oggi</span></span></div>\n      <div class="wt-stage">\n        <div class="wt-char" id="wtChar"><img src="pimg/water-').concat(g, '.webp" alt="" draggable="false"><span class="wt-splash" style="--gx:').concat(WT_GLASS[g][0], "%;--gy:").concat(WT_GLASS[g][1], '%"></span></div>\n        <div class="wt-meter">\n          ').concat(wtTank(c / w.goal, "big"), '\n          <div class="wt-count"><b id="wtCount" data-notr>').concat(c, "</b><span data-notr>/ ").concat(w.goal, '</span><small>bicchieri</small></div>\n        </div>\n      </div>\n      <div class="wt-bar"><i style="width:').concat(pct, '%"></i></div>\n      <div class="wt-act">\n        <button class="btn ghost small" id="wtMinus" type="button" ').concat(c ? "" : "disabled", ' aria-label="Togli un bicchiere">\u2212</button>\n        <button class="btn primary big" id="wtPlus" type="button"><span class="wt-plus-ico">').concat(wtTank(0.7, "ib"), '</span><span>Ho bevuto un bicchiere</span></button>\n      </div>\n      <p class="wt-msg" id="wtMsg">').concat(c >= w.goal ? "Obiettivo raggiunto! Il tuo corpo ti ringrazia." : nx != null ? "<span>Prossimo promemoria alle</span> <b data-notr>".concat(wtHm(nx), "</b>") : w.on ? "Per oggi i promemoria sono finiti." : "Attiva i promemoria qui sotto: ti avvisiamo noi.", '</p>\n    </section>\n\n    <section class="wt-card">\n      <div class="wt-card-h"><b>Ultimi 7 giorni</b><small><span>obiettivo</span> <span data-notr>').concat(w.goal, '</span> <span>bicchieri</span></small></div>\n      <div class="wt-week">').concat(week, '</div>\n    </section>\n\n    <section class="wt-card">\n      <label class="dz-switch wt-switch"><span class="ico">\u{1F514}</span><span><b>Promemoria per bere</b><small>Un avviso con suono quando \xE8 ora di bere</small></span><input type="checkbox" id="wtOn" ').concat(w.on ? "checked" : "", '><i></i></label>\n      <div class="wt-set').concat(w.on ? "" : " off", '">\n        <div class="wt-times">\n          <label><small>Dalle</small><input type="time" id="wtFrom" value="').concat(esc(w.from), '"></label>\n          <span class="wt-arrow" aria-hidden="true">\u2192</span>\n          <label><small>Alle</small><input type="time" id="wtTo" value="').concat(esc(w.to), '"></label>\n        </div>\n        <small class="wt-lab">Ogni quanto</small>\n        ').concat(chips("every", WT_EVERY, (v) => v < 60 ? "<span data-notr>".concat(v, "</span> <span>min</span>") : v % 60 ? "<span data-notr>".concat(Math.floor(v / 60), " h ").concat(v % 60, "</span>") : "<span data-notr>".concat(v / 60, "</span> <span>h</span>")), '\n        <div class="wt-slots">').concat(slots.length ? slots.map((t2) => '<span class="'.concat(nx === t2 ? "next" : "", '" data-notr>').concat(wtHm(t2), "</span>")).join("") : "<em>Scegli un orario di fine dopo quello di inizio.</em>", '</div>\n        <small class="wt-lab">Obiettivo al giorno</small>\n        ').concat(chips("goal", WT_GOALS, (v) => "<span data-notr>".concat(v, "</span> <span>bicchieri</span>")), '\n        <small class="wt-lab">Un bicchiere \xE8</small>\n        ').concat(chips("ml", WT_ML, (v) => "<span data-notr>".concat(v, " ml</span>")), '\n        <label class="dz-switch wt-switch sm"><span><b>Suono</b></span><input type="checkbox" id="wtSound" ').concat(w.sound ? "checked" : "", '><i></i></label>\n        <label class="dz-switch wt-switch sm"><span><b>Vibrazione</b></span><input type="checkbox" id="wtVib" ').concat(w.vib ? "checked" : "", '><i></i></label>\n        <div class="wt-test"><button class="btn ghost small" id="wtTest" type="button">Prova il promemoria</button></div>\n        <p class="wt-note">').concat(perm === "native" ? "Gli avvisi arrivano anche con l'app chiusa." : perm === "denied" ? "Le notifiche sono bloccate: attivale nelle impostazioni del browser per FitQuest." : "Sul sito l'avviso arriva mentre FitQuest \xE8 aperta. Con l'app FitQuest arriva anche a telefono bloccato.", "</p>\n      </div>\n    </section>\n  </div>");
+  app.innerHTML = '\n  <div class="screen wt">\n    <button class="back" id="back" type="button">\u2039 Oggi</button>\n    <section class="wt-hero'.concat(c >= w.goal ? " done" : "", '">\n      <div class="wt-drops" aria-hidden="true">').concat([8, 22, 37, 63, 78, 91].map((x, i) => '<i style="--x:'.concat(x, "%;--d:").concat(4 + i % 3, "s;--w:").concat((i * 0.7).toFixed(1), 's"></i>')).join(""), '</div>\n      <div class="wt-top"><h1>Bevi acqua</h1><span class="wt-goal"><b data-notr>').concat(c * w.ml >= 1e3 ? (c * w.ml / 1e3).toFixed(1).replace(".", ",") + " l" : c * w.ml + " ml", '</b> <span>oggi</span></span></div>\n      <div class="wt-stage">\n        <div class="wt-char" id="wtChar"><img src="../img/water-').concat(g, '.webp" alt="" draggable="false"><span class="wt-splash" style="--gx:').concat(WT_GLASS[g][0], "%;--gy:").concat(WT_GLASS[g][1], '%"></span></div>\n        <div class="wt-meter">\n          ').concat(wtTank(c / w.goal, "big"), '\n          <div class="wt-count"><b id="wtCount" data-notr>').concat(c, "</b><span data-notr>/ ").concat(w.goal, '</span><small>bicchieri</small></div>\n        </div>\n      </div>\n      <div class="wt-bar"><i style="width:').concat(pct, '%"></i></div>\n      <div class="wt-act">\n        <button class="btn ghost small" id="wtMinus" type="button" ').concat(c ? "" : "disabled", ' aria-label="Togli un bicchiere">\u2212</button>\n        <button class="btn primary big" id="wtPlus" type="button"><span class="wt-plus-ico">').concat(wtTank(0.7, "ib"), '</span><span>Ho bevuto un bicchiere</span></button>\n      </div>\n      <p class="wt-msg" id="wtMsg">').concat(c >= w.goal ? "Obiettivo raggiunto! Il tuo corpo ti ringrazia." : nx != null ? "<span>Prossimo promemoria alle</span> <b data-notr>".concat(wtHm(nx), "</b>") : w.on ? "Per oggi i promemoria sono finiti." : "Attiva i promemoria qui sotto: ti avvisiamo noi.", '</p>\n    </section>\n\n    <section class="wt-card">\n      <div class="wt-card-h"><b>Ultimi 7 giorni</b><small><span>obiettivo</span> <span data-notr>').concat(w.goal, '</span> <span>bicchieri</span></small></div>\n      <div class="wt-week">').concat(week, '</div>\n    </section>\n\n    <section class="wt-card">\n      <label class="dz-switch wt-switch"><span class="ico">\u{1F514}</span><span><b>Promemoria per bere</b><small>Un avviso con suono quando \xE8 ora di bere</small></span><input type="checkbox" id="wtOn" ').concat(w.on ? "checked" : "", '><i></i></label>\n      <div class="wt-set').concat(w.on ? "" : " off", '">\n        <div class="wt-times">\n          <label><small>Dalle</small><input type="time" id="wtFrom" value="').concat(esc(w.from), '"></label>\n          <span class="wt-arrow" aria-hidden="true">\u2192</span>\n          <label><small>Alle</small><input type="time" id="wtTo" value="').concat(esc(w.to), '"></label>\n        </div>\n        <small class="wt-lab">Ogni quanto</small>\n        ').concat(chips("every", WT_EVERY, (v) => v < 60 ? "<span data-notr>".concat(v, "</span> <span>min</span>") : v % 60 ? "<span data-notr>".concat(Math.floor(v / 60), " h ").concat(v % 60, "</span>") : "<span data-notr>".concat(v / 60, "</span> <span>h</span>")), '\n        <div class="wt-slots">').concat(slots.length ? slots.map((t2) => '<span class="'.concat(nx === t2 ? "next" : "", '" data-notr>').concat(wtHm(t2), "</span>")).join("") : "<em>Scegli un orario di fine dopo quello di inizio.</em>", '</div>\n        <small class="wt-lab">Obiettivo al giorno</small>\n        ').concat(chips("goal", WT_GOALS, (v) => "<span data-notr>".concat(v, "</span> <span>bicchieri</span>")), '\n        <small class="wt-lab">Un bicchiere \xE8</small>\n        ').concat(chips("ml", WT_ML, (v) => "<span data-notr>".concat(v, " ml</span>")), '\n        <label class="dz-switch wt-switch sm"><span><b>Suono</b></span><input type="checkbox" id="wtSound" ').concat(w.sound ? "checked" : "", '><i></i></label>\n        <label class="dz-switch wt-switch sm"><span><b>Vibrazione</b></span><input type="checkbox" id="wtVib" ').concat(w.vib ? "checked" : "", '><i></i></label>\n        <div class="wt-test"><button class="btn ghost small" id="wtTest" type="button">Prova il promemoria</button></div>\n        <p class="wt-note">').concat(perm === "native" ? "Gli avvisi arrivano anche con l'app chiusa." : perm === "denied" ? "Le notifiche sono bloccate: attivale nelle impostazioni del browser per FitQuest." : "Sul sito l'avviso arriva mentre FitQuest \xE8 aperta. Con l'app FitQuest arriva anche a telefono bloccato.", "</p>\n      </div>\n    </section>\n  </div>");
   $("back").onclick = () => go({ name: "home" });
   $("wtPlus").onclick = () => wtDrink(1);
   $("wtMinus").onclick = () => wtDrink(-1);
@@ -10059,7 +10066,7 @@ function wtRemind(test, kind) {
   }
   (_a2 = $("wtPop")) == null ? void 0 : _a2.remove();
   const g = G(), c = wtToday(w);
-  document.body.insertAdjacentHTML("beforeend", mv ? '<div class="wt-pop mv" id="wtPop" role="alertdialog" aria-label="'.concat(esc(title), '">\n    <div class="wt-pop-img figbox charbox" data-fig="jacks" data-g="').concat(g, '" data-pic></div>\n    <div class="wt-pop-in"><b>').concat(esc(title), "</b><span>").concat(esc(body), '</span>\n      <div class="wt-pop-btns"><button class="btn primary small" id="wtPopYes" type="button">Allenati ora</button><button class="btn ghost small" id="wtPopLater" type="button">Pi\xF9 tardi</button></div></div></div>') : '<div class="wt-pop" id="wtPop" role="alertdialog" aria-label="'.concat(esc(title), '">\n    <img src="pimg/water-').concat(g, '.webp" alt="" class="wt-pop-img">\n    <div class="wt-pop-in"><b>').concat(esc(title), "</b><span>").concat(esc(body), "</span><small><span data-notr>").concat(c, " / ").concat(w.goal, '</span> <span>bicchieri</span></small>\n      <div class="wt-pop-btns"><button class="btn primary small" id="wtPopYes" type="button">Ho bevuto</button><button class="btn ghost small" id="wtPopLater" type="button">Tra 15 min</button></div></div></div>'));
+  document.body.insertAdjacentHTML("beforeend", mv ? '<div class="wt-pop mv" id="wtPop" role="alertdialog" aria-label="'.concat(esc(title), '">\n    <div class="wt-pop-img figbox charbox" data-fig="jacks" data-g="').concat(g, '" data-pic></div>\n    <div class="wt-pop-in"><b>').concat(esc(title), "</b><span>").concat(esc(body), '</span>\n      <div class="wt-pop-btns"><button class="btn primary small" id="wtPopYes" type="button">Allenati ora</button><button class="btn ghost small" id="wtPopLater" type="button">Pi\xF9 tardi</button></div></div></div>') : '<div class="wt-pop" id="wtPop" role="alertdialog" aria-label="'.concat(esc(title), '">\n    <img src="../img/water-').concat(g, '.webp" alt="" class="wt-pop-img">\n    <div class="wt-pop-in"><b>').concat(esc(title), "</b><span>").concat(esc(body), "</span><small><span data-notr>").concat(c, " / ").concat(w.goal, '</span> <span>bicchieri</span></small>\n      <div class="wt-pop-btns"><button class="btn primary small" id="wtPopYes" type="button">Ho bevuto</button><button class="btn ghost small" id="wtPopLater" type="button">Tra 15 min</button></div></div></div>'));
   if (mv) {
     try {
       animateFigs($("wtPop"));
@@ -10334,7 +10341,7 @@ Object.assign(POSES, {
 });
 Object.assign(PICS, { "diampush": { "m": { "w": 701, "h": 560, "n": 2 }, "f": { "w": 578, "h": 560, "n": 2 } }, "pikepush": { "m": { "w": 822, "h": 560, "n": 2 }, "f": { "w": 862, "h": 560, "n": 2 } }, "legraise": { "m": { "w": 900, "h": 536, "n": 2 }, "f": { "w": 900, "h": 548, "n": 2 } }, "squatthrust": { "m": { "w": 515, "h": 560, "n": 2 }, "f": { "w": 514, "h": 560, "n": 2 } }, "highknees": { "m": { "w": 246, "h": 560, "n": 2 }, "f": { "w": 208, "h": 560, "n": 2 } }, "dips": { "m": { "w": 450, "h": 560, "n": 2 }, "f": { "w": 433, "h": 560, "n": 2 } } });
 function xpicDir(id) {
-  return ["diampush", "pikepush", "highknees", "squatthrust", "legraise", "dips"].includes(id) ? tone ? "pimg/t".concat(tone, "/") : "pimg/" : imgDir();
+  return ["diampush", "pikepush", "highknees", "squatthrust", "legraise", "dips"].includes(id) ? tone ? "../img/t".concat(tone, "/") : "../img/" : imgDir();
 }
 for (const id of ["diampush", "pikepush", "highknees", "squatthrust", "legraise", "dips"]) {
   if (!GENDER_EX.m.includes(id)) GENDER_EX.m.push(id);
@@ -10921,9 +10928,92 @@ I18N.push(
   ["ripetizione", "rep", "repetici\xF3n", "r\xE9p\xE9tition", "Wiederholung", "repeti\xE7\xE3o"],
   ["secondo", "second", "segundo", "seconde", "Sekunde", "segundo"]
 );
+let infoOpen = false, infoBusy = false;
+const INFO_KIND = {
+  email: ["Email", (v) => "mailto:" + v.trim()],
+  phone: ["Telefono", (v) => "tel:" + v.replace(/[^\d+]/g, "")],
+  whatsapp: ["WhatsApp", (v) => /^https?:/i.test(v) ? v : "https://wa.me/" + v.replace(/\D/g, "")],
+  instagram: ["Instagram", (v) => /^https?:/i.test(v) ? v : "https://instagram.com/" + v.replace(/^@/, "").trim()],
+  tiktok: ["TikTok", (v) => /^https?:/i.test(v) ? v : "https://www.tiktok.com/@" + v.replace(/^@/, "").trim()],
+  facebook: ["Facebook", (v) => /^https?:/i.test(v) ? v : "https://facebook.com/" + v.replace(/^@/, "").trim()],
+  youtube: ["YouTube", (v) => /^https?:/i.test(v) ? v : "https://youtube.com/@" + v.replace(/^@/, "").trim()],
+  web: ["Sito web", (v) => /^https?:/i.test(v) ? v : "https://" + v.trim()],
+  address: ["Indirizzo", (v) => "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(v)],
+  other: ["Altro", (v) => /^https?:\/\//i.test(v) ? v : ""]
+};
+const INFO_ICO = {
+  email: '<path d="M4 6h16v12H4z"/><path d="m4 7 8 6 8-6"/>',
+  phone: '<path d="M6 3h3l2 5-2 1a11 11 0 0 0 6 6l1-2 5 2v3a2 2 0 0 1-2 2A17 17 0 0 1 4 5a2 2 0 0 1 2-2z"/>',
+  whatsapp: '<path d="M4 20l1.3-4A8 8 0 1 1 8 18.7z"/><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1-1.5-2-1-1 1a4 4 0 0 1-2-2l1-1-1-2z"/>',
+  instagram: '<rect x="4" y="4" width="16" height="16" rx="5"/><circle cx="12" cy="12" r="3.5"/><circle cx="17" cy="7" r=".6"/>',
+  tiktok: '<path d="M14 4v10.5a3.5 3.5 0 1 1-3.5-3.5"/><path d="M14 4c.5 2.5 2.3 4 5 4"/>',
+  facebook: '<path d="M14 21v-8h3l.5-3H14V8.5c0-1 .4-1.5 1.5-1.5H18V4.2A20 20 0 0 0 15 4c-2.6 0-4 1.6-4 4.2V10H8v3h3v8"/>',
+  youtube: '<rect x="3" y="6" width="18" height="12" rx="4"/><path d="m10 9 5 3-5 3z"/>',
+  web: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14.5 0 18M12 3c-3 3.5-3 14.5 0 18"/>',
+  address: '<path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/>',
+  other: '<circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16v.5"/>'
+};
+const infoData = () => {
+  const d = store.get("appInfo", null);
+  return d && typeof d === "object" ? d : null;
+};
+function infoItems(d) {
+  return (Array.isArray(d && d.items) ? d.items : []).filter((it) => it && typeof it.value === "string" && it.value.trim()).map((it) => ({ kind: INFO_KIND[it.kind] ? it.kind : "other", label: typeof it.label === "string" ? it.label.trim() : "", value: it.value.trim() }));
+}
+function infoBodyHTML() {
+  const d = infoData(), items = infoItems(d), note = d && typeof d.note === "string" ? d.note.trim() : "";
+  const row = (it) => {
+    const [name, href] = INFO_KIND[it.kind], url = href(it.value), safe = /^(https:|mailto:|tel:)/i.test(url);
+    const inner = '<span class="info-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">'.concat(INFO_ICO[it.kind], '</svg></span><span class="info-txt">').concat(it.label ? "<b data-notr>".concat(esc(it.label), "</b>") : "<b>".concat(name, "</b>"), "<small data-notr>").concat(esc(it.value), "</small></span>");
+    return safe ? '<a class="info-row" href="'.concat(esc(url), '" target="_blank" rel="noopener">').concat(inner, '<span class="go">\u203A</span></a>') : '<div class="info-row">'.concat(inner, "</div>");
+  };
+  return "".concat(note ? '<p class="info-note" data-notr>'.concat(esc(note).replace(/\n/g, "<br>"), "</p>") : "", '\n    <div class="label">Contatti</div>\n    ').concat(items.length ? '<div class="info-list">'.concat(items.map(row).join(""), "</div>") : '<p class="meta">'.concat(d ? "I contatti arriveranno presto." : infoBusy ? "Carico i contatti\u2026" : "Contatti non disponibili senza connessione.", "</p>"), '\n    <div class="label" style="margin-top:14px">App</div>\n    <div class="info-list">\n      <div class="info-row"><span class="info-ico"><img src="../img/logo.webp" alt=""></span><span class="info-txt"><b>FitQuest</b><small data-notr>').concat(esc(APP_VER.replace(/^.*web-v/, "v")), '</small></span></div>\n      <a class="info-row" href="../privacy.html" target="_blank" rel="noopener"><span class="info-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 5 6v5c0 4.5 3 8.5 7 10 4-1.5 7-5.5 7-10V6z"/></svg></span><span class="info-txt"><b>Privacy</b><small>Come trattiamo i tuoi dati</small></span><span class="go">\u203A</span></a>\n    </div>');
+}
+function infoSection() {
+  return '<details class="subopt" id="infoSub"'.concat(infoOpen ? " open" : "", "><summary><span>Informazioni app e contatti</span><b data-notr>").concat(esc(APP_VER.replace(/^.*web-v/, "v")), '</b></summary><div class="subopt-body" id="infoBody">').concat(infoBodyHTML(), "</div></details>");
+}
+async function infoLoad() {
+  if (infoBusy) return;
+  infoBusy = true;
+  try {
+    const r = await fetch(SB_URL + "/rest/v1/app_info?id=eq.1&select=data,updated_at", { headers: { apikey: SB_KEY } });
+    if (r.ok) {
+      const j = await r.json();
+      if (j && j[0] && j[0].data && typeof j[0].data === "object") store.set("appInfo", j[0].data);
+    } else if (r.status === 404) store.set("appInfo", {});
+  } catch (e) {
+  }
+  infoBusy = false;
+  const b = $("infoBody");
+  if (b) b.innerHTML = infoBodyHTML();
+}
+function infoWire() {
+  const s = $("infoSub");
+  if (!s) return;
+  s.ontoggle = (e) => {
+    e.stopPropagation();
+    infoOpen = s.open;
+    if (s.open) infoLoad();
+  };
+  if (s.open) infoLoad();
+}
+I18N.push(
+  ["Informazioni app e contatti", "App info and contacts", "Informaci\xF3n de la app y contactos", "Infos de l'app et contacts", "App-Infos und Kontakt", "Informa\xE7\xF5es do app e contatos"],
+  ["Contatti", "Contacts", "Contactos", "Contacts", "Kontakt", "Contatos"],
+  ["App", "App", "App", "App", "App", "App"],
+  ["Telefono", "Phone", "Tel\xE9fono", "T\xE9l\xE9phone", "Telefon", "Telefone"],
+  ["Sito web", "Website", "Sitio web", "Site web", "Website", "Site"],
+  ["Indirizzo", "Address", "Direcci\xF3n", "Adresse", "Adresse", "Endere\xE7o"],
+  ["Altro", "Other", "Otro", "Autre", "Sonstiges", "Outro"],
+  ["Come trattiamo i tuoi dati", "How we handle your data", "C\xF3mo tratamos tus datos", "Comment nous traitons tes donn\xE9es", "Wie wir mit deinen Daten umgehen", "Como tratamos seus dados"],
+  ["I contatti arriveranno presto.", "Contacts coming soon.", "Los contactos llegar\xE1n pronto.", "Les contacts arrivent bient\xF4t.", "Kontaktdaten folgen bald.", "Os contatos chegam em breve."],
+  ["Carico i contatti\u2026", "Loading contacts\u2026", "Cargando contactos\u2026", "Chargement des contacts\u2026", "Kontakte werden geladen\u2026", "Carregando contatos\u2026"],
+  ["Contatti non disponibili senza connessione.", "Contacts aren't available offline.", "Los contactos no est\xE1n disponibles sin conexi\xF3n.", "Contacts indisponibles hors connexion.", "Kontakte sind offline nicht verf\xFCgbar.", "Contatos indispon\xEDveis sem conex\xE3o."]
+);
+document.body.insertAdjacentHTML("beforeend", '<div class="prova-badge" aria-hidden="true">Pagina di prova</div>');
 const SB_URL = "https://maypmqnjkdrdqcssnvty.supabase.co";
 const SB_KEY = "sb_publishable_uorMl6G618tavZGF8MQpfQ_2Pg3AIlE";
-const APP_VER = "prova-web-v56";
+const APP_VER = "prova-web-v57";
 const SYNC_SKIP = ["lite", "vpack", "rndInv"];
 const ACC = { sb: null, user: null, loading: null, busy: false, msg: "", err: false, timer: null, mode: "login" };
 const syncInfo = () => {
