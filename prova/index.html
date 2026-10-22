@@ -810,6 +810,14 @@ body.dark .lbz-info .lbz-rules { background: rgba(255,255,255,.05); }
 .excat button svg { width: 20px; height: 20px; }
 .excat button[aria-selected="true"] { color: #fff; }
 .excat i { position: absolute; top: 4px; bottom: 4px; left: 4px; width: calc(50% - 4px); border-radius: 12px; background: linear-gradient(120deg, #3b8cff, #8a6bff); box-shadow: 0 6px 16px rgba(91,110,255,.35); transition: transform .3s cubic-bezier(.3,1.3,.5,1), background .3s; }
+.excat.three { grid-template-columns: repeat(3, 1fr); }
+.excat.three button { font-size: 14px; gap: 4px; letter-spacing: .02em; }
+.excat.three button svg { width: 16px; height: 16px; }
+.excat.three i { width: calc(33.333% - 2.667px); }
+.excat button[data-cat="preg"][aria-selected="true"] ~ i { transform: translateX(200%); background: linear-gradient(120deg, #ff6fa5, #ff9a7a); box-shadow: 0 6px 16px rgba(255,111,165,.35); }
+.band-note.preg-note { background: color-mix(in srgb, #ff6fa5 14%, var(--panel)); border-color: color-mix(in srgb, #ff6fa5 40%, transparent); }
+.band-note.preg-note b { color: #d63d7a; }
+body.dark .band-note.preg-note b { color: #ff8fbb; }
 .excat button[data-cat="band"][aria-selected="true"] ~ i { transform: translateX(100%); background: linear-gradient(120deg, #20b38a, #3ddc97); box-shadow: 0 6px 16px rgba(32,179,138,.35); }
 .wp-list { display: grid; gap: 8px; }
 .wp { display: grid; grid-template-columns: 48px minmax(0, 1fr) 26px; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 18px; border: 2px solid var(--line); background: var(--panel); text-align: left; color: var(--fg); transition: border-color .2s, background .2s, transform .15s; }
@@ -1464,7 +1472,7 @@ body.dark .info-row { background: rgba(255,255,255,.06); }
 </head>
 <body>
 <main id="app"></main>
-<div id="splash" aria-hidden="true"><div class="sp-fig" id="spFig"></div><img class="sp-mark" src="../img/logo.webp" alt="" draggable="false" hidden><div class="sp-logo" id="spLogo" data-notr>Fit<b>Loo</b></div><div class="ld3d"><i></i><i></i><i></i></div></div>
+<div id="splash" aria-hidden="true"><div class="sp-fig" id="spFig"></div><img class="sp-mark" src="logo-fitloo.webp" alt="" draggable="false" hidden><div class="sp-logo" id="spLogo" data-notr>Fit<b>Loo</b></div><div class="ld3d"><i></i><i></i><i></i></div></div>
 <nav class="tabbar six" id="tabbar" hidden aria-label="Sezioni">
   <button type="button" data-tab="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 12 4l9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg>Oggi</button>
   <button type="button" data-tab="exercises"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7v10M18 7v10M3 9v6M21 9v6M6 12h12"/></svg>Esercizi</button>
@@ -4356,6 +4364,7 @@ function makeTracker(exId) {
   T.bandsquat = T.squat;
   for (const [id, [base]] of Object.entries(BAND_OF)) T[id] = T[base];
   Object.assign(T, xtraTrackers(st, smooth, angleRep, T));
+  Object.assign(T, pregTrackers(st, smooth, angleRep));
   T.bandcurl = (lm) => {
     const p = pick(lm, side(lm, [11, 13, 15], [12, 14, 16]));
     if (!vis(p.sh, p.el, p.wr)) return { lost: "Inquadrati di lato: spalla, gomito e mano" };
@@ -4585,14 +4594,15 @@ function openFree(id) {
 }
 let exCat = store.get("exCat", "free");
 function renderExercises() {
-  const band = exCat === "band", list = (band ? GENDER_BAND : GENDER_EX)[G()];
-  app.innerHTML = '\n  <div class="screen">\n    <header class="mast"><div><h1>Esercizi</h1><div class="sub">'.concat(G() === "f" ? "Percorso Donna" : "Percorso Uomo", ' \xB7 tocca per allenarti</div></div></header>\n    <div class="excat" role="tablist" aria-label="Categoria"><button type="button" role="tab" data-cat="free" aria-selected="').concat(!band, '">Corpo libero</button><button type="button" role="tab" data-cat="band" aria-selected="').concat(band, '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M4 7c5 0 5 10 8 10s3-10 8-10"/><circle cx="4" cy="7" r="2"/><circle cx="20" cy="7" r="2"/></svg>Con elastico</button><i></i></div>\n    ').concat(band ? '<div class="band-note"><b>Ti serve un elastico</b><span>Una fascia elastica o un elastico con maniglie. Scegli una resistenza con cui fai tutte le ripetizioni bene.</span></div>' : "", '\n    <div class="exlist">\n      ').concat(list.map((id) => {
+  if (exCat === "preg" && G() !== "f") exCat = "free";
+  const band = exCat === "band", preg = exCat === "preg", list = preg ? PREG_IDS : (band ? GENDER_BAND : GENDER_EX)[G()];
+  app.innerHTML = '\n  <div class="screen">\n    <header class="mast"><div><h1>Esercizi</h1><div class="sub">'.concat(G() === "f" ? "Percorso Donna" : "Percorso Uomo", ' \xB7 tocca per allenarti</div></div></header>\n    <div class="excat').concat(G() === "f" ? " three" : "", '" role="tablist" aria-label="Categoria"><button type="button" role="tab" data-cat="free" aria-selected="').concat(!band && !preg, '">Corpo libero</button><button type="button" role="tab" data-cat="band" aria-selected="').concat(band, '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M4 7c5 0 5 10 8 10s3-10 8-10"/><circle cx="4" cy="7" r="2"/><circle cx="20" cy="7" r="2"/></svg>Con elastico</button>').concat(G() === "f" ? '<button type="button" role="tab" data-cat="preg" aria-selected="'.concat(preg, '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="4" r="2"/><path d="M10 21v-6l-2-1 1-6h4c3 0 4 3 3 6l-3 1v6"/></svg>Gravidanza</button>') : "", "<i></i></div>\n    ").concat(preg ? '<div class="band-note preg-note"><b>Prima chiedi al medico o all\'ostetrica</b><span>Esercizi dolci con la palla da ginnastica. Fai solo quelli che ti hanno consentito, vai piano e respira con calma. Fermati subito se senti dolore, capogiri, fiato corto o contrazioni.</span></div>' : "", "\n    ").concat(band ? '<div class="band-note"><b>Ti serve un elastico</b><span>Una fascia elastica o un elastico con maniglie. Scegli una resistenza con cui fai tutte le ripetizioni bene.</span></div>' : "", '\n    <div class="exlist">\n      ').concat(list.map((id) => {
     const e = EX[id];
     return isUnlocked(id) ? '<button class="ex" data-ex="'.concat(id, '" type="button"><div class="figbox" data-fig="').concat(id, '" data-g="').concat(G(), '"></div><b>').concat(e.name, "</b><small>").concat(e.tag, '</small><span class="go">\u203A</span></button>') : '<div class="ex locked"><div class="figbox" data-fig="'.concat(id, '" data-g="').concat(G(), '"></div><b>').concat(e.name, "</b><small>Si sblocca al livello ").concat(RANKS[e.lock][0], " (").concat(RANKS[e.lock][1], ' punti)</small><span class="go">').concat(lockIco, "</span></div>");
-  }).join(""), "\n    </div>\n    ").concat(band ? "" : '<section class="section">\n      <div class="label">Prova di efficienza fisica</div>\n      <div class="exlist">\n        '.concat((G() === "f" ? ["squat", "crunch"] : ["pushup", "situp"]).map((id) => {
+  }).join(""), "\n    </div>\n    ").concat(band || preg ? "" : '<section class="section">\n      <div class="label">Prova di efficienza fisica</div>\n      <div class="exlist">\n        '.concat((G() === "f" ? ["squat", "crunch"] : ["pushup", "situp"]).map((id) => {
     var _a2;
     return '<button class="ex wide" data-test="'.concat(id, '" type="button"><div class="figbox" data-fig="').concat(id, '" data-g="').concat(G(), '"></div><span><b>').concat(EX[id].name, " in 2 minuti</b><small>Record: ").concat((_a2 = records[id]) != null ? _a2 : "\u2014", '</small></span><span class="go">\u203A</span></button>');
-  }).join(""), "\n      </div>\n    </section>"), "\n    ").concat(band ? "" : '<section class="section elite">\n      <div class="label">Riservato ai primi 3 del mese</div>\n      <div class="exlist">\n        '.concat(Object.entries(ELITE).map(([id, e]) => {
+  }).join(""), "\n      </div>\n    </section>"), "\n    ").concat(band || preg ? "" : '<section class="section elite">\n      <div class="label">Riservato ai primi 3 del mese</div>\n      <div class="exlist">\n        '.concat(Object.entries(ELITE).map(([id, e]) => {
     const f = id === "gold" ? "jacks" : id === "hell" ? "burpee" : "climber";
     return isElite() ? '<button class="ex wide" data-elite="'.concat(id, '" type="button"><div class="figbox" data-fig="').concat(f, '" data-g="').concat(G(), '"></div><span><b>').concat(e.name, "</b><small>").concat(id === "gold" ? stats.gold ? "Attiva \xB7 tocca per disattivare" : "Disattivata \xB7 tocca per attivare" : e.desc, '</small></span><span class="go">\u203A</span></button>') : '<div class="ex wide locked"><div class="figbox" data-fig="'.concat(f, '" data-g="').concat(G(), '"></div><span><b>').concat(e.name, "</b><small>").concat(e.desc, '</small></span><span class="go">').concat(lockIco, "</span></div>");
   }).join(""), "\n      </div>\n      ").concat(isElite() ? '<p class="note">Sei tra i primi 3 di '.concat(monthName(prevMonthKey()), ": queste opzioni restano attive per tutto il mese.</p>") : '<p class="note">Chiudi il mese tra i primi 3 in classifica per sbloccarle per tutto il mese successivo.</p>', "\n    </section>"), "\n  </div>");
@@ -4658,7 +4668,7 @@ async function warmOffline() {
       ...engineFiles,
       "../pose_landmarker_lite.task",
       "../icons/icon-192.png",
-      "../img/logo.webp",
+      "logo-fitloo.webp",
       d + "fitquest-hero.jpg",
       ...Object.keys(man).filter((p) => p.endsWith(".webp") && (p.startsWith(d + "ex/") && p.includes("-".concat(g, "-")) || p.startsWith(d + "chars/"))),
       ...tone ? [d + "heads/front-m.png", d + "heads/front-f.png"] : []
@@ -4685,7 +4695,7 @@ function renderOnboard() {
     form: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M17 9a4 4 0 0 1 0 6M19.5 6.5a8 8 0 0 1 0 11"/></svg>',
     duel: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="14" height="12" rx="2"/><path d="M16 10l6-3v10l-6-3"/></svg>'
   };
-  const brand = '<div class="fq-top"><div class="fq-logo" data-notr>'.concat(SITE ? '<img class="fq-mark" src="../img/logo.webp" alt="" draggable="false">' : "<i>F</i>", 'FitLoo</div><span class="fq-beta">Beta</span></div>');
+  const brand = '<div class="fq-top"><div class="fq-logo" data-notr>'.concat(SITE ? '<img class="fq-mark" src="logo-fitloo.webp" alt="" draggable="false">' : "<i>F</i>", 'FitLoo</div><span class="fq-beta">Beta</span></div>');
   if (route.step !== "setup" && route.step !== "tone") {
     app.innerHTML = '\n    <div class="screen landing fq">\n      '.concat(brand, '\n      <div class="fq-hero">').concat(SITE ? '<img src="'.concat(imgDir(), 'fitquest-hero.jpg" alt="" width="1130" height="678" decoding="async">') : '<div class="land-figs"><div class="figbox" data-fig="jacks" data-g="m" data-anim></div><div class="figbox" data-fig="jacks" data-g="f" data-anim></div></div>', '</div>\n      <h1 class="fq-h">Pronto a iniziare?<br><span>Entra in beta</span></h1>\n      <p class="fq-p">Un piccolo passo oggi, una versione pi\xF9 forte di te domani. Allenati al tuo ritmo: noi facciamo il tifo per te! \u{1F499}</p>\n      <button class="fq-cta" id="beta" type="button">Entra in beta <span aria-hidden="true">\u2192</span></button>\n      <div class="fq-or"><span>Oppure accedi con</span></div>\n      <div class="fq-sso">\n        <button class="sso apple" type="button" data-sso="Apple"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16.4 12.6c0-2.4 2-3.6 2.1-3.7-1.1-1.7-2.9-1.9-3.5-1.9-1.5-.2-2.9.9-3.7.9-.8 0-1.9-.9-3.2-.8-1.6 0-3.1 1-4 2.4-1.7 3-.4 7.4 1.2 9.8.8 1.2 1.8 2.5 3 2.4 1.2 0 1.7-.8 3.1-.8s1.9.8 3.2.8c1.3 0 2.1-1.2 2.9-2.4.9-1.4 1.3-2.7 1.3-2.8 0 0-2.4-1-2.4-3.9zM14 5.5c.7-.8 1.1-1.9 1-3-1 0-2.1.7-2.8 1.5-.6.7-1.2 1.8-1 2.9 1.1.1 2.1-.6 2.8-1.4z"/></svg><span>Apple</span></button>\n        <button class="sso google" type="button" data-sso="Google"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M22.6 12.3c0-.8-.1-1.6-.2-2.3H12v4.4h5.9c-.3 1.4-1 2.5-2.2 3.3v2.7h3.6c2.1-1.9 3.3-4.8 3.3-8.1z"/><path fill="#34A853" d="M12 23c3 0 5.5-1 7.3-2.7l-3.6-2.7c-1 .7-2.2 1.1-3.7 1.1-2.9 0-5.3-1.9-6.2-4.5H2.1v2.8C3.9 20.6 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.8 14.2c-.2-.7-.4-1.4-.4-2.2s.1-1.5.4-2.2V7H2.1C1.4 8.5 1 10.2 1 12s.4 3.5 1.1 5l3.7-2.8z"/><path fill="#EA4335" d="M12 5.4c1.6 0 3.1.6 4.2 1.7l3.2-3.2C17.5 2.1 15 1 12 1 7.7 1 3.9 3.4 2.1 7l3.7 2.8C6.7 7.3 9.1 5.4 12 5.4z"/></svg><span>Google</span></button>\n        <button class="sso mail" type="button" id="ssoMail" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg><span>Email</span></button>\n      </div>\n      <form class="fq-mail" id="wMail" novalidate hidden>\n        <input id="wMailA" type="email" autocomplete="email" inputmode="email" placeholder="Email" maxlength="120">\n        <input id="wMailP" type="password" autocomplete="current-password" placeholder="Password (almeno 8 caratteri)" minlength="8" maxlength="72">\n        <button class="fq-cta small" id="wMailGo" type="submit">Accedi</button>\n        <div class="fq-mail-links"><button type="button" id="wMailMode">Nuovo? Crea un account</button><button type="button" id="wMailForgot">Password dimenticata?</button></div>\n      </form>\n      <p class="sso-note" id="ssoNote" role="status" hidden></p>\n      <p class="fq-note">Unisciti alla beta e comincia con calma: ogni percorso parte da un primo passo.</p>\n      <p class="fq-note2">La motivazione si allena. E oggi hai gi\xE0 cominciato \u2728</p>\n    </div>');
     $("beta").onclick = () => {
@@ -10354,11 +10364,156 @@ Object.assign(POSES, {
 });
 Object.assign(PICS, { "diampush": { "m": { "w": 701, "h": 560, "n": 2 }, "f": { "w": 578, "h": 560, "n": 2 } }, "pikepush": { "m": { "w": 822, "h": 560, "n": 2 }, "f": { "w": 862, "h": 560, "n": 2 } }, "legraise": { "m": { "w": 900, "h": 536, "n": 2 }, "f": { "w": 900, "h": 548, "n": 2 } }, "squatthrust": { "m": { "w": 515, "h": 560, "n": 2 }, "f": { "w": 514, "h": 560, "n": 2 } }, "highknees": { "m": { "w": 246, "h": 560, "n": 2 }, "f": { "w": 208, "h": 560, "n": 2 } }, "dips": { "m": { "w": 450, "h": 560, "n": 2 }, "f": { "w": 433, "h": 560, "n": 2 } } });
 function xpicDir(id) {
+  if (typeof PREG_IDS !== "undefined" && PREG_IDS && PREG_IDS.includes(id)) return tone ? "pimg/t".concat(tone, "/") : "pimg/";
   return ["diampush", "pikepush", "highknees", "squatthrust", "legraise", "dips"].includes(id) ? tone ? "../img/t".concat(tone, "/") : "../img/" : imgDir();
 }
 for (const id of ["diampush", "pikepush", "highknees", "squatthrust", "legraise", "dips"]) {
   if (!GENDER_EX.m.includes(id)) GENDER_EX.m.push(id);
   if (!GENDER_EX.f.includes(id)) GENDER_EX.f.push(id);
+}
+var PREG_IDS = ["pballside", "pballknee", "pwallsquat", "pballkneel"];
+Object.assign(EX, {
+  pballside: {
+    name: "Allungamento laterale sulla palla",
+    unit: "reps",
+    for: "f",
+    preg: 1,
+    lock: null,
+    tag: "Fianchi e schiena",
+    cam: "Telefono in verticale, di fronte a te, a circa 2 metri. Devi vederti dalla testa ai piedi.",
+    steps: [
+      "Siediti al centro della palla, piedi ben aperti e appoggiati a terra.",
+      "Una mano sulla coscia o sulla palla per tenerti in equilibrio.",
+      "Alza l'altro braccio sopra la testa e piegati piano di lato, senza scatti.",
+      "Torna al centro e cambia lato. Respira con calma."
+    ],
+    faults: ["Braccio non abbastanza in alto (non conta)"]
+  },
+  pballknee: {
+    name: "Sollevamento ginocchio sulla palla",
+    unit: "reps",
+    for: "f",
+    preg: 1,
+    lock: null,
+    tag: "Equilibrio e gambe",
+    cam: "Telefono in verticale, di fronte a te, a circa 2 metri. Devi vederti dalla testa ai piedi.",
+    steps: [
+      "Siediti al centro della palla, schiena dritta, mani sulla palla ai lati.",
+      "Piedi a terra alla larghezza delle anche.",
+      "Solleva piano un piede da terra portando il ginocchio in alto.",
+      "Riappoggialo e alterna le gambe, senza perdere l'equilibrio."
+    ],
+    faults: ["Piede non abbastanza sollevato (non conta)"]
+  },
+  pwallsquat: {
+    name: "Squat al muro con la palla",
+    unit: "reps",
+    for: "f",
+    preg: 1,
+    lock: null,
+    tag: "Gambe e glutei",
+    cam: "Telefono a terra, di lato, a circa 2 metri. Devi vedere te e la palla.",
+    steps: [
+      "Palla tra la schiena e il muro, piedi un passo avanti, larghi come le anche.",
+      "Scendi piano facendo rotolare la palla, mani unite davanti al petto.",
+      "Fermati quando le ginocchia sono piegate pi\xF9 o meno a 90\xB0, senza forzare.",
+      "Risali spingendo sui talloni fino a gambe distese."
+    ],
+    faults: ["Non scendi abbastanza (la ripetizione non conta)"]
+  },
+  pballkneel: {
+    name: "Allungamento in ginocchio sulla palla",
+    unit: "secs",
+    for: "f",
+    preg: 1,
+    lock: null,
+    hold: 1,
+    tag: "Schiena e bacino, rilassamento",
+    cam: "Telefono a terra, di lato, a circa 2 metri. Devi vedere te e la palla.",
+    steps: [
+      "In ginocchio su un tappetino, ginocchia aperte, palla davanti a te.",
+      "Appoggia le mani e poi gli avambracci sulla palla.",
+      "Porta piano il busto in avanti lasciando rilassare schiena e pancia.",
+      "Resta cos\xEC respirando con calma. Il tempo scorre solo in posizione."
+    ],
+    faults: ["Busto non abbastanza in avanti"]
+  }
+});
+Object.assign(POSES, {
+  pballside: { ...POSES.jacks },
+  pballknee: { ...POSES.highknees },
+  pwallsquat: { ...POSES.squat },
+  pballkneel: { ...POSES.plank }
+});
+Object.assign(PICS, { "pballkneel": { "f": { "w": 627, "h": 560, "n": 2 } }, "pballside": { "f": { "w": 346, "h": 560, "n": 2 } }, "pballknee": { "f": { "w": 421, "h": 560, "n": 2 } }, "pwallsquat": { "f": { "w": 440, "h": 560, "n": 2 } } });
+function pregTrackers(st, smooth, angleRep) {
+  const holdDt = (t) => {
+    const dt = st.lastT ? Math.min(250, t - st.lastT) : 0;
+    st.lastT = t;
+    return dt;
+  };
+  return {
+    // front view: a hand that goes above the head is one stretch, it counts again once it comes back down
+    pballside(lm) {
+      const nose = P(lm, 0), lS = P(lm, 11), rS = P(lm, 12), lW = P(lm, 15), rW = P(lm, 16);
+      if (!vis(nose, lS, rS) || !(vis(lW) || vis(rW))) return { lost: "Inquadrati di fronte, dalla testa ai piedi" };
+      st.arms = st.arms || { l: "down", r: "down" };
+      const head2 = Math.max(0.04, (lS.y + rS.y) / 2 - nose.y);
+      let event = null, best = 0;
+      for (const [k, w] of [["l", lW], ["r", rW]]) {
+        if (!vis(w)) continue;
+        const up = ((lS.y + rS.y) / 2 - w.y) / (head2 * 2.2);
+        best = Math.max(best, up);
+        if (st.arms[k] === "down" && up > 0.85) {
+          st.arms[k] = "up";
+          event = "rep";
+        } else if (st.arms[k] === "up" && up < 0.2) st.arms[k] = "down";
+      }
+      return { metric: Math.max(0, Math.min(1, best)), event, fault: null, cue: null };
+    },
+    // front view, sitting: one foot leaves the floor and the knee comes up
+    pballknee(lm) {
+      const lH = P(lm, 23), rH = P(lm, 24), lK = P(lm, 25), rK = P(lm, 26), lA = P(lm, 27), rA = P(lm, 28);
+      if (!vis(lH, rH, lK, rK, lA, rA)) return { lost: "Inquadrati di fronte, piedi compresi" };
+      st.legs = st.legs || { l: "down", r: "down" };
+      const shin = Math.max(0.05, (Math.abs(lA.y - lK.y) + Math.abs(rA.y - rK.y)) / 2);
+      let event = null, best = 0;
+      for (const [k, a, o] of [["l", lA, rA], ["r", rA, lA]]) {
+        const lift = (o.y - a.y) / shin;
+        best = Math.max(best, lift);
+        if (st.legs[k] === "down" && lift > 0.3) {
+          st.legs[k] = "up";
+          event = "rep";
+        } else if (st.legs[k] === "up" && lift < 0.08) st.legs[k] = "down";
+      }
+      return { metric: Math.max(0, Math.min(1, best / 0.4)), event, fault: null, cue: null };
+    },
+    // side view: like a squat but gentler, about 90° is plenty
+    pwallsquat(lm) {
+      const p = pick(lm, side(lm, [23, 25, 27], [24, 26, 28]));
+      if (!vis(p.hip, p.kn, p.an)) return { lost: "Inquadrati di lato, dalla testa ai piedi" };
+      const knee = ang(p.hip, p.kn, p.an);
+      const r = angleRep({ value: knee, top: 155, bottom: 118, partial: 142 });
+      return { ...r, fault: null, cue: null, noRepCue: "Scendi ancora un po', senza forzare. Non conta" };
+    },
+    // side view: kneeling with the chest forward on the ball, time runs while the position is held
+    pballkneel(lm, t) {
+      const p = pick(lm, side(lm, [11, 23, 25], [12, 24, 26]));
+      const dt = holdDt(t);
+      if (!vis(p.sh, p.hip, p.kn)) return { lost: "Inquadrati di lato: spalle, bacino e ginocchia", metric: 0 };
+      const lean = Math.atan2(Math.abs(p.sh.x - p.hip.x), Math.abs(p.hip.y - p.sh.y) + 1e-6) * 180 / Math.PI;
+      const kneeling = Math.abs(p.kn.y - p.hip.y) < Math.abs(p.sh.y - p.hip.y) * 1.6 + 0.08;
+      let fault = null, cue = null;
+      if (!kneeling) {
+        fault = "pos";
+        cue = "Mettiti in ginocchio davanti alla palla";
+      } else if (lean < 35) {
+        fault = "lean";
+        cue = "Porta il busto in avanti sulla palla";
+      } else st.holdMs += dt;
+      return { metric: Math.max(0, Math.min(1, lean / 60)), fault, cue, hold: st.holdMs };
+    }
+  };
 }
 function xtraTrackers(st, smooth, angleRep, T) {
   return {
@@ -10541,7 +10696,7 @@ function clipArm() {
   CLIP.st = "armed";
   if (!clipLogo) {
     clipLogo = new Image();
-    clipLogo.src = "../img/logo.webp";
+    clipLogo.src = "logo-fitloo.webp";
   }
   clipLoop();
 }
@@ -10980,7 +11135,7 @@ function infoBodyHTML() {
     const inner = '<span class="info-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">'.concat(INFO_ICO[it.kind], '</svg></span><span class="info-txt">').concat(it.label ? "<b data-notr>".concat(esc(it.label), "</b>") : "<b>".concat(name, "</b>"), "<small data-notr>").concat(esc(it.value), "</small></span>");
     return safe ? '<a class="info-row" href="'.concat(esc(url), '" target="_blank" rel="noopener">').concat(inner, '<span class="go">\u203A</span></a>') : '<div class="info-row">'.concat(inner, "</div>");
   };
-  return "".concat(note ? '<p class="info-note" data-notr>'.concat(esc(note).replace(/\n/g, "<br>"), "</p>") : "", '\n    <div class="label">Contatti</div>\n    ').concat(items.length ? '<div class="info-list">'.concat(items.map(row).join(""), "</div>") : '<p class="meta">'.concat(d ? "I contatti arriveranno presto." : infoBusy ? "Carico i contatti\u2026" : "Contatti non disponibili senza connessione.", "</p>"), '\n    <div class="label" style="margin-top:14px">App</div>\n    <div class="info-list">\n      <div class="info-row"><span class="info-ico"><img src="../img/logo.webp" alt=""></span><span class="info-txt"><b>FitLoo</b><small data-notr>').concat(esc(APP_VER.replace(/^.*web-v/, "v")), '</small></span></div>\n      <a class="info-row" href="../privacy.html" target="_blank" rel="noopener"><span class="info-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 5 6v5c0 4.5 3 8.5 7 10 4-1.5 7-5.5 7-10V6z"/></svg></span><span class="info-txt"><b>Privacy</b><small>Come trattiamo i tuoi dati</small></span><span class="go">\u203A</span></a>\n    </div>');
+  return "".concat(note ? '<p class="info-note" data-notr>'.concat(esc(note).replace(/\n/g, "<br>"), "</p>") : "", '\n    <div class="label">Contatti</div>\n    ').concat(items.length ? '<div class="info-list">'.concat(items.map(row).join(""), "</div>") : '<p class="meta">'.concat(d ? "I contatti arriveranno presto." : infoBusy ? "Carico i contatti\u2026" : "Contatti non disponibili senza connessione.", "</p>"), '\n    <div class="label" style="margin-top:14px">App</div>\n    <div class="info-list">\n      <div class="info-row"><span class="info-ico"><img src="logo-fitloo.webp" alt=""></span><span class="info-txt"><b>FitLoo</b><small data-notr>').concat(esc(APP_VER.replace(/^.*web-v/, "v")), '</small></span></div>\n      <a class="info-row" href="../privacy.html" target="_blank" rel="noopener"><span class="info-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 5 6v5c0 4.5 3 8.5 7 10 4-1.5 7-5.5 7-10V6z"/></svg></span><span class="info-txt"><b>Privacy</b><small>Come trattiamo i tuoi dati</small></span><span class="go">\u203A</span></a>\n    </div>');
 }
 function infoSection() {
   return '<details class="subopt" id="infoSub"'.concat(infoOpen ? " open" : "", "><summary><span>Informazioni app e contatti</span><b data-notr>").concat(esc(APP_VER.replace(/^.*web-v/, "v")), '</b></summary><div class="subopt-body" id="infoBody">').concat(infoBodyHTML(), "</div></details>");
