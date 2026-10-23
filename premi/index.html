@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
-<title>FitQuest · Premi dei giochi</title>
+<title>FitLoo · Premi dei giochi</title>
 <link rel="icon" href="../icons/icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
@@ -116,7 +116,7 @@ select { border:1px solid var(--line); background:var(--panel); color:var(--fg);
 <main>
   <div class="top">
     <div><h1>Premi dei giochi</h1><div class="who" id="who">Caricamento…</div></div>
-    <a class="btn ghost small" href="../">Apri FitQuest</a>
+    <a class="btn ghost small" href="../">Apri FitLoo</a>
   </div>
   <div id="app"><div class="card center">Caricamento…</div></div>
 </main>
@@ -144,7 +144,7 @@ const MESI = ["gennaio", "febbraio", "marzo", "aprile", "maggio", "giugno", "lug
 const monthName = d => { const [y, m] = d.split("-").map(Number); return MESI[m - 1] + " " + y; };
 const addMonths = (d, n) => { const [y, m] = d.split("-").map(Number); const t = new Date(Date.UTC(y, m - 1 + n, 1)); return t.toISOString().slice(0, 10); };
 const fmtDate = t => t ? new Date(t).toLocaleDateString("it-IT", { day: "numeric", month: "short", year: "numeric" }) : "";
-// Contatti e informazioni app: everyone sees them in FitQuest (Profilo › Impostazioni › Informazioni app e contatti), see supabase/05_app_info.sql
+// Contatti e informazioni app: everyone sees them in FitLoo (Profilo › Impostazioni › Informazioni app e contatti), see supabase/05_app_info.sql
 const INFO_KINDS = [["email", "Email"], ["phone", "Telefono"], ["whatsapp", "WhatsApp"], ["instagram", "Instagram"], ["tiktok", "TikTok"], ["facebook", "Facebook"], ["youtube", "YouTube"], ["web", "Sito web"], ["address", "Indirizzo"], ["other", "Altro (link)"]];
 const INFO_HINT = { email: "nome@email.it", phone: "+39 333 1234567", whatsapp: "+39 333 1234567", instagram: "@nomeprofilo", tiktok: "@nomeprofilo", facebook: "nomepagina", youtube: "@canale", web: "www.sito.it", address: "Via Roma 1, Milano", other: "https://…" };
 const S = { info: null, infoErr: "", infoAt: null, user: undefined, img: {}, form: {}, tr: {}, theme: "oro", hl: {}, hlSrc: "", plang: "it", draft: null, cur: null, sel: null, over: null, selOver: null, board: "free" };
@@ -185,7 +185,7 @@ async function start() {
 
 function renderLogin() {
   $("who").textContent = "Non hai fatto l'accesso";
-  $("app").innerHTML = `<div class="card center"><p>Accedi con l'account amministratore di FitQuest.</p>
+  $("app").innerHTML = `<div class="card center"><p>Accedi con l'account amministratore di FitLoo.</p>
     <button class="btn" id="google">Accedi con Google</button>
     <p class="note">Se ti riporta nell'app, fai l'accesso lì e poi riapri questa pagina.</p></div>`;
   $("google").onclick = () => sb.auth.signInWithOAuth({ provider: "google", options: { redirectTo: location.origin + location.pathname } });
@@ -392,8 +392,8 @@ function wire() {
 
 // the email to a Pro winner, ready in the mail app: asks where to ship the prize
 function mailTo(w, month) {
-  const sub = `FitQuest: hai vinto il Concorso Pro di ${monthName(month)}!`;
-  const body = `Ciao ${w.name || ""},\n\ncomplimenti! Sei arrivato ${w.place}° nel Concorso Pro di ${monthName(month)} su FitQuest${w.prize ? " e hai vinto: " + w.prize : ""}.\n\nPer spedirti il premio rispondi a questa email con:\n- nome e cognome\n- indirizzo completo (via, numero, CAP, città, paese)\n- un numero di telefono per il corriere\n\nGrazie e continua ad allenarti!\nFitQuest`;
+  const sub = `FitLoo: hai vinto il Concorso Pro di ${monthName(month)}!`;
+  const body = `Ciao ${w.name || ""},\n\ncomplimenti! Sei arrivato ${w.place}° nel Concorso Pro di ${monthName(month)} su FitLoo${w.prize ? " e hai vinto: " + w.prize : ""}.\n\nPer spedirti il premio rispondi a questa email con:\n- nome e cognome\n- indirizzo completo (via, numero, CAP, città, paese)\n- un numero di telefono per il corriere\n\nGrazie e continua ad allenarti!\nFitLoo`;
   return "mailto:" + encodeURIComponent(w.email).replace(/%40/g, "@") + "?subject=" + encodeURIComponent(sub) + "&body=" + encodeURIComponent(body);
 }
 
