@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font-size:14px}img{max-width:100%}</style>
-<title>FitQuest</title>
+<title>FitLoo</title>
 <meta name="theme-color" content="#0b1220">
 <meta name="description" content="Personal trainer con la fotocamera: percorsi Uomo e Donna, conta le ripetizioni e corregge la postura.">
 <link rel="manifest" href="manifest.webmanifest">
@@ -13,7 +13,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="FitQuest">
+<meta name="apple-mobile-web-app-title" content="FitLoo">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://maypmqnjkdrdqcssnvty.supabase.co; media-src 'self' data: blob:; connect-src 'self' https://maypmqnjkdrdqcssnvty.supabase.co wss://maypmqnjkdrdqcssnvty.supabase.co https://*.peerjs.com wss://*.peerjs.com https://*.livekit.cloud wss://*.livekit.cloud https://*.googleapis.com wss://*.googleapis.com https://www.gstatic.com ws://localhost:* http://localhost:* ws://127.0.0.1:* http://127.0.0.1:*; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'">
 <meta name="referrer" content="no-referrer">
 <script>if (window.top !== window.self) { try { window.top.location.replace(window.self.location.href); } catch (e) { document.documentElement.style.display = "none"; } }</script>
@@ -210,6 +210,7 @@ body.g-f .counter .of { color: #f0a6dc; }
 .toggle input { width: 22px; height: 22px; accent-color: var(--brass); flex: 0 0 auto; }
 
 /* Duel */
+body:has(#session:not([hidden])) .wt-pop { display: none; }
 .stage .opp { position: absolute; right: 14px; top: calc(env(safe-area-inset-top, 0px) + 70px); width: 44%; max-width: 300px; aspect-ratio: 3 / 4; border: 3px solid transparent; border-radius: 18px; overflow: hidden; background: linear-gradient(#000, #000) padding-box, linear-gradient(150deg, #ffb347, #ff5e8a 55%, #b45cff) border-box; box-shadow: 0 0 0 1px rgba(255,255,255,.12), 0 0 22px rgba(255,94,138,.55), 0 10px 26px rgba(0,0,0,.6); z-index: 6; }
 .stage .opp::after { content: "VS"; position: absolute; left: 8px; top: 8px; padding: 2px 8px; border-radius: 999px; font-family: var(--f-display); font-weight: 800; font-size: 14px; letter-spacing: .08em; color: #fff; background: linear-gradient(135deg, #ff5e8a, #b45cff); box-shadow: 0 2px 8px rgba(0,0,0,.4); }
 .stage .opp video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
@@ -527,7 +528,7 @@ body.fx-full .btn.beta::after { content: ""; position: absolute; top: 0; bottom:
 .sso-note { font-size: 14px; text-align: center; color: #ffd166; background: rgba(255,209,102,.1); border: 1px solid rgba(255,209,102,.3); border-radius: 12px; padding: 10px 12px; }
 .landing .back { background: rgba(255,255,255,.1); color: #fff; box-shadow: none; }
 @media (max-width: 360px) { .sso { font-size: 15px; } .sso em { display: none; } }
-/* FitQuest start page */
+/* FitLoo start page */
 .landing.fq::before { background: radial-gradient(80% 40% at 50% 22%, #263662, transparent 75%), linear-gradient(180deg, #14223f, #1d2a4d 45%, #1a2646 80%, #15223f); }
 body.landing-on:has(.fq) { background: #15223f; }
 .fq { text-align: center; }
@@ -732,7 +733,7 @@ body.dark .lbz-info .lbz-rules { background: rgba(255,255,255,.05); }
 .pf-stats div { display: grid; justify-items: center; gap: 2px; padding: 10px 6px; border-radius: 16px; background: rgba(255,255,255,.08); box-shadow: inset 0 0 0 1px rgba(255,255,255,.08); }
 .pf-stats b { font-family: var(--f-display); font-weight: 800; font-size: 26px; line-height: 1; background: linear-gradient(90deg, #7cc4ff, #b9a6ff 55%, #ff9ad5); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .pf-stats small { font-size: 11px; color: #c9d4f2; text-transform: uppercase; letter-spacing: .06em; text-align: center; }
-/* Attività (Profilo): anelli come in Salute ma con i colori di FitQuest, passi e distanza per ora, 30 giorni e punti da riscuotere */
+/* Attività (Profilo): anelli come in Salute ma con i colori di FitLoo, passi e distanza per ora, 30 giorni e punti da riscuotere */
 .st-wrap { display: grid; gap: 10px; position: relative; --c1a: #5fd0ff; --c1b: #7a6bff; --c2a: #ff9f43; --c2b: #ffd36b; --c3a: #ff4f8b; --c3b: #ff9ad5; }
 .st-panel { position: relative; overflow: hidden; border-radius: 24px; padding: 16px; color: #fff; background: radial-gradient(120% 90% at 20% 0%, #24366f 0%, #141d3d 55%, #0b1024 100%); box-shadow: 0 14px 32px rgba(20,30,80,.28), inset 0 0 0 1px rgba(255,255,255,.07); }
 .st-head { position: relative; display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 8px; }
@@ -810,6 +811,14 @@ body.dark .lbz-info .lbz-rules { background: rgba(255,255,255,.05); }
 .excat button svg { width: 20px; height: 20px; }
 .excat button[aria-selected="true"] { color: #fff; }
 .excat i { position: absolute; top: 4px; bottom: 4px; left: 4px; width: calc(50% - 4px); border-radius: 12px; background: linear-gradient(120deg, #3b8cff, #8a6bff); box-shadow: 0 6px 16px rgba(91,110,255,.35); transition: transform .3s cubic-bezier(.3,1.3,.5,1), background .3s; }
+.excat.three { grid-template-columns: repeat(3, 1fr); }
+.excat.three button { font-size: 14px; gap: 4px; letter-spacing: .02em; }
+.excat.three button svg { width: 16px; height: 16px; }
+.excat.three i { width: calc(33.333% - 2.667px); }
+.excat button[data-cat="preg"][aria-selected="true"] ~ i { transform: translateX(200%); background: linear-gradient(120deg, #ff6fa5, #ff9a7a); box-shadow: 0 6px 16px rgba(255,111,165,.35); }
+.band-note.preg-note { background: color-mix(in srgb, #ff6fa5 14%, var(--panel)); border-color: color-mix(in srgb, #ff6fa5 40%, transparent); }
+.band-note.preg-note b { color: #d63d7a; }
+body.dark .band-note.preg-note b { color: #ff8fbb; }
 .excat button[data-cat="band"][aria-selected="true"] ~ i { transform: translateX(100%); background: linear-gradient(120deg, #20b38a, #3ddc97); box-shadow: 0 6px 16px rgba(32,179,138,.35); }
 .wp-list { display: grid; gap: 8px; }
 .wp { display: grid; grid-template-columns: 48px minmax(0, 1fr) 26px; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 18px; border: 2px solid var(--line); background: var(--panel); text-align: left; color: var(--fg); transition: border-color .2s, background .2s, transform .15s; }
@@ -1464,7 +1473,7 @@ body.dark .info-row { background: rgba(255,255,255,.06); }
 </head>
 <body>
 <main id="app"></main>
-<div id="splash" aria-hidden="true"><div class="sp-fig" id="spFig"></div><img class="sp-mark" src="img/logo.webp" alt="" draggable="false" hidden><div class="sp-logo" id="spLogo" data-notr>Fit<b>Quest</b></div><div class="ld3d"><i></i><i></i><i></i></div></div>
+<div id="splash" aria-hidden="true"><div class="sp-fig" id="spFig"></div><img class="sp-mark" src="img/logo.webp" alt="" draggable="false" hidden><div class="sp-logo" id="spLogo" data-notr>Fit<b>Loo</b></div><div class="ld3d"><i></i><i></i><i></i></div></div>
 <nav class="tabbar six" id="tabbar" hidden aria-label="Sezioni">
   <button type="button" data-tab="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 12 4l9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg>Oggi</button>
   <button type="button" data-tab="exercises"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7v10M18 7v10M3 9v6M21 9v6M6 12h12"/></svg>Esercizi</button>
@@ -1503,7 +1512,7 @@ body.dark .info-row { background: rgba(255,255,255,.06); }
 
 <input type="file" id="fileIn" accept="video/*" capture="user" hidden>
 
-<div id="rotate" aria-live="polite"><svg width="64" height="64" viewBox="0 0 64 64" fill="none" stroke="#4aa8ff" stroke-width="3" stroke-linecap="round"><rect x="20" y="6" width="24" height="52" rx="5"/><path d="M29 51h6"/></svg><span>Ruota il telefono</span><small>FitQuest si usa in verticale.</small></div>
+<div id="rotate" aria-live="polite"><svg width="64" height="64" viewBox="0 0 64 64" fill="none" stroke="#4aa8ff" stroke-width="3" stroke-linecap="round"><rect x="20" y="6" width="24" height="52" rx="5"/><path d="M29 51h6"/></svg><span>Ruota il telefono</span><small>FitLoo si usa in verticale.</small></div>
 <audio id="oppAudio" playsinline autoplay hidden></audio><button class="audioOn" id="audioOn" hidden>🔊 Tocca per sentire l'amico</button>
 <script type="module">
 var _a, _b, _c, _d, _e;
@@ -1560,7 +1569,7 @@ const I18N_RX = [
   [/^(.+) conquista la Corona$/g, "$1 wins the Crown", "$1 conquista la Corona", "$1 conquiert la Couronne", "$1 erobert die Krone", "$1 conquista a Coroa"],
   [/^Ha vinto (.+)$/g, "$1 wins", "Gana $1", "$1 a gagn\xE9", "$1 hat gewonnen", "$1 venceu"],
   [/Ha vinto (.+?)\. Alla prossima!/g, "$1 wins. Next time!", "Gana $1. \xA1A la pr\xF3xima!", "$1 a gagn\xE9. \xC0 la prochaine !", "$1 hat gewonnen. Bis zum n\xE4chsten Mal!", "$1 venceu. At\xE9 a pr\xF3xima!"],
-  [/Ti sfido a (.+?) su FitQuest! Codice (\w+)/g, "I challenge you to $1 on FitQuest! Code $2", "\xA1Te reto a $1 en FitQuest! C\xF3digo $2", "Je te d\xE9fie : $1 sur FitQuest ! Code $2", "Ich fordere dich heraus: $1 bei FitQuest! Code $2", "Te desafio para $1 no FitQuest! C\xF3digo $2"],
+  [/Ti sfido a (.+?) su FitLoo! Codice (\w+)/g, "I challenge you to $1 on FitLoo! Code $2", "\xA1Te reto a $1 en FitLoo! C\xF3digo $2", "Je te d\xE9fie : $1 sur FitLoo ! Code $2", "Ich fordere dich heraus: $1 bei FitLoo! Code $2", "Te desafio para $1 no FitLoo! C\xF3digo $2"],
   [/Per la rivincita aspetta (.+?)\./g, "Wait for $1 to start the rematch.", "Para la revancha espera a $1.", "Pour la revanche, attends $1.", "F\xFCr die Revanche warte auf $1.", "Para a revanche, espere $1."],
   [/Connesso con (.+?)\. Aspetta il via\./g, "Connected with $1. Wait for the start.", "Conectado con $1. Espera la salida.", "Connect\xE9 avec $1. Attends le d\xE9part.", "Verbunden mit $1. Warte auf den Start.", "Conectado com $1. Aguarde a largada."],
   [/(.+?) è pronto\. Dai il via!/g, "$1 is ready. Start the round!", "$1 est\xE1 listo. \xA1Da la salida!", "$1 est pr\xEAt. Donne le d\xE9part !", "$1 ist bereit. Gib das Startsignal!", "$1 est\xE1 pronto. D\xEA a largada!"],
@@ -1586,7 +1595,7 @@ const I18N_RX = [
   [/Invito inviato a (.+?): deve solo toccare Accetta\./g, "Invite sent to $1: they just need to tap Accept.", "Invitaci\xF3n enviada a $1: solo tiene que tocar Aceptar.", "Invitation envoy\xE9e \xE0 $1 : il n'a qu'\xE0 toucher Accepter.", "Einladung an $1 gesendet: Er muss nur auf Annehmen tippen.", "Convite enviado para $1: \xE9 s\xF3 tocar em Aceitar."],
   [/(.+?) non ha l'app aperta in questo momento: mandagli il link\./g, "$1 doesn't have the app open right now: send them the link.", "$1 no tiene la app abierta ahora: m\xE1ndale el enlace.", "$1 n'a pas l'app ouverte en ce moment : envoie-lui le lien.", "$1 hat die App gerade nicht offen: Schick ihm den Link.", "$1 n\xE3o est\xE1 com o app aberto agora: mande o link."],
   [/(.+?) aggiunto ai tuoi amici\./g, "$1 added to your friends.", "$1 a\xF1adido a tus amigos.", "$1 ajout\xE9 \xE0 tes amis.", "$1 zu deinen Freunden hinzugef\xFCgt.", "$1 adicionado aos seus amigos."],
-  [/Aggiungimi su FitQuest: il mio codice amico è (\w+)/g, "Add me on FitQuest: my friend code is $1", "Agr\xE9game en FitQuest: mi c\xF3digo de amigo es $1", "Ajoute-moi sur FitQuest : mon code ami est $1", "F\xFCg mich bei FitQuest hinzu: Mein Freundescode ist $1", "Me adicione no FitQuest: meu c\xF3digo de amigo \xE9 $1"],
+  [/Aggiungimi su FitLoo: il mio codice amico è (\w+)/g, "Add me on FitLoo: my friend code is $1", "Agr\xE9game en FitLoo: mi c\xF3digo de amigo es $1", "Ajoute-moi sur FitLoo : mon code ami est $1", "F\xFCg mich bei FitLoo hinzu: Mein Freundescode ist $1", "Me adicione no FitLoo: meu c\xF3digo de amigo \xE9 $1"],
   // Cammina con me
   [/di ([\d.,  ]+) passi insieme/g, "of $1 steps together", "de $1 pasos juntos", "sur $1 pas ensemble", "von $1 Schritten gemeinsam", "de $1 passos juntos"],
   [/^di ([\d.,  ]+) passi$/g, "of $1 steps", "de $1 pasos", "sur $1 pas", "von $1 Schritten", "de $1 passos"],
@@ -1599,11 +1608,11 @@ const I18N_RX = [
   [/(.+?) non è più tra i tuoi amici\./g, "$1 is no longer your friend.", "$1 ya no est\xE1 entre tus amigos.", "$1 n'est plus parmi tes amis.", "$1 ist nicht mehr dein Freund.", "$1 n\xE3o est\xE1 mais entre seus amigos."],
   [/Camminata finita: circa ([\d.,  ]+) passi \(stimati, senza WalkPoints\)\./g, "Walk finished: about $1 steps (estimated, no WalkPoints).", "Caminata terminada: unos $1 pasos (estimados, sin WalkPoints).", "Marche termin\xE9e : environ $1 pas (estim\xE9s, sans WalkPoints).", "Runde beendet: etwa $1 Schritte (gesch\xE4tzt, ohne WalkPoints).", "Caminhada conclu\xEDda: cerca de $1 passos (estimados, sem WalkPoints)."],
   [/Camminata finita: ([\d.,  ]+) passi, \+(\d+) WalkPoints\./g, "Walk finished: $1 steps, +$2 WalkPoints.", "Caminata terminada: $1 pasos, +$2 WalkPoints.", "Marche termin\xE9e : $1 pas, +$2 WalkPoints.", "Runde beendet: $1 Schritte, +$2 WalkPoints.", "Caminhada conclu\xEDda: $1 passos, +$2 WalkPoints."],
-  [/Camminiamo insieme su FitQuest: il mio codice è ([A-Z0-9]+)/g, "Let's walk together on FitQuest: my code is $1", "Caminemos juntos en FitQuest: mi c\xF3digo es $1", "Marchons ensemble sur FitQuest : mon code est $1", "Lass uns auf FitQuest zusammen gehen: Mein Code ist $1", "Vamos caminhar juntos no FitQuest: meu c\xF3digo \xE9 $1"],
+  [/Camminiamo insieme su FitLoo: il mio codice è ([A-Z0-9]+)/g, "Let's walk together on FitLoo: my code is $1", "Caminemos juntos en FitLoo: mi c\xF3digo es $1", "Marchons ensemble sur FitLoo : mon code est $1", "Lass uns auf FitLoo zusammen gehen: Mein Code ist $1", "Vamos caminhar juntos no FitLoo: meu c\xF3digo \xE9 $1"],
   [/: 1 WalkPoint ogni 100 passi, fino a (\d+) al giorno\./g, ": 1 WalkPoint every 100 steps, up to $1 a day.", ": 1 WalkPoint cada 100 pasos, hasta $1 al d\xEDa.", " : 1 WalkPoint tous les 100 pas, jusqu'\xE0 $1 par jour.", ": 1 WalkPoint pro 100 Schritte, bis zu $1 am Tag.", ": 1 WalkPoint a cada 100 passos, at\xE9 $1 por dia."],
   [/^(.+) è in chiamata$/g, "$1 is on a call", "$1 est\xE1 en llamada", "$1 est en appel", "$1 ist im Anruf", "$1 est\xE1 em chamada"],
   [/^(.+) sono in chiamata$/g, "$1 are on a call", "$1 est\xE1n en llamada", "$1 sont en appel", "$1 sind im Anruf", "$1 est\xE3o em chamada"],
-  [/Per i WalkPoints FitQuest legge i passi da (.+?) durante la camminata\. Vuoi dare il permesso\?/g, "For WalkPoints FitQuest reads your steps from $1 during the walk. Allow it?", "Para los WalkPoints FitQuest lee tus pasos de $1 durante la caminata. \xBFDas permiso?", "Pour les WalkPoints, FitQuest lit tes pas depuis $1 pendant la marche. Autoriser ?", "F\xFCr WalkPoints liest FitQuest deine Schritte w\xE4hrend der Runde aus $1. Erlauben?", "Para os WalkPoints o FitQuest l\xEA seus passos do $1 durante a caminhada. Permitir?"]
+  [/Per i WalkPoints FitLoo legge i passi da (.+?) durante la camminata\. Vuoi dare il permesso\?/g, "For WalkPoints FitLoo reads your steps from $1 during the walk. Allow it?", "Para los WalkPoints FitLoo lee tus pasos de $1 durante la caminata. \xBFDas permiso?", "Pour les WalkPoints, FitLoo lit tes pas depuis $1 pendant la marche. Autoriser ?", "F\xFCr WalkPoints liest FitLoo deine Schritte w\xE4hrend der Runde aus $1. Erlauben?", "Para os WalkPoints o FitLoo l\xEA seus passos do $1 durante a caminhada. Permitir?"]
 ];
 const I18N = [
   // --- schermata iniziale
@@ -1879,7 +1888,7 @@ const I18N = [
   ["Spingi la gamba pi\xF9 indietro! Non conta", "Push your leg further back! Doesn't count", "\xA1Lleva la pierna m\xE1s atr\xE1s! No cuenta", "Pousse la jambe plus en arri\xE8re ! \xC7a ne compte pas", "Bein weiter nach hinten! Z\xE4hlt nicht", "Leva a perna mais para tr\xE1s! N\xE3o conta"],
   ["\u{1F50A} Tocca per sentire l'amico", "\u{1F50A} Tap to hear your friend", "\u{1F50A} Toca para o\xEDr a tu amigo", "\u{1F50A} Touche pour entendre ton ami", "\u{1F50A} Tippen, um deinen Freund zu h\xF6ren", "\u{1F50A} Toca para ouvir o teu amigo"],
   ["Ruota il telefono", "Turn your phone", "Gira el tel\xE9fono", "Tourne ton t\xE9l\xE9phone", "Dreh dein Handy", "Roda o telem\xF3vel"],
-  ["FitQuest si usa in verticale.", "FitQuest works in portrait mode.", "FitQuest se usa en vertical.", "FitQuest s'utilise en mode portrait.", "FitQuest wird hochkant benutzt.", "O FitQuest usa-se na vertical."],
+  ["FitLoo si usa in verticale.", "FitLoo works in portrait mode.", "FitLoo se usa en vertical.", "FitLoo s'utilise en mode portrait.", "FitLoo wird hochkant benutzt.", "O FitLoo usa-se na vertical."],
   ["Le sfide funzionano solo con internet", "Challenges only work online", "Los retos solo funcionan con internet", "Les d\xE9fis ne fonctionnent qu'avec internet", "Duelle funktionieren nur mit Internet", "Os desafios s\xF3 funcionam com internet"],
   ["Sei offline. Allenamenti, esercizi, progressi e profilo funzionano anche senza connessione: le sfide in videochiamata no.", "You're offline. Workouts, exercises, progress and profile work without a connection: video challenges don't.", "Est\xE1s sin conexi\xF3n. Entrenamientos, ejercicios, progreso y perfil funcionan sin conexi\xF3n: los retos en videollamada no.", "Tu es hors ligne. Entra\xEEnements, exercices, progr\xE8s et profil fonctionnent sans connexion : pas les d\xE9fis en visio.", "Du bist offline. Training, \xDCbungen, Fortschritt und Profil funktionieren ohne Verbindung, Video-Duelle nicht.", "Est\xE1s offline. Treinos, exerc\xEDcios, progresso e perfil funcionam sem liga\xE7\xE3o: os desafios por videochamada n\xE3o."],
   ["Riprova", "Try again", "Reintentar", "R\xE9essayer", "Erneut versuchen", "Tentar de novo"],
@@ -2411,7 +2420,7 @@ const I18N = [
   ["Salute da collegare", "Health not linked", "Salud sin conectar", "Sant\xE9 \xE0 connecter", "Gesundheit nicht verbunden", "Sa\xFAde n\xE3o conectada"],
   ["Collega Apple Salute", "Connect Apple Health", "Conectar Salud de Apple", "Connecter Sant\xE9 d'Apple", "Apple Health verbinden", "Conectar Sa\xFAde da Apple"],
   ["Collega Health Connect", "Connect Health Connect", "Conectar Health Connect", "Connecter Health Connect", "Health Connect verbinden", "Conectar Health Connect"],
-  ["FitQuest legge solo i tuoi passi, anche quelli dei 30 giorni passati. Il telefono li conta tutto il giorno, anche con l'app chiusa.", "FitQuest only reads your steps, including the past 30 days. Your phone counts them all day, even with the app closed.", "FitQuest solo lee tus pasos, tambi\xE9n los de los \xFAltimos 30 d\xEDas. El m\xF3vil los cuenta todo el d\xEDa, incluso con la app cerrada.", "FitQuest lit seulement tes pas, y compris ceux des 30 derniers jours. Ton t\xE9l\xE9phone les compte toute la journ\xE9e, m\xEAme app ferm\xE9e.", "FitQuest liest nur deine Schritte, auch die der letzten 30 Tage. Dein Handy z\xE4hlt sie den ganzen Tag, auch wenn die App geschlossen ist.", "O FitQuest s\xF3 l\xEA seus passos, inclusive os dos \xFAltimos 30 dias. O celular conta o dia todo, mesmo com o app fechado."],
+  ["FitLoo legge solo i tuoi passi, anche quelli dei 30 giorni passati. Il telefono li conta tutto il giorno, anche con l'app chiusa.", "FitLoo only reads your steps, including the past 30 days. Your phone counts them all day, even with the app closed.", "FitLoo solo lee tus pasos, tambi\xE9n los de los \xFAltimos 30 d\xEDas. El m\xF3vil los cuenta todo el d\xEDa, incluso con la app cerrada.", "FitLoo lit seulement tes pas, y compris ceux des 30 derniers jours. Ton t\xE9l\xE9phone les compte toute la journ\xE9e, m\xEAme app ferm\xE9e.", "FitLoo liest nur deine Schritte, auch die der letzten 30 Tage. Dein Handy z\xE4hlt sie den ganzen Tag, auch wenn die App geschlossen ist.", "O FitLoo s\xF3 l\xEA seus passos, inclusive os dos \xFAltimos 30 dias. O celular conta o dia todo, mesmo com o app fechado."],
   ["Apple Salute non \xE8 disponibile su questo dispositivo.", "Apple Health isn't available on this device.", "Salud de Apple no est\xE1 disponible en este dispositivo.", "Sant\xE9 d'Apple n'est pas disponible sur cet appareil.", "Apple Health ist auf diesem Ger\xE4t nicht verf\xFCgbar.", "A Sa\xFAde da Apple n\xE3o est\xE1 dispon\xEDvel neste dispositivo."],
   ["Installa Health Connect dal Play Store per contare i passi di tutta la giornata.", "Install Health Connect from the Play Store to count your steps all day.", "Instala Health Connect desde Play Store para contar tus pasos todo el d\xEDa.", "Installe Health Connect depuis le Play Store pour compter tes pas toute la journ\xE9e.", "Installiere Health Connect aus dem Play Store, um den ganzen Tag Schritte zu z\xE4hlen.", "Instale o Health Connect na Play Store para contar seus passos o dia todo."],
   ["Anelli attivit\xE0", "Activity rings", "Anillos de actividad", "Anneaux d'activit\xE9", "Aktivit\xE4tsringe", "An\xE9is de atividade"],
@@ -2426,11 +2435,11 @@ const I18N = [
   ["Accedi con Google per trasformare i passi in punti. Li tieni da parte per 30 giorni.", "Sign in with Google to turn your steps into points. They're kept for 30 days.", "Inicia sesi\xF3n con Google para convertir tus pasos en puntos. Se guardan 30 d\xEDas.", "Connecte-toi avec Google pour transformer tes pas en points. Ils sont gard\xE9s 30 jours.", "Melde dich mit Google an, um Schritte in Punkte zu verwandeln. Sie bleiben 30 Tage erhalten.", "Entre com o Google para transformar seus passos em pontos. Eles ficam guardados por 30 dias."],
   ["Accedi per riscuotere", "Sign in to collect", "Inicia sesi\xF3n para cobrar", "Connecte-toi pour r\xE9cup\xE9rer", "Anmelden zum Einl\xF6sen", "Entre para resgatar"],
   ["Riscuoti", "Collect", "Cobrar", "R\xE9cup\xE9rer", "Einl\xF6sen", "Resgatar"],
-  ["Questo dispositivo non ha un contapassi. Usa FitQuest dal telefono.", "This device has no step counter. Use FitQuest on your phone.", "Este dispositivo no tiene pod\xF3metro. Usa FitQuest en el m\xF3vil.", "Cet appareil n'a pas de podom\xE8tre. Utilise FitQuest sur ton t\xE9l\xE9phone.", "Dieses Ger\xE4t hat keinen Schrittz\xE4hler. Nutze FitQuest auf dem Handy.", "Este dispositivo n\xE3o tem contador de passos. Use o FitQuest no celular."],
+  ["Questo dispositivo non ha un contapassi. Usa FitLoo dal telefono.", "This device has no step counter. Use FitLoo on your phone.", "Este dispositivo no tiene pod\xF3metro. Usa FitLoo en el m\xF3vil.", "Cet appareil n'a pas de podom\xE8tre. Utilise FitLoo sur ton t\xE9l\xE9phone.", "Dieses Ger\xE4t hat keinen Schrittz\xE4hler. Nutze FitLoo auf dem Handy.", "Este dispositivo n\xE3o tem contador de passos. Use o FitLoo no celular."],
   ["Permesso del contapassi negato. Puoi riattivarlo dalle impostazioni del browser.", "Step counter permission denied. You can turn it back on in your browser settings.", "Permiso del pod\xF3metro denegado. Puedes activarlo en los ajustes del navegador.", "Autorisation du podom\xE8tre refus\xE9e. Tu peux la r\xE9activer dans les r\xE9glages du navigateur.", "Schrittz\xE4hler-Berechtigung verweigert. Du kannst sie in den Browser-Einstellungen wieder erlauben.", "Permiss\xE3o do contador de passos negada. Voc\xEA pode reativ\xE1-la nas configura\xE7\xF5es do navegador."],
   ["Attiva il contapassi", "Turn on step counter", "Activar pod\xF3metro", "Activer le podom\xE8tre", "Schrittz\xE4hler einschalten", "Ativar contador de passos"],
-  ["Conta i passi mentre FitQuest \xE8 aperta. Con l'app di FitQuest dagli store li conta tutto il giorno, anche in background.", "Counts steps while FitQuest is open. The FitQuest app from the stores counts them all day, even in the background.", "Cuenta los pasos mientras FitQuest est\xE1 abierta. La app de FitQuest de las tiendas los cuenta todo el d\xEDa, tambi\xE9n en segundo plano.", "Compte les pas tant que FitQuest est ouverte. L'app FitQuest des stores les compte toute la journ\xE9e, m\xEAme en arri\xE8re-plan.", "Z\xE4hlt Schritte, solange FitQuest offen ist. Die FitQuest-App aus den Stores z\xE4hlt sie den ganzen Tag, auch im Hintergrund.", "Conta os passos enquanto o FitQuest est\xE1 aberto. O app FitQuest das lojas conta o dia todo, at\xE9 em segundo plano."],
-  ["Sul sito i passi si contano mentre FitQuest \xE8 aperta. Con l'app di FitQuest dagli store li conta tutto il giorno, anche in background.", "On the website steps are counted while FitQuest is open. The FitQuest app from the stores counts them all day, even in the background.", "En la web los pasos se cuentan mientras FitQuest est\xE1 abierta. La app de FitQuest de las tiendas los cuenta todo el d\xEDa, tambi\xE9n en segundo plano.", "Sur le site, les pas sont compt\xE9s tant que FitQuest est ouverte. L'app FitQuest des stores les compte toute la journ\xE9e, m\xEAme en arri\xE8re-plan.", "Auf der Website werden Schritte gez\xE4hlt, solange FitQuest offen ist. Die FitQuest-App aus den Stores z\xE4hlt sie den ganzen Tag, auch im Hintergrund.", "No site os passos s\xE3o contados enquanto o FitQuest est\xE1 aberto. O app FitQuest das lojas conta o dia todo, at\xE9 em segundo plano."],
+  ["Conta i passi mentre FitLoo \xE8 aperta. Con l'app di FitLoo dagli store li conta tutto il giorno, anche in background.", "Counts steps while FitLoo is open. The FitLoo app from the stores counts them all day, even in the background.", "Cuenta los pasos mientras FitLoo est\xE1 abierta. La app de FitLoo de las tiendas los cuenta todo el d\xEDa, tambi\xE9n en segundo plano.", "Compte les pas tant que FitLoo est ouverte. L'app FitLoo des stores les compte toute la journ\xE9e, m\xEAme en arri\xE8re-plan.", "Z\xE4hlt Schritte, solange FitLoo offen ist. Die FitLoo-App aus den Stores z\xE4hlt sie den ganzen Tag, auch im Hintergrund.", "Conta os passos enquanto o FitLoo est\xE1 aberto. O app FitLoo das lojas conta o dia todo, at\xE9 em segundo plano."],
+  ["Sul sito i passi si contano mentre FitLoo \xE8 aperta. Con l'app di FitLoo dagli store li conta tutto il giorno, anche in background.", "On the website steps are counted while FitLoo is open. The FitLoo app from the stores counts them all day, even in the background.", "En la web los pasos se cuentan mientras FitLoo est\xE1 abierta. La app de FitLoo de las tiendas los cuenta todo el d\xEDa, tambi\xE9n en segundo plano.", "Sur le site, les pas sont compt\xE9s tant que FitLoo est ouverte. L'app FitLoo des stores les compte toute la journ\xE9e, m\xEAme en arri\xE8re-plan.", "Auf der Website werden Schritte gez\xE4hlt, solange FitLoo offen ist. Die FitLoo-App aus den Stores z\xE4hlt sie den ganzen Tag, auch im Hintergrund.", "No site os passos s\xE3o contados enquanto o FitLoo est\xE1 aberto. O app FitLoo das lojas conta o dia todo, at\xE9 em segundo plano."],
   ["Ultimi 30 giorni", "Last 30 days", "\xDAltimos 30 d\xEDas", "30 derniers jours", "Letzte 30 Tage", "\xDAltimos 30 dias"],
   ["Passi degli ultimi 30 giorni", "Steps in the last 30 days", "Pasos de los \xFAltimos 30 d\xEDas", "Pas des 30 derniers jours", "Schritte der letzten 30 Tage", "Passos dos \xFAltimos 30 dias"],
   ["da riscuotere", "to collect", "por cobrar", "\xE0 r\xE9cup\xE9rer", "einzul\xF6sen", "para resgatar"],
@@ -2460,7 +2469,7 @@ const I18N = [
   ["passi stimati non danno punti", "estimated steps don't give points", "pasos estimados no dan puntos", "pas estim\xE9s ne donnent pas de points", "gesch\xE4tzte Schritte geben keine Punkte", "passos estimados n\xE3o d\xE3o pontos"],
   ["Sul sito i passi sono", "On the website steps are", "En la web los pasos son", "Sur le site, les pas sont", "Auf der Website sind die Schritte", "No site os passos s\xE3o"],
   ["stimati", "estimated", "estimados", "estim\xE9s", "gesch\xE4tzt", "estimados"],
-  ["dal sensore e non danno WalkPoints. Nell'app FitQuest per Android o iPhone i passi arrivano da Health Connect o Apple Salute e valgono 1 WalkPoint ogni 100.", "by the sensor and don't give WalkPoints. In the FitQuest app for Android or iPhone, steps come from Health Connect or Apple Health and are worth 1 WalkPoint every 100.", "por el sensor y no dan WalkPoints. En la app FitQuest para Android o iPhone los pasos llegan de Health Connect o Salud de Apple y valen 1 WalkPoint cada 100.", "par le capteur et ne donnent pas de WalkPoints. Dans l'app FitQuest pour Android ou iPhone, les pas viennent de Health Connect ou Sant\xE9 d'Apple et valent 1 WalkPoint tous les 100.", "vom Sensor und geben keine WalkPoints. In der FitQuest-App f\xFCr Android oder iPhone kommen die Schritte aus Health Connect oder Apple Health und z\xE4hlen 1 WalkPoint pro 100.", "pelo sensor e n\xE3o d\xE3o WalkPoints. No app FitQuest para Android ou iPhone os passos v\xEAm do Health Connect ou da Sa\xFAde da Apple e valem 1 WalkPoint a cada 100."],
+  ["dal sensore e non danno WalkPoints. Nell'app FitLoo per Android o iPhone i passi arrivano da Health Connect o Apple Salute e valgono 1 WalkPoint ogni 100.", "by the sensor and don't give WalkPoints. In the FitLoo app for Android or iPhone, steps come from Health Connect or Apple Health and are worth 1 WalkPoint every 100.", "por el sensor y no dan WalkPoints. En la app FitLoo para Android o iPhone los pasos llegan de Health Connect o Salud de Apple y valen 1 WalkPoint cada 100.", "par le capteur et ne donnent pas de WalkPoints. Dans l'app FitLoo pour Android ou iPhone, les pas viennent de Health Connect ou Sant\xE9 d'Apple et valent 1 WalkPoint tous les 100.", "vom Sensor und geben keine WalkPoints. In der FitLoo-App f\xFCr Android oder iPhone kommen die Schritte aus Health Connect oder Apple Health und z\xE4hlen 1 WalkPoint pro 100.", "pelo sensor e n\xE3o d\xE3o WalkPoints. No app FitLoo para Android ou iPhone os passos v\xEAm do Health Connect ou da Sa\xFAde da Apple e valem 1 WalkPoint a cada 100."],
   ["Passi verificati da", "Steps verified by", "Pasos verificados por", "Pas v\xE9rifi\xE9s par", "Schritte best\xE4tigt von", "Passos verificados por"],
   ["Apple Salute", "Apple Health", "Salud de Apple", "Sant\xE9 d'Apple", "Apple Health", "Sa\xFAde da Apple"],
   ["sensore del telefono", "phone sensor", "sensor del m\xF3vil", "capteur du t\xE9l\xE9phone", "Handysensor", "sensor do celular"],
@@ -2570,11 +2579,11 @@ const I18N = [
   ["Troppi passi in pochissimo tempo: quell'aggiornamento non \xE8 stato contato.", "Too many steps in very little time: that update wasn't counted.", "Demasiados pasos en muy poco tiempo: esa actualizaci\xF3n no se ha contado.", "Trop de pas en tr\xE8s peu de temps : cette mise \xE0 jour n'a pas \xE9t\xE9 compt\xE9e.", "Zu viele Schritte in sehr kurzer Zeit: Diese Aktualisierung wurde nicht gez\xE4hlt.", "Passos demais em pouqu\xEDssimo tempo: essa atualiza\xE7\xE3o n\xE3o foi contada."],
   ["Hai raggiunto i WalkPoints di oggi: i passi contano comunque per te e per il gruppo.", "You've reached today's WalkPoints: steps still count for you and the group.", "Has alcanzado los WalkPoints de hoy: los pasos siguen contando para ti y para el grupo.", "Tu as atteint les WalkPoints du jour : les pas comptent quand m\xEAme pour toi et le groupe.", "Du hast die WalkPoints f\xFCr heute erreicht: Die Schritte z\xE4hlen trotzdem f\xFCr dich und die Gruppe.", "Voc\xEA atingiu os WalkPoints de hoje: os passos continuam contando para voc\xEA e para o grupo."],
   ["Passi stimati: attiva i dati salute per i WalkPoints.", "Estimated steps: turn on health data for WalkPoints.", "Pasos estimados: activa los datos de salud para los WalkPoints.", "Pas estim\xE9s : active les donn\xE9es de sant\xE9 pour les WalkPoints.", "Gesch\xE4tzte Schritte: Aktiviere Gesundheitsdaten f\xFCr WalkPoints.", "Passos estimados: ative os dados de sa\xFAde para os WalkPoints."],
-  ["Sul sito i passi si contano solo con FitQuest aperta e lo schermo acceso, e non danno WalkPoints.", "On the website steps only count with FitQuest open and the screen on, and they don't give WalkPoints.", "En la web los pasos solo se cuentan con FitQuest abierta y la pantalla encendida, y no dan WalkPoints.", "Sur le site, les pas ne comptent qu'avec FitQuest ouverte et l'\xE9cran allum\xE9, et ne donnent pas de WalkPoints.", "Auf der Website z\xE4hlen Schritte nur bei ge\xF6ffnetem FitQuest und eingeschaltetem Bildschirm und geben keine WalkPoints.", "No site os passos s\xF3 contam com o FitQuest aberto e a tela ligada, e n\xE3o d\xE3o WalkPoints."],
+  ["Sul sito i passi si contano solo con FitLoo aperta e lo schermo acceso, e non danno WalkPoints.", "On the website steps only count with FitLoo open and the screen on, and they don't give WalkPoints.", "En la web los pasos solo se cuentan con FitLoo abierta y la pantalla encendida, y no dan WalkPoints.", "Sur le site, les pas ne comptent qu'avec FitLoo ouverte et l'\xE9cran allum\xE9, et ne donnent pas de WalkPoints.", "Auf der Website z\xE4hlen Schritte nur bei ge\xF6ffnetem FitLoo und eingeschaltetem Bildschirm und geben keine WalkPoints.", "No site os passos s\xF3 contam com o FitLoo aberto e a tela ligada, e n\xE3o d\xE3o WalkPoints."],
   [": puoi anche mettere il telefono in tasca.", ": you can put your phone in your pocket.", ": puedes guardar el m\xF3vil en el bolsillo.", " : tu peux mettre ton t\xE9l\xE9phone dans ta poche.", ": Du kannst das Handy in die Tasche stecken.", ": pode colocar o celular no bolso."],
   ["Serve internet per iniziare la camminata.", "You need the internet to start the walk.", "Necesitas internet para empezar la caminata.", "Il faut internet pour commencer la marche.", "Du brauchst Internet, um die Runde zu starten.", "Precisa de internet para come\xE7ar a caminhada."],
   ["Senza il permesso ai passi la camminata nell'app non pu\xF2 contare i passi. Puoi attivarlo in Privacy e permessi.", "Without step permission the app can't count the walk's steps. You can turn it on in Privacy and permissions.", "Sin permiso de pasos la app no puede contar los pasos de la caminata. Puedes activarlo en Privacidad y permisos.", "Sans l'autorisation des pas, l'app ne peut pas compter les pas de la marche. Tu peux l'activer dans Confidentialit\xE9 et autorisations.", "Ohne Schritt-Berechtigung kann die App die Schritte nicht z\xE4hlen. Du kannst sie unter Datenschutz und Berechtigungen aktivieren.", "Sem permiss\xE3o de passos o app n\xE3o conta os passos da caminhada. Voc\xEA pode ativar em Privacidade e permiss\xF5es."],
-  ["Questo telefono non ha un sensore di movimento utilizzabile dal sito: usa l'app FitQuest.", "This phone has no motion sensor the website can use: use the FitQuest app.", "Este m\xF3vil no tiene un sensor de movimiento que la web pueda usar: usa la app FitQuest.", "Ce t\xE9l\xE9phone n'a pas de capteur de mouvement utilisable par le site : utilise l'app FitQuest.", "Dieses Handy hat keinen Bewegungssensor, den die Website nutzen kann: Verwende die FitQuest-App.", "Este celular n\xE3o tem sensor de movimento que o site possa usar: use o app FitQuest."],
+  ["Questo telefono non ha un sensore di movimento utilizzabile dal sito: usa l'app FitLoo.", "This phone has no motion sensor the website can use: use the FitLoo app.", "Este m\xF3vil no tiene un sensor de movimiento que la web pueda usar: usa la app FitLoo.", "Ce t\xE9l\xE9phone n'a pas de capteur de mouvement utilisable par le site : utilise l'app FitLoo.", "Dieses Handy hat keinen Bewegungssensor, den die Website nutzen kann: Verwende die FitLoo-App.", "Este celular n\xE3o tem sensor de movimento que o site possa usar: use o app FitLoo."],
   ["Serve il permesso al sensore di movimento per stimare i passi.", "Motion sensor permission is needed to estimate steps.", "Hace falta permiso del sensor de movimiento para estimar los pasos.", "Il faut l'autorisation du capteur de mouvement pour estimer les pas.", "F\xFCr die Schrittsch\xE4tzung wird die Bewegungssensor-Berechtigung ben\xF6tigt.", "\xC9 preciso permiss\xE3o do sensor de movimento para estimar os passos."],
   ["Camminata chiusa: gli ultimi passi non sono arrivati al server.", "Walk ended: the last steps didn't reach the server.", "Caminata cerrada: los \xFAltimos pasos no llegaron al servidor.", "Marche termin\xE9e : les derniers pas ne sont pas arriv\xE9s au serveur.", "Runde beendet: Die letzten Schritte sind nicht beim Server angekommen.", "Caminhada encerrada: os \xFAltimos passos n\xE3o chegaram ao servidor."],
   ["Tu", "You", "T\xFA", "Toi", "Du", "Voc\xEA"],
@@ -2582,8 +2591,8 @@ const I18N = [
   ["In attesa che entri qualcuno\u2026", "Waiting for someone to join\u2026", "Esperando a que entre alguien\u2026", "En attente que quelqu'un rejoigne\u2026", "Warten, bis jemand beitritt\u2026", "Esperando algu\xE9m entrar\u2026"],
   ["Mentre cammini guarda la strada: la chiamata vocale consuma meno e distrae meno.", "While walking, watch the road: a voice call uses less battery and distracts less.", "Mientras caminas mira la calle: la llamada de voz gasta menos y distrae menos.", "En marchant, regarde la route : l'appel vocal consomme moins et distrait moins.", "Achte beim Gehen auf die Stra\xDFe: Ein Sprachanruf verbraucht weniger und lenkt weniger ab.", "Ao caminhar olhe a rua: a chamada de voz gasta menos e distrai menos."],
   ["In chiamata \xB7 torna alla stanza", "On a call \xB7 back to the room", "En llamada \xB7 volver a la sala", "En appel \xB7 retour au salon", "Im Anruf \xB7 zur\xFCck zum Raum", "Em chamada \xB7 voltar \xE0 sala"],
-  ["Per la chiamata FitQuest usa il microfono, solo mentre sei in chiamata. Vuoi continuare?", "For the call FitQuest uses the microphone, only while you're on the call. Continue?", "Para la llamada FitQuest usa el micr\xF3fono, solo mientras est\xE1s en llamada. \xBFContinuar?", "Pour l'appel, FitQuest utilise le micro, seulement pendant l'appel. Continuer ?", "F\xFCr den Anruf nutzt FitQuest das Mikrofon, nur w\xE4hrend des Anrufs. Fortfahren?", "Para a chamada o FitQuest usa o microfone, s\xF3 enquanto voc\xEA estiver na chamada. Continuar?"],
-  ["Per la videochiamata FitQuest usa la fotocamera, solo mentre sei in chiamata. Vuoi attivarla?", "For the video call FitQuest uses the camera, only while you're on the call. Turn it on?", "Para la videollamada FitQuest usa la c\xE1mara, solo mientras est\xE1s en llamada. \xBFActivarla?", "Pour l'appel vid\xE9o, FitQuest utilise la cam\xE9ra, seulement pendant l'appel. L'activer ?", "F\xFCr den Videoanruf nutzt FitQuest die Kamera, nur w\xE4hrend des Anrufs. Einschalten?", "Para a videochamada o FitQuest usa a c\xE2mera, s\xF3 enquanto voc\xEA estiver na chamada. Ativar?"],
+  ["Per la chiamata FitLoo usa il microfono, solo mentre sei in chiamata. Vuoi continuare?", "For the call FitLoo uses the microphone, only while you're on the call. Continue?", "Para la llamada FitLoo usa el micr\xF3fono, solo mientras est\xE1s en llamada. \xBFContinuar?", "Pour l'appel, FitLoo utilise le micro, seulement pendant l'appel. Continuer ?", "F\xFCr den Anruf nutzt FitLoo das Mikrofon, nur w\xE4hrend des Anrufs. Fortfahren?", "Para a chamada o FitLoo usa o microfone, s\xF3 enquanto voc\xEA estiver na chamada. Continuar?"],
+  ["Per la videochiamata FitLoo usa la fotocamera, solo mentre sei in chiamata. Vuoi attivarla?", "For the video call FitLoo uses the camera, only while you're on the call. Turn it on?", "Para la videollamada FitLoo usa la c\xE1mara, solo mientras est\xE1s en llamada. \xBFActivarla?", "Pour l'appel vid\xE9o, FitLoo utilise la cam\xE9ra, seulement pendant l'appel. L'activer ?", "F\xFCr den Videoanruf nutzt FitLoo die Kamera, nur w\xE4hrend des Anrufs. Einschalten?", "Para a videochamada o FitLoo usa a c\xE2mera, s\xF3 enquanto voc\xEA estiver na chamada. Ativar?"],
   ["Attivare la fotocamera per questa videochiamata?", "Turn on the camera for this video call?", "\xBFActivar la c\xE1mara para esta videollamada?", "Activer la cam\xE9ra pour cet appel vid\xE9o ?", "Kamera f\xFCr diesen Videoanruf einschalten?", "Ativar a c\xE2mera para esta videochamada?"],
   ["Serve internet per la chiamata.", "You need the internet for the call.", "Necesitas internet para la llamada.", "Il faut internet pour l'appel.", "F\xFCr den Anruf brauchst du Internet.", "Precisa de internet para a chamada."],
   ["Mi collego\u2026", "Connecting\u2026", "Conectando\u2026", "Connexion\u2026", "Verbinde\u2026", "Conectando\u2026"],
@@ -4356,6 +4365,7 @@ function makeTracker(exId) {
   T.bandsquat = T.squat;
   for (const [id, [base]] of Object.entries(BAND_OF)) T[id] = T[base];
   Object.assign(T, xtraTrackers(st, smooth, angleRep, T));
+  Object.assign(T, pregTrackers(st, smooth, angleRep));
   T.bandcurl = (lm) => {
     const p = pick(lm, side(lm, [11, 13, 15], [12, 14, 16]));
     if (!vis(p.sh, p.el, p.wr)) return { lost: "Inquadrati di lato: spalla, gomito e mano" };
@@ -4585,14 +4595,15 @@ function openFree(id) {
 }
 let exCat = store.get("exCat", "free");
 function renderExercises() {
-  const band = exCat === "band", list = (band ? GENDER_BAND : GENDER_EX)[G()];
-  app.innerHTML = '\n  <div class="screen">\n    <header class="mast"><div><h1>Esercizi</h1><div class="sub">'.concat(G() === "f" ? "Percorso Donna" : "Percorso Uomo", ' \xB7 tocca per allenarti</div></div></header>\n    <div class="excat" role="tablist" aria-label="Categoria"><button type="button" role="tab" data-cat="free" aria-selected="').concat(!band, '">Corpo libero</button><button type="button" role="tab" data-cat="band" aria-selected="').concat(band, '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M4 7c5 0 5 10 8 10s3-10 8-10"/><circle cx="4" cy="7" r="2"/><circle cx="20" cy="7" r="2"/></svg>Con elastico</button><i></i></div>\n    ').concat(band ? '<div class="band-note"><b>Ti serve un elastico</b><span>Una fascia elastica o un elastico con maniglie. Scegli una resistenza con cui fai tutte le ripetizioni bene.</span></div>' : "", '\n    <div class="exlist">\n      ').concat(list.map((id) => {
+  if (exCat === "preg" && G() !== "f") exCat = "free";
+  const band = exCat === "band", preg = exCat === "preg", list = preg ? PREG_IDS : (band ? GENDER_BAND : GENDER_EX)[G()];
+  app.innerHTML = '\n  <div class="screen">\n    <header class="mast"><div><h1>Esercizi</h1><div class="sub">'.concat(G() === "f" ? "Percorso Donna" : "Percorso Uomo", ' \xB7 tocca per allenarti</div></div></header>\n    <div class="excat').concat(G() === "f" ? " three" : "", '" role="tablist" aria-label="Categoria"><button type="button" role="tab" data-cat="free" aria-selected="').concat(!band && !preg, '">Corpo libero</button><button type="button" role="tab" data-cat="band" aria-selected="').concat(band, '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M4 7c5 0 5 10 8 10s3-10 8-10"/><circle cx="4" cy="7" r="2"/><circle cx="20" cy="7" r="2"/></svg>Con elastico</button>').concat(G() === "f" ? '<button type="button" role="tab" data-cat="preg" aria-selected="'.concat(preg, '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="4" r="2"/><path d="M10 21v-6l-2-1 1-6h4c3 0 4 3 3 6l-3 1v6"/></svg>Gravidanza</button>') : "", "<i></i></div>\n    ").concat(preg ? '<div class="band-note preg-note"><b>Prima chiedi al medico o all\'ostetrica</b><span>Esercizi dolci con la palla da ginnastica. Fai solo quelli che ti hanno consentito, vai piano e respira con calma. Fermati subito se senti dolore, capogiri, fiato corto o contrazioni.</span></div>' : "", "\n    ").concat(band ? '<div class="band-note"><b>Ti serve un elastico</b><span>Una fascia elastica o un elastico con maniglie. Scegli una resistenza con cui fai tutte le ripetizioni bene.</span></div>' : "", '\n    <div class="exlist">\n      ').concat(list.map((id) => {
     const e = EX[id];
     return isUnlocked(id) ? '<button class="ex" data-ex="'.concat(id, '" type="button"><div class="figbox" data-fig="').concat(id, '" data-g="').concat(G(), '"></div><b>').concat(e.name, "</b><small>").concat(e.tag, '</small><span class="go">\u203A</span></button>') : '<div class="ex locked"><div class="figbox" data-fig="'.concat(id, '" data-g="').concat(G(), '"></div><b>').concat(e.name, "</b><small>Si sblocca al livello ").concat(RANKS[e.lock][0], " (").concat(RANKS[e.lock][1], ' punti)</small><span class="go">').concat(lockIco, "</span></div>");
-  }).join(""), "\n    </div>\n    ").concat(band ? "" : '<section class="section">\n      <div class="label">Prova di efficienza fisica</div>\n      <div class="exlist">\n        '.concat((G() === "f" ? ["squat", "crunch"] : ["pushup", "situp"]).map((id) => {
+  }).join(""), "\n    </div>\n    ").concat(band || preg ? "" : '<section class="section">\n      <div class="label">Prova di efficienza fisica</div>\n      <div class="exlist">\n        '.concat((G() === "f" ? ["squat", "crunch"] : ["pushup", "situp"]).map((id) => {
     var _a2;
     return '<button class="ex wide" data-test="'.concat(id, '" type="button"><div class="figbox" data-fig="').concat(id, '" data-g="').concat(G(), '"></div><span><b>').concat(EX[id].name, " in 2 minuti</b><small>Record: ").concat((_a2 = records[id]) != null ? _a2 : "\u2014", '</small></span><span class="go">\u203A</span></button>');
-  }).join(""), "\n      </div>\n    </section>"), "\n    ").concat(band ? "" : '<section class="section elite">\n      <div class="label">Riservato ai primi 3 del mese</div>\n      <div class="exlist">\n        '.concat(Object.entries(ELITE).map(([id, e]) => {
+  }).join(""), "\n      </div>\n    </section>"), "\n    ").concat(band || preg ? "" : '<section class="section elite">\n      <div class="label">Riservato ai primi 3 del mese</div>\n      <div class="exlist">\n        '.concat(Object.entries(ELITE).map(([id, e]) => {
     const f = id === "gold" ? "jacks" : id === "hell" ? "burpee" : "climber";
     return isElite() ? '<button class="ex wide" data-elite="'.concat(id, '" type="button"><div class="figbox" data-fig="').concat(f, '" data-g="').concat(G(), '"></div><span><b>').concat(e.name, "</b><small>").concat(id === "gold" ? stats.gold ? "Attiva \xB7 tocca per disattivare" : "Disattivata \xB7 tocca per attivare" : e.desc, '</small></span><span class="go">\u203A</span></button>') : '<div class="ex wide locked"><div class="figbox" data-fig="'.concat(f, '" data-g="').concat(G(), '"></div><span><b>').concat(e.name, "</b><small>").concat(e.desc, '</small></span><span class="go">').concat(lockIco, "</span></div>");
   }).join(""), "\n      </div>\n      ").concat(isElite() ? '<p class="note">Sei tra i primi 3 di '.concat(monthName(prevMonthKey()), ": queste opzioni restano attive per tutto il mese.</p>") : '<p class="note">Chiudi il mese tra i primi 3 in classifica per sbloccarle per tutto il mese successivo.</p>', "\n    </section>"), "\n  </div>");
@@ -4685,7 +4696,7 @@ function renderOnboard() {
     form: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M17 9a4 4 0 0 1 0 6M19.5 6.5a8 8 0 0 1 0 11"/></svg>',
     duel: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="14" height="12" rx="2"/><path d="M16 10l6-3v10l-6-3"/></svg>'
   };
-  const brand = '<div class="fq-top"><div class="fq-logo" data-notr>'.concat(SITE ? '<img class="fq-mark" src="img/logo.webp" alt="" draggable="false">' : "<i>F</i>", 'FitQuest</div><span class="fq-beta">Beta</span></div>');
+  const brand = '<div class="fq-top"><div class="fq-logo" data-notr>'.concat(SITE ? '<img class="fq-mark" src="img/logo.webp" alt="" draggable="false">' : "<i>F</i>", 'FitLoo</div><span class="fq-beta">Beta</span></div>');
   if (route.step !== "setup" && route.step !== "tone") {
     app.innerHTML = '\n    <div class="screen landing fq">\n      '.concat(brand, '\n      <div class="fq-hero">').concat(SITE ? '<img src="'.concat(imgDir(), 'fitquest-hero.jpg" alt="" width="1130" height="678" decoding="async">') : '<div class="land-figs"><div class="figbox" data-fig="jacks" data-g="m" data-anim></div><div class="figbox" data-fig="jacks" data-g="f" data-anim></div></div>', '</div>\n      <h1 class="fq-h">Pronto a iniziare?<br><span>Entra in beta</span></h1>\n      <p class="fq-p">Un piccolo passo oggi, una versione pi\xF9 forte di te domani. Allenati al tuo ritmo: noi facciamo il tifo per te! \u{1F499}</p>\n      <button class="fq-cta" id="beta" type="button">Entra in beta <span aria-hidden="true">\u2192</span></button>\n      <div class="fq-or"><span>Oppure accedi con</span></div>\n      <div class="fq-sso">\n        <button class="sso apple" type="button" data-sso="Apple"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16.4 12.6c0-2.4 2-3.6 2.1-3.7-1.1-1.7-2.9-1.9-3.5-1.9-1.5-.2-2.9.9-3.7.9-.8 0-1.9-.9-3.2-.8-1.6 0-3.1 1-4 2.4-1.7 3-.4 7.4 1.2 9.8.8 1.2 1.8 2.5 3 2.4 1.2 0 1.7-.8 3.1-.8s1.9.8 3.2.8c1.3 0 2.1-1.2 2.9-2.4.9-1.4 1.3-2.7 1.3-2.8 0 0-2.4-1-2.4-3.9zM14 5.5c.7-.8 1.1-1.9 1-3-1 0-2.1.7-2.8 1.5-.6.7-1.2 1.8-1 2.9 1.1.1 2.1-.6 2.8-1.4z"/></svg><span>Apple</span></button>\n        <button class="sso google" type="button" data-sso="Google"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M22.6 12.3c0-.8-.1-1.6-.2-2.3H12v4.4h5.9c-.3 1.4-1 2.5-2.2 3.3v2.7h3.6c2.1-1.9 3.3-4.8 3.3-8.1z"/><path fill="#34A853" d="M12 23c3 0 5.5-1 7.3-2.7l-3.6-2.7c-1 .7-2.2 1.1-3.7 1.1-2.9 0-5.3-1.9-6.2-4.5H2.1v2.8C3.9 20.6 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.8 14.2c-.2-.7-.4-1.4-.4-2.2s.1-1.5.4-2.2V7H2.1C1.4 8.5 1 10.2 1 12s.4 3.5 1.1 5l3.7-2.8z"/><path fill="#EA4335" d="M12 5.4c1.6 0 3.1.6 4.2 1.7l3.2-3.2C17.5 2.1 15 1 12 1 7.7 1 3.9 3.4 2.1 7l3.7 2.8C6.7 7.3 9.1 5.4 12 5.4z"/></svg><span>Google</span></button>\n        <button class="sso mail" type="button" id="ssoMail" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg><span>Email</span></button>\n      </div>\n      <form class="fq-mail" id="wMail" novalidate hidden>\n        <input id="wMailA" type="email" autocomplete="email" inputmode="email" placeholder="Email" maxlength="120">\n        <input id="wMailP" type="password" autocomplete="current-password" placeholder="Password (almeno 8 caratteri)" minlength="8" maxlength="72">\n        <button class="fq-cta small" id="wMailGo" type="submit">Accedi</button>\n        <div class="fq-mail-links"><button type="button" id="wMailMode">Nuovo? Crea un account</button><button type="button" id="wMailForgot">Password dimenticata?</button></div>\n      </form>\n      <p class="sso-note" id="ssoNote" role="status" hidden></p>\n      <p class="fq-note">Unisciti alla beta e comincia con calma: ogni percorso parte da un primo passo.</p>\n      <p class="fq-note2">La motivazione si allena. E oggi hai gi\xE0 cominciato \u2728</p>\n    </div>');
     $("beta").onclick = () => {
@@ -5086,12 +5097,12 @@ function stepsCard() {
   else if (due) act += '<button type="button" class="st-btn" data-claim=""><span>Riscuoti</span> +'.concat(due, " <span>punti</span></button>");
   if (STEP.app) {
     if (STEP.noHealth) act += '<p class="st-note">'.concat(/iPhone|iPad/.test(navigator.userAgent) ? "Apple Salute non \xE8 disponibile su questo dispositivo." : "Installa Health Connect dal Play Store per contare i passi di tutta la giornata.", "</p>");
-    else if (STEP.needLink) act += '<button type="button" class="st-btn ghost" data-st="link">'.concat(/iPhone|iPad/.test(navigator.userAgent) ? "Collega Apple Salute" : "Collega Health Connect", '</button><p class="st-note">FitQuest legge solo i tuoi passi, anche quelli dei 30 giorni passati. Il telefono li conta tutto il giorno, anche con l\'app chiusa.</p>');
+    else if (STEP.needLink) act += '<button type="button" class="st-btn ghost" data-st="link">'.concat(/iPhone|iPad/.test(navigator.userAgent) ? "Collega Apple Salute" : "Collega Health Connect", '</button><p class="st-note">FitLoo legge solo i tuoi passi, anche quelli dei 30 giorni passati. Il telefono li conta tutto il giorno, anche con l\'app chiusa.</p>');
   } else if (!STEP.native) {
-    if (STEP.nosensor) act += '<p class="st-note">Questo dispositivo non ha un contapassi. Usa FitQuest dal telefono.</p>';
+    if (STEP.nosensor) act += '<p class="st-note">Questo dispositivo non ha un contapassi. Usa FitLoo dal telefono.</p>';
     else if (STEP.denied) act += '<p class="st-note">Permesso del contapassi negato. Puoi riattivarlo dalle impostazioni del browser.</p>';
-    else if (!STEP.on) act += '<button type="button" class="st-btn ghost" data-st="on">Attiva il contapassi</button><p class="st-note">Conta i passi mentre FitQuest \xE8 aperta. Con l\'app di FitQuest dagli store li conta tutto il giorno, anche in background.</p>';
-    else act += '<p class="st-note">Sul sito i passi si contano mentre FitQuest \xE8 aperta. Con l\'app di FitQuest dagli store li conta tutto il giorno, anche in background.</p>';
+    else if (!STEP.on) act += '<button type="button" class="st-btn ghost" data-st="on">Attiva il contapassi</button><p class="st-note">Conta i passi mentre FitLoo \xE8 aperta. Con l\'app di FitLoo dagli store li conta tutto il giorno, anche in background.</p>';
+    else act += '<p class="st-note">Sul sito i passi si contano mentre FitLoo \xE8 aperta. Con l\'app di FitLoo dagli store li conta tutto il giorno, anche in background.</p>';
   }
   const grad = (id, a, b) => '<linearGradient id="'.concat(id, '" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="').concat(a, '"/><stop offset="1" stop-color="').concat(b, '"/></linearGradient>');
   const rings = RINGS.map((g, i) => {
@@ -6897,7 +6908,7 @@ function showRndInvite(o) {
     (_b2 = navigator.vibrate) == null ? void 0 : _b2.call(navigator, [80, 60, 80]);
   } catch (e) {
   }
-  if (document.hidden && rwNotify()) (_c2 = navigator.serviceWorker) == null ? void 0 : _c2.ready.then((r) => r.showNotification("FitQuest", { body: tr("Vuoi sfidare ".concat(o.name, "?")), tag: "fq-rnd", renotify: true, icon: "icons/icon-192.png", badge: "icons/icon-192.png", vibrate: [80, 60, 80] })).catch(() => {
+  if (document.hidden && rwNotify()) (_c2 = navigator.serviceWorker) == null ? void 0 : _c2.ready.then((r) => r.showNotification("FitLoo", { body: tr("Vuoi sfidare ".concat(o.name, "?")), tag: "fq-rnd", renotify: true, icon: "icons/icon-192.png", badge: "icons/icon-192.png", vibrate: [80, 60, 80] })).catch(() => {
   });
   d.querySelector("#invNo").onclick = () => d.remove();
   d.querySelector("#invOk").onclick = () => {
@@ -7015,10 +7026,10 @@ function renderDuels() {
     n2.textContent = name ? "".concat(name, " aggiunto ai tuoi amici.") : "Amico aggiunto. Il suo nome comparir\xE0 dopo la prima sfida.";
   };
   $("shareMe").onclick = async () => {
-    const text = tr("Aggiungimi su FitQuest: il mio codice amico \xE8 ".concat(myFcode)), url = siteUrl();
+    const text = tr("Aggiungimi su FitLoo: il mio codice amico \xE8 ".concat(myFcode)), url = siteUrl();
     try {
       if (navigator.share) {
-        await navigator.share({ title: "FitQuest", text, url });
+        await navigator.share({ title: "FitLoo", text, url });
         return;
       }
     } catch (e) {
@@ -7261,7 +7272,7 @@ function renderLobby() {
   attach($("lobMe"), localView(), true);
   if (host && $("share")) {
     $("share").onclick = async () => {
-      const link = duelLink(), text = tr("Ti sfido a ".concat(fmtTxt(CH.cfg), " su FitQuest! Codice ").concat(CH.code));
+      const link = duelLink(), text = tr("Ti sfido a ".concat(fmtTxt(CH.cfg), " su FitLoo! Codice ").concat(CH.code));
       try {
         if (navigator.share) {
           await navigator.share({ title: "Sfida", text, url: link });
@@ -7382,7 +7393,7 @@ async function startDuelSession() {
   CH.lead = 0;
   $("session").hidden = false;
   $("stage").classList.add("mirror", "duel");
-  duelSplit(true);
+  duelSplit(false);
   $("opp").hidden = false;
   $("oppName").textContent = CH.oppName || "Amico";
   $("oppCount").textContent = "0";
@@ -7904,7 +7915,7 @@ function renderWalk() {
   }
   const inv = h.invites_in || [], out = h.invites_out || [], rooms = h.rooms || [], fr = h.friends || [], bl = h.blocked || [];
   const duelFr = Object.entries(friends).filter(([, f]) => f.fcode && !fr.some((x) => x.name === f.name)).map(([, f]) => f);
-  app.innerHTML = '<div class="screen ww">'.concat(head2, '\n    <div class="ww-card ww-today">\n      <div class="ww-ring" style="--p:').concat((pct * 100).toFixed(1), '"><b>').concat(wwNum(all), "</b><small>di ").concat(wwNum(goal), ' passi</small></div>\n      <div class="ww-pts">\n        <div><b>').concat(t.today_points | 0, "</b><small>WalkPoints oggi \xB7 max ").concat(t.daily_point_cap | 0, "</small></div>\n        <div><b>").concat(t.balance | 0, "</b><small>WalkPoints totali</small></div>\n        ").concat(t.today_estimated_steps ? '<p class="ww-note">'.concat(wwNum(t.today_estimated_steps), " passi stimati non danno punti</p>") : "", '\n      </div>\n      <p class="ww-src">').concat(src === "web_motion" ? "Sul sito i passi sono <b>stimati</b> dal sensore e non danno WalkPoints. Nell'app FitQuest per Android o iPhone i passi arrivano da Health Connect o Apple Salute e valgono 1 WalkPoint ogni 100." : "Passi verificati da <b>".concat(wwSrcName(src), "</b>: 1 WalkPoint ogni 100 passi, fino a ").concat(t.daily_point_cap | 0, " al giorno."), "</p>\n      ").concat(WW.sess && !WW.sess.room_id ? wwMonitorHtml() : '<button class="btn primary" id="wwSolo" type="button">'.concat(wwWalkIco(), "Inizia a camminare</button>"), "\n    </div>\n    ").concat(WW.call ? wwCallPillHtml() : "", "\n    ").concat(inv.length ? '<div class="section"><div class="label">Inviti per te \xB7 '.concat(inv.length, '</div><ol class="ww-list">').concat(inv.map((i) => "<li>".concat(avatar(i.from_name), '<span class="who"><b data-notr>').concat(esc(i.from_name), "</b><small>").concat(i.kind === "room" ? "ti invita nella stanza \xAB".concat(esc(i.room_name || ""), "\xBB") : "vuole essere tuo amico", '</small></span>\n      <span class="ww-acts"><button class="btn primary small" type="button" data-acc="').concat(i.id, '">Accetta</button><button class="btn ghost small" type="button" data-dec="').concat(i.id, '">No</button></span></li>')).join(""), "</ol></div>") : "", '\n    <div class="section"><div class="label">Le tue stanze').concat(rooms.length ? " \xB7 ".concat(rooms.length) : "", "</div>\n      ").concat(rooms.length ? '<ol class="ww-list">'.concat(rooms.map((r) => '<li class="ww-room" data-room="'.concat(r.id, '">').concat(wwRoomIco(), '<span class="who"><b data-notr>').concat(esc(r.name), "</b><small>").concat(r.members, " ").concat(r.members === 1 ? "persona" : "persone", " \xB7 ").concat(wwNum(r.coop_steps), " / ").concat(wwNum(r.goal_steps), ' passi</small></span><span class="ww-go">\u203A</span></li>')).join(""), "</ol>") : '<p class="note">Una stanza \xE8 privata: entra solo chi inviti tu tra i tuoi amici.</p>', '\n      <details class="ww-new" id="wwNew"><summary class="btn ghost">Crea una stanza</summary>\n        <label class="label" for="wwRn">Nome</label><input id="wwRn" maxlength="40" placeholder="Giro serale" autocomplete="off">\n        <label class="label" for="wwRg">Obiettivo di gruppo</label>\n        <select id="wwRg">').concat([5e3, 1e4, 2e4, 3e4, 5e4].map((n) => '<option value="'.concat(n, '" ').concat(n === 1e4 ? "selected" : "", ">").concat(wwNum(n), " passi</option>")).join(""), '</select>\n        <label class="label" for="wwRm">Chiamata</label>\n        <select id="wwRm"><option value="audio" selected>Vocale (consigliata mentre cammini)</option><option value="video">Video</option></select>\n        <button class="btn primary" id="wwCreate" type="button">Crea la stanza</button>\n      </details>\n    </div>\n    <div class="section"><div class="label">Amici di Cammina con me').concat(fr.length ? " \xB7 ".concat(fr.length) : "", "</div>\n      ").concat(fr.length ? '<ol class="ww-list">'.concat(fr.map((f) => "<li>".concat(avatar(f.name), '<span class="who"><b data-notr>').concat(esc(f.name), '</b></span><button class="ww-more" type="button" data-user="').concat(f.user_id, '" data-name="').concat(esc(f.name), '" aria-label="Altre azioni">\u22EF</button></li>')).join(""), "</ol>") : '<p class="note">Aggiungi un amico con il suo codice: gli arriva un invito e, quando accetta, potete camminare insieme.</p>', "\n      ").concat(out.length ? '<p class="note">In attesa di risposta: '.concat(out.map((o) => "".concat(esc(o.to_name)).concat(o.kind === "room" ? " (stanza \xAB".concat(esc(o.room_name || ""), "\xBB)") : "", ' <button class="ww-x" type="button" data-cancel="').concat(o.id, '">annulla</button>')).join(" \xB7 "), "</p>") : "", "\n      ").concat(duelFr.length ? '<div class="label">Dalle tue Sfide</div><ol class="ww-list">'.concat(duelFr.slice(0, 12).map((f) => "<li>".concat(avatar(f.name), '<span class="who"><b data-notr>').concat(esc(f.name), '</b></span><button class="btn ghost small" type="button" data-fc="').concat(esc(f.fcode), '">Invita</button></li>')).join(""), "</ol>") : "", '\n      <div class="dz-ticket"><div class="dz-ticket-top"><div class="label">Il tuo codice</div><div class="code">').concat(esc(me.code), '</div>\n        <button class="btn ghost small" id="wwShare" type="button">Invia il mio codice</button></div>\n        <div class="dz-ticket-bot"><label class="label" for="wwCode">Aggiungi un amico</label>\n        <div class="dz-add"><input id="wwCode" maxlength="6" autocapitalize="characters" autocomplete="off" placeholder="Codice amico"><button class="btn primary small" id="wwAdd" type="button">Invita</button></div></div></div>\n    </div>\n    <details class="ww-priv"><summary>Privacy, permessi e utenti bloccati</summary>\n      <label class="dz-switch"><span>Microfono per le chiamate</span><input type="checkbox" id="wwCMic" ').concat(WW.consent.mic ? "checked" : "", '><i></i></label>\n      <label class="dz-switch"><span>Fotocamera per le videochiamate</span><input type="checkbox" id="wwCCam" ').concat(WW.consent.cam ? "checked" : "", '><i></i></label>\n      <label class="dz-switch"><span>Passi da ').concat(src === "web_motion" ? "Health Connect / Apple Salute (solo nell'app)" : wwSrcName(src), '</span><input type="checkbox" id="wwCHealth" ').concat(me.health_consent_at ? "checked" : "", " ").concat(src === "web_motion" ? "disabled" : "", '><i></i></label>\n      <p class="note">La tua posizione non viene mai letta n\xE9 condivisa. Nelle stanze gli altri vedono solo il tuo nome, se stai camminando e i passi della camminata.</p>\n      <label class="label" for="wwGoal">Il tuo obiettivo giornaliero</label>\n      <select id="wwGoal">').concat([4e3, 6e3, 8e3, 1e4, 12e3, 15e3, 2e4].map((n) => '<option value="'.concat(n, '" ').concat(n === (me.daily_goal | 0) ? "selected" : "", ">").concat(wwNum(n), " passi</option>")).join(""), "</select>\n      ").concat(bl.length ? '<div class="label">Bloccati</div><ol class="ww-list">'.concat(bl.map((b) => "<li>".concat(avatar(b.name), '<span class="who"><b data-notr>').concat(esc(b.name), '</b></span><button class="btn ghost small" type="button" data-unblock="').concat(b.user_id, '">Sblocca</button></li>')).join(""), "</ol>") : '<p class="note">Non hai bloccato nessuno.</p>', '\n    </details>\n    <p class="note ww-msg" id="wwMsg" ').concat(WW.msg ? "" : "hidden", ">").concat(esc(WW.msg), "</p>\n  </div>");
+  app.innerHTML = '<div class="screen ww">'.concat(head2, '\n    <div class="ww-card ww-today">\n      <div class="ww-ring" style="--p:').concat((pct * 100).toFixed(1), '"><b>').concat(wwNum(all), "</b><small>di ").concat(wwNum(goal), ' passi</small></div>\n      <div class="ww-pts">\n        <div><b>').concat(t.today_points | 0, "</b><small>WalkPoints oggi \xB7 max ").concat(t.daily_point_cap | 0, "</small></div>\n        <div><b>").concat(t.balance | 0, "</b><small>WalkPoints totali</small></div>\n        ").concat(t.today_estimated_steps ? '<p class="ww-note">'.concat(wwNum(t.today_estimated_steps), " passi stimati non danno punti</p>") : "", '\n      </div>\n      <p class="ww-src">').concat(src === "web_motion" ? "Sul sito i passi sono <b>stimati</b> dal sensore e non danno WalkPoints. Nell'app FitLoo per Android o iPhone i passi arrivano da Health Connect o Apple Salute e valgono 1 WalkPoint ogni 100." : "Passi verificati da <b>".concat(wwSrcName(src), "</b>: 1 WalkPoint ogni 100 passi, fino a ").concat(t.daily_point_cap | 0, " al giorno."), "</p>\n      ").concat(WW.sess && !WW.sess.room_id ? wwMonitorHtml() : '<button class="btn primary" id="wwSolo" type="button">'.concat(wwWalkIco(), "Inizia a camminare</button>"), "\n    </div>\n    ").concat(WW.call ? wwCallPillHtml() : "", "\n    ").concat(inv.length ? '<div class="section"><div class="label">Inviti per te \xB7 '.concat(inv.length, '</div><ol class="ww-list">').concat(inv.map((i) => "<li>".concat(avatar(i.from_name), '<span class="who"><b data-notr>').concat(esc(i.from_name), "</b><small>").concat(i.kind === "room" ? "ti invita nella stanza \xAB".concat(esc(i.room_name || ""), "\xBB") : "vuole essere tuo amico", '</small></span>\n      <span class="ww-acts"><button class="btn primary small" type="button" data-acc="').concat(i.id, '">Accetta</button><button class="btn ghost small" type="button" data-dec="').concat(i.id, '">No</button></span></li>')).join(""), "</ol></div>") : "", '\n    <div class="section"><div class="label">Le tue stanze').concat(rooms.length ? " \xB7 ".concat(rooms.length) : "", "</div>\n      ").concat(rooms.length ? '<ol class="ww-list">'.concat(rooms.map((r) => '<li class="ww-room" data-room="'.concat(r.id, '">').concat(wwRoomIco(), '<span class="who"><b data-notr>').concat(esc(r.name), "</b><small>").concat(r.members, " ").concat(r.members === 1 ? "persona" : "persone", " \xB7 ").concat(wwNum(r.coop_steps), " / ").concat(wwNum(r.goal_steps), ' passi</small></span><span class="ww-go">\u203A</span></li>')).join(""), "</ol>") : '<p class="note">Una stanza \xE8 privata: entra solo chi inviti tu tra i tuoi amici.</p>', '\n      <details class="ww-new" id="wwNew"><summary class="btn ghost">Crea una stanza</summary>\n        <label class="label" for="wwRn">Nome</label><input id="wwRn" maxlength="40" placeholder="Giro serale" autocomplete="off">\n        <label class="label" for="wwRg">Obiettivo di gruppo</label>\n        <select id="wwRg">').concat([5e3, 1e4, 2e4, 3e4, 5e4].map((n) => '<option value="'.concat(n, '" ').concat(n === 1e4 ? "selected" : "", ">").concat(wwNum(n), " passi</option>")).join(""), '</select>\n        <label class="label" for="wwRm">Chiamata</label>\n        <select id="wwRm"><option value="audio" selected>Vocale (consigliata mentre cammini)</option><option value="video">Video</option></select>\n        <button class="btn primary" id="wwCreate" type="button">Crea la stanza</button>\n      </details>\n    </div>\n    <div class="section"><div class="label">Amici di Cammina con me').concat(fr.length ? " \xB7 ".concat(fr.length) : "", "</div>\n      ").concat(fr.length ? '<ol class="ww-list">'.concat(fr.map((f) => "<li>".concat(avatar(f.name), '<span class="who"><b data-notr>').concat(esc(f.name), '</b></span><button class="ww-more" type="button" data-user="').concat(f.user_id, '" data-name="').concat(esc(f.name), '" aria-label="Altre azioni">\u22EF</button></li>')).join(""), "</ol>") : '<p class="note">Aggiungi un amico con il suo codice: gli arriva un invito e, quando accetta, potete camminare insieme.</p>', "\n      ").concat(out.length ? '<p class="note">In attesa di risposta: '.concat(out.map((o) => "".concat(esc(o.to_name)).concat(o.kind === "room" ? " (stanza \xAB".concat(esc(o.room_name || ""), "\xBB)") : "", ' <button class="ww-x" type="button" data-cancel="').concat(o.id, '">annulla</button>')).join(" \xB7 "), "</p>") : "", "\n      ").concat(duelFr.length ? '<div class="label">Dalle tue Sfide</div><ol class="ww-list">'.concat(duelFr.slice(0, 12).map((f) => "<li>".concat(avatar(f.name), '<span class="who"><b data-notr>').concat(esc(f.name), '</b></span><button class="btn ghost small" type="button" data-fc="').concat(esc(f.fcode), '">Invita</button></li>')).join(""), "</ol>") : "", '\n      <div class="dz-ticket"><div class="dz-ticket-top"><div class="label">Il tuo codice</div><div class="code">').concat(esc(me.code), '</div>\n        <button class="btn ghost small" id="wwShare" type="button">Invia il mio codice</button></div>\n        <div class="dz-ticket-bot"><label class="label" for="wwCode">Aggiungi un amico</label>\n        <div class="dz-add"><input id="wwCode" maxlength="6" autocapitalize="characters" autocomplete="off" placeholder="Codice amico"><button class="btn primary small" id="wwAdd" type="button">Invita</button></div></div></div>\n    </div>\n    <details class="ww-priv"><summary>Privacy, permessi e utenti bloccati</summary>\n      <label class="dz-switch"><span>Microfono per le chiamate</span><input type="checkbox" id="wwCMic" ').concat(WW.consent.mic ? "checked" : "", '><i></i></label>\n      <label class="dz-switch"><span>Fotocamera per le videochiamate</span><input type="checkbox" id="wwCCam" ').concat(WW.consent.cam ? "checked" : "", '><i></i></label>\n      <label class="dz-switch"><span>Passi da ').concat(src === "web_motion" ? "Health Connect / Apple Salute (solo nell'app)" : wwSrcName(src), '</span><input type="checkbox" id="wwCHealth" ').concat(me.health_consent_at ? "checked" : "", " ").concat(src === "web_motion" ? "disabled" : "", '><i></i></label>\n      <p class="note">La tua posizione non viene mai letta n\xE9 condivisa. Nelle stanze gli altri vedono solo il tuo nome, se stai camminando e i passi della camminata.</p>\n      <label class="label" for="wwGoal">Il tuo obiettivo giornaliero</label>\n      <select id="wwGoal">').concat([4e3, 6e3, 8e3, 1e4, 12e3, 15e3, 2e4].map((n) => '<option value="'.concat(n, '" ').concat(n === (me.daily_goal | 0) ? "selected" : "", ">").concat(wwNum(n), " passi</option>")).join(""), "</select>\n      ").concat(bl.length ? '<div class="label">Bloccati</div><ol class="ww-list">'.concat(bl.map((b) => "<li>".concat(avatar(b.name), '<span class="who"><b data-notr>').concat(esc(b.name), '</b></span><button class="btn ghost small" type="button" data-unblock="').concat(b.user_id, '">Sblocca</button></li>')).join(""), "</ol>") : '<p class="note">Non hai bloccato nessuno.</p>', '\n    </details>\n    <p class="note ww-msg" id="wwMsg" ').concat(WW.msg ? "" : "hidden", ">").concat(esc(WW.msg), "</p>\n  </div>");
   WW.msg = "";
   wireWalk();
 }
@@ -7986,10 +7997,10 @@ function wireWalk() {
     return id;
   }));
   on("wwShare", async () => {
-    const text = tr("Camminiamo insieme su FitQuest: il mio codice \xE8 ".concat(WW.home.me.code)), url = siteUrl();
+    const text = tr("Camminiamo insieme su FitLoo: il mio codice \xE8 ".concat(WW.home.me.code)), url = siteUrl();
     try {
       if (navigator.share) {
-        await navigator.share({ title: "FitQuest", text, url });
+        await navigator.share({ title: "FitLoo", text, url });
         return;
       }
     } catch (e) {
@@ -8293,7 +8304,7 @@ function wwMonNote() {
   if (WW.pend && WW.pendErr) return "Non riesco a mandare i passi: riprovo da solo appena torna la connessione.";
   if (r && r.reason === "troppo veloce") return "Troppi passi in pochissimo tempo: quell'aggiornamento non \xE8 stato contato.";
   if (r && r.today_points >= r.daily_point_cap) return "Hai raggiunto i WalkPoints di oggi: i passi contano comunque per te e per il gruppo.";
-  if (!s.verified) return wwHealth() ? "Passi stimati: attiva i dati salute per i WalkPoints." : "Sul sito i passi si contano solo con FitQuest aperta e lo schermo acceso, e non danno WalkPoints.";
+  if (!s.verified) return wwHealth() ? "Passi stimati: attiva i dati salute per i WalkPoints." : "Sul sito i passi si contano solo con FitLoo aperta e lo schermo acceso, e non danno WalkPoints.";
   return "Passi da ".concat(wwSrcName(s.source), ": puoi anche mettere il telefono in tasca.");
 }
 function wireMonitor() {
@@ -8316,12 +8327,12 @@ async function wwStart(roomId) {
   if (offline()) return wwSay("Serve internet per iniziare la camminata.");
   let src = wwSource();
   if (src !== "web_motion" && !(WW.home && WW.home.me && WW.home.me.health_consent_at)) {
-    if (!confirm(tr("Per i WalkPoints FitQuest legge i passi da " + tr(wwSrcName(src)) + " durante la camminata. Vuoi dare il permesso?")) || !await wwHealthOn()) {
+    if (!confirm(tr("Per i WalkPoints FitLoo legge i passi da " + tr(wwSrcName(src)) + " durante la camminata. Vuoi dare il permesso?")) || !await wwHealthOn()) {
       return wwSay("Senza il permesso ai passi la camminata nell'app non pu\xF2 contare i passi. Puoi attivarlo in Privacy e permessi.");
     }
   }
   if (src === "web_motion") {
-    if (typeof DeviceMotionEvent === "undefined") return wwSay("Questo telefono non ha un sensore di movimento utilizzabile dal sito: usa l'app FitQuest.");
+    if (typeof DeviceMotionEvent === "undefined") return wwSay("Questo telefono non ha un sensore di movimento utilizzabile dal sito: usa l'app FitLoo.");
     if (stepsNeedsAsk()) {
       let r = "denied";
       try {
@@ -8536,12 +8547,12 @@ document.addEventListener("click", () => {
 });
 async function wwAskMedia(mode) {
   if (!WW.consent.mic) {
-    if (!confirm(tr("Per la chiamata FitQuest usa il microfono, solo mentre sei in chiamata. Vuoi continuare?"))) return null;
+    if (!confirm(tr("Per la chiamata FitLoo usa il microfono, solo mentre sei in chiamata. Vuoi continuare?"))) return null;
     wwConsentSet({ mic: true });
   }
   let cam = mode === "video";
   if (cam && !WW.consent.cam) {
-    if (confirm(tr("Per la videochiamata FitQuest usa la fotocamera, solo mentre sei in chiamata. Vuoi attivarla?"))) wwConsentSet({ cam: true });
+    if (confirm(tr("Per la videochiamata FitLoo usa la fotocamera, solo mentre sei in chiamata. Vuoi attivarla?"))) wwConsentSet({ cam: true });
     else cam = false;
   }
   return cam ? "video" : "audio";
@@ -9492,7 +9503,7 @@ function gmTierWire() {
 function gmProSheet() {
   var _a2;
   (_a2 = $("gmSheet")) == null ? void 0 : _a2.remove();
-  document.body.insertAdjacentHTML("beforeend", '<div class="gm-sheet" id="gmSheet" role="dialog" aria-modal="true"><div class="gm-sheet-in">\n    <div class="gm-tier-h"><b>FitQuest Pro</b><i class="gm-pro big">PRO</i></div>\n    <ul class="gm-perks"><li><b>Niente pubblicit\xE0</b><span>Passi da un gioco all\'altro senza aspettare.</span></li>\n      <li><b>Concorso del mese</b><span>Una classifica solo per gli abbonati Pro, dal primo all\'ultimo giorno del mese.</span></li>\n      <li><b>Premi per i primi tre</b><span>I premi sono in bacheca e cambiano ogni mese. Quelli del mese dopo li vedi dal 26.</span></li></ul>\n    <div class="gm-plans" role="radiogroup">'.concat(GM_PLANS.map((p) => '<button class="gm-plan" type="button" role="radio" data-plan="'.concat(p.id, '" aria-checked="').concat(p.id === GMX.plan, '">\n      ').concat(p.save ? '<i class="gm-save"><span>Risparmi</span> <span data-notr>'.concat(p.save, "</span></i>") : "", "<b>").concat(p.name, '</b><span class="gm-price" data-notr>').concat(p.price, "</span><small>").concat(p.per, "</small>").concat(p.month ? "<small><span>pari a</span> <span data-notr>".concat(p.month, "</span><span>/mese</span></small>") : "", "</button>")).join(""), '</div>\n    <button class="btn primary" id="gmBuy" type="button"></button>\n    <p class="meta" id="gmBuyMsg">L\'abbonamento si attiva con l\'uscita dell\'app nei negozi.</p>\n    <p class="meta">Disdici quando vuoi. Serve l\'accesso con il tuo account.</p>\n    <button class="btn ghost" id="gmSheetX" type="button">Chiudi</button></div></div>'));
+  document.body.insertAdjacentHTML("beforeend", '<div class="gm-sheet" id="gmSheet" role="dialog" aria-modal="true"><div class="gm-sheet-in">\n    <div class="gm-tier-h"><b>FitLoo Pro</b><i class="gm-pro big">PRO</i></div>\n    <ul class="gm-perks"><li><b>Niente pubblicit\xE0</b><span>Passi da un gioco all\'altro senza aspettare.</span></li>\n      <li><b>Concorso del mese</b><span>Una classifica solo per gli abbonati Pro, dal primo all\'ultimo giorno del mese.</span></li>\n      <li><b>Premi per i primi tre</b><span>I premi sono in bacheca e cambiano ogni mese. Quelli del mese dopo li vedi dal 26.</span></li></ul>\n    <div class="gm-plans" role="radiogroup">'.concat(GM_PLANS.map((p) => '<button class="gm-plan" type="button" role="radio" data-plan="'.concat(p.id, '" aria-checked="').concat(p.id === GMX.plan, '">\n      ').concat(p.save ? '<i class="gm-save"><span>Risparmi</span> <span data-notr>'.concat(p.save, "</span></i>") : "", "<b>").concat(p.name, '</b><span class="gm-price" data-notr>').concat(p.price, "</span><small>").concat(p.per, "</small>").concat(p.month ? "<small><span>pari a</span> <span data-notr>".concat(p.month, "</span><span>/mese</span></small>") : "", "</button>")).join(""), '</div>\n    <button class="btn primary" id="gmBuy" type="button"></button>\n    <p class="meta" id="gmBuyMsg">L\'abbonamento si attiva con l\'uscita dell\'app nei negozi.</p>\n    <p class="meta">Disdici quando vuoi. Serve l\'accesso con il tuo account.</p>\n    <button class="btn ghost" id="gmSheetX" type="button">Chiudi</button></div></div>'));
   const paint = () => {
     const pl = GM_PLANS.find((p) => p.id === GMX.plan);
     document.querySelectorAll("[data-plan]").forEach((b) => b.setAttribute("aria-checked", b.dataset.plan === GMX.plan));
@@ -9588,7 +9599,7 @@ function gmAd(next) {
   var _a2;
   (_a2 = $("gmAd")) == null ? void 0 : _a2.remove();
   let n = 5;
-  document.body.insertAdjacentHTML("beforeend", '<div class="gm-ad" id="gmAd" role="dialog" aria-modal="true">\n    <div class="gm-ad-top"><span>Pubblicit\xE0</span><b id="gmAdN">'.concat(n, '</b></div>\n    <div class="gm-ad-box"><div class="gm-hero-ico">').concat(GAME_IDS.map((id) => '<span style="--gc:'.concat(GAMES[id].color, '">').concat(GM_ICO[id], "</span>")).join(""), '</div>\n      <h2>Gioca senza pause con FitQuest Pro</h2><p>Niente pubblicit\xE0 e premi veri ogni mese per i primi tre.</p>\n      <small>Spazio pubblicitario di prova: qui comparir\xE0 la pubblicit\xE0 vera.</small></div>\n    <button class="btn primary big" id="gmAdGo" type="button" disabled>Il gioco parte tra 5 s</button>\n    <button class="btn ghost" id="gmAdPro" type="button">Scopri Pro</button></div>'));
+  document.body.insertAdjacentHTML("beforeend", '<div class="gm-ad" id="gmAd" role="dialog" aria-modal="true">\n    <div class="gm-ad-top"><span>Pubblicit\xE0</span><b id="gmAdN">'.concat(n, '</b></div>\n    <div class="gm-ad-box"><div class="gm-hero-ico">').concat(GAME_IDS.map((id) => '<span style="--gc:'.concat(GAMES[id].color, '">').concat(GM_ICO[id], "</span>")).join(""), '</div>\n      <h2>Gioca senza pause con FitLoo Pro</h2><p>Niente pubblicit\xE0 e premi veri ogni mese per i primi tre.</p>\n      <small>Spazio pubblicitario di prova: qui comparir\xE0 la pubblicit\xE0 vera.</small></div>\n    <button class="btn primary big" id="gmAdGo" type="button" disabled>Il gioco parte tra 5 s</button>\n    <button class="btn ghost" id="gmAdPro" type="button">Scopri Pro</button></div>'));
   const go2 = $("gmAdGo");
   const t = setInterval(() => {
     n--;
@@ -9796,7 +9807,7 @@ I18N.push(
   ["Non ora", "Not now", "Ahora no", "Pas maintenant", "Nicht jetzt", "Agora n\xE3o"],
   ["Nessuna connessione. Riprova.", "No connection. Try again.", "Sin conexi\xF3n. Int\xE9ntalo de nuevo.", "Pas de connexion. R\xE9essaie.", "Keine Verbindung. Versuch es noch mal.", "Sem conex\xE3o. Tente de novo."],
   ["Accesso non riuscito. Riprova.", "Sign-in failed. Try again.", "No se pudo iniciar sesi\xF3n. Int\xE9ntalo de nuevo.", "Connexion impossible. R\xE9essaie.", "Anmeldung fehlgeschlagen. Versuch es noch mal.", "N\xE3o foi poss\xEDvel entrar. Tente de novo."],
-  ["Gioca senza pause con FitQuest Pro", "Play without breaks with FitQuest Pro", "Juega sin pausas con FitQuest Pro", "Joue sans pause avec FitQuest Pro", "Spiel ohne Pausen mit FitQuest Pro", "Jogue sem pausas com o FitQuest Pro"],
+  ["Gioca senza pause con FitLoo Pro", "Play without breaks with FitLoo Pro", "Juega sin pausas con FitLoo Pro", "Joue sans pause avec FitLoo Pro", "Spiel ohne Pausen mit FitLoo Pro", "Jogue sem pausas com o FitLoo Pro"],
   ["Niente pubblicit\xE0 e premi veri ogni mese per i primi tre.", "No ads and real prizes every month for the top three.", "Sin anuncios y premios reales cada mes para los tres primeros.", "Pas de pub et de vrais prix chaque mois pour les trois premiers.", "Keine Werbung und jeden Monat echte Preise f\xFCr die ersten drei.", "Sem an\xFAncios e pr\xEAmios reais todo m\xEAs para os tr\xEAs primeiros."],
   ["Spazio pubblicitario di prova: qui comparir\xE0 la pubblicit\xE0 vera.", "Test ad space: the real ad will appear here.", "Espacio publicitario de prueba: aqu\xED aparecer\xE1 el anuncio real.", "Espace publicitaire d'essai : la vraie pub appara\xEEtra ici.", "Test-Werbefl\xE4che: hier erscheint sp\xE4ter die echte Werbung.", "Espa\xE7o publicit\xE1rio de teste: aqui aparecer\xE1 o an\xFAncio real."],
   ["Chiudi e gioca", "Close and play", "Cerrar y jugar", "Fermer et jouer", "Schlie\xDFen und spielen", "Fechar e jogar"],
@@ -9918,7 +9929,7 @@ function renderWater() {
     return '<div class="wt-day'.concat(i === 6 ? " now" : "", '"><i style="--h:').concat(Math.min(100, Math.round(v / w.goal * 100)), '%"></i><small data-notr>').concat(esc(d.toLocaleDateString(lang, { weekday: "narrow" })), "</small></div>");
   }).join("");
   const chips = (key, list, fmt2) => '<div class="wt-chips" role="radiogroup">'.concat(list.map((v) => '<button class="wt-chip" type="button" role="radio" data-set="'.concat(key, '" data-v="').concat(v, '" aria-checked="').concat(w[key] === v, '">').concat(fmt2(v), "</button>")).join(""), "</div>");
-  app.innerHTML = '\n  <div class="screen wt">\n    <button class="back" id="back" type="button">\u2039 Oggi</button>\n    <section class="wt-hero'.concat(c >= w.goal ? " done" : "", '">\n      <div class="wt-drops" aria-hidden="true">').concat([8, 22, 37, 63, 78, 91].map((x, i) => '<i style="--x:'.concat(x, "%;--d:").concat(4 + i % 3, "s;--w:").concat((i * 0.7).toFixed(1), 's"></i>')).join(""), '</div>\n      <div class="wt-top"><h1>Bevi acqua</h1><span class="wt-goal"><b data-notr>').concat(c * w.ml >= 1e3 ? (c * w.ml / 1e3).toFixed(1).replace(".", ",") + " l" : c * w.ml + " ml", '</b> <span>oggi</span></span></div>\n      <div class="wt-stage">\n        <div class="wt-char" id="wtChar"><img src="img/water-').concat(g, '.webp" alt="" draggable="false"><span class="wt-splash" style="--gx:').concat(WT_GLASS[g][0], "%;--gy:").concat(WT_GLASS[g][1], '%"></span></div>\n        <div class="wt-meter">\n          ').concat(wtTank(c / w.goal, "big"), '\n          <div class="wt-count"><b id="wtCount" data-notr>').concat(c, "</b><span data-notr>/ ").concat(w.goal, '</span><small>bicchieri</small></div>\n        </div>\n      </div>\n      <div class="wt-bar"><i style="width:').concat(pct, '%"></i></div>\n      <div class="wt-act">\n        <button class="btn ghost small" id="wtMinus" type="button" ').concat(c ? "" : "disabled", ' aria-label="Togli un bicchiere">\u2212</button>\n        <button class="btn primary big" id="wtPlus" type="button"><span class="wt-plus-ico">').concat(wtTank(0.7, "ib"), '</span><span>Ho bevuto un bicchiere</span></button>\n      </div>\n      <p class="wt-msg" id="wtMsg">').concat(c >= w.goal ? "Obiettivo raggiunto! Il tuo corpo ti ringrazia." : nx != null ? "<span>Prossimo promemoria alle</span> <b data-notr>".concat(wtHm(nx), "</b>") : w.on ? "Per oggi i promemoria sono finiti." : "Attiva i promemoria qui sotto: ti avvisiamo noi.", '</p>\n    </section>\n\n    <section class="wt-card">\n      <div class="wt-card-h"><b>Ultimi 7 giorni</b><small><span>obiettivo</span> <span data-notr>').concat(w.goal, '</span> <span>bicchieri</span></small></div>\n      <div class="wt-week">').concat(week, '</div>\n    </section>\n\n    <section class="wt-card">\n      <label class="dz-switch wt-switch"><span class="ico">\u{1F514}</span><span><b>Promemoria per bere</b><small>Un avviso con suono quando \xE8 ora di bere</small></span><input type="checkbox" id="wtOn" ').concat(w.on ? "checked" : "", '><i></i></label>\n      <div class="wt-set').concat(w.on ? "" : " off", '">\n        <div class="wt-times">\n          <label><small>Dalle</small><input type="time" id="wtFrom" value="').concat(esc(w.from), '"></label>\n          <span class="wt-arrow" aria-hidden="true">\u2192</span>\n          <label><small>Alle</small><input type="time" id="wtTo" value="').concat(esc(w.to), '"></label>\n        </div>\n        <small class="wt-lab">Ogni quanto</small>\n        ').concat(chips("every", WT_EVERY, (v) => v < 60 ? "<span data-notr>".concat(v, "</span> <span>min</span>") : v % 60 ? "<span data-notr>".concat(Math.floor(v / 60), " h ").concat(v % 60, "</span>") : "<span data-notr>".concat(v / 60, "</span> <span>h</span>")), '\n        <div class="wt-slots">').concat(slots.length ? slots.map((t2) => '<span class="'.concat(nx === t2 ? "next" : "", '" data-notr>').concat(wtHm(t2), "</span>")).join("") : "<em>Scegli un orario di fine dopo quello di inizio.</em>", '</div>\n        <small class="wt-lab">Obiettivo al giorno</small>\n        ').concat(chips("goal", WT_GOALS, (v) => "<span data-notr>".concat(v, "</span> <span>bicchieri</span>")), '\n        <small class="wt-lab">Un bicchiere \xE8</small>\n        ').concat(chips("ml", WT_ML, (v) => "<span data-notr>".concat(v, " ml</span>")), '\n        <label class="dz-switch wt-switch sm"><span><b>Suono</b></span><input type="checkbox" id="wtSound" ').concat(w.sound ? "checked" : "", '><i></i></label>\n        <label class="dz-switch wt-switch sm"><span><b>Vibrazione</b></span><input type="checkbox" id="wtVib" ').concat(w.vib ? "checked" : "", '><i></i></label>\n        <div class="wt-test"><button class="btn ghost small" id="wtTest" type="button">Prova il promemoria</button></div>\n        <p class="wt-note">').concat(perm === "native" ? "Gli avvisi arrivano anche con l'app chiusa." : perm === "denied" ? "Le notifiche sono bloccate: attivale nelle impostazioni del browser per FitQuest." : "Sul sito l'avviso arriva mentre FitQuest \xE8 aperta. Con l'app FitQuest arriva anche a telefono bloccato.", "</p>\n      </div>\n    </section>\n  </div>");
+  app.innerHTML = '\n  <div class="screen wt">\n    <button class="back" id="back" type="button">\u2039 Oggi</button>\n    <section class="wt-hero'.concat(c >= w.goal ? " done" : "", '">\n      <div class="wt-drops" aria-hidden="true">').concat([8, 22, 37, 63, 78, 91].map((x, i) => '<i style="--x:'.concat(x, "%;--d:").concat(4 + i % 3, "s;--w:").concat((i * 0.7).toFixed(1), 's"></i>')).join(""), '</div>\n      <div class="wt-top"><h1>Bevi acqua</h1><span class="wt-goal"><b data-notr>').concat(c * w.ml >= 1e3 ? (c * w.ml / 1e3).toFixed(1).replace(".", ",") + " l" : c * w.ml + " ml", '</b> <span>oggi</span></span></div>\n      <div class="wt-stage">\n        <div class="wt-char" id="wtChar"><img src="img/water-').concat(g, '.webp" alt="" draggable="false"><span class="wt-splash" style="--gx:').concat(WT_GLASS[g][0], "%;--gy:").concat(WT_GLASS[g][1], '%"></span></div>\n        <div class="wt-meter">\n          ').concat(wtTank(c / w.goal, "big"), '\n          <div class="wt-count"><b id="wtCount" data-notr>').concat(c, "</b><span data-notr>/ ").concat(w.goal, '</span><small>bicchieri</small></div>\n        </div>\n      </div>\n      <div class="wt-bar"><i style="width:').concat(pct, '%"></i></div>\n      <div class="wt-act">\n        <button class="btn ghost small" id="wtMinus" type="button" ').concat(c ? "" : "disabled", ' aria-label="Togli un bicchiere">\u2212</button>\n        <button class="btn primary big" id="wtPlus" type="button"><span class="wt-plus-ico">').concat(wtTank(0.7, "ib"), '</span><span>Ho bevuto un bicchiere</span></button>\n      </div>\n      <p class="wt-msg" id="wtMsg">').concat(c >= w.goal ? "Obiettivo raggiunto! Il tuo corpo ti ringrazia." : nx != null ? "<span>Prossimo promemoria alle</span> <b data-notr>".concat(wtHm(nx), "</b>") : w.on ? "Per oggi i promemoria sono finiti." : "Attiva i promemoria qui sotto: ti avvisiamo noi.", '</p>\n    </section>\n\n    <section class="wt-card">\n      <div class="wt-card-h"><b>Ultimi 7 giorni</b><small><span>obiettivo</span> <span data-notr>').concat(w.goal, '</span> <span>bicchieri</span></small></div>\n      <div class="wt-week">').concat(week, '</div>\n    </section>\n\n    <section class="wt-card">\n      <label class="dz-switch wt-switch"><span class="ico">\u{1F514}</span><span><b>Promemoria per bere</b><small>Un avviso con suono quando \xE8 ora di bere</small></span><input type="checkbox" id="wtOn" ').concat(w.on ? "checked" : "", '><i></i></label>\n      <div class="wt-set').concat(w.on ? "" : " off", '">\n        <div class="wt-times">\n          <label><small>Dalle</small><input type="time" id="wtFrom" value="').concat(esc(w.from), '"></label>\n          <span class="wt-arrow" aria-hidden="true">\u2192</span>\n          <label><small>Alle</small><input type="time" id="wtTo" value="').concat(esc(w.to), '"></label>\n        </div>\n        <small class="wt-lab">Ogni quanto</small>\n        ').concat(chips("every", WT_EVERY, (v) => v < 60 ? "<span data-notr>".concat(v, "</span> <span>min</span>") : v % 60 ? "<span data-notr>".concat(Math.floor(v / 60), " h ").concat(v % 60, "</span>") : "<span data-notr>".concat(v / 60, "</span> <span>h</span>")), '\n        <div class="wt-slots">').concat(slots.length ? slots.map((t2) => '<span class="'.concat(nx === t2 ? "next" : "", '" data-notr>').concat(wtHm(t2), "</span>")).join("") : "<em>Scegli un orario di fine dopo quello di inizio.</em>", '</div>\n        <small class="wt-lab">Obiettivo al giorno</small>\n        ').concat(chips("goal", WT_GOALS, (v) => "<span data-notr>".concat(v, "</span> <span>bicchieri</span>")), '\n        <small class="wt-lab">Un bicchiere \xE8</small>\n        ').concat(chips("ml", WT_ML, (v) => "<span data-notr>".concat(v, " ml</span>")), '\n        <label class="dz-switch wt-switch sm"><span><b>Suono</b></span><input type="checkbox" id="wtSound" ').concat(w.sound ? "checked" : "", '><i></i></label>\n        <label class="dz-switch wt-switch sm"><span><b>Vibrazione</b></span><input type="checkbox" id="wtVib" ').concat(w.vib ? "checked" : "", '><i></i></label>\n        <div class="wt-test"><button class="btn ghost small" id="wtTest" type="button">Prova il promemoria</button></div>\n        <p class="wt-note">').concat(perm === "native" ? "Gli avvisi arrivano anche con l'app chiusa." : perm === "denied" ? "Le notifiche sono bloccate: attivale nelle impostazioni del browser per FitLoo." : "Sul sito l'avviso arriva mentre FitLoo \xE8 aperta. Con l'app FitLoo arriva anche a telefono bloccato.", "</p>\n      </div>\n    </section>\n  </div>");
   $("back").onclick = () => go({ name: "home" });
   $("wtPlus").onclick = () => wtDrink(1);
   $("wtMinus").onclick = () => wtDrink(-1);
@@ -10072,7 +10083,7 @@ function wtRemind(test, kind) {
   }
   const title = tr(mv ? "Muoviti un po'!" : "\xC8 ora di bere!"), body = tr(mv ? "Da un po' sei fermo: alzati e fai due passi o qualche esercizio." : "Un bicchiere d'acqua e riparti.");
   if (!wtNative() && "Notification" in window && Notification.permission === "granted" && (test || document.hidden)) {
-    const opt = { body, icon: "../icons/icon-192.png", badge: "../icons/icon-192.png", tag: mv ? "fq-move" : "fq-water", renotify: true, silent: !w.sound };
+    const opt = { body, icon: "icons/icon-192.png", badge: "icons/icon-192.png", tag: mv ? "fq-move" : "fq-water", renotify: true, silent: !w.sound };
     (navigator.serviceWorker && navigator.serviceWorker.getRegistration ? navigator.serviceWorker.getRegistration() : Promise.resolve(null)).then((r) => r ? r.showNotification(title, opt) : new Notification(title, opt)).catch(() => {
     });
   }
@@ -10099,8 +10110,9 @@ function wtRemind(test, kind) {
   };
 }
 let wtSnooze = 0;
+const wtBusy = () => !$("session").hidden || DUEL_ROUTES.includes(route.name);
 function wtTick() {
-  if (wtNative() || S && S.cur) return;
+  if (wtNative() || S && S.cur || wtBusy()) return;
   const w = wtGet();
   if (!w.on) return;
   const now = /* @__PURE__ */ new Date(), m = now.getHours() * 60 + now.getMinutes(), k = wtDay(now);
@@ -10144,7 +10156,7 @@ function renderMove() {
   mvSettingsWire();
 }
 function mvSettings(m, slots, nx, perm) {
-  return '\n      <label class="dz-switch wt-switch"><span class="ico">\u{1F514}</span><span><b>Promemoria per muoverti</b><small>Se sei fermo da un po\', ti ricordiamo di fare attivit\xE0</small></span><input type="checkbox" id="mvOn" '.concat(m.on ? "checked" : "", '><i></i></label>\n      <div class="wt-set').concat(m.on ? "" : " off", '">\n        <div class="wt-times">\n          <label><small>Dalle</small><input type="time" id="mvFrom" value="').concat(esc(m.from), '"></label>\n          <span class="wt-arrow" aria-hidden="true">\u2192</span>\n          <label><small>Alle</small><input type="time" id="mvTo" value="').concat(esc(m.to), '"></label>\n        </div>\n        <small class="wt-lab">Controlla ogni</small>\n        <div class="wt-chips" role="radiogroup">').concat([60, 120, 180].map((v) => '<button class="wt-chip" type="button" role="radio" data-mv="'.concat(v, '" aria-checked="').concat(m.every === v, '"><span data-notr>').concat(v / 60, "</span> <span>h</span></button>")).join(""), '</div>\n        <div class="wt-slots">').concat(slots.length ? slots.map((t) => '<span class="'.concat(nx === t ? "next" : "", '" data-notr>').concat(wtHm(t), "</span>")).join("") : "<em>Scegli un orario di fine dopo quello di inizio.</em>", '</div>\n        <p class="wt-note">A ogni orario controlliamo i passi delle ultime 2 ore: se sono meno di <span data-notr>').concat(MV_STEPS, '</span> e non ti sei allenato, arriva il promemoria. Suono e vibrazione sono quelli di "Bevi acqua".</p>\n        <div class="wt-test"><button class="btn ghost small" id="mvTest" type="button">Prova il promemoria</button></div>\n        <p class="wt-note">').concat(perm === "denied" ? "Le notifiche sono bloccate: attivale nelle impostazioni del browser per FitQuest." : "Sul sito il promemoria arriva mentre FitQuest \xE8 aperta. Con l'app FitQuest i passi si leggono anche in sottofondo.", "</p>\n      </div>\n");
+  return '\n      <label class="dz-switch wt-switch"><span class="ico">\u{1F514}</span><span><b>Promemoria per muoverti</b><small>Se sei fermo da un po\', ti ricordiamo di fare attivit\xE0</small></span><input type="checkbox" id="mvOn" '.concat(m.on ? "checked" : "", '><i></i></label>\n      <div class="wt-set').concat(m.on ? "" : " off", '">\n        <div class="wt-times">\n          <label><small>Dalle</small><input type="time" id="mvFrom" value="').concat(esc(m.from), '"></label>\n          <span class="wt-arrow" aria-hidden="true">\u2192</span>\n          <label><small>Alle</small><input type="time" id="mvTo" value="').concat(esc(m.to), '"></label>\n        </div>\n        <small class="wt-lab">Controlla ogni</small>\n        <div class="wt-chips" role="radiogroup">').concat([60, 120, 180].map((v) => '<button class="wt-chip" type="button" role="radio" data-mv="'.concat(v, '" aria-checked="').concat(m.every === v, '"><span data-notr>').concat(v / 60, "</span> <span>h</span></button>")).join(""), '</div>\n        <div class="wt-slots">').concat(slots.length ? slots.map((t) => '<span class="'.concat(nx === t ? "next" : "", '" data-notr>').concat(wtHm(t), "</span>")).join("") : "<em>Scegli un orario di fine dopo quello di inizio.</em>", '</div>\n        <p class="wt-note">A ogni orario controlliamo i passi delle ultime 2 ore: se sono meno di <span data-notr>').concat(MV_STEPS, '</span> e non ti sei allenato, arriva il promemoria. Suono e vibrazione sono quelli di "Bevi acqua".</p>\n        <div class="wt-test"><button class="btn ghost small" id="mvTest" type="button">Prova il promemoria</button></div>\n        <p class="wt-note">').concat(perm === "denied" ? "Le notifiche sono bloccate: attivale nelle impostazioni del browser per FitLoo." : "Sul sito il promemoria arriva mentre FitLoo \xE8 aperta. Con l'app FitLoo i passi si leggono anche in sottofondo.", "</p>\n      </div>\n");
 }
 function mvSettingsWire() {
   $("mvOn").onchange = async () => {
@@ -10190,7 +10202,7 @@ function mvProfileWire() {
 }
 function mvTick() {
   const m = mvGet();
-  if (!m.on || S && S.cur) return;
+  if (!m.on || S && S.cur || wtBusy()) return;
   const now = /* @__PURE__ */ new Date(), mm = now.getHours() * 60 + now.getMinutes(), k = wtDay(now);
   const fired = m.fired && m.fired.day === k ? m.fired.t : [];
   const t = wtSlots(m).find((x) => x <= mm && mm - x < 10 && !fired.includes(x));
@@ -10243,8 +10255,8 @@ I18N.push(
   ["Vibrazione", "Vibration", "Vibraci\xF3n", "Vibration", "Vibration", "Vibra\xE7\xE3o"],
   ["Prova il promemoria", "Try the reminder", "Prueba el recordatorio", "Tester le rappel", "Erinnerung testen", "Testar o lembrete"],
   ["Gli avvisi arrivano anche con l'app chiusa.", "Alerts arrive even with the app closed.", "Los avisos llegan aunque la app est\xE9 cerrada.", "Les alertes arrivent m\xEAme app ferm\xE9e.", "Hinweise kommen auch bei geschlossener App.", "Os avisos chegam mesmo com o app fechado."],
-  ["Le notifiche sono bloccate: attivale nelle impostazioni del browser per FitQuest.", "Notifications are blocked: turn them on in the browser settings for FitQuest.", "Las notificaciones est\xE1n bloqueadas: act\xEDvalas en los ajustes del navegador para FitQuest.", "Les notifications sont bloqu\xE9es : active-les dans les r\xE9glages du navigateur pour FitQuest.", "Benachrichtigungen sind blockiert: aktiviere sie in den Browser-Einstellungen f\xFCr FitQuest.", "As notifica\xE7\xF5es est\xE3o bloqueadas: ative-as nas configura\xE7\xF5es do navegador para o FitQuest."],
-  ["Sul sito l'avviso arriva mentre FitQuest \xE8 aperta. Con l'app FitQuest arriva anche a telefono bloccato.", "On the website the alert arrives while FitQuest is open. With the FitQuest app it arrives even with the phone locked.", "En la web el aviso llega mientras FitQuest est\xE1 abierta. Con la app FitQuest llega incluso con el tel\xE9fono bloqueado.", "Sur le site, l'alerte arrive quand FitQuest est ouverte. Avec l'appli FitQuest, elle arrive m\xEAme t\xE9l\xE9phone verrouill\xE9.", "Auf der Website kommt der Hinweis, solange FitQuest offen ist. Mit der FitQuest-App kommt er auch bei gesperrtem Handy.", "No site o aviso chega com o FitQuest aberto. Com o app FitQuest chega mesmo com o celular bloqueado."],
+  ["Le notifiche sono bloccate: attivale nelle impostazioni del browser per FitLoo.", "Notifications are blocked: turn them on in the browser settings for FitLoo.", "Las notificaciones est\xE1n bloqueadas: act\xEDvalas en los ajustes del navegador para FitLoo.", "Les notifications sont bloqu\xE9es : active-les dans les r\xE9glages du navigateur pour FitLoo.", "Benachrichtigungen sind blockiert: aktiviere sie in den Browser-Einstellungen f\xFCr FitLoo.", "As notifica\xE7\xF5es est\xE3o bloqueadas: ative-as nas configura\xE7\xF5es do navegador para o FitLoo."],
+  ["Sul sito l'avviso arriva mentre FitLoo \xE8 aperta. Con l'app FitLoo arriva anche a telefono bloccato.", "On the website the alert arrives while FitLoo is open. With the FitLoo app it arrives even with the phone locked.", "En la web el aviso llega mientras FitLoo est\xE1 abierta. Con la app FitLoo llega incluso con el tel\xE9fono bloqueado.", "Sur le site, l'alerte arrive quand FitLoo est ouverte. Avec l'appli FitLoo, elle arrive m\xEAme t\xE9l\xE9phone verrouill\xE9.", "Auf der Website kommt der Hinweis, solange FitLoo offen ist. Mit der FitLoo-App kommt er auch bei gesperrtem Handy.", "No site o aviso chega com o FitLoo aberto. Com o app FitLoo chega mesmo com o celular bloqueado."],
   ["\xC8 ora di bere!", "Time to drink!", "\xA1Hora de beber!", "C'est l'heure de boire !", "Zeit zu trinken!", "Hora de beber!"],
   ["Un bicchiere d'acqua e riparti.", "A glass of water and off you go.", "Un vaso de agua y sigue.", "Un verre d'eau et c'est reparti.", "Ein Glas Wasser und weiter geht's.", "Um copo de \xE1gua e siga em frente."],
   ["Ho bevuto", "Done", "Ya beb\xED", "J'ai bu", "Getrunken", "Bebi"],
@@ -10261,7 +10273,7 @@ I18N.push(
   ["Controlla ogni", "Check every", "Comprobar cada", "V\xE9rifier toutes les", "Pr\xFCfen alle", "Verificar a cada"],
   ["A ogni orario controlliamo i passi delle ultime 2 ore: se sono meno di", "At each time we check your steps in the last 2 hours: if there are fewer than", "En cada hora revisamos tus pasos de las \xFAltimas 2 horas: si son menos de", "\xC0 chaque heure on v\xE9rifie tes pas des 2 derni\xE8res heures : s'il y en a moins de", "Zu jeder Zeit pr\xFCfen wir deine Schritte der letzten 2 Stunden: wenn es weniger als", "A cada hor\xE1rio verificamos seus passos das \xFAltimas 2 horas: se forem menos de"],
   ['e non ti sei allenato, arriva il promemoria. Suono e vibrazione sono quelli di "Bevi acqua".', 'and you haven\'t trained, the reminder arrives. Sound and vibration follow "Drink water".', 'y no has entrenado, llega el recordatorio. Sonido y vibraci\xF3n son los de "Bebe agua".', "et que tu ne t'es pas entra\xEEn\xE9, le rappel arrive. Son et vibration suivent \xAB Bois de l'eau \xBB.", 'sind und du nicht trainiert hast, kommt die Erinnerung. Ton und Vibration wie bei "Wasser trinken".', 'e voc\xEA n\xE3o treinou, chega o lembrete. Som e vibra\xE7\xE3o seguem "Beba \xE1gua".'],
-  ["Sul sito il promemoria arriva mentre FitQuest \xE8 aperta. Con l'app FitQuest i passi si leggono anche in sottofondo.", "On the website the reminder arrives while FitQuest is open. With the FitQuest app steps are read in the background too.", "En la web el recordatorio llega mientras FitQuest est\xE1 abierta. Con la app FitQuest los pasos se leen tambi\xE9n en segundo plano.", "Sur le site, le rappel arrive quand FitQuest est ouverte. Avec l'appli FitQuest, les pas sont lus aussi en arri\xE8re-plan.", "Auf der Website kommt die Erinnerung, solange FitQuest offen ist. Mit der FitQuest-App werden Schritte auch im Hintergrund gelesen.", "No site o lembrete chega com o FitQuest aberto. Com o app FitQuest os passos s\xE3o lidos tamb\xE9m em segundo plano."]
+  ["Sul sito il promemoria arriva mentre FitLoo \xE8 aperta. Con l'app FitLoo i passi si leggono anche in sottofondo.", "On the website the reminder arrives while FitLoo is open. With the FitLoo app steps are read in the background too.", "En la web el recordatorio llega mientras FitLoo est\xE1 abierta. Con la app FitLoo los pasos se leen tambi\xE9n en segundo plano.", "Sur le site, le rappel arrive quand FitLoo est ouverte. Avec l'appli FitLoo, les pas sont lus aussi en arri\xE8re-plan.", "Auf der Website kommt die Erinnerung, solange FitLoo offen ist. Mit der FitLoo-App werden Schritte auch im Hintergrund gelesen.", "No site o lembrete chega com o FitLoo aberto. Com o app FitLoo os passos s\xE3o lidos tamb\xE9m em segundo plano."]
 );
 Object.assign(EX, {
   diampush: {
@@ -10358,6 +10370,150 @@ function xpicDir(id) {
 for (const id of ["diampush", "pikepush", "highknees", "squatthrust", "legraise", "dips"]) {
   if (!GENDER_EX.m.includes(id)) GENDER_EX.m.push(id);
   if (!GENDER_EX.f.includes(id)) GENDER_EX.f.push(id);
+}
+var PREG_IDS = ["pballside", "pballknee", "pwallsquat", "pballkneel"];
+Object.assign(EX, {
+  pballside: {
+    name: "Allungamento laterale sulla palla",
+    unit: "reps",
+    for: "f",
+    preg: 1,
+    lock: null,
+    tag: "Fianchi e schiena",
+    cam: "Telefono in verticale, di fronte a te, a circa 2 metri. Devi vederti dalla testa ai piedi.",
+    steps: [
+      "Siediti al centro della palla, piedi ben aperti e appoggiati a terra.",
+      "Una mano sulla coscia o sulla palla per tenerti in equilibrio.",
+      "Alza l'altro braccio sopra la testa e piegati piano di lato, senza scatti.",
+      "Torna al centro e cambia lato. Respira con calma."
+    ],
+    faults: ["Braccio non abbastanza in alto (non conta)"]
+  },
+  pballknee: {
+    name: "Sollevamento ginocchio sulla palla",
+    unit: "reps",
+    for: "f",
+    preg: 1,
+    lock: null,
+    tag: "Equilibrio e gambe",
+    cam: "Telefono in verticale, di fronte a te, a circa 2 metri. Devi vederti dalla testa ai piedi.",
+    steps: [
+      "Siediti al centro della palla, schiena dritta, mani sulla palla ai lati.",
+      "Piedi a terra alla larghezza delle anche.",
+      "Solleva piano un piede da terra portando il ginocchio in alto.",
+      "Riappoggialo e alterna le gambe, senza perdere l'equilibrio."
+    ],
+    faults: ["Piede non abbastanza sollevato (non conta)"]
+  },
+  pwallsquat: {
+    name: "Squat al muro con la palla",
+    unit: "reps",
+    for: "f",
+    preg: 1,
+    lock: null,
+    tag: "Gambe e glutei",
+    cam: "Telefono a terra, di lato, a circa 2 metri. Devi vedere te e la palla.",
+    steps: [
+      "Palla tra la schiena e il muro, piedi un passo avanti, larghi come le anche.",
+      "Scendi piano facendo rotolare la palla, mani unite davanti al petto.",
+      "Fermati quando le ginocchia sono piegate pi\xF9 o meno a 90\xB0, senza forzare.",
+      "Risali spingendo sui talloni fino a gambe distese."
+    ],
+    faults: ["Non scendi abbastanza (la ripetizione non conta)"]
+  },
+  pballkneel: {
+    name: "Allungamento in ginocchio sulla palla",
+    unit: "secs",
+    for: "f",
+    preg: 1,
+    lock: null,
+    hold: 1,
+    tag: "Schiena e bacino, rilassamento",
+    cam: "Telefono a terra, di lato, a circa 2 metri. Devi vedere te e la palla.",
+    steps: [
+      "In ginocchio su un tappetino, ginocchia aperte, palla davanti a te.",
+      "Appoggia le mani e poi gli avambracci sulla palla.",
+      "Porta piano il busto in avanti lasciando rilassare schiena e pancia.",
+      "Resta cos\xEC respirando con calma. Il tempo scorre solo in posizione."
+    ],
+    faults: ["Busto non abbastanza in avanti"]
+  }
+});
+Object.assign(POSES, {
+  pballside: { ...POSES.jacks },
+  pballknee: { ...POSES.highknees },
+  pwallsquat: { ...POSES.squat },
+  pballkneel: { ...POSES.plank }
+});
+Object.assign(PICS, { "pballkneel": { "f": { "w": 627, "h": 560, "n": 2 } }, "pballside": { "f": { "w": 346, "h": 560, "n": 2 } }, "pballknee": { "f": { "w": 421, "h": 560, "n": 2 } }, "pwallsquat": { "f": { "w": 440, "h": 560, "n": 2 } } });
+function pregTrackers(st, smooth, angleRep) {
+  const holdDt = (t) => {
+    const dt = st.lastT ? Math.min(250, t - st.lastT) : 0;
+    st.lastT = t;
+    return dt;
+  };
+  return {
+    // front view: a hand that goes above the head is one stretch, it counts again once it comes back down
+    pballside(lm) {
+      const nose = P(lm, 0), lS = P(lm, 11), rS = P(lm, 12), lW = P(lm, 15), rW = P(lm, 16);
+      if (!vis(nose, lS, rS) || !(vis(lW) || vis(rW))) return { lost: "Inquadrati di fronte, dalla testa ai piedi" };
+      st.arms = st.arms || { l: "down", r: "down" };
+      const head2 = Math.max(0.04, (lS.y + rS.y) / 2 - nose.y);
+      let event = null, best = 0;
+      for (const [k, w] of [["l", lW], ["r", rW]]) {
+        if (!vis(w)) continue;
+        const up = ((lS.y + rS.y) / 2 - w.y) / (head2 * 2.2);
+        best = Math.max(best, up);
+        if (st.arms[k] === "down" && up > 0.85) {
+          st.arms[k] = "up";
+          event = "rep";
+        } else if (st.arms[k] === "up" && up < 0.2) st.arms[k] = "down";
+      }
+      return { metric: Math.max(0, Math.min(1, best)), event, fault: null, cue: null };
+    },
+    // front view, sitting: one foot leaves the floor and the knee comes up
+    pballknee(lm) {
+      const lH = P(lm, 23), rH = P(lm, 24), lK = P(lm, 25), rK = P(lm, 26), lA = P(lm, 27), rA = P(lm, 28);
+      if (!vis(lH, rH, lK, rK, lA, rA)) return { lost: "Inquadrati di fronte, piedi compresi" };
+      st.legs = st.legs || { l: "down", r: "down" };
+      const shin = Math.max(0.05, (Math.abs(lA.y - lK.y) + Math.abs(rA.y - rK.y)) / 2);
+      let event = null, best = 0;
+      for (const [k, a, o] of [["l", lA, rA], ["r", rA, lA]]) {
+        const lift = (o.y - a.y) / shin;
+        best = Math.max(best, lift);
+        if (st.legs[k] === "down" && lift > 0.3) {
+          st.legs[k] = "up";
+          event = "rep";
+        } else if (st.legs[k] === "up" && lift < 0.08) st.legs[k] = "down";
+      }
+      return { metric: Math.max(0, Math.min(1, best / 0.4)), event, fault: null, cue: null };
+    },
+    // side view: like a squat but gentler, about 90° is plenty
+    pwallsquat(lm) {
+      const p = pick(lm, side(lm, [23, 25, 27], [24, 26, 28]));
+      if (!vis(p.hip, p.kn, p.an)) return { lost: "Inquadrati di lato, dalla testa ai piedi" };
+      const knee = ang(p.hip, p.kn, p.an);
+      const r = angleRep({ value: knee, top: 155, bottom: 118, partial: 142 });
+      return { ...r, fault: null, cue: null, noRepCue: "Scendi ancora un po', senza forzare. Non conta" };
+    },
+    // side view: kneeling with the chest forward on the ball, time runs while the position is held
+    pballkneel(lm, t) {
+      const p = pick(lm, side(lm, [11, 23, 25], [12, 24, 26]));
+      const dt = holdDt(t);
+      if (!vis(p.sh, p.hip, p.kn)) return { lost: "Inquadrati di lato: spalle, bacino e ginocchia", metric: 0 };
+      const lean = Math.atan2(Math.abs(p.sh.x - p.hip.x), Math.abs(p.hip.y - p.sh.y) + 1e-6) * 180 / Math.PI;
+      const kneeling = Math.abs(p.kn.y - p.hip.y) < Math.abs(p.sh.y - p.hip.y) * 1.6 + 0.08;
+      let fault = null, cue = null;
+      if (!kneeling) {
+        fault = "pos";
+        cue = "Mettiti in ginocchio davanti alla palla";
+      } else if (lean < 35) {
+        fault = "lean";
+        cue = "Porta il busto in avanti sulla palla";
+      } else st.holdMs += dt;
+      return { metric: Math.max(0, Math.min(1, lean / 60)), fault, cue, hold: st.holdMs };
+    }
+  };
 }
 function xtraTrackers(st, smooth, angleRep, T) {
   return {
@@ -10668,7 +10824,7 @@ function clipDraw(t) {
   g.fillText("Fit", lx + ls + 14 * u, ly + ls / 2);
   const fw = g.measureText("Fit").width;
   g.fillStyle = acc;
-  g.fillText("Quest", lx + ls + 14 * u + fw, ly + ls / 2);
+  g.fillText("Loo", lx + ls + 14 * u + fw, ly + ls / 2);
   const exName = tr(EX[CLIP.ex].name).toUpperCase();
   g.fillStyle = "#fff";
   g.textAlign = "left";
@@ -10696,7 +10852,7 @@ function clipDraw(t) {
   g.fillStyle = acc;
   g.font = "800 ".concat(34 * u, "px ").concat(fc);
   g.fillText(clipUnit(CLIP.unit, n).toUpperCase(), W - 44 * u, H - 104 * u);
-  const foot = tr("Allenati con me su FitQuest");
+  const foot = tr("Allenati con me su FitLoo");
   g.textAlign = "left";
   g.fillStyle = "rgba(255,255,255,.85)";
   clipFont(g, foot, 28 * u, W - 2 * lx, fc);
@@ -10722,7 +10878,7 @@ function clipDrawCard(g, W, H, u, t, fc, acc) {
   g.fillStyle = acc;
   clipFont(g, what, 50 * u, W - 80 * u, fc);
   g.fillText(what, W / 2, H * 0.62 + 70 * u);
-  const cta = tr("Sfidami su FitQuest").toUpperCase(), bh = 92 * u, by = H * 0.76;
+  const cta = tr("Sfidami su FitLoo").toUpperCase(), bh = 92 * u, by = H * 0.76;
   clipFont(g, cta, 42 * u, W - 140 * u, fc);
   const bw = Math.max(520 * u, g.measureText(cta).width + 80 * u);
   g.fillStyle = acc;
@@ -10873,7 +11029,7 @@ function clipWire() {
   let sharing = false;
   $("clipShare").onclick = async () => {
     if (sharing) return;
-    const text = "".concat(c.n, " ").concat(clipUnit(c.unit, c.n), " \xB7 ").concat(tr(EX[c.ex].name), ". ").concat(tr("Riesci a fare di meglio? Sfidami su FitQuest"), " ").concat(clipSite());
+    const text = "".concat(c.n, " ").concat(clipUnit(c.unit, c.n), " \xB7 ").concat(tr(EX[c.ex].name), ". ").concat(tr("Riesci a fare di meglio? Sfidami su FitLoo"), " ").concat(clipSite());
     let file = null;
     try {
       file = new File([c.blob], c.name, { type: c.type });
@@ -10888,7 +11044,7 @@ function clipWire() {
       sharing = true;
       let copied = false;
       try {
-        const sh = navigator.share(IS_IOS ? { files: [file] } : { files: [file], title: "FitQuest", text });
+        const sh = navigator.share(IS_IOS ? { files: [file] } : { files: [file], title: "FitLoo", text });
         if (IS_IOS) try {
           navigator.clipboard.writeText(text).then(() => {
             copied = true;
@@ -10930,9 +11086,9 @@ I18N.push(
   ["Condividi la clip", "Share the clip", "Compartir el clip", "Partager le clip", "Clip teilen", "Compartilhar o clipe"],
   ["Preparo la clip\u2026", "Preparing your clip\u2026", "Preparando el clip\u2026", "Je pr\xE9pare le clip\u2026", "Clip wird vorbereitet\u2026", "Preparando o clipe\u2026"],
   ["La clip resta sul tuo telefono: la vede solo chi la riceve da te.", "The clip stays on your phone: only the people you send it to can see it.", "El clip se queda en tu tel\xE9fono: solo lo ve quien lo recibe de ti.", "Le clip reste sur ton t\xE9l\xE9phone : seules les personnes \xE0 qui tu l'envoies le voient.", "Der Clip bleibt auf deinem Handy: Nur wer ihn von dir bekommt, sieht ihn.", "O clipe fica no seu celular: s\xF3 quem recebe de voc\xEA pode ver."],
-  ["Allenati con me su FitQuest", "Train with me on FitQuest", "Entrena conmigo en FitQuest", "Entra\xEEne-toi avec moi sur FitQuest", "Trainiere mit mir auf FitQuest", "Treine comigo no FitQuest"],
-  ["Sfidami su FitQuest", "Challenge me on FitQuest", "R\xE9tame en FitQuest", "D\xE9fie-moi sur FitQuest", "Fordere mich auf FitQuest heraus", "Me desafie no FitQuest"],
-  ["Riesci a fare di meglio? Sfidami su FitQuest", "Can you beat it? Challenge me on FitQuest", "\xBFPuedes superarlo? R\xE9tame en FitQuest", "Tu peux faire mieux ? D\xE9fie-moi sur FitQuest", "Schaffst du mehr? Fordere mich auf FitQuest heraus", "Consegue fazer melhor? Me desafie no FitQuest"],
+  ["Allenati con me su FitLoo", "Train with me on FitLoo", "Entrena conmigo en FitLoo", "Entra\xEEne-toi avec moi sur FitLoo", "Trainiere mit mir auf FitLoo", "Treine comigo no FitLoo"],
+  ["Sfidami su FitLoo", "Challenge me on FitLoo", "R\xE9tame en FitLoo", "D\xE9fie-moi sur FitLoo", "Fordere mich auf FitLoo heraus", "Me desafie no FitLoo"],
+  ["Riesci a fare di meglio? Sfidami su FitLoo", "Can you beat it? Challenge me on FitLoo", "\xBFPuedes superarlo? R\xE9tame en FitLoo", "Tu peux faire mieux ? D\xE9fie-moi sur FitLoo", "Schaffst du mehr? Fordere mich auf FitLoo heraus", "Consegue fazer melhor? Me desafie no FitLoo"],
   ["Questo browser non condivide video: la clip \xE8 stata salvata, pubblicala dalla galleria o dai download.", "This browser can't share videos: the clip was saved, post it from your gallery or downloads.", "Este navegador no comparte v\xEDdeos: el clip se guard\xF3, publ\xEDcalo desde la galer\xEDa o las descargas.", "Ce navigateur ne partage pas les vid\xE9os : le clip a \xE9t\xE9 enregistr\xE9, publie-le depuis ta galerie ou tes t\xE9l\xE9chargements.", "Dieser Browser kann keine Videos teilen: Der Clip wurde gespeichert, poste ihn aus der Galerie oder den Downloads.", "Este navegador n\xE3o compartilha v\xEDdeos: o clipe foi salvo, publique pela galeria ou downloads."],
   ["Condivisione non riuscita: la clip \xE8 stata salvata, pubblicala dalla galleria o dai download.", "Sharing didn't work: the clip was saved, post it from your gallery or downloads.", "No se pudo compartir: el clip se guard\xF3, publ\xEDcalo desde la galer\xEDa o las descargas.", "Le partage n'a pas march\xE9 : le clip a \xE9t\xE9 enregistr\xE9, publie-le depuis ta galerie ou tes t\xE9l\xE9chargements.", "Teilen hat nicht geklappt: Der Clip wurde gespeichert, poste ihn aus der Galerie oder den Downloads.", "N\xE3o foi poss\xEDvel compartilhar: o clipe foi salvo, publique pela galeria ou downloads."],
   ["Clip salvata: la trovi nei download del telefono.", "Clip saved: you'll find it in your phone's downloads.", "Clip guardado: lo encontrar\xE1s en las descargas del tel\xE9fono.", "Clip enregistr\xE9 : tu le trouveras dans les t\xE9l\xE9chargements du t\xE9l\xE9phone.", "Clip gespeichert: Du findest ihn in den Downloads deines Handys.", "Clipe salvo: voc\xEA encontra nos downloads do celular."],
@@ -10979,7 +11135,7 @@ function infoBodyHTML() {
     const inner = '<span class="info-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">'.concat(INFO_ICO[it.kind], '</svg></span><span class="info-txt">').concat(it.label ? "<b data-notr>".concat(esc(it.label), "</b>") : "<b>".concat(name, "</b>"), "<small data-notr>").concat(esc(it.value), "</small></span>");
     return safe ? '<a class="info-row" href="'.concat(esc(url), '" target="_blank" rel="noopener">').concat(inner, '<span class="go">\u203A</span></a>') : '<div class="info-row">'.concat(inner, "</div>");
   };
-  return "".concat(note ? '<p class="info-note" data-notr>'.concat(esc(note).replace(/\n/g, "<br>"), "</p>") : "", '\n    <div class="label">Contatti</div>\n    ').concat(items.length ? '<div class="info-list">'.concat(items.map(row).join(""), "</div>") : '<p class="meta">'.concat(d ? "I contatti arriveranno presto." : infoBusy ? "Carico i contatti\u2026" : "Contatti non disponibili senza connessione.", "</p>"), '\n    <div class="label" style="margin-top:14px">App</div>\n    <div class="info-list">\n      <div class="info-row"><span class="info-ico"><img src="img/logo.webp" alt=""></span><span class="info-txt"><b>FitQuest</b><small data-notr>').concat(esc(APP_VER.replace(/^.*web-v/, "v")), '</small></span></div>\n      <a class="info-row" href="privacy.html" target="_blank" rel="noopener"><span class="info-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 5 6v5c0 4.5 3 8.5 7 10 4-1.5 7-5.5 7-10V6z"/></svg></span><span class="info-txt"><b>Privacy</b><small>Come trattiamo i tuoi dati</small></span><span class="go">\u203A</span></a>\n    </div>');
+  return "".concat(note ? '<p class="info-note" data-notr>'.concat(esc(note).replace(/\n/g, "<br>"), "</p>") : "", '\n    <div class="label">Contatti</div>\n    ').concat(items.length ? '<div class="info-list">'.concat(items.map(row).join(""), "</div>") : '<p class="meta">'.concat(d ? "I contatti arriveranno presto." : infoBusy ? "Carico i contatti\u2026" : "Contatti non disponibili senza connessione.", "</p>"), '\n    <div class="label" style="margin-top:14px">App</div>\n    <div class="info-list">\n      <div class="info-row"><span class="info-ico"><img src="img/logo.webp" alt=""></span><span class="info-txt"><b>FitLoo</b><small data-notr>').concat(esc(APP_VER.replace(/^.*web-v/, "v")), '</small></span></div>\n      <a class="info-row" href="privacy.html" target="_blank" rel="noopener"><span class="info-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 5 6v5c0 4.5 3 8.5 7 10 4-1.5 7-5.5 7-10V6z"/></svg></span><span class="info-txt"><b>Privacy</b><small>Come trattiamo i tuoi dati</small></span><span class="go">\u203A</span></a>\n    </div>');
 }
 function infoSection() {
   return '<details class="subopt" id="infoSub"'.concat(infoOpen ? " open" : "", "><summary><span>Informazioni app e contatti</span><b data-notr>").concat(esc(APP_VER.replace(/^.*web-v/, "v")), '</b></summary><div class="subopt-body" id="infoBody">').concat(infoBodyHTML(), "</div></details>");
@@ -11024,7 +11180,7 @@ I18N.push(
 );
 const SB_URL = "https://maypmqnjkdrdqcssnvty.supabase.co";
 const SB_KEY = "sb_publishable_uorMl6G618tavZGF8MQpfQ_2Pg3AIlE";
-const APP_VER = "web-v60";
+const APP_VER = "web-v61";
 const SYNC_SKIP = ["lite", "vpack", "rndInv"];
 const ACC = { sb: null, user: null, loading: null, busy: false, msg: "", err: false, timer: null, mode: "login" };
 const syncInfo = () => {
