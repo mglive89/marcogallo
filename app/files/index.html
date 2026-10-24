@@ -11182,7 +11182,7 @@ I18N.push(
 );
 const SB_URL = "https://maypmqnjkdrdqcssnvty.supabase.co";
 const SB_KEY = "sb_publishable_uorMl6G618tavZGF8MQpfQ_2Pg3AIlE";
-const APP_VER = "web-v61";
+const APP_VER = "web-v62";
 const SYNC_SKIP = ["lite", "vpack", "rndInv"];
 const ACC = { sb: null, user: null, loading: null, busy: false, msg: "", err: false, timer: null, mode: "login" };
 const syncInfo = () => {
@@ -11205,6 +11205,17 @@ const hasSbSession = () => {
     return false;
   }
 };
+const netErr = (e) => /load failed|failed to fetch|networkerror|network request failed|the network connection was lost/i.test(String(e && e.message || e));
+async function netRetry(fn) {
+  for (let i = 0; ; i++) {
+    try {
+      return await fn();
+    } catch (e) {
+      if (i >= 2 || !netErr(e)) throw e;
+      await new Promise((r) => setTimeout(r, i ? 8e3 : 2500));
+    }
+  }
+}
 async function sbClient() {
   if (ACC.sb) return ACC.sb;
   if (!ACC.loading) ACC.loading = (async () => {
@@ -11213,7 +11224,7 @@ async function sbClient() {
     sb.auth.onAuthStateChange((ev, session2) => {
       const was = ACC.user && ACC.user.id;
       ACC.user = session2 ? session2.user : null;
-      if (ACC.user && ACC.user.id !== was) setTimeout(() => accFirstSync().catch((e) => reportBug("sync", "error", "first_sync_failed", { m: String(e && e.message || e).slice(0, 120) })), 0);
+      if (ACC.user && ACC.user.id !== was) setTimeout(() => netRetry(accFirstSync).catch((e) => reportBug("sync", "error", "first_sync_failed", { m: String(e && e.message || e).slice(0, 120) })), 0);
       if (route.name === "profile") accRefresh();
       if ((ACC.user && ACC.user.id) !== was) wwOnAuth();
     });
@@ -11258,7 +11269,7 @@ async function syncFlush() {
   if (offline() || !syncInfo().dirty || S && S.running) return;
   try {
     await sbClient();
-    if (ACC.user) await syncUpload();
+    if (ACC.user) await netRetry(syncUpload);
     if (route.name === "profile") accRefresh();
   } catch (e) {
     reportBug("sync", "warning", "backup_failed", { m: String(e && e.message || e).slice(0, 120) });
